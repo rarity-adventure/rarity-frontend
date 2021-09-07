@@ -2,14 +2,14 @@ import adventure from '../../assets/images/adventure.png'
 import title from '../../assets/images/adventure_txt.png'
 import mountain from '../../assets/images/mountain.png'
 import explore from '../../assets/images/exploration.png'
-import {MULTIADVENTURE_CONTRACT} from "../../constants";
-import useRarity from "../../hooks/useRarity";
-import {useCallback, useEffect, useState} from "react";
-import useActiveWeb3React from "../../hooks/useActiveWeb3React";
-import {useUserSummoners} from "../../state/user/hooks";
-import useMultiAdventure from "../../hooks/useMultiAdventure";
-import {Summoner} from "../../state/user/actions";
-import SummonerAdventureCard from "../../components/Summoner/Adventure";
+import { MULTIADVENTURE_CONTRACT } from '../../constants'
+import useRarity from '../../hooks/useRarity'
+import { useCallback, useEffect, useState } from 'react'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { useUserSummoners } from '../../state/user/hooks'
+import useMultiAdventure from '../../hooks/useMultiAdventure'
+import { Summoner } from '../../state/user/actions'
+import SummonerAdventureCard from '../../components/Summoner/Adventure'
 
 export default function Adventure(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
@@ -72,49 +72,45 @@ export default function Adventure(): JSX.Element | null {
                 <span className="text-md md:text-2xl text-white mb-14">Journey Awaiting</span>
                 <p className="w-full text-xl text-white my-4">Send all summoners to adventure</p>
                 {multiadv.available ? (
-                  multiadv.approved ? (
-                    <button
-                      className="bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4"
-                      onClick={async () => {
-                          await sendMultiAdventure()
-                      }}
-                    >
-                        Adventure time!
+                    multiadv.approved ? (
+                        <button
+                            className="bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4"
+                            onClick={async () => {
+                                await sendMultiAdventure()
+                            }}
+                        >
+                            Adventure time!
+                        </button>
+                    ) : (
+                        <button
+                            className="bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4"
+                            onClick={async () => {
+                                await approveMultiAdventure()
+                            }}
+                        >
+                            Approve
+                        </button>
+                    )
+                ) : (
+                    <button className="opacity-50 cursor-not-allowed bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4">
+                        No summoner available
                     </button>
-                  ) : (
-                    <button
-                      className="bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4"
-                      onClick={async () => {
-                          await approveMultiAdventure()
-                      }}
-                    >
-                        Approve
-                    </button>
-                  )) : (
-                  <button className="opacity-50 cursor-not-allowed bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4">
-                      No summoner available
-                  </button>
                 )}
 
                 {summoners ? (
-                  summoners.length > 0 ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto mt-10 gap-4">
-                        {summoners.map((summoner) => {
-                            return (
-                              <SummonerAdventureCard
-                                key={summoner.id}
-                                summoner={summoner}
-                              />
-                            )
-                        })}
-                    </div>
-                  ) : (
-                    <p className="text-white mt-10 text-2xl font-bold">
-                        To be able to manage stats you need to have a summoner
-                    </p>
-                  )
+                    summoners.length > 0 ? (
+                        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto mt-10 gap-4">
+                            {summoners.map((summoner) => {
+                                return <SummonerAdventureCard key={summoner.id} summoner={summoner} />
+                            })}
+                        </div>
+                    ) : (
+                        <p className="text-white mt-10 text-2xl font-bold">
+                            To be able to manage stats you need to have a summoner
+                        </p>
+                    )
                 ) : (
-                  <div />
+                    <div />
                 )}
             </div>
         </>

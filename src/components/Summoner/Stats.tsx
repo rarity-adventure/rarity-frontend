@@ -182,7 +182,6 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

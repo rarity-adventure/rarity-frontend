@@ -27,7 +27,7 @@ function App(): JSX.Element {
 
     return (
         <Suspense fallback={null}>
-            <div className="flex flex-col items-start overflow-x-hidden h-screen bg-custom-background">
+            <div className="flex flex-col h-screen items-start overflow-x-hidden bg-custom-background">
                 <AppBar />
                 <div ref={bodyRef} className={wrapperClassList}>
                     <Web3ReactManager>
