@@ -1,0 +1,16 @@
+{
+    "short_name": "React Dapp Bolierplate",
+    "name": "React Dapp Bolierplate",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "32x32",
+            "type": "image/png"
+        }
+    ],
+    "orientation": "portrait",
+    "display": "standalone",
+    "theme_color": "#ff007a",
+    "background_color": "#fff",
+    "start_url": "/"
+}
