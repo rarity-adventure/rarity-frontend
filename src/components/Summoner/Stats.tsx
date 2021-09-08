@@ -105,7 +105,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
             setTempAttrs(currAttrs)
             setTempAP(availableAP)
         }
-    })
+    }, [setTempAttrs, loaded, setTempAP, currAttrs, availableAP])
 
     function calcTempAP() {
         let ap = availableAP;
