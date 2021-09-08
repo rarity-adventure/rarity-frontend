@@ -35,7 +35,7 @@ function Updaters() {
 }
 
 const client = new ApolloClient({
-    uri: 'https://api.thegraph.com/subgraphs/name/eabz/rarity',
+    uri: 'https://api.rarity.game/subgraphs/name/rarity',
     cache: new InMemoryCache(),
 })
 
