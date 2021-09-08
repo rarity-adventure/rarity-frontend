@@ -5,7 +5,8 @@ import { useCallback, useEffect, useState } from 'react'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { fromWei } from 'web3-utils'
-import { secondsToString } from '../../constants'
+import { DUNGEONS, secondsToString } from '../../constants'
+import useDungeon from '../../hooks/useDungeon'
 
 interface SummonerCardProps {
     summoner: Summoner
@@ -38,6 +39,46 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
         if (!library || !windowVisible || !chainId || !exp) return
         fetch()
     }, [library, chainId, windowVisible, exp, fetch])
+
+    const [actions, setActions] = useState<{
+        scout: {
+            success: boolean
+            info: string
+        }
+        explore: {
+            success: boolean
+            info: string
+        }
+    }>({
+        scout: {
+            success: false,
+            info: '',
+        },
+        explore: {
+            success: false,
+            info: '',
+        },
+    })
+    const [dungeon, setDungeon] = useState('cellar')
+
+    async function handleDungeonSelect(k: string) {
+        setDungeon(dungeon)
+    }
+
+    const { scout, explore } = useDungeon()
+
+    async function scoutFunc() {
+        const scoutInfo = await scout(summoner.id, dungeon)
+        const info = scoutInfo ? 'You will receive and object with id: ' + scoutInfo : 'You will get nothing'
+        const newState = Object.assign({}, actions, { scout: { success: true, info: info } })
+        setActions(newState)
+        console.log(info)
+    }
+
+    async function exploreFunc() {
+        const exploreInfo = await explore(summoner.id, dungeon)
+        console.log(exploreInfo)
+    }
 
     return (
         <div className="w-full border-custom-border border-8">
@@ -92,6 +133,45 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                     ) : (
                         <div />
                     )}
+                </div>
+                <div className="bg-custom-green text-center text-2xl font-bold">
+                    <h1>Dungeons</h1>
+                </div>
+                <div className="p-2 text-right">
+                    <select
+                        className="w-full p-2 text-center rounded-md"
+                        onChange={(v) => handleDungeonSelect(v.target.value)}
+                    >
+                        {Object.keys(DUNGEONS).map((k) => {
+                            return (
+                                <option key={k} value={k}>
+                                    {DUNGEONS[k].name}
+                                </option>
+                            )
+                        })}
+                    </select>
+                </div>
+                <div className="mx-10 mb-5 flex justify-between items-center text-white">
+                    <button
+                        className="bg-custom-green p-2 text-md rounded-md border-2 border-white"
+                        onClick={async () => await scoutFunc()}
+                    >
+                        Scout
+                    </button>
+                    <button
+                        className="bg-custom-green text-white p-2 text-md rounded-md border-2 border-white"
+                        onClick={async () => await exploreFunc()}
+                    >
+                        Explore
+                    </button>
+                </div>
+                <div className="mx-10 mb-5 p-3 text-center items-center text-white rounded-lg bg-custom-green">
+                    {!actions.explore.success && actions.scout.success ? (
+                        <span>{actions.scout.info}</span>
+                    ) : (
+                        <span>Scout first to see your reward</span>
+                    )}
+                    {actions.explore.success ? <span>{actions.explore.info}</span> : <div />}
                 </div>
             </div>
         </div>

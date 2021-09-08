@@ -8,10 +8,12 @@ import GOLD_ABI from '../constants/abis/gold.json'
 import ATTRIBUTES_ABI from '../constants/abis/attributes.json'
 import MULTIADVENTURE_ABI from '../constants/abis/multiadventure.json'
 import DAILYCARE_ABI from '../constants/abis/daycare.json'
+import DUNGEON_ABI from '../constants/abis/dungeon.json'
 
 import {
     ATTRIBUTES_CONTRACT,
     DAILYCARE_CONTRACT,
+    DUNGEONS,
     GOLD_CONTRACTS,
     MULTIADVENTURE_CONTRACT,
     RARITY_CONTRACTS,
@@ -58,4 +60,14 @@ export function useMultiAdventureContract(): Contract | null {
 export function useDailyCareContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? DAILYCARE_CONTRACT[chainId] : undefined, DAILYCARE_ABI)
+}
+
+export function useDungeonContract(): { [k: string]: Contract | null } {
+    const { library } = useActiveWeb3React()
+    let dungeons: { [k: string]: Contract | null } = {}
+    if (!library) return dungeons
+    Object.keys(DUNGEONS).map((k) => {
+        dungeons[k] = getContract(DUNGEONS[k].contract, DUNGEON_ABI, library)
+    })
+    return dungeons
 }

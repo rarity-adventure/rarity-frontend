@@ -32,6 +32,13 @@ export const DAILYCARE_CONTRACT = {
     [ChainId.MAINNET]: '0xf1bf34E46ECf465591B7a7fA9635E4C583174fa3',
 }
 
+export const DUNGEONS: { [k: string]: { name: string; contract: string } } = {
+    cellar: {
+        name: 'The Cellar',
+        contract: '0x2A0F1cB17680161cF255348dDFDeE94ea8Ca196A',
+    },
+}
+
 export function secondsToString(d: number): string {
     d = Number(d)
     const h = Math.floor(d / 3600)
@@ -45,8 +52,8 @@ export function secondsToString(d: number): string {
 
 export function calcAPCost(score: number): number {
     if (score <= 14) {
-        return score - 8;
+        return score - 8
     } else {
-        return Math.floor(((score - 8)**2)/6)
+        return Math.floor((score - 8) ** 2 / 6)
     }
 }

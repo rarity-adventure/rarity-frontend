@@ -108,7 +108,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [setTempAttrs, loaded, setTempAP, currAttrs, availableAP])
 
     function calcTempAP() {
-        let ap = availableAP;
+        let ap = availableAP
         ap -= calcAPCost(tempAttrs['str'])
         ap -= calcAPCost(tempAttrs['dex'])
         ap -= calcAPCost(tempAttrs['con'])
@@ -118,8 +118,8 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
         setTempAP(ap)
     }
 
-    function calcTempAPWithState(state: {[k: string]: number}): number {
-        let ap = availableAP;
+    function calcTempAPWithState(state: { [k: string]: number }): number {
+        let ap = availableAP
         ap -= calcAPCost(state['str'])
         ap -= calcAPCost(state['dex'])
         ap -= calcAPCost(state['con'])
