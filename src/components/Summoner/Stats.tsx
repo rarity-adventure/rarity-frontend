@@ -120,18 +120,18 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
 
     function calcTempAPWithState(state: {[k: string]: number}): number {
         let ap = availableAP;
-        ap -= calcAPCost(tempAttrs['str'])
-        ap -= calcAPCost(tempAttrs['dex'])
-        ap -= calcAPCost(tempAttrs['con'])
-        ap -= calcAPCost(tempAttrs['int'])
-        ap -= calcAPCost(tempAttrs['wis'])
-        ap -= calcAPCost(tempAttrs['cha'])
+        ap -= calcAPCost(state['str'])
+        ap -= calcAPCost(state['dex'])
+        ap -= calcAPCost(state['con'])
+        ap -= calcAPCost(state['int'])
+        ap -= calcAPCost(state['wis'])
+        ap -= calcAPCost(state['cha'])
         return ap
     }
 
     function handleAddition(attr: string) {
         const tempState = Object.assign({}, tempAttrs, { [attr]: tempAttrs[attr] + 1 })
-        if (calcTempAPWithState(tempState) > 0) {
+        if (calcTempAPWithState(tempState) >= 0) {
             const addition = (tempAttrs[attr] += 1)
             const newState = Object.assign({}, tempAttrs, { [attr]: addition })
             setTempAttrs(newState)
@@ -140,7 +140,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }
 
     function handleSubstraction(attr: string) {
-        if (currAttrs[attr] < tempAttrs[attr]) {
+        if (currAttrs[attr] <= tempAttrs[attr] - 1) {
             const addition = (tempAttrs[attr] -= 1)
             const newState = Object.assign({}, tempAttrs, { [attr]: addition })
             setTempAttrs(newState)
