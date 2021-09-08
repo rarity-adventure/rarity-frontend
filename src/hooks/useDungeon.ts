@@ -4,6 +4,7 @@ import { useCallback } from 'react'
 interface DungeonInterface {
     scout: (id: string, dungeon: string) => Promise<number>
     explore: (id: string, dungeon: string) => Promise<void>
+    log: (id: string, dungeon: string) => Promise<number>
 }
 
 export default function useDungeon(): DungeonInterface {
@@ -25,7 +26,7 @@ export default function useDungeon(): DungeonInterface {
     const explore = useCallback(
         async (id: string, dungeon: string): Promise<void> => {
             try {
-                const tx = await d[dungeon]?.adventure(id);
+                const tx = await d[dungeon]?.adventure(id)
                 await tx.wait()
                 return
             } catch (e) {
@@ -36,5 +37,17 @@ export default function useDungeon(): DungeonInterface {
         [d]
     )
 
-    return { scout, explore }
+    const log = useCallback(
+        async (id: string, dungeon: string): Promise<number> => {
+            try {
+                const log = await d[dungeon]?.adventurers_log(id)
+                return parseInt(log.toString())
+            } catch (e) {
+                return 0
+            }
+        },
+        [d]
+    )
+
+    return { scout, explore, log }
 }

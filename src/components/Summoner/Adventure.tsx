@@ -66,12 +66,29 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
         setDungeon(k)
     }
 
-    const { scout, explore } = useDungeon()
+    const { scout, explore, log } = useDungeon()
+
+    const [dungeonAvailable, setDungeonAvailable] = useState<boolean>(false)
+
+    const fetchLog = useCallback(async () => {
+        const summonerLog = await log(summoner.id, dungeon)
+        console.log(summonerLog)
+        setDungeonAvailable(summonerLog * 1000 < Date.now())
+    }, [log, summoner, dungeon])
+
+    useEffect(() => {
+        if (!library || !windowVisible || !chainId || !exp) return
+        fetchLog()
+    }, [library, chainId, windowVisible, exp, fetchLog])
 
     async function scoutFunc() {
         const scoutInfo = await scout(summoner.id, dungeon)
         const info = scoutInfo
-            ? 'You look inside the ' + DUNGEONS[dungeon].name + ' and see a shiny box with ' + scoutInfo + ' pieces of an unknown crafting material.'
+            ? 'You look inside the ' +
+              DUNGEONS[dungeon].name +
+              ' and see a shiny box with ' +
+              scoutInfo +
+              ' pieces of an unknown crafting material.'
             : 'You look inside the ' + DUNGEONS[dungeon].name + ' but all you see is an empty box.'
         const newState = Object.assign({}, actions, { scout: { success: true, info: info } })
         setActions(newState)
@@ -81,7 +98,6 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
         let newState = Object.assign({}, actions, { explore: { loading: true } })
         setActions(newState)
         await explore(summoner.id, dungeon)
-        setActions(newState)
         const info = 'Explore success'
         newState = Object.assign({}, actions, { explore: { info, loading: false } })
         setActions(newState)
@@ -159,13 +175,20 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                     </select>
                 </div>
                 <div className="mx-10 mb-5 flex justify-between items-center text-white">
-                    <button
-                        className="bg-custom-green p-2 text-md rounded-md border-2 border-white"
-                        onClick={async () => await scoutFunc()}
-                    >
-                        Scout
-                    </button>
-                    {actions.scout.success ? (
+                    {dungeonAvailable ? (
+                        <button
+                            className="bg-custom-green p-2 text-md rounded-md border-2 border-white"
+                            onClick={async () => await scoutFunc()}
+                        >
+                            Scout
+                        </button>
+                    ) : (
+                        <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 text-md rounded-md border-2 border-white">
+                            Scout
+                        </button>
+                    )}
+
+                    {actions.scout.success && dungeonAvailable ? (
                         <button
                             className="bg-custom-green text-white p-2 text-md rounded-md border-2 border-white"
                             onClick={async () => await exploreFunc()}
@@ -179,14 +202,19 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                     )}
                 </div>
                 <div className="mx-10 mb-5 p-3 text-center items-center text-white rounded-lg bg-custom-green">
-                    { actions.explore.loading
-                        ? (<span>Loading...</span>)
-                        : actions.explore.success
-                            ? <span>{actions.explore.info}</span>
-                            :  actions.scout.success
-                                ?  <span>{actions.scout.info}</span>
-                                : <span>Scout first to see your reward</span>
-                    }
+                    {dungeonAvailable ? (
+                        actions.explore.loading ? (
+                            <span>Loading...</span>
+                        ) : actions.explore.success ? (
+                            <span>{actions.explore.info}</span>
+                        ) : actions.scout.success ? (
+                            <span>{actions.scout.info}</span>
+                        ) : (
+                            <span>Scout first to see your reward</span>
+                        )
+                    ) : (
+                        <span>You cannot go to the cellar at the moment</span>
+                    )}
                 </div>
             </div>
         </div>
