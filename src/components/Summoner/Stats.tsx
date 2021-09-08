@@ -107,13 +107,22 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
         }
     }, [loaded])
 
+    function calcTempAP() {
+        let ap = availableAP;
+        ap -= calcAPCost(tempAttrs['str'])
+        ap -= calcAPCost(tempAttrs['dex'])
+        ap -= calcAPCost(tempAttrs['con'])
+        ap -= calcAPCost(tempAttrs['int'])
+        ap -= calcAPCost(tempAttrs['wis'])
+        ap -= calcAPCost(tempAttrs['cha'])
+        setTempAP(ap)
+    }
+
     function handleAddition(attr: string) {
         const addition = (tempAttrs[attr] += 1)
-        if (tempAP - calcAPCost(addition) >= 0) {
-            const newState = Object.assign({}, tempAttrs, { [attr]: addition })
-            setTempAttrs(newState)
-            setTempAP(tempAP - calcAPCost(addition))
-        }
+        const newState = Object.assign({}, tempAttrs, { [attr]: addition })
+        setTempAttrs(newState)
+        calcTempAP()
     }
 
     function handleSubstraction(attr: string) {
@@ -121,8 +130,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
             const addition = (tempAttrs[attr] -= 1)
             const newState = Object.assign({}, tempAttrs, { [attr]: addition })
             setTempAttrs(newState)
-            setTempAP(tempAP + calcAPCost(tempAttrs[attr] + 1))
-            return
+            calcTempAP()
         }
     }
 
@@ -180,7 +188,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                         </span>
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="my-2">AP:</span>
+                        <span className="my-2">AP (Unassigned):</span>
                         <span>{tempAP}</span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -213,7 +221,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                                     <button onClick={() => handleSubstraction(k)}>
                                         <img src={decrease} width="25px" alt="decrease attribute" />
                                     </button>
-                                    <span className="text-sm">+{calcAPCost(tempAttrs[k] + 1)}</span>
+                                    <span className="text-sm">{calcAPCost(tempAttrs[k])}</span>
                                 </div>
                             </div>
                         )
