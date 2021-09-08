@@ -109,7 +109,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
 
     function handleAddition(attr: string) {
         const addition = (tempAttrs[attr] += 1)
-        if (tempAP - calcAPCost(addition) > 0) {
+        if (tempAP - calcAPCost(addition) >= 0) {
             const newState = Object.assign({}, tempAttrs, { [attr]: addition })
             setTempAttrs(newState)
             setTempAP(tempAP - calcAPCost(addition))

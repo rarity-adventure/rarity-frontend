@@ -44,15 +44,9 @@ export function secondsToString(d: number): string {
 }
 
 export function calcAPCost(score: number): number {
-    let apCost
-    if (score <= 8) {
-        apCost = 0
-    } else if (score >= 9 && score <= 14) {
-        apCost = 1
-    } else if (score >= 15 && score <= 16) {
-        apCost = 2
+    if (score <= 14) {
+        return score - 8;
     } else {
-        apCost = 3
+        return Math.floor(((score - 8)**2)/6)
     }
-    return apCost
 }
