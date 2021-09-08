@@ -13,9 +13,7 @@ interface SummonerCardProps {
 
 export default function SummonerAdventureCard({ summoner }: SummonerCardProps): JSX.Element {
     const { exp, adventure, nextAdventure } = useRarity()
-
     const { library, chainId } = useActiveWeb3React()
-
     const windowVisible = useIsWindowVisible()
 
     const [state, setState] = useState<{ actual: string; nextLvl: string; nextAdventure: number }>({

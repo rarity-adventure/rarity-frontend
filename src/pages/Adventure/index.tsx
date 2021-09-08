@@ -13,11 +13,8 @@ import SummonerAdventureCard from '../../components/Summoner/Adventure'
 
 export default function Adventure(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
-
     const summoners = useUserSummoners()
-
     const { nextAdventure, allowance, approve } = useRarity()
-
     const [multiadv, setMultiAdv] = useState<{
         approved: boolean
         available: boolean
@@ -30,7 +27,6 @@ export default function Adventure(): JSX.Element | null {
     }
 
     const { at } = useMultiAdventure()
-
     async function sendMultiAdventure() {
         await at(multiadv.summoners)
     }
@@ -55,12 +51,12 @@ export default function Adventure(): JSX.Element | null {
         })
     }, [summoners, nextAdventure, allowance, account, chainId])
 
-    const [god, setGod] = useState(0)
+    const [current_time, setCurrentTime] = useState(new Date(Date.now()))
     useEffect(() => {
         if (!account || !library) return
         filter()
         const timer = setInterval(() => {
-            setGod((temp) => (temp += 1))
+            setCurrentTime(new Date(Date.now()))
         }, 1000)
 
         return () => clearInterval(timer)
@@ -104,13 +100,17 @@ export default function Adventure(): JSX.Element | null {
                     </button>
                 )}
 
-                <p className="text-red-500 text-9xl">{god}</p>
                 {summoners ? (
                     summoners.length > 0 ? (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto mt-10 gap-4">
-                            {summoners.map((summoner) => {
-                                return <SummonerAdventureCard key={summoner.id} summoner={summoner} />
-                            })}
+                        <div className="flex flex-col items-center mt-10">
+                            <p className="text-lg text-white text-left container ml-20 lg:-ml-16 mb-5">
+                                Current Time: {current_time.toUTCString()}
+                            </p>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto gap-4">
+                                {summoners.map((summoner) => {
+                                    return <SummonerAdventureCard key={summoner.id} summoner={summoner} />
+                                })}
+                            </div>
                         </div>
                     ) : (
                         <p className="text-white mt-10 text-2xl font-bold">
