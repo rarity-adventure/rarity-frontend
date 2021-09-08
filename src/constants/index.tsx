@@ -42,3 +42,17 @@ export function secondsToString(d: number): string {
     const sDisplay = s > 0 ? s + (s === 1 ? ' sec' : ' sec') : ''
     return hDisplay + mDisplay + sDisplay
 }
+
+export function calcAPCost(score: number): number {
+    let apCost
+    if (score <= 8) {
+        apCost = 0
+    } else if (score >= 9 && score <= 14) {
+        apCost = 1
+    } else if (score >= 15 && score <= 16) {
+        apCost = 2
+    } else {
+        apCost = 3
+    }
+    return apCost
+}

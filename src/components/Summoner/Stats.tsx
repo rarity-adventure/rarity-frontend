@@ -9,6 +9,7 @@ import useRarityAttributes from '../../hooks/useRarityAttributes'
 import increase from '../../assets/images/increase_attribute.png'
 import decrease from '../../assets/images/decrease_attribute.png'
 import useGold from '../../hooks/useRarityGold'
+import { calcAPCost } from '../../constants'
 
 interface SummonerStatsCardProps {
     summoner: Summoner
@@ -33,28 +34,42 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
         fetch()
     }, [library, chainId, windowVisible, exp, fetch])
 
-    const [attributes, setAttributes] = useState<{
-        strength: number
-        dexterity: number
-        constitution: number
-        intelligence: number
-        wisdom: number
-        charisma: number
+    const { scores, calcAP, point_buy } = useRarityAttributes()
+
+    const [availableAP, setAvailableAP] = useState(0)
+    const [tempAP, setTempAP] = useState(0)
+
+    const [loaded, setLoaded] = useState(false)
+
+    const [currAttrs, setCurrAttrs] = useState<{
+        [k: string]: number
     }>({
-        strength: 0,
-        dexterity: 0,
-        constitution: 0,
-        intelligence: 0,
-        wisdom: 0,
-        charisma: 0,
+        str: 0,
+        dex: 0,
+        con: 0,
+        int: 0,
+        wis: 0,
+        cha: 0,
     })
 
-    const { scores } = useRarityAttributes()
+    const [tempAttrs, setTempAttrs] = useState<{
+        [k: string]: number
+    }>({
+        str: 0,
+        dex: 0,
+        con: 0,
+        int: 0,
+        wis: 0,
+        cha: 0,
+    })
 
     const fetchAttributes = useCallback(async () => {
-        const attributes = await scores(summoner.id)
-        setAttributes(attributes)
-    }, [scores, summoner])
+        const attr = await scores(summoner.id)
+        const AP = await calcAP(summoner.id, summoner._level)
+        setCurrAttrs(attr)
+        setAvailableAP(AP)
+        setLoaded(true)
+    }, [scores, calcAP, summoner])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId) return
@@ -85,6 +100,50 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
         fetchGold()
     }, [library, chainId, windowVisible, fetchGold])
 
+    useEffect(() => {
+        if (loaded) {
+            setTempAttrs(currAttrs)
+            setTempAP(availableAP)
+        }
+    }, [loaded])
+
+    function handleAddition(attr: string) {
+        const addition = (tempAttrs[attr] += 1)
+        if (tempAP - calcAPCost(addition) > 0) {
+            const newState = Object.assign({}, tempAttrs, { [attr]: addition })
+            setTempAttrs(newState)
+            setTempAP(tempAP - calcAPCost(addition))
+        }
+    }
+
+    function handleSubstraction(attr: string) {
+        if (currAttrs[attr] < tempAttrs[attr]) {
+            const addition = (tempAttrs[attr] -= 1)
+            const newState = Object.assign({}, tempAttrs, { [attr]: addition })
+            setTempAttrs(newState)
+            setTempAP(tempAP + calcAPCost(tempAttrs[attr] + 1))
+            return
+        }
+    }
+
+    function reset() {
+        const newState = Object.assign(tempAttrs, currAttrs)
+        setTempAttrs(newState)
+        setTempAP(availableAP)
+    }
+
+    async function assign() {
+        await point_buy(
+            summoner.id,
+            tempAttrs['str'],
+            tempAttrs['dex'],
+            tempAttrs['con'],
+            tempAttrs['int'],
+            tempAttrs['wis'],
+            tempAttrs['cha']
+        )
+    }
+
     return (
         <div className="w-full border-custom-border border-8 p-4">
             <div className="grid grid-cols-1 gap-4">
@@ -97,6 +156,16 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     </div>
                 </div>
                 <div className="col-span-2 p-8 text-left text-white text-2xl font-bold">
+                    <div className="flex justify-end">
+                        <button
+                            className="uppercase font-bold bg-custom-green border-white border-2 rounded-lg text-xs p-1"
+                            onClick={() => {
+                                reset()
+                            }}
+                        >
+                            Reset
+                        </button>
+                    </div>
                     <div className="flex justify-between items-center">
                         <span className="my-2">Summoner ID:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
@@ -112,7 +181,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="my-2">AP:</span>
-                        <span>0</span>
+                        <span>{tempAP}</span>
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="my-2">Gold:</span>
@@ -132,54 +201,33 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                             )}
                         </div>
                     </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">STR:</span>
-                        <div className="flex items-center gap-2">
-                            <span className="mr-10">{attributes.strength}</span>
-                            <img src={increase} width="25px" alt="increase attribute" />
-                            <img src={decrease} width="25px" alt="decrease attribute" />
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">DEX:</span>
-                        <div className="flex items-center gap-2">
-                            <span className="mr-10">{attributes.dexterity}</span>
-                            <img src={increase} width="25px" alt="increase attribute" />
-                            <img src={decrease} width="25px" alt="decrease attribute" />
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">CON:</span>
-                        <div className="flex items-center gap-2">
-                            <span className="mr-10">{attributes.constitution}</span>
-                            <img src={increase} width="25px" alt="increase attribute" />
-                            <img src={decrease} width="25px" alt="decrease attribute" />
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">INT:</span>
-                        <div className="flex items-center gap-2">
-                            <span className="mr-10">{attributes.intelligence}</span>
-                            <img src={increase} width="25px" alt="increase attribute" />
-                            <img src={decrease} width="25px" alt="decrease attribute" />
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">WIS:</span>
-                        <div className="flex items-center gap-2">
-                            <span className="mr-10">{attributes.wisdom}</span>
-                            <img src={increase} width="25px" alt="increase attribute" />
-                            <img src={decrease} width="25px" alt="decrease attribute" />
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">CHA:</span>
-                        <div className="flex items-center gap-2">
-                            <span className="mr-10">{attributes.charisma}</span>
-                            <img src={increase} width="25px" alt="increase attribute" />
-                            <img src={decrease} width="25px" alt="decrease attribute" />
-                        </div>
-                    </div>
+                    {Object.keys(tempAttrs).map((k) => {
+                        return (
+                            <div key={k} className="flex justify-between items-center">
+                                <span className="my-2">{k.toUpperCase()}:</span>
+                                <div className="flex items-center gap-2">
+                                    {tempAttrs[k]}
+                                    <button onClick={() => handleAddition(k)}>
+                                        <img src={increase} width="25px" alt="increase attribute" />
+                                    </button>
+                                    <button onClick={() => handleSubstraction(k)}>
+                                        <img src={decrease} width="25px" alt="decrease attribute" />
+                                    </button>
+                                    <span className="text-sm">+{calcAPCost(tempAttrs[k] + 1)}</span>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="flex justify-center">
+                    <button
+                        className="text-white uppercase font-bold bg-custom-green border-white border-2 rounded-lg text-lg  p-1"
+                        onClick={() => {
+                            assign()
+                        }}
+                    >
+                        Assign Points
+                    </button>
                 </div>
             </div>
         </div>

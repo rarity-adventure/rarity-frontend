@@ -1,15 +1,26 @@
 import { useRarityAttributesContract } from './useContract'
 import { useCallback } from 'react'
+import { calcAPCost } from '../constants'
 
 interface AttributesInterface {
     scores: (id: string) => Promise<{
-        strength: number
-        dexterity: number
-        constitution: number
-        intelligence: number
-        wisdom: number
-        charisma: number
+        str: number
+        dex: number
+        con: number
+        int: number
+        wis: number
+        cha: number
     }>
+    calcAP: (id: string, lvl: string) => Promise<number>
+    point_buy: (
+        id: string,
+        str: number,
+        dex: number,
+        con: number,
+        int: number,
+        wis: number,
+        cha: number
+    ) => Promise<void>
 }
 
 export default function useRarityAttributes(): AttributesInterface {
@@ -19,36 +30,79 @@ export default function useRarityAttributes(): AttributesInterface {
         async (
             id: string
         ): Promise<{
-            strength: number
-            dexterity: number
-            constitution: number
-            intelligence: number
-            wisdom: number
-            charisma: number
+            str: number
+            dex: number
+            con: number
+            int: number
+            wis: number
+            cha: number
         }> => {
             try {
                 const attr = await attributes?.ability_scores(id)
                 return {
-                    strength: attr.strength,
-                    dexterity: attr.dexterity,
-                    constitution: attr.constitution,
-                    intelligence: attr.intelligence,
-                    wisdom: attr.wisdom,
-                    charisma: attr.charisma,
+                    str: attr.strength,
+                    dex: attr.dexterity,
+                    con: attr.constitution,
+                    int: attr.intelligence,
+                    wis: attr.wisdom,
+                    cha: attr.charisma,
                 }
             } catch (e) {
                 return {
-                    strength: 0,
-                    dexterity: 0,
-                    constitution: 0,
-                    intelligence: 0,
-                    wisdom: 0,
-                    charisma: 0,
+                    str: 0,
+                    dex: 0,
+                    con: 0,
+                    int: 0,
+                    wis: 0,
+                    cha: 0,
                 }
             }
         },
         [attributes]
     )
 
-    return { scores }
+    const calcAP = useCallback(
+        async (id: string, lvl: string): Promise<number> => {
+            try {
+                const base = 32
+                const lvlAP = parseInt((await attributes?.abilities_by_level(lvl)).toString(), 16)
+                const lvlAPNum = parseInt(lvlAP.toString())
+                const totalAP = base - lvlAPNum
+                const scores = await attributes?.ability_scores(id)
+                let spent = 0
+                spent += calcAPCost(parseInt(scores.strength.toString()))
+                spent += calcAPCost(parseInt(scores.dexterity.toString()))
+                spent += calcAPCost(parseInt(scores.constitution.toString()))
+                spent += calcAPCost(parseInt(scores.intelligence.toString()))
+                spent += calcAPCost(parseInt(scores.wisdom.toString()))
+                spent += calcAPCost(parseInt(scores.charisma.toString()))
+                return totalAP - spent
+            } catch (e) {
+                return 0
+            }
+        },
+        [attributes]
+    )
+
+    const point_buy = useCallback(
+        async (
+            id: string,
+            str: number,
+            dex: number,
+            con: number,
+            int: number,
+            wis: number,
+            cha: number
+        ): Promise<void> => {
+            try {
+                await attributes?.point_buy(id, str, dex, con, int, wis, cha)
+                return
+            } catch (e) {
+                return
+            }
+        },
+        [attributes]
+    )
+
+    return { scores, calcAP, point_buy }
 }
