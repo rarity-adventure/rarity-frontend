@@ -63,11 +63,11 @@ export function useDailyCareContract(): Contract | null {
 }
 
 export function useDungeonContract(): { [k: string]: Contract | null } {
-    const { library } = useActiveWeb3React()
+    const { library, account } = useActiveWeb3React()
     let dungeons: { [k: string]: Contract | null } = {}
     if (!library) return dungeons
     Object.keys(DUNGEONS).map((k) => {
-        dungeons[k] = getContract(DUNGEONS[k].contract, DUNGEON_ABI, library)
+        dungeons[k] = getContract(DUNGEONS[k].contract, DUNGEON_ABI, library, account ? account : undefined)
     })
     return dungeons
 }

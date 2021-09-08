@@ -25,8 +25,11 @@ export default function useDungeon(): DungeonInterface {
     const explore = useCallback(
         async (id: string, dungeon: string): Promise<void> => {
             try {
-                return await d[dungeon]?.adventure(id)
+                const tx = await d[dungeon]?.adventure(id);
+                await tx.wait()
+                return
             } catch (e) {
+                console.log(e)
                 return
             }
         },

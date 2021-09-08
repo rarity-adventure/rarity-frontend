@@ -7,7 +7,6 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { fromWei } from 'web3-utils'
 import { DUNGEONS, secondsToString } from '../../constants'
 import useDungeon from '../../hooks/useDungeon'
-
 interface SummonerCardProps {
     summoner: Summoner
 }
@@ -48,6 +47,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
         explore: {
             success: boolean
             info: string
+            loading: boolean
         }
     }>({
         scout: {
@@ -55,6 +55,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
             info: '',
         },
         explore: {
+            loading: false,
             success: false,
             info: '',
         },
@@ -62,22 +63,28 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
     const [dungeon, setDungeon] = useState('cellar')
 
     async function handleDungeonSelect(k: string) {
-        setDungeon(dungeon)
+        setDungeon(k)
     }
 
     const { scout, explore } = useDungeon()
 
     async function scoutFunc() {
         const scoutInfo = await scout(summoner.id, dungeon)
-        const info = scoutInfo ? 'You will receive and object with id: ' + scoutInfo : 'You will get nothing'
+        const info = scoutInfo
+            ? 'You look inside the ' + DUNGEONS[dungeon].name + ' and see a shiny box with ' + scoutInfo + ' pieces of an unknown crafting material.'
+            : 'You look inside the ' + DUNGEONS[dungeon].name + ' but all you see is an empty box.'
         const newState = Object.assign({}, actions, { scout: { success: true, info: info } })
         setActions(newState)
-        console.log(info)
     }
 
     async function exploreFunc() {
-        const exploreInfo = await explore(summoner.id, dungeon)
-        console.log(exploreInfo)
+        let newState = Object.assign({}, actions, { explore: { loading: true } })
+        setActions(newState)
+        await explore(summoner.id, dungeon)
+        setActions(newState)
+        const info = 'Explore success'
+        newState = Object.assign({}, actions, { explore: { info, loading: false } })
+        setActions(newState)
     }
 
     return (
@@ -134,7 +141,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                         <div />
                     )}
                 </div>
-                <div className="bg-custom-green text-center text-2xl font-bold">
+                <div className="bg-custom-green text-center text-white text-2xl font-bold">
                     <h1>Dungeons</h1>
                 </div>
                 <div className="p-2 text-right">
@@ -158,20 +165,28 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                     >
                         Scout
                     </button>
-                    <button
-                        className="bg-custom-green text-white p-2 text-md rounded-md border-2 border-white"
-                        onClick={async () => await exploreFunc()}
-                    >
-                        Explore
-                    </button>
+                    {actions.scout.success ? (
+                        <button
+                            className="bg-custom-green text-white p-2 text-md rounded-md border-2 border-white"
+                            onClick={async () => await exploreFunc()}
+                        >
+                            Explore
+                        </button>
+                    ) : (
+                        <button className="opacity-50 cursor-not-allowed bg-custom-green text-white p-2 text-md rounded-md border-2 border-white">
+                            Explore
+                        </button>
+                    )}
                 </div>
                 <div className="mx-10 mb-5 p-3 text-center items-center text-white rounded-lg bg-custom-green">
-                    {!actions.explore.success && actions.scout.success ? (
-                        <span>{actions.scout.info}</span>
-                    ) : (
-                        <span>Scout first to see your reward</span>
-                    )}
-                    {actions.explore.success ? <span>{actions.explore.info}</span> : <div />}
+                    { actions.explore.loading
+                        ? (<span>Loading...</span>)
+                        : actions.explore.success
+                            ? <span>{actions.explore.info}</span>
+                            :  actions.scout.success
+                                ?  <span>{actions.scout.info}</span>
+                                : <span>Scout first to see your reward</span>
+                    }
                 </div>
             </div>
         </div>
