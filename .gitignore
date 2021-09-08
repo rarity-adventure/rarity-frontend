@@ -41,3 +41,4 @@ cypress/fixtures/example.json
 analysis/index.html
 .husky
 build/
+*.lock

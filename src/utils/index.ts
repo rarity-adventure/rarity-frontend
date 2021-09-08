@@ -40,6 +40,10 @@ const chains: ChainObject = {
         chainName: '',
         builder: builders.fantom,
     },
+    [ChainId.TESTNET]: {
+        chainName: '',
+        builder: builders.fantom,
+    },
 }
 
 export function getExplorerLink(

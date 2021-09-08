@@ -10,6 +10,7 @@ import { ChainId } from '../constants'
 
 const RPC = {
     [ChainId.MAINNET]: 'https://rpcapi.fantom.network',
+    [ChainId.TESTNET]: 'https://rpc.testnet.fantom.network/',
 }
 
 export const network = new NetworkConnector({
@@ -20,6 +21,7 @@ export const network = new NetworkConnector({
 export const injected = new InjectedConnector({
     supportedChainIds: [
         250, // fantom
+        0xfa2,
     ],
 })
 
