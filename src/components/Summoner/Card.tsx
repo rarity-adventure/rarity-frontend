@@ -20,7 +20,7 @@ export default function SummonerCard({
     approveFunc,
     registerFunc,
 }: SummonerCardProps): JSX.Element {
-    const { exp } = useRarity()
+    const { exp, levelUp } = useRarity()
 
     const { daysRegistered } = useDailyCare()
 
@@ -68,19 +68,26 @@ export default function SummonerCard({
                 </div>
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
-                        <span>Summoner ID:</span>
+                        <span>Summoner:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
                     <div className="flex justify-between items-center my-2">
                         <span>Level:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
-                            <span className="text-sm">
+                            <span className="text-xs">
                                 ({state.actual}/{state.nextLvl})
                             </span>
                         </span>
                         {parseInt(state.actual) >= parseInt(state.nextLvl) ? (
-                            <button className="bg-custom-green border-2 rounded-md text-xs p-1">Level UP</button>
+                            <button
+                                className="bg-custom-green border-2 rounded-md text-xs p-1"
+                                onClick={async () => {
+                                    await levelUp(summoner.id)
+                                }}
+                            >
+                                Level UP
+                            </button>
                         ) : (
                             <></>
                         )}

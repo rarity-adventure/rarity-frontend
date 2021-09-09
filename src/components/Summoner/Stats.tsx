@@ -167,13 +167,17 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }
 
     return (
-        <div className="w-full border-custom-border border-8 p-4">
-            <div className="grid grid-cols-1 gap-4">
-                <div className="p-8">
-                    <div className="bg-custom-green mb-4 border-8 border-custom-border h-40">
-                        <img className="p-4 h-36 mx-auto" src={CLASSES[summoner._class].image} alt={'barbarian'} />
+        <div className="w-full border-custom-border border-8">
+            <div className="grid grid-cols-1 gap-">
+                <div className="p-4">
+                    <div className="bg-custom-green mb-4 border-8 border-custom-border h-30 w-32 mx-auto">
+                        <img
+                            className="p-4 h-24 mx-auto"
+                            src={CLASSES[summoner._class].image}
+                            alt={CLASSES[summoner._class].name}
+                        />
                     </div>
-                    <div className="text-white bg-custom-blue py-1 px-2 text-2xl border-2 border-solid">
+                    <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
                         <h1>{CLASSES[summoner._class].name}</h1>
                     </div>
                 </div>
@@ -189,7 +193,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                         </button>
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="my-2">Summoner ID:</span>
+                        <span className="my-2">Summoner:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
                     <div className="flex justify-between items-center">

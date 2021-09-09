@@ -63,14 +63,14 @@ export default function Adventure(): JSX.Element | null {
     return (
         <>
             <div className="w-full mb-44">
-                <img alt="sword" src={adventure} className="mx-auto w-16 mt-24 md:w-32" />
-                <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-1/3" />
+                <img alt="sword" src={adventure} className="mx-auto w-16 mt-4 md:w-32" />
+                <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={mountain} className="mx-auto w-64 -m-32" />
-                <img alt="sword" src={explore} className="mx-auto w-64 mt-32 md:w-1/3 mb-8" />
+                <img alt="sword" src={mountain} className="mx-auto w-52 -m-32" />
+                <img alt="sword" src={explore} className="mx-auto w-52 mt-32 md:w-1/4 my-4" />
                 <span className="text-md md:text-2xl text-white mb-14">Journey Awaiting</span>
-                <p className="w-full text-xl text-white my-4">Send all summoners to adventure</p>
+                <p className="w-full text-x text-white my-4">Send all summoners to adventure</p>
                 {multiadv.available ? (
                     multiadv.approved ? (
                         <button
@@ -99,7 +99,7 @@ export default function Adventure(): JSX.Element | null {
 
                 {summoners ? (
                     summoners.length > 0 ? (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto mt-10 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-10/12 xl:w-8/12 mx-auto mt-10 gap-4">
                             {summoners.map((summoner) => {
                                 return <SummonerAdventureCard key={summoner.id} summoner={summoner} />
                             })}
