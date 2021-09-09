@@ -53,31 +53,40 @@ export default function SummonerCard({
 
     return (
         <div className="w-full border-custom-border border-8">
-            <div className="grid grid-cols-1 gap-4">
-                <div className="p-8">
-                    <div className="bg-custom-green mb-4 border-8 border-custom-border h-40">
-                        <img className="p-4 h-36 mx-auto" src={CLASSES[summoner._class].image} alt={'barbarian'} />
+            <div className="grid grid-cols-1 gap-">
+                <div className="p-4">
+                    <div className="bg-custom-green mb-4 border-8 border-custom-border h-30 w-32 mx-auto">
+                        <img
+                            className="p-4 h-24 mx-auto"
+                            src={CLASSES[summoner._class].image}
+                            alt={CLASSES[summoner._class].name}
+                        />
                     </div>
-                    <div className="text-white bg-custom-blue py-1 px-2 text-2xl border-2 border-solid">
+                    <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
                         <h1>{CLASSES[summoner._class].name}</h1>
                     </div>
                 </div>
-                <div className="p-8 text-left text-white text-2xl font-bold">
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">Summoner ID:</span>
+                <div className="px-8 text-left text-white text-md font-bold">
+                    <div className="flex justify-between items-center my-2">
+                        <span>Summoner ID:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">Level:</span>
+                    <div className="flex justify-between items-center my-2">
+                        <span>Level:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
                             <span className="text-sm">
                                 ({state.actual}/{state.nextLvl})
                             </span>
                         </span>
+                        {parseInt(state.actual) >= parseInt(state.nextLvl) ? (
+                            <button className="bg-custom-green border-2 rounded-md text-xs p-1">Level UP</button>
+                        ) : (
+                            <></>
+                        )}
                     </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">Days:</span>
+                    <div className="flex justify-between items-center my-2">
+                        <span className="my-1">Days:</span>
                         <div className="flex items-center">
                             <input
                                 className="mr-2 w-16 bg-custom-green border-2 border-white rounded text-center"
@@ -89,27 +98,27 @@ export default function SummonerCard({
                             {registry && registry !== 0 ? (
                                 approved ? (
                                     <button
-                                        className="bg-custom-green p-2 text-sm rounded-md border-2 border-white"
+                                        className="bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                         onClick={async () => await registerFunc([summoner.id], registry)}
                                     >
                                         Register
                                     </button>
                                 ) : (
                                     <button
-                                        className="bg-custom-green p-2 text-sm rounded-md border-2 border-white"
+                                        className="bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                         onClick={async () => await approveFunc()}
                                     >
                                         Approve
                                     </button>
                                 )
                             ) : (
-                                <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 text-sm rounded-md border-2 border-white">
+                                <button className="opacity-50 cursor-not-allowed bg-custom-green p-1 text-xs rounded-md border-2 border-white">
                                     Register
                                 </button>
                             )}
                         </div>
                     </div>
-                    <div className="flex flex-row-reverse items-center">
+                    <div className="text-center py-2">
                         <span className="text-xs my-1">Registered for: {state.registered} Days</span>
                     </div>
                 </div>
