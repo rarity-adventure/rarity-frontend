@@ -51,7 +51,7 @@ export default function Adventure(): JSX.Element | null {
         })
     }, [summoners, nextAdventure, allowance, account, chainId])
 
-    const [current_time, setCurrentTime] = useState(new Date(Date.now()))
+    const [_, setCurrentTime] = useState(new Date(Date.now()))
     useEffect(() => {
         if (!account || !library) return
         filter()
@@ -68,7 +68,6 @@ export default function Adventure(): JSX.Element | null {
                 <img alt="sword" src={adventure} className="mx-auto w-16 mt-24 md:w-32" />
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-1/3" />
             </div>
-
             <div className="w-full bg-custom-blue text-center pb-24">
                 <img alt="sword" src={mountain} className="mx-auto w-64 -m-32" />
                 <img alt="sword" src={explore} className="mx-auto w-64 mt-32 md:w-1/3 mb-8" />
@@ -103,9 +102,6 @@ export default function Adventure(): JSX.Element | null {
                 {summoners ? (
                     summoners.length > 0 ? (
                         <div className="flex flex-col items-center mt-10">
-                            <p className="lg:text-lg text-base text-white mb-5">
-                                Current Time: {current_time.toUTCString()}
-                            </p>
                             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto gap-4">
                                 {summoners.map((summoner) => {
                                     return <SummonerAdventureCard key={summoner.id} summoner={summoner} />
