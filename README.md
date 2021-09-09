@@ -1,4 +1,3 @@
-[![Build Status][build-shield]][build-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![MIT License][license-shield]][license-url]
 
@@ -6,7 +5,7 @@
 <br />
 <div>
   <div align="center">
-    <h1 style="font-weight: bold">AWS Hackathon 2021</h1>
+    <h1 style="font-weight: bold">Rarity Adventure</h1>
     <a href="https://github.com/rarity-adventure/rarity-frontend">
         <img src="./public/images/icon.png" alt="Logo" style="width: 30%">
     </a>
@@ -122,8 +121,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[build-shield]: https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square
-[build-url]: #
 [contributors-shield]: https://img.shields.io/badge/contributors-1-orange.svg?style=flat-square
 [contributors-url]: https://github.com/rarity-adventure/rarity-frontend/graphs/contributors
 [license-shield]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
