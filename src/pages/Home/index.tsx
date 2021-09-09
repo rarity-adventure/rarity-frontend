@@ -5,6 +5,8 @@ import mintImg from '../../assets/images/mint.png'
 
 import useRarity from '../../hooks/useRarity'
 import { CLASSES } from '../../constants/classes'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faQuestion } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home(): JSX.Element | null {
     const rarity = useRarity()
@@ -20,16 +22,19 @@ export default function Home(): JSX.Element | null {
             <div className="w-full bg-custom-blue text-center pb-24">
                 <img alt="sword" src={grand} className="mx-auto w-52 -m-32" />
                 <img alt="sword" src={mintImg} className="mx-auto w-52 mt-32 md:w-1/4 mb-8" />
-                <div className="flex justify-center mt-6">
-                    <button
-                        className="text-white bg-custom-green py-4 px-10 text-xl md:text-xl border-8 border-custom-border border-solid"
-                        onClick={() => rarity.mint()}
-                    >
-                        Mint a random class
-                    </button>
-                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-3/4 xl:w-2/4 mx-auto mt-10">
+                    <button className="m-4 mx-auto" onClick={() => rarity.mint()}>
+                        <div
+                            className="bg-custom-green mb-4 border-8 border-custom-border"
+                            style={{ height: '140px', width: '140px' }}
+                        >
+                            <FontAwesomeIcon icon={faQuestion} className="mt-8" stroke="black" strokeWidth="20px" size="4x" color="white" />
+                        </div>
+                        <div className="text-white bg-custom-blue py-1 px-2 text-2xl border-2 border-solid">
+                            <h1>Random</h1>
+                        </div>
+                    </button>
                     {Object.keys(CLASSES).map((k) => {
                         return (
                             <button key={k} className="m-4 mx-auto" onClick={() => rarity.mint(k)}>
