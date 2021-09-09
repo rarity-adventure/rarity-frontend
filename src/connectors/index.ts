@@ -10,7 +10,6 @@ import { ChainId } from '../constants'
 
 const RPC = {
     [ChainId.MAINNET]: 'https://rpcapi.fantom.network',
-    [ChainId.TESTNET]: 'https://rpc.testnet.fantom.network/',
 }
 
 export const network = new NetworkConnector({
