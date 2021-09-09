@@ -20,7 +20,6 @@ export default function Main(): JSX.Element | null {
     const { register } = useDailyCare()
 
     async function sendDailyCare(ids: string[], days: number): Promise<void> {
-        console.log(ids, days)
         await register(ids, days)
     }
 

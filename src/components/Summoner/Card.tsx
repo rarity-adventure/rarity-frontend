@@ -6,6 +6,7 @@ import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { fromWei } from 'web3-utils'
 import useDailyCare from '../../hooks/useDailyCare'
+import Transfer from './Transfer'
 
 interface SummonerCardProps {
     summoner: Summoner
@@ -66,6 +67,7 @@ export default function SummonerCard({
                         <h1>{CLASSES[summoner._class].name}</h1>
                     </div>
                 </div>
+                <Transfer summoner={summoner} />
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
                         <span>Summoner:</span>

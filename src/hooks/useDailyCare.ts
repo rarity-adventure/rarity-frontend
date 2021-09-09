@@ -26,9 +26,7 @@ export default function useDailyCare(): DailyCareInterface {
         async (ids: string[], days: number): Promise<void> => {
             try {
                 const daysRegistry = Array(ids.length).fill(days, 0, ids.length)
-                console.log(ids.length)
                 const fee = toWei((0.1 * ids.length * days).toString(), 'ether')
-                console.log(fee)
                 await care?.registerDaycare(ids, daysRegistry, { value: fee })
                 return
             } catch (e) {

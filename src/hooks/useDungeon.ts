@@ -16,7 +16,6 @@ export default function useDungeon(): DungeonInterface {
                 const r = await d[dungeon]?.scout(id)
                 return parseInt(r.toString())
             } catch (e) {
-                console.log(e)
                 return 0
             }
         },
@@ -30,7 +29,6 @@ export default function useDungeon(): DungeonInterface {
                 await tx.wait()
                 return
             } catch (e) {
-                console.log(e)
                 return
             }
         },

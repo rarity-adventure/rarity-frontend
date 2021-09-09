@@ -29,7 +29,14 @@ export default function Home(): JSX.Element | null {
                             className="bg-custom-green mb-4 border-8 border-custom-border"
                             style={{ height: '140px', width: '140px' }}
                         >
-                            <FontAwesomeIcon icon={faQuestion} className="mt-8" stroke="black" strokeWidth="20px" size="4x" color="white" />
+                            <FontAwesomeIcon
+                                icon={faQuestion}
+                                className="mt-8"
+                                stroke="black"
+                                strokeWidth="20px"
+                                size="4x"
+                                color="white"
+                            />
                         </div>
                         <div className="text-white bg-custom-blue py-1 px-2 text-2xl border-2 border-solid">
                             <h1>Random</h1>

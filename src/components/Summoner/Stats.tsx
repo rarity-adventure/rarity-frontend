@@ -10,6 +10,7 @@ import increase from '../../assets/images/increase_attribute.png'
 import decrease from '../../assets/images/decrease_attribute.png'
 import useGold from '../../hooks/useRarityGold'
 import { calcAPCost } from '../../constants'
+import Transfer from './Transfer'
 
 interface SummonerStatsCardProps {
     summoner: Summoner
@@ -182,12 +183,18 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     </div>
                 </div>
                 <div>
-                    {
-                        availableAP > 0
-                            ? <button className="text-xs bg-custom-green border-2 rounded-lg border-white p-1 text-white" onClick={() => reset()}>Reset</button>
-                            : <div/>
-                    }
+                    {availableAP > 0 ? (
+                        <button
+                            className="text-xs bg-custom-green border-2 rounded-lg border-white p-1 text-white"
+                            onClick={() => reset()}
+                        >
+                            Reset
+                        </button>
+                    ) : (
+                        <div />
+                    )}
                 </div>
+                <Transfer summoner={summoner} />
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
                         <span>Summoner:</span>
@@ -215,7 +222,9 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                         )}
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="my-2">AP <span className="text-xs">(Unassigned):</span></span>
+                        <span className="my-2">
+                            AP <span className="text-xs">(Unassigned):</span>
+                        </span>
                         <span>{tempAP}</span>
                     </div>
                     <div className="flex justify-between items-center">
