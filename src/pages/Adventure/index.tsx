@@ -103,7 +103,7 @@ export default function Adventure(): JSX.Element | null {
                 {summoners ? (
                     summoners.length > 0 ? (
                         <div className="flex flex-col items-center mt-10">
-                            <p className="text-lg text-white text-left container ml-20 lg:-ml-16 mb-5">
+                            <p className="lg:text-lg text-base text-white mb-5">
                                 Current Time: {current_time.toUTCString()}
                             </p>
                             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-10/12 mx-auto gap-4">
