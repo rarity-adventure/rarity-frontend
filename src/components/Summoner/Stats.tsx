@@ -16,7 +16,7 @@ interface SummonerStatsCardProps {
 }
 
 export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps): JSX.Element {
-    const { exp } = useRarity()
+    const { exp, levelUp } = useRarity()
 
     const { library, chainId } = useActiveWeb3React()
 
@@ -181,32 +181,41 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                         <h1>{CLASSES[summoner._class].name}</h1>
                     </div>
                 </div>
-                <div className="col-span-2 p-8 text-left text-white text-2xl font-bold">
-                    <div className="flex justify-end">
-                        <button
-                            className="uppercase font-bold bg-custom-green border-white border-2 rounded-lg text-xs p-1"
-                            onClick={() => {
-                                reset()
-                            }}
-                        >
-                            Reset
-                        </button>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">Summoner:</span>
+                <div>
+                    {
+                        availableAP > 0
+                            ? <button className="text-xs bg-custom-green border-2 rounded-lg border-white p-1 text-white" onClick={() => reset()}>Reset</button>
+                            : <div/>
+                    }
+                </div>
+                <div className="px-8 text-left text-white text-md font-bold">
+                    <div className="flex justify-between items-center my-2">
+                        <span>Summoner:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                        <span className="my-2">Level:</span>
+                    <div className="flex justify-between items-center my-2">
+                        <span>Level:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
-                            <span className="text-sm">
+                            <span className="text-xs">
                                 ({state.actual}/{state.nextLvl})
                             </span>
                         </span>
+                        {parseInt(state.actual) >= parseInt(state.nextLvl) ? (
+                            <button
+                                className="bg-custom-green border-2 rounded-md text-xs p-1"
+                                onClick={async () => {
+                                    await levelUp(summoner.id)
+                                }}
+                            >
+                                Level UP
+                            </button>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="my-2">AP (Unassigned):</span>
+                        <span className="my-2">AP <span className="text-xs">(Unassigned):</span></span>
                         <span>{tempAP}</span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -215,7 +224,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                             <span>{gold.balance.toFixed(4)}</span>
                             {gold.canClaim > 0 ? (
                                 <button
-                                    className="ml-4 bg-custom-green p-2 text-sm rounded-md border-2 border-white"
+                                    className="ml-4 bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                     onClick={async () => {
                                         await claim(summoner.id)
                                     }}
@@ -230,16 +239,16 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     {Object.keys(tempAttrs).map((k) => {
                         return (
                             <div key={k} className="flex justify-between items-center">
-                                <span className="my-2">{k.toUpperCase()}:</span>
-                                <div className="flex items-center gap-2">
-                                    {tempAttrs[k]}
+                                <span className="my-1">{k.toUpperCase()}:</span>
+                                <div className="flex items-center gap-1">
+                                    <span className="text-sm">{tempAttrs[k]}</span>
                                     <button onClick={() => handleAddition(k)}>
-                                        <img src={increase} width="25px" alt="increase attribute" />
+                                        <img src={increase} width="20px" alt="increase attribute" />
                                     </button>
                                     <button onClick={() => handleSubstraction(k)}>
-                                        <img src={decrease} width="25px" alt="decrease attribute" />
+                                        <img src={decrease} width="20px" alt="decrease attribute" />
                                     </button>
-                                    <span className="text-sm">{calcAPCost(tempAttrs[k])}</span>
+                                    <span className="text-sm w-4">{calcAPCost(tempAttrs[k])}</span>
                                 </div>
                             </div>
                         )
@@ -247,7 +256,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                 </div>
                 <div className="flex justify-center">
                     <button
-                        className="text-white uppercase font-bold bg-custom-green border-white border-2 rounded-lg text-lg  p-1"
+                        className="m-4 text-white uppercase font-bold bg-custom-green border-white border-2 rounded-lg text-lg  p-1"
                         onClick={() => {
                             assign()
                         }}
