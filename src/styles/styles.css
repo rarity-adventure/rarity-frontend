@@ -19,3 +19,7 @@ h1,h2,h3,h4,h5,h6{
 ::-webkit-scrollbar {
     display: none;
 }
+
+.icon-text-shadow {
+    text-shadow: 0 0 10px #000;
+}

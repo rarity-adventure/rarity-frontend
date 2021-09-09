@@ -11,7 +11,6 @@ import App from './pages/App'
 import store from './state'
 import ApplicationUpdater from './state/application/updater'
 import UserUpdater from './state/user/updater'
-import RarityUpdater from './state/rarity/updater'
 import getLibrary from './utils/getLibrary'
 import { NetworkContextName } from './connectors'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
@@ -29,7 +28,6 @@ function Updaters() {
         <>
             <ApplicationUpdater />
             <UserUpdater />
-            <RarityUpdater />
         </>
     )
 }

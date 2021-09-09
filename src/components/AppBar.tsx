@@ -3,7 +3,7 @@ import Web3Network from './Web3Network'
 import Web3Status from './Web3Status'
 import { Popover } from '@headlessui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 function AppBar(): JSX.Element {
     const { library } = useActiveWeb3React()
@@ -43,16 +43,13 @@ function AppBar(): JSX.Element {
                                             >
                                                 <h1>Adventures</h1>
                                             </a>
-                                            <a
-                                                href={'/global'}
-                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
-                                            >
-                                                <h1>Global Stats</h1>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-custom-background lg:relative lg:p-0 lg:bg-transparent">
+                                    <a className="mx-2 text-3xl" href="https://twitter.com/RarityGame">
+                                        <FontAwesomeIcon icon={faTwitter} />
+                                    </a>
                                     <a className="mx-2 text-3xl" href="https://discord.gg/NUrfGsUkmd">
                                         <FontAwesomeIcon icon={faDiscord} />
                                     </a>
@@ -129,12 +126,6 @@ function AppBar(): JSX.Element {
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
                                     Adventures
-                                </a>
-                                <a
-                                    href={'/global'}
-                                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                                >
-                                    Global Stats
                                 </a>
                             </div>
                         </Popover.Panel>

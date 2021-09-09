@@ -10,6 +10,8 @@ interface RarityInterface {
     nextSummoner: () => Promise<string>
     approve: (spender: string) => Promise<void>
     allowance: (owner: string | null | undefined, spender: string) => Promise<boolean>
+    levelUp: (id: string) => Promise<void>
+    transfer: (from: string | null | undefined, to: string, id: string) => Promise<void>
 }
 
 export default function useRarity(): RarityInterface {
@@ -103,7 +105,29 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    return { img, mint, exp, nextAdventure, adventure, nextSummoner, approve, allowance }
+    const levelUp = useCallback(
+        async (id: string): Promise<void> => {
+            try {
+                return await rarity?.level_up(id)
+            } catch (e) {
+                return
+            }
+        },
+        [rarity]
+    )
+
+    const transfer = useCallback(
+        async (from: string | null | undefined, to: string, id: string) => {
+            try {
+                return await rarity?.transferFrom(from, to, id)
+            } catch (e) {
+                return
+            }
+        },
+        [rarity]
+    )
+
+    return { img, mint, exp, nextAdventure, adventure, nextSummoner, approve, allowance, levelUp, transfer }
 }
 
 function rand() {
