@@ -6,6 +6,7 @@ import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect, useState } from 'react'
 import { fromWei } from 'web3-utils'
 import Transfer from './Transfer'
+import { ATTRIBUTES, Skill, SKILLS } from '../../constants/codex'
 
 interface SummonerStatsCardProps {
     summoner: Summoner
@@ -29,6 +30,18 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
         if (!library || !windowVisible || !chainId || !exp) return
         fetch()
     }, [library, chainId, windowVisible, exp, fetch])
+
+    const [hoveredSkill, setHoveredSkill] = useState<Skill | null>(null)
+
+    const [selected, setSelected] = useState<string[]>([])
+
+    function addSkill(id: string) {
+        setSelected(selected)
+    }
+
+    function removeSkill(id: string) {
+        setSelected(selected)
+    }
 
     return (
         <div className="w-full border-custom-border border-8">
@@ -71,6 +84,56 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                         ) : (
                             <></>
                         )}
+                    </div>
+                    <div className="text-center">
+                        <span>Hover the mouse over a skill to see a description</span>
+                        {hoveredSkill ? (
+                            <div className="h-20 mt-2">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <span className="text-xs">
+                                        Key attribute: {ATTRIBUTES[hoveredSkill.attribute_id]}
+                                    </span>
+                                    <span className="text-xs">
+                                        Armor Check Penalty: {hoveredSkill.armor_check_penalty ? 'true' : 'false'}
+                                    </span>
+                                    {hoveredSkill.synergy > 0 && (
+                                        <span className="text-xs">
+                                            Skill Synergy: {SKILLS[hoveredSkill.synergy].name}
+                                        </span>
+                                    )}
+                                    <div />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="h-20 mt-2" />
+                        )}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full mx-auto mt-10  gap-5 mb-10">
+                        {Object.keys(SKILLS).map((k) => {
+                            return (
+                                <>
+                                    <div onMouseEnter={() => setHoveredSkill(SKILLS[k])}>
+                                        {selected.indexOf(k) !== -1 ? (
+                                            <button
+                                                key={k}
+                                                onClick={() => addSkill(k)}
+                                                className="text-white w-full text-center bg-custom-selected py-1 px-2 text-xs border-2 border-solid"
+                                            >
+                                                <span>{SKILLS[k].name}</span>
+                                            </button>
+                                        ) : (
+                                            <button
+                                                key={k}
+                                                onClick={() => removeSkill(k)}
+                                                className="text-white w-full text-center bg-custom-green py-1 px-2 text-xs border-2 border-solid"
+                                            >
+                                                <span>{SKILLS[k].name}</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                </>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
