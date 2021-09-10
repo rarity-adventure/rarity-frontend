@@ -1,19 +1,55 @@
-import daycare_img from '../../assets/images/daycare_img.png'
-import daycare from '../../assets/images/daycare.png'
-import bottle from '../../assets/images/bottle.png'
-import training from '../../assets/images/training.png'
+import { useUserSummoners } from '../../state/user/hooks'
+import { Summoner } from '../../state/user/actions'
+import { CLASSES } from '../../constants/classes'
+import stats from '../../assets/images/stats.png'
+import title from '../../assets/images/stats_txt.png'
+import { useState } from 'react'
+import SummonerSkillsCard from '../../components/Summoner/Skills'
 
 export default function Skills(): JSX.Element | null {
+    const summoners = useUserSummoners()
+
+    const [summoner, setSummoner] = useState<Summoner | null>(null)
+
+    function summonerDataToString(summoner: Summoner): string {
+        return parseInt(summoner.id).toString() + ' Level ' + summoner._level + ' ' + CLASSES[summoner._class].name
+    }
+
     return (
         <>
             <div className="w-full mb-44">
-                <img alt="sword" src={daycare_img} className="mx-auto w-16 mt-24 md:w-32" />
-                <img alt="sword" src={daycare} className="mx-auto w-52 mt-4 md:w-1/3" />
+                <img alt="sword" src={stats} className="mx-auto w-16 mt-4 md:w-32" />
+                <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Assign skills to your summoners</h1>
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={bottle} className="mx-auto w-64 -m-32" />
-                <img alt="sword" src={training} className="mx-auto w-64 mt-32 md:w-1/3 mb-8" />
-                <span className="text-md md:text-2xl text-white mb-14">Automate Daily Check-in For Your Adventure</span>
+                <div className="mt-4">
+                    <p className="w-full text-x text-white my-4">Select a summoner</p>
+                    <select
+                        className="p-2 border-custom-green border-4 rounded-lg"
+                        onChange={(v) => {
+                            setSummoner(JSON.parse(v.target.value))
+                        }}
+                    >
+                        <option selected disabled hidden>
+                            Select summoner
+                        </option>
+                        {summoners.map((summoner) => {
+                            return (
+                                <option key={summoner.id} value={JSON.stringify(summoner)}>
+                                    {summonerDataToString(summoner)}
+                                </option>
+                            )
+                        })}
+                    </select>
+                    {summoner ? (
+                        <div className="w-10/12 xl:w-6/12 mx-auto mt-10 gap-4">
+                            <SummonerSkillsCard summoner={summoner} />
+                        </div>
+                    ) : (
+                        <p className="text-white mt-10 text-2xl font-bold text-center">Select a summoner first</p>
+                    )}
+                </div>
             </div>
         </>
     )

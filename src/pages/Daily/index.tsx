@@ -1,7 +1,4 @@
 import daycare_img from '../../assets/images/daycare_img.png'
-import daycare from '../../assets/images/daycare.png'
-import bottle from '../../assets/images/bottle.png'
-import training from '../../assets/images/training.png'
 import { useUserSummoners } from '../../state/user/hooks'
 import SummonerCard from '../../components/Summoner/Card'
 import { useCallback, useEffect, useState } from 'react'
@@ -51,12 +48,12 @@ export default function Main(): JSX.Element | null {
         <>
             <div className="w-full mb-44">
                 <img alt="sword" src={daycare_img} className="mx-auto w-16 mt-4 md:w-32" />
-                <img alt="sword" src={daycare} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">
+                Automate Daily Check-in For Your Adventure
+            </h1>
+
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={bottle} className="mx-auto w-52 -m-32" />
-                <img alt="sword" src={training} className="mx-auto w-52 mt-32 md:w-1/4 mb-8" />
-                <span className="text-md md:text-2xl text-white mb-14">Automate Daily Check-in For Your Adventure</span>
                 <p className="w-full text-x text-white my-4">Register all summoners to Daily Care!</p>
                 <input
                     className="text-2xl w-16 bg-custom-green border-2 border-white rounded text-center text-white"

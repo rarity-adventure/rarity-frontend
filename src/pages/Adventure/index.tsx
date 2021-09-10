@@ -1,7 +1,5 @@
 import adventure from '../../assets/images/adventure.png'
 import title from '../../assets/images/adventure_txt.png'
-import mountain from '../../assets/images/mountain.png'
-import explore from '../../assets/images/exploration.png'
 import { MULTIADVENTURE_CONTRACT } from '../../constants'
 import useRarity from '../../hooks/useRarity'
 import { useCallback, useEffect, useState } from 'react'
@@ -68,10 +66,8 @@ export default function Adventure(): JSX.Element | null {
                 <img alt="sword" src={adventure} className="mx-auto w-16 mt-4 md:w-32" />
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Journey Awaiting!</h1>
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={mountain} className="mx-auto w-52 -m-32" />
-                <img alt="sword" src={explore} className="mx-auto w-52 mt-32 md:w-1/4 my-4" />
-                <span className="text-md md:text-2xl text-white mb-14">Journey Awaiting</span>
                 <p className="w-full text-x text-white my-4">Send all summoners to adventure</p>
                 {multiadv.available ? (
                     multiadv.approved ? (
