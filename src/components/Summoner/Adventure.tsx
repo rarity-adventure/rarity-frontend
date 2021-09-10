@@ -130,7 +130,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                                 ({state.actual}/{state.nextLvl})
                             </span>
                         </span>
-                        {parseInt(state.actual) >= parseInt(state.nextLvl) ? (
+                        {state.actual === state.nextLvl || parseInt(state.actual) >= parseInt(state.nextLvl) ? (
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
