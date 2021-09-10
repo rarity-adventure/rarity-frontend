@@ -15,6 +15,7 @@ export default function Adventure(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
     const summoners = useUserSummoners()
     const { nextAdventure, allowance, approve } = useRarity()
+    const [_, setCurrentTime] = useState(new Date(Date.now()))
     const [multiadv, setMultiAdv] = useState<{
         approved: boolean
         available: boolean
@@ -51,16 +52,18 @@ export default function Adventure(): JSX.Element | null {
         })
     }, [summoners, nextAdventure, allowance, account, chainId])
 
-    const [_, setCurrentTime] = useState(new Date(Date.now()))
     useEffect(() => {
         if (!account || !library) return
         filter()
+    }, [filter, account, library])
+
+    useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date(Date.now()))
         }, 1000)
 
         return () => clearInterval(timer)
-    }, [filter, account, library])
+    }, [])
 
     return (
         <>
