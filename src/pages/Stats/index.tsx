@@ -2,9 +2,14 @@ import stats from '../../assets/images/stats.png'
 import title from '../../assets/images/stats_txt.png'
 import SummonerStatsCard from '../../components/Summoner/Stats'
 import { useUserSummoners } from '../../state/user/hooks'
+import SummonersOrdering from '../../components/SummonersOrdering'
+import { useState } from 'react'
+import { Summoner } from '../../state/user/actions'
 
 export default function Stats(): JSX.Element | null {
-    const summoners = useUserSummoners()
+    const allSummoners = useUserSummoners()
+
+    const [summoners, setSummoners] = useState<Summoner[]>(allSummoners)
 
     return (
         <>
@@ -13,6 +18,7 @@ export default function Stats(): JSX.Element | null {
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
             <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Upgrade Your Attributes</h1>
+            <SummonersOrdering summoners={summoners} stateFunc={setSummoners} />
             <div className="w-full bg-custom-blue text-center pb-24">
                 {summoners ? (
                     summoners.length > 0 ? (
