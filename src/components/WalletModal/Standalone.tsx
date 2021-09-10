@@ -249,7 +249,7 @@ export default function WalletStandalone() {
                     </HeaderRow>
                     <ContentWrapper>
                         {error instanceof UnsupportedChainIdError ? (
-                            <h5>Please connect to the appropriate Ethereum network.</h5>
+                            <h5>Please connect to the appropriate Fantom network.</h5>
                         ) : (
                             'Error connecting. Try refreshing the page.'
                         )}
