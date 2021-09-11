@@ -32,6 +32,10 @@ export const DAILYCARE_CONTRACT = {
     [ChainId.MAINNET]: '0xf1bf34E46ECf465591B7a7fA9635E4C583174fa3',
 }
 
+export const SKILLS_CONTRACT = {
+    [ChainId.MAINNET]: '0x51C0B29A1d84611373BA301706c6B4b72283C80F',
+}
+
 export const DUNGEONS: { [k: string]: { name: string; contract: string } } = {
     cellar: {
         name: 'The Cellar',

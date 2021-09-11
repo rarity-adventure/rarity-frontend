@@ -1,7 +1,4 @@
 import daycare_img from '../../assets/images/daycare_img.png'
-import daycare from '../../assets/images/daycare.png'
-import bottle from '../../assets/images/bottle.png'
-import training from '../../assets/images/training.png'
 import { useUserSummoners } from '../../state/user/hooks'
 import SummonerCard from '../../components/Summoner/Card'
 import { useCallback, useEffect, useState } from 'react'
@@ -9,11 +6,17 @@ import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { MULTIADVENTURE_CONTRACT } from '../../constants'
 import useDailyCare from '../../hooks/useDailyCare'
+import Ordering from '../../components/Ordering'
+import { Summoner } from '../../state/user/actions'
 
 export default function Main(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
 
-    const summoners = useUserSummoners()
+    const allSummoners = useUserSummoners()
+
+    const [initialSummoners] = useState<Summoner[]>(allSummoners)
+
+    const [filteredSummoners, setFilteredSummoners] = useState<Summoner[]>(allSummoners)
 
     const { allowance, approve } = useRarity()
 
@@ -51,12 +54,13 @@ export default function Main(): JSX.Element | null {
         <>
             <div className="w-full mb-44">
                 <img alt="sword" src={daycare_img} className="mx-auto w-16 mt-4 md:w-32" />
-                <img alt="sword" src={daycare} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">
+                Automate Daily Check-in For Your Adventure
+            </h1>
+            <Ordering summoners={initialSummoners} stateFunc={setFilteredSummoners} />
+
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={bottle} className="mx-auto w-52 -m-32" />
-                <img alt="sword" src={training} className="mx-auto w-52 mt-32 md:w-1/4 mb-8" />
-                <span className="text-md md:text-2xl text-white mb-14">Automate Daily Check-in For Your Adventure</span>
                 <p className="w-full text-x text-white my-4">Register all summoners to Daily Care!</p>
                 <input
                     className="text-2xl w-16 bg-custom-green border-2 border-white rounded text-center text-white"
@@ -71,7 +75,7 @@ export default function Main(): JSX.Element | null {
                         className="bg-custom-green border-8 border-white p-2 rounded-lg text-xl text-white my-4"
                         onClick={async () => {
                             await sendDailyCare(
-                                summoners.map((summoner) => {
+                                filteredSummoners.map((summoner) => {
                                     return summoner.id
                                 }),
                                 registerDays
@@ -91,10 +95,10 @@ export default function Main(): JSX.Element | null {
                     </button>
                 )}
 
-                {summoners ? (
-                    summoners.length > 0 ? (
+                {filteredSummoners ? (
+                    filteredSummoners.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-10/12 xl:w-8/12 mx-auto mt-10 gap-4">
-                            {summoners.map((summoner) => {
+                            {filteredSummoners.map((summoner) => {
                                 return (
                                     <SummonerCard
                                         key={summoner.id}
