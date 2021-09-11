@@ -35,6 +35,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     const { scores, calcAP, point_buy } = useRarityAttributes()
 
     const [availableAP, setAvailableAP] = useState(0)
+
     const [tempAP, setTempAP] = useState(0)
 
     const [loaded, setLoaded] = useState(false)

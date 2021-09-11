@@ -16,7 +16,6 @@ export default function useSkills(): SkillsInterface {
             try {
                 return await skills?.get_skills(id)
             } catch (e) {
-                console.log(e)
                 return []
             }
         },
@@ -50,7 +49,6 @@ export default function useSkills(): SkillsInterface {
             try {
                 return await skills?.set_skills(id, _skills)
             } catch (e) {
-                console.log(e)
                 return
             }
         },

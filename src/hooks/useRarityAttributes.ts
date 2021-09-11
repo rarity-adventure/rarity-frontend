@@ -21,6 +21,7 @@ interface AttributesInterface {
         wis: number,
         cha: number
     ) => Promise<void>
+    character_created: (id: string) => Promise<boolean>
 }
 
 export default function useRarityAttributes(): AttributesInterface {
@@ -104,5 +105,15 @@ export default function useRarityAttributes(): AttributesInterface {
         [attributes]
     )
 
-    return { scores, calcAP, point_buy }
+    const character_created = useCallback(
+        async (id: string): Promise<boolean> => {
+            try {
+                return await attributes?.character_created(id)
+            } catch (e) {
+                return false
+            }
+        },
+        [attributes]
+    )
+    return { scores, calcAP, point_buy, character_created }
 }
