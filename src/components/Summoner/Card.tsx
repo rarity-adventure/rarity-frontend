@@ -66,12 +66,12 @@ export default function SummonerCard({
         } else {
             setName(summonerName)
         }
-    }, [])
+    }, [summoner, summoner_name])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId) return
         fetch_name()
-    }, [fetch_name])
+    }, [fetch_name, library, windowVisible, chainId])
 
     return (
         <div className="w-full border-custom-border border-8">

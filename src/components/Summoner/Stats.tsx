@@ -178,12 +178,12 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
         } else {
             setName(summonerName)
         }
-    }, [])
+    }, [summoner, summoner_name])
 
     useEffect(() => {
         if (!library || !chainId) return
         fetch_name()
-    }, [fetch_name])
+    }, [fetch_name, chainId, library])
 
     return (
         <div className="w-full border-custom-border border-8">

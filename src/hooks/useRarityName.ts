@@ -22,13 +22,12 @@ export default function useRarityName(): GoldInterface {
         [name]
     )
 
-
     const multicall_summoner_name = useCallback(
         async (ids: string[]): Promise<string[]> => {
             try {
-                const fragment = name?.interface?.getFunction("summoner_name")
+                const fragment = name?.interface?.getFunction('summoner_name')
                 if (fragment) {
-                    const call = ids.map( (id) => {
+                    const call = ids.map((id) => {
                         return {
                             address: name?.address,
                             callData: name?.interface.encodeFunctionData(fragment, [id]),
@@ -42,7 +41,7 @@ export default function useRarityName(): GoldInterface {
                 return []
             }
         },
-        [name]
+        [name, multicall]
     )
 
     return { summoner_name, multicall_summoner_name }

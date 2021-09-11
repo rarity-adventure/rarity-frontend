@@ -151,12 +151,12 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
         } else {
             setName(summonerName)
         }
-    }, [])
+    }, [summoner, summoner_name])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId) return
         fetch_name()
-    }, [fetch_name])
+    }, [fetch_name, chainId, library, windowVisible])
 
     return (
         <div className="w-full border-custom-border border-8">

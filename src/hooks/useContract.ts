@@ -17,10 +17,11 @@ import {
     DAILYCARE_CONTRACT,
     DUNGEONS,
     GOLD_CONTRACTS,
-    MULTIADVENTURE_CONTRACT, MULTICALL2_ADDRESS,
+    MULTIADVENTURE_CONTRACT,
+    MULTICALL2_ADDRESS,
     RARITY_CONTRACTS,
     RARITY_NAME_CONTRACT,
-    SKILLS_CONTRACT
+    SKILLS_CONTRACT,
 } from '../constants'
 
 export function useContract(
@@ -87,6 +88,6 @@ export function useRarityNameContract(): Contract | null {
     return useContract(chainId ? RARITY_NAME_CONTRACT[chainId] : undefined, '')
 }
 
-export function useMulticall2Contract() {
+export function useMulticall2Contract(): Contract | null {
     return useContract(MULTICALL2_ADDRESS, MULTICALL2_ABI, false)
 }
