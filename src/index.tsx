@@ -1,6 +1,7 @@
 import './styles/index.css'
 import './styles/styles.css'
 import 'react-tabs/style/react-tabs.css'
+import ReactGA from 'react-ga';
 
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import { StrictMode } from 'react'
@@ -23,6 +24,8 @@ if (!!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
 
+const id = process.env.REACT_APP_TRACKING_ID || ""
+
 function Updaters() {
     return (
         <>
@@ -36,6 +39,8 @@ const client = new ApolloClient({
     uri: 'https://api.rarity.game/subgraphs/name/rarity',
     cache: new InMemoryCache(),
 })
+
+ReactGA.initialize(id);
 
 ReactDOM.render(
     <StrictMode>
