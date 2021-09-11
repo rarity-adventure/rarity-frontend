@@ -1,7 +1,7 @@
 import './styles/index.css'
 import './styles/styles.css'
 import 'react-tabs/style/react-tabs.css'
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga'
 
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import { StrictMode } from 'react'
@@ -15,6 +15,7 @@ import UserUpdater from './state/user/updater'
 import getLibrary from './utils/getLibrary'
 import { NetworkContextName } from './connectors'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import { isMobile } from 'react-device-detect'
 
 require('dotenv').config()
 
@@ -24,7 +25,26 @@ if (!!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
 
-const id = process.env.REACT_APP_TRACKING_ID || ""
+const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
+if (typeof GOOGLE_ANALYTICS_ID === 'string') {
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID)
+    ReactGA.set({
+        customBrowserType: !isMobile
+            ? 'desktop'
+            : 'web3' in window || 'ethereum' in window
+                ? 'mobileWeb3'
+                : 'mobileRegular'
+    })
+} else {
+    ReactGA.initialize('test', { testMode: true, debug: true })
+}
+
+window.addEventListener('error', error => {
+    ReactGA.exception({
+        description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
+        fatal: true
+    })
+})
 
 function Updaters() {
     return (
@@ -39,8 +59,6 @@ const client = new ApolloClient({
     uri: 'https://api.rarity.game/subgraphs/name/rarity',
     cache: new InMemoryCache(),
 })
-
-ReactGA.initialize(id);
 
 ReactDOM.render(
     <StrictMode>

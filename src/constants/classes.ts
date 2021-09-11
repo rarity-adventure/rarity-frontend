@@ -10,12 +10,11 @@ import rogue from '../assets/classes/rogue.png'
 import sorcerer from '../assets/classes/sorcerer.png'
 import wizard from '../assets/classes/wizard.png'
 
-
 export function intModifierForSkills(int: number): number {
     if (int === 9) {
-        return -1;
+        return -1
     }
-    return ((int - 10) / 2);
+    return (int - 10) / 2
 }
 
 export const CLASSES: { [k: string]: { name: string; image: any } } = {

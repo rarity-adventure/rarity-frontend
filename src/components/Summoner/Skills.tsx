@@ -64,7 +64,11 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
             setTempSkills(skillsObj)
 
             const attributes = await scores(summoner.id)
-            const skillsPL = await skills_per_level(intModifierForSkills(attributes['int']), summoner._class, summoner._level)
+            const skillsPL = await skills_per_level(
+                intModifierForSkills(attributes['int']),
+                summoner._class,
+                summoner._level
+            )
             const availableSP = parseInt(skillsPL.toString()) - skills.reduce((x, y) => x + y)
             setavailableSP(availableSP)
             setTempSp(availableSP)
