@@ -7,6 +7,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { fromWei } from 'web3-utils'
 import Transfer from './Transfer'
 import { ATTRIBUTES, Skill, SKILLS } from '../../constants/codex'
+import useSkills from '../../hooks/useSkills'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
 interface SummonerStatsCardProps {
     summoner: Summoner
@@ -17,14 +20,20 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
 
     const { library, chainId } = useActiveWeb3React()
 
+    const { get_skills } = useSkills()
+
     const windowVisible = useIsWindowVisible()
 
     const [state, setState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
 
+    const [currSkills, setCurrSkills] = useState<number[]>([])
+
     const fetch = useCallback(async () => {
         const experience = await exp(summoner.id, summoner._level)
+        const skills = await get_skills(summoner.id)
+        setCurrSkills(skills)
         setState({ actual: fromWei(experience.actual.toString()), nextLvl: fromWei(experience.next.toString()) })
-    }, [setState, exp, summoner])
+    }, [setState, exp, summoner, get_skills])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId || !exp) return
@@ -33,15 +42,6 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
 
     const [hoveredSkill, setHoveredSkill] = useState<Skill | null>(null)
 
-    const [selected, setSelected] = useState<string[]>([])
-
-    function addSkill(id: string) {
-        setSelected(selected)
-    }
-
-    function removeSkill(id: string) {
-        setSelected(selected)
-    }
 
     return (
         <div className="w-full border-custom-border border-8">
@@ -87,53 +87,47 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                     </div>
                     <div className="text-center">
                         <span>Hover the mouse over a skill to see a description</span>
-                        {hoveredSkill ? (
-                            <div className="h-20 mt-2">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                    <span className="text-xs">
-                                        Key attribute: {ATTRIBUTES[hoveredSkill.attribute_id]}
-                                    </span>
-                                    <span className="text-xs">
-                                        Armor Check Penalty: {hoveredSkill.armor_check_penalty ? 'true' : 'false'}
-                                    </span>
-                                    {hoveredSkill.synergy > 0 && (
+                        <div className="h-20 bg-white rounded-md text-custom-background">
+                            {hoveredSkill ? (
+                                <div className="m-2 p-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                         <span className="text-xs">
-                                            Skill Synergy: {SKILLS[hoveredSkill.synergy].name}
+                                            Key attribute: {ATTRIBUTES[hoveredSkill.attribute_id]}
                                         </span>
-                                    )}
-                                    <div />
+                                        <span className="text-xs">
+                                            Armor check penalty: {hoveredSkill.armor_check_penalty ? 'true' : 'false'}
+                                        </span>
+                                        {hoveredSkill.synergy > 0 && (
+                                            <span className="text-xs md:col-span-2">
+                                                Skill Synergy: {SKILLS[hoveredSkill.synergy].name}
+                                            </span>
+                                        )}
+                                        <div />
+                                    </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="h-20 mt-2" />
-                        )}
+                            ) : (
+                                <div className="h-20 mt-2" />
+                            )}
+                        </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full mx-auto mt-10  gap-5 mb-10">
                         {Object.keys(SKILLS).map((k) => {
                             return (
-                                <>
-                                    <div onMouseEnter={() => setHoveredSkill(SKILLS[k])}>
-                                        {selected.indexOf(k) !== -1 ? (
-                                            <button
-                                                key={k}
-                                                onClick={() => addSkill(k)}
-                                                className="text-white w-full text-center bg-custom-selected py-1 px-2 text-xs border-2 border-solid"
-                                            >
-                                                <span>{SKILLS[k].name}</span>
-                                            </button>
-                                        ) : (
-                                            <button
-                                                key={k}
-                                                onClick={() => removeSkill(k)}
-                                                className="text-white w-full text-center bg-custom-green py-1 px-2 text-xs border-2 border-solid"
-                                            >
-                                                <span>{SKILLS[k].name}</span>
-                                            </button>
-                                        )}
+                                <div key={k} onMouseEnter={() => setHoveredSkill(SKILLS[k])}
+                                     className="text-white w-full text-center bg-custom-green py-1 px-2 text-xs border-2 border-solid"
+                                >
+                                    <div><span>{SKILLS[k].name}</span></div>
+                                    <div className="flex flex-row justify-between items-center">
+                                        <FontAwesomeIcon icon={faMinus}/>
+                                        <span>{currSkills[parseInt(k)]}</span>
+                                        <FontAwesomeIcon icon={faPlus} />
                                     </div>
-                                </>
+                                </div>
                             )
                         })}
+                        <div className="mx-auto w-full">
+                            <button>Assign Skills</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -26,12 +26,15 @@ export default function Skills(): JSX.Element | null {
                 <div className="mt-4">
                     <p className="w-full text-x text-white my-4">Select a summoner</p>
                     <select
+                        defaultValue={0}
                         className="p-2 border-custom-green border-4 rounded-lg"
                         onChange={(v) => {
-                            setSummoner(JSON.parse(v.target.value))
+                            if (v.target.value !== "0") {
+                                setSummoner(JSON.parse(v.target.value))
+                            }
                         }}
                     >
-                        <option selected disabled hidden>
+                        <option value={0}>
                             Select summoner
                         </option>
                         {summoners.map((summoner) => {
@@ -43,7 +46,7 @@ export default function Skills(): JSX.Element | null {
                         })}
                     </select>
                     {summoner ? (
-                        <div className="w-10/12 xl:w-6/12 mx-auto mt-10 gap-4">
+                        <div className="w-10/12 xl:w-8/12 mx-auto mt-10 gap-4">
                             <SummonerSkillsCard summoner={summoner} />
                         </div>
                     ) : (

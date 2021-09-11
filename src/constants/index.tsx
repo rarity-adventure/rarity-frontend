@@ -33,7 +33,7 @@ export const DAILYCARE_CONTRACT = {
 }
 
 export const SKILLS_CONTRACT = {
-    [ChainId.MAINNET]: '0x67ae39a2Ee91D7258a86CD901B17527e19E493B3',
+    [ChainId.MAINNET]: '0x51C0B29A1d84611373BA301706c6B4b72283C80F',
 }
 
 export const DUNGEONS: { [k: string]: { name: string; contract: string } } = {
