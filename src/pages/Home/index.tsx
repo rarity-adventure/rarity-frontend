@@ -1,6 +1,5 @@
 import sword from '../../assets/images/sword.png'
 import title from '../../assets/images/hero_title.png'
-import grand from '../../assets/images/grand_wizard.png'
 import mintImg from '../../assets/images/mint.png'
 
 import useRarity from '../../hooks/useRarity'
@@ -20,8 +19,7 @@ export default function Home(): JSX.Element | null {
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={grand} className="mx-auto w-52 -m-32" />
-                <img alt="sword" src={mintImg} className="mx-auto w-52 mt-32 md:w-1/4 mb-8" />
+                <img alt="sword" src={mintImg} className="mx-auto w-52 -mt-36 mb-32 md:w-1/4 mb-8" />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-3/4 xl:w-2/4 mx-auto mt-10">
                     <button className="m-4 mx-auto" onClick={() => rarity.mint()}>

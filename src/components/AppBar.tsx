@@ -43,6 +43,12 @@ function AppBar(): JSX.Element {
                                             >
                                                 <h1>Adventures</h1>
                                             </a>
+                                            <a
+                                                href={'/skills'}
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
+                                            >
+                                                <h1>Skills</h1>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -126,6 +132,12 @@ function AppBar(): JSX.Element {
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
                                     Adventures
+                                </a>
+                                <a
+                                    href={'/skills'}
+                                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                >
+                                    Skills
                                 </a>
                             </div>
                         </Popover.Panel>

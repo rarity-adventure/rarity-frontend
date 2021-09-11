@@ -1,7 +1,5 @@
 import adventure from '../../assets/images/adventure.png'
 import title from '../../assets/images/adventure_txt.png'
-import mountain from '../../assets/images/mountain.png'
-import explore from '../../assets/images/exploration.png'
 import { MULTIADVENTURE_CONTRACT } from '../../constants'
 import useRarity from '../../hooks/useRarity'
 import { useCallback, useEffect, useState } from 'react'
@@ -10,10 +8,17 @@ import { useUserSummoners } from '../../state/user/hooks'
 import useMultiAdventure from '../../hooks/useMultiAdventure'
 import { Summoner } from '../../state/user/actions'
 import SummonerAdventureCard from '../../components/Summoner/Adventure'
+import Ordering from '../../components/Ordering'
 
 export default function Adventure(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
-    const summoners = useUserSummoners()
+
+    const allSummoners = useUserSummoners()
+
+    const [initialSummoners] = useState<Summoner[]>(allSummoners)
+
+    const [filteredSummoners, setFilteredSummoners] = useState<Summoner[]>(allSummoners)
+
     const { nextAdventure, allowance, approve } = useRarity()
     const [multiadv, setMultiAdv] = useState<{
         approved: boolean
@@ -35,7 +40,7 @@ export default function Adventure(): JSX.Element | null {
         if (!chainId) return
         const allowed = await allowance(account, MULTIADVENTURE_CONTRACT[chainId])
         const filtered = []
-        for (const summoner of summoners) {
+        for (const summoner of filteredSummoners) {
             const nextAdv = await nextAdventure(summoner.id)
             const nextAdvTimestamp = parseInt(nextAdv.toString())
             if (nextAdvTimestamp * 1000 < Date.now()) {
@@ -49,7 +54,7 @@ export default function Adventure(): JSX.Element | null {
                 return s.id
             }),
         })
-    }, [summoners, nextAdventure, allowance, account, chainId])
+    }, [filteredSummoners, nextAdventure, allowance, account, chainId])
 
     const [_, setCurrentTime] = useState(new Date(Date.now()))
     useEffect(() => {
@@ -68,10 +73,9 @@ export default function Adventure(): JSX.Element | null {
                 <img alt="sword" src={adventure} className="mx-auto w-16 mt-4 md:w-32" />
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Journey Awaiting!</h1>
+            <Ordering summoners={initialSummoners} stateFunc={setFilteredSummoners} />
             <div className="w-full bg-custom-blue text-center pb-24">
-                <img alt="sword" src={mountain} className="mx-auto w-52 -m-32" />
-                <img alt="sword" src={explore} className="mx-auto w-52 mt-32 md:w-1/4 my-4" />
-                <span className="text-md md:text-2xl text-white mb-14">Journey Awaiting</span>
                 <p className="w-full text-x text-white my-4">Send all summoners to adventure</p>
                 {multiadv.available ? (
                     multiadv.approved ? (
@@ -99,10 +103,10 @@ export default function Adventure(): JSX.Element | null {
                     </button>
                 )}
 
-                {summoners ? (
-                    summoners.length > 0 ? (
+                {filteredSummoners ? (
+                    filteredSummoners.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-10/12 xl:w-8/12 mx-auto mt-10 gap-4">
-                            {summoners.map((summoner) => {
+                            {filteredSummoners.map((summoner) => {
                                 return <SummonerAdventureCard key={summoner.id} summoner={summoner} />
                             })}
                         </div>

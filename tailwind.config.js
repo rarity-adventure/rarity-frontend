@@ -8,6 +8,7 @@ module.exports = {
                 background: '#000000',
                 blue: '#0A1931',
                 green: '#007580',
+                selected: '#004046',
                 border: '#D8EBE4',
                 red: '#c70000',
             },

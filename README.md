@@ -8,7 +8,7 @@
     </a>
     <p align="center" style="margin-top: 30px">
         Rarity frontend provides an interface for players to easily interact with the Rarity game. Rarity is achieved via an active economy, summoners must level, gain feats, learn spells, to be able to craft gear. This allows for market driven rarity while allowing an ever growing economy. Feats, spells, and summoner gear is ommitted as part of further expansions.
-        <br />
+        <br /><br />
         <a href="https://rarity.game/">View Website</a>
         ·
         <a href="https://github.com/rarity-adventure/rarity-frontend/issues">Report Bugs</a>
@@ -25,9 +25,6 @@
 -   [About the Project](#about-the-project)
     -   [Built With](#built-with)
 -   [Getting Started](#getting-started)
--   [License](#license)
--   [Acknowledgements](#acknowledgements)
--   [Contributions](#contributions)
 
 <br />
 
@@ -47,12 +44,10 @@ This is an example of how you can set up your project locally. To get a local co
 1. Clone the repo
 
 ```sh
-git clone with HTTPS          https://github.com/rarity-adventure/rarity-frontend.git
-git clone with SSH            git@github.com:rarity-adventure/rarity-frontend.git
-git clone with Github CLI     gh repo clone rarity-adventure/rarity-frontend
+git clone https://github.com/rarity-adventure/rarity-frontend
 ```
 
-2. Development
+2. Start the app
 
 ```sh
 1. yarn install           # Install dependencies for project
