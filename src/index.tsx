@@ -15,6 +15,8 @@ import getLibrary from './utils/getLibrary'
 import { NetworkContextName } from './connectors'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
+import 'i18n';
+
 require('dotenv').config()
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)

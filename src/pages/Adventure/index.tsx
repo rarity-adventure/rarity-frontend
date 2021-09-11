@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import adventure from '../../assets/images/adventure.png'
 import title from '../../assets/images/adventure_txt.png'
 import mountain from '../../assets/images/mountain.png'
@@ -62,6 +64,8 @@ export default function Adventure(): JSX.Element | null {
         return () => clearInterval(timer)
     }, [filter, account, library])
 
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="w-full mb-44">
@@ -71,8 +75,8 @@ export default function Adventure(): JSX.Element | null {
             <div className="w-full bg-custom-blue text-center pb-24">
                 <img alt="sword" src={mountain} className="mx-auto w-52 -m-32" />
                 <img alt="sword" src={explore} className="mx-auto w-52 mt-32 md:w-1/4 my-4" />
-                <span className="text-md md:text-2xl text-white mb-14">Journey Awaiting</span>
-                <p className="w-full text-x text-white my-4">Send all summoners to adventure</p>
+                <span className="text-md md:text-2xl text-white mb-14">{t('Journey Awaiting')}</span>
+                <p className="w-full text-x text-white my-4">{t('Send all summoners to adventure')}</p>
                 {multiadv.available ? (
                     multiadv.approved ? (
                         <button
@@ -81,7 +85,7 @@ export default function Adventure(): JSX.Element | null {
                                 await sendMultiAdventure()
                             }}
                         >
-                            Adventure time!
+                            {t('Adventure time!')}
                         </button>
                     ) : (
                         <button
@@ -90,12 +94,12 @@ export default function Adventure(): JSX.Element | null {
                                 await approveMultiAdventure()
                             }}
                         >
-                            Approve
+                            {t('Approve')}
                         </button>
                     )
                 ) : (
                     <button className="opacity-50 cursor-not-allowed bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4">
-                        No summoner available
+                        {t('No summoner available')}
                     </button>
                 )}
 
@@ -108,7 +112,7 @@ export default function Adventure(): JSX.Element | null {
                         </div>
                     ) : (
                         <p className="text-white mt-10 text-2xl font-bold">
-                            To be able to manage stats you need to have a summoner
+                            {t('To be able to manage stats you need to have a summoner')}
                         </p>
                     )
                 ) : (
