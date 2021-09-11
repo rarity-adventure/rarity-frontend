@@ -1,15 +1,15 @@
 import { Summoner } from '../../state/user/actions'
-import { CLASSES } from '../../constants/classes'
+import { CLASS_SKILLS, CLASSES } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect, useState } from 'react'
 import { fromWei } from 'web3-utils'
 import Transfer from './Transfer'
-import { ATTRIBUTES, Skill, SKILLS } from '../../constants/codex'
+import { SKILLS } from '../../constants/codex'
 import useSkills from '../../hooks/useSkills'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faMinus, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
 
 interface SummonerStatsCardProps {
@@ -21,16 +21,15 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
 
     const { library, chainId } = useActiveWeb3React()
 
-    const { get_skills, skills_per_level, class_skills } = useSkills()
-
+    const { get_skills, skills_per_level, set_skills } = useSkills()
 
     const windowVisible = useIsWindowVisible()
 
     const [state, setState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
 
-    const [_, setCurrSkills] = useState<{ [k: number]: number }>({})
+    const [currSkills, setCurrSkills] = useState<{ [k: string]: number}>({})
 
-    const [tempSkills, setTempSkills] = useState<{ [k: number]: number }>({})
+    const [tempSkills, setTempSkills] = useState<{ [k: string]: number}>({})
 
     const [availableSP, setavailableSP] = useState<number>(0)
 
@@ -38,50 +37,83 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
 
     const { scores } = useRarityAttributes()
 
-    const [classSkills, setClassSkills] = useState<boolean[]>([])
+    const [classSkills, setClassSkills] = useState<{ [k: string]: boolean}>({})
 
     const fetch = useCallback(async () => {
-
         const experience = await exp(summoner.id, summoner._level)
         setState({ actual: fromWei(experience.actual.toString()), nextLvl: fromWei(experience.next.toString()) })
 
         const skills = await get_skills(summoner.id)
-        const skillsObj: { [k: number]: number } = { ...skills }
-
+        const skillsObj: { [k: string]: number} = {}
+        for (let i = 0; i < skills.length; i++) {
+            skillsObj[i + 1] = skills[i]
+        }
         setCurrSkills(skillsObj)
         setTempSkills(skillsObj)
 
         const attributes = await scores(summoner.id)
-        const spPerLvl = await skills_per_level(attributes["int"], summoner._class, summoner._level)
+        const spPerLvl = await skills_per_level(attributes['int'], summoner._class, summoner._level)
         const availableSP = parseInt(spPerLvl.toString()) - skills.reduce((x, y) => x + y)
         setavailableSP(availableSP)
         setTempSp(availableSP)
 
-        const classSkills = await class_skills(summoner._class)
-        setClassSkills(classSkills)
-    }, [setState, exp, summoner, get_skills, scores, class_skills])
+        const classSkills = CLASS_SKILLS[summoner._class]
+        const classSkillsObj: { [k: string]: boolean} = {}
+
+        for (let i = 0; i< classSkills.length; i++) {
+            classSkillsObj[i + 1] = classSkills[i]
+        }
+
+        setClassSkills(classSkillsObj)
+    }, [setState, exp, summoner, get_skills, scores, skills_per_level])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId || !exp) return
         fetch()
     }, [library, chainId, windowVisible, exp, fetch])
 
-    const [hoveredSkill, setHoveredSkill] = useState<Skill | null>(null)
-
     function handleAssign(skill: number) {
         const tempState = Object.assign({}, tempSkills, { [skill]: tempSkills[skill] + 1 })
-        const addition = (tempSkills[skill] += 1)
-        const newState = Object.assign({}, tempState, { [skill]: addition })
-        setTempSkills(newState)
+        if (tempState[skill] <= calcMaxSkillLvl(skill)) {
+            const addition = (tempSkills[skill] += 1)
+            const newState = Object.assign({}, tempSkills, { [skill]: addition })
+            setTempSkills(newState)
+            calcTempSP()
+        }
     }
 
     function handleReduce(skill: number) {
         const addition = (tempSkills[skill] -= 1)
         const newState = Object.assign({}, tempSkills, { [skill]: addition })
         setTempSkills(newState)
+        calcTempSP()
     }
 
+    function calcTempSP() {
+        let sp = availableSP
+        sp -= Object.keys(tempSkills)
+            .map((k: string) => {
+                return classSkills[parseInt(k)] ? tempSkills[parseInt(k)] : tempSkills[parseInt(k)] * 2
+            })
+            .reduce((x, y) => x + y)
+        setTempSp(sp)
+    }
 
+    function calcMaxSkillLvl(skill: number): number {
+        const classLvl = parseInt(summoner._level) + 3
+        return classSkills[skill] ? classLvl : Math.floor(classLvl / 2)
+    }
+
+    async function assignSkills() {
+        console.log(Object.values(tempSkills))
+        await set_skills(summoner.id, Object.values(tempSkills))
+    }
+
+    function reset() {
+        const newState = Object.assign(tempSkills, currSkills)
+        setTempSkills(newState)
+        setTempSp(availableSP)
+    }
 
     return (
         <div className="w-full border-custom-border border-8">
@@ -125,82 +157,114 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                             <></>
                         )}
                     </div>
-                    <div className="my-5">
-                        <span>Select a skill to see a description</span>
-                    </div>
-                    <div className="text-center">
-
-                        <div className="bg-white rounded-md text-custom-background">
-                            {hoveredSkill ? (
-                                <div className="m-2 p-4">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                        <span className="text-xs">
-                                            Key attribute: {ATTRIBUTES[hoveredSkill.attribute_id]}
-                                        </span>
-                                        <span className="text-xs">
-                                            Armor check penalty: {hoveredSkill.armor_check_penalty ? 'true' : 'false'}
-                                        </span>
-                                        {hoveredSkill.synergy > 0 && (
-                                            <span className="text-xs md:col-span-2">
-                                                Skill Synergy: {SKILLS[hoveredSkill.synergy].name}
-                                            </span>
-                                        )}
-                                        <span className="text-xs md:col-span-2">
-                                            Action: {hoveredSkill.action}
-                                        </span>
-                                        <a className="text-xs md:col-span-2" target="_blank" rel="noreferrer" href={"https://www.d20srd.org/srd/skills/" + hoveredSkill.name.toLowerCase() + ".htm"}>
-                                            Read More
-                                        </a>
-                                        <div />
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="h-20 mt-2" />
-                            )}
-                        </div>
-                    </div>
-                    <div className="my-2 text-center">
+                    <div className="mt-8 text-lg text-center">
                         <p>Available SP</p>
                     </div>
-                    <div className="my-2 text-center">
-                        <p>{availableSP}</p>
+                    <div className="my-2 text-xl text-center">
+                        <p>{tempSP}</p>
+                    </div>
+                    <div className="text-center">
+                        <button
+                            onClick={() => reset()}
+                            className="text-center text-xs bg-custom-green text-white rounded-lg border-2 border-white p-2"
+                        >
+                            Reset
+                        </button>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full mx-auto mt-10  gap-5 mb-10">
                         {Object.keys(SKILLS).map((k) => {
-                            const extraClass = classSkills[parseInt(k)] ? "bg-custom-selected" : "bg-custom-green"
-                            const bg = "text-white w-full text-center py-1 px-2 text-xs border-2 border-solid" + extraClass
-                            return (
-                                <div
-                                    key={k}
-                                    onMouseEnter={() => setHoveredSkill(SKILLS[k])}
-                                    className={bg}
-                                >
-                                    <div>
-                                        <span>{SKILLS[k].name}</span>
+                            if (classSkills[parseInt(k)]) {
+                                return (
+                                    <div
+                                        key={k}
+                                        className={
+                                            'static border-white bg-custom-selected text-white w-full text-center py-1 px-2 text-xs border-2 border-solid'
+                                        }
+                                    >
+                                        <div>
+                                            <a
+                                                className="-ml-8"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                href={
+                                                    'https://www.d20srd.org/srd/skills/' +
+                                                    SKILLS[k].name.toLowerCase() +
+                                                    '.htm'
+                                                }
+                                            >
+                                                <FontAwesomeIcon icon={faQuestionCircle} />
+                                            </a>
+                                            <span className="ml-4 text-sm">{SKILLS[k].name}</span>
+                                        </div>
+                                        <div className="flex flex-row justify-between items-center">
+                                            <button onClick={() => handleReduce(parseInt(k))}>
+                                                <FontAwesomeIcon icon={faMinus} />
+                                            </button>
+                                            <span>{tempSkills[parseInt(k)]}</span>
+                                            <button onClick={() => handleAssign(parseInt(k))}>
+                                                <FontAwesomeIcon icon={faPlus} />
+                                            </button>
+                                        </div>
+                                        <div className="flex mx-auto items-center justify-between w-3/4">
+                                            <span>Cost: 1</span>&nbsp;
+                                            <span>Max: {calcMaxSkillLvl(parseInt(k))}</span>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-row justify-between items-center">
-                                        <button onClick={() => handleReduce(parseInt(k))}>
-                                            <FontAwesomeIcon icon={faMinus} />
-                                        </button>
-                                        <span>{tempSkills[parseInt(k)]}</span>
-                                        <button onClick={() => handleAssign(parseInt(k))}>
-                                            <FontAwesomeIcon icon={faPlus} />
-                                        </button>
+                                )
+                            } else {
+                                return (
+                                    <div
+                                        key={k}
+                                        className={
+                                            'bg-custom-green text-white w-full text-center py-1 px-2 text-xs border-2 border-solid'
+                                        }
+                                    >
+                                        <div>
+                                            <a
+                                                className="-ml-8"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                href={
+                                                    'https://www.d20srd.org/srd/skills/' +
+                                                    SKILLS[k].name.toLowerCase() +
+                                                    '.htm'
+                                                }
+                                            >
+                                                <FontAwesomeIcon icon={faQuestionCircle} />
+                                            </a>
+                                            <span className="ml-4 text-sm">{SKILLS[k].name}</span>
+                                        </div>
+                                        <div className="flex flex-row justify-between items-center">
+                                            <button onClick={() => handleReduce(parseInt(k))}>
+                                                <FontAwesomeIcon icon={faMinus} />
+                                            </button>
+                                            <span>{tempSkills[parseInt(k)]}</span>
+                                            <button onClick={() => handleAssign(parseInt(k))}>
+                                                <FontAwesomeIcon icon={faPlus} />
+                                            </button>
+                                        </div>
+                                        <div className="flex mx-auto items-center justify-between w-3/4">
+                                            <span>Cost: 2</span>&nbsp;
+                                            <span>Max: {calcMaxSkillLvl(parseInt(k))}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            )
+                                )
+                            }
                         })}
                     </div>
                     <div className="w-full my-6 text-center">
-                        {tempSP === 0
-                        ? <button className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl">
+                        {tempSP === 0 ? (
+                            <button
+                                onClick={async () => await assignSkills()}
+                                className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl"
+                            >
                                 Assign Skills
                             </button>
-                        : <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 border-white border-4 rounded-lg text-2xl">
+                        ) : (
+                            <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 border-white border-4 rounded-lg text-2xl">
                                 Assign Skills
                             </button>
-                        }
-
+                        )}
                     </div>
                 </div>
             </div>

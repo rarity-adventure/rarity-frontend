@@ -5,7 +5,7 @@ interface SkillsInterface {
     get_skills: (id: string) => Promise<number[]>
     skills_per_level: (int: number, _class: string, level: string) => Promise<number>
     class_skills: (_class: string) => Promise<boolean[]>
-
+    set_skills: (id: string, skills: number[]) => Promise<void>
 }
 
 export default function useSkills(): SkillsInterface {
@@ -45,5 +45,17 @@ export default function useSkills(): SkillsInterface {
         [skills]
     )
 
-    return { get_skills, skills_per_level, class_skills }
+    const set_skills = useCallback(
+        async (id: string, _skills: number[]): Promise<void> => {
+            try {
+                return await skills?.set_skills(id, _skills)
+            } catch (e) {
+                console.log(e)
+                return
+            }
+        },
+        [skills]
+    )
+
+    return { get_skills, skills_per_level, class_skills, set_skills }
 }
