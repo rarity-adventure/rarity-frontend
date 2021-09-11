@@ -47,6 +47,8 @@ export const RARITY_NAME_CONTRACT = {
     [ChainId.MAINNET]: '',
 }
 
+export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
+
 export function secondsToString(d: number): string {
     d = Number(d)
     const h = Math.floor(d / 3600)
