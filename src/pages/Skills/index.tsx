@@ -29,14 +29,12 @@ export default function Skills(): JSX.Element | null {
                         defaultValue={0}
                         className="p-2 border-custom-green border-4 rounded-lg"
                         onChange={(v) => {
-                            if (v.target.value !== "0") {
+                            if (v.target.value !== '0') {
                                 setSummoner(JSON.parse(v.target.value))
                             }
                         }}
                     >
-                        <option value={0}>
-                            Select summoner
-                        </option>
+                        <option value={0}>Select summoner</option>
                         {summoners.map((summoner) => {
                             return (
                                 <option key={summoner.id} value={JSON.stringify(summoner)}>

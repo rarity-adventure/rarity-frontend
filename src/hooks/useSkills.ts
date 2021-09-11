@@ -3,6 +3,9 @@ import { useCallback } from 'react'
 
 interface SkillsInterface {
     get_skills: (id: string) => Promise<number[]>
+    skills_per_level: (int: number, _class: string, level: string) => Promise<number>
+    class_skills: (_class: string) => Promise<boolean[]>
+
 }
 
 export default function useSkills(): SkillsInterface {
@@ -20,5 +23,27 @@ export default function useSkills(): SkillsInterface {
         [skills]
     )
 
-    return { get_skills }
+    const skills_per_level = useCallback(
+        async (int: number, _class: string, level: string): Promise<number> => {
+            try {
+                return await skills?.skills_per_level(int, _class, level)
+            } catch (e) {
+                return 0
+            }
+        },
+        [skills]
+    )
+
+    const class_skills = useCallback(
+        async (_class: string): Promise<boolean[]> => {
+            try {
+                return await skills?.class_skills(_class)
+            } catch (e) {
+                return []
+            }
+        },
+        [skills]
+    )
+
+    return { get_skills, skills_per_level, class_skills }
 }
