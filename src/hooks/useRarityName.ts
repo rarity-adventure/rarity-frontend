@@ -29,11 +29,14 @@ export default function useRarityName(): GoldInterface {
                 if (fragment) {
                     const call = ids.map((id) => {
                         return {
-                            address: name?.address,
+                            target: name?.address,
                             callData: name?.interface.encodeFunctionData(fragment, [id]),
                         }
                     })
-                    return await multicall?.tryAggregate(true, call)
+                    const result = await multicall?.callStatic.tryAggregate(true, call)
+                    return result.map((r: any, i: number) => {
+                        return { id: ids[i], name: name?.interface.decodeFunctionResult(fragment, r.returnData).name }
+                    })
                 } else {
                     return []
                 }

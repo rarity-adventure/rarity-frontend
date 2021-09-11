@@ -11,6 +11,7 @@ import DAILYCARE_ABI from '../constants/abis/daycare.json'
 import DUNGEON_ABI from '../constants/abis/dungeon.json'
 import SKILLS_ABI from '../constants/abis/skills.json'
 import MULTICALL2_ABI from '../constants/abis/multicall.json'
+import NAMES_ABI from '../constants/abis/names.json'
 
 import {
     ATTRIBUTES_CONTRACT,
@@ -85,7 +86,7 @@ export function useSkillsContract(): Contract | null {
 
 export function useRarityNameContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
-    return useContract(chainId ? RARITY_NAME_CONTRACT[chainId] : undefined, '')
+    return useContract(chainId ? RARITY_NAME_CONTRACT[chainId] : undefined, NAMES_ABI)
 }
 
 export function useMulticall2Contract(): Contract | null {

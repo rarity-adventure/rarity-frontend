@@ -44,7 +44,7 @@ export const DUNGEONS: { [k: string]: { name: string; contract: string } } = {
 }
 
 export const RARITY_NAME_CONTRACT = {
-    [ChainId.MAINNET]: '',
+    [ChainId.MAINNET]: '0xE1Ef5bbF7E85d68753897924556AD0aDb6cf5D6a',
 }
 
 export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'

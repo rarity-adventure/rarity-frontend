@@ -17,14 +17,18 @@ export default function Skills(): JSX.Element | null {
 
     const { multicall_summoner_name } = useRarityName()
 
-    const [names] = useState<{ [k: string]: string }>({})
+    const [names, setNames] = useState<{ [k: string]: string }>({})
 
     const fetch_names = useCallback(async () => {
         const ids = summoners.map((s) => {
             return s.id
         })
         const queryNames = await multicall_summoner_name(ids)
-        console.log(queryNames)
+        const namesState = queryNames.reduce(
+            (obj: { [k: string]: string }, item: any) => Object.assign(obj, { [item.id]: item.name }),
+            {}
+        )
+        setNames(namesState)
     }, [summoners, multicall_summoner_name])
 
     useEffect(() => {
