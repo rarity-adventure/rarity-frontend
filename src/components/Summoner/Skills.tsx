@@ -69,7 +69,7 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
             setavailableSP(availableSP)
             setTempSp(availableSP)
         }
-    }, [get_skills, setCurrSkills, setTempSkills, summoner, skills_per_level, scores])
+    }, [get_skills, setCurrSkills, setTempSkills, summoner, skills_per_level, scores, character_created])
 
     useEffect(() => {
         if (!library || !chainId || !account) return
