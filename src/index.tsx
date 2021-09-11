@@ -14,7 +14,8 @@ import UserUpdater from './state/user/updater'
 import getLibrary from './utils/getLibrary'
 import { NetworkContextName } from './connectors'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import GA4React from 'ga-4-react'
+import ReactGA from 'react-ga4'
+import { isMobile } from 'react-device-detect'
 
 require('dotenv').config()
 
@@ -24,16 +25,20 @@ if (!!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
 
-const GOOGLE_ANALYTICS_ID: string | undefined = "G-JP26RFPR5E"
+const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID || ""
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-    try {
-        const ga = new GA4React(GOOGLE_ANALYTICS_ID)
-        ga.initialize()
-    } catch (e) {
-        console.log("unable to init ga")
-    }
-
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID)
+    ReactGA.set({
+        customBrowserType: !isMobile
+            ? 'desktop'
+            : 'web3' in window || 'ethereum' in window
+                ? 'mobileWeb3'
+                : 'mobileRegular'
+    })
+} else {
+    ReactGA.initialize('test', { testMode: true })
 }
+
 function Updaters() {
     return (
         <>

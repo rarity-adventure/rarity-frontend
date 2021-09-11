@@ -9653,11 +9653,6 @@ fuse.js@6.4.6:
   resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.4.6.tgz#62f216c110e5aa22486aff20be7896d19a059b79"
   integrity sha512-/gYxR/0VpXmWSfZOIPS3rWwU8SHgsRTwWuXhyb2O6s7aRuVtHtxCkR33bNYu3wyLyNx/Wpv0vU7FZy8Vj53VNw==
 
-ga-4-react@^0.1.281:
-  version "0.1.281"
-  resolved "https://registry.yarnpkg.com/ga-4-react/-/ga-4-react-0.1.281.tgz#aaacb5f42b7b302a39fa5c63c39103407655e9ac"
-  integrity sha512-LBvn8digT3gS8Iw8/XN3Z60c/JlFjMreLrZEneeQr+N/3+Ymv8yOsuK6qFAX2VPS6TscLbSlgtb/mriJ2P17Ow==
-
 ganache-core@^2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/ganache-core/-/ganache-core-2.13.2.tgz#27e6fc5417c10e6e76e2e646671869d7665814a3"
@@ -15373,6 +15368,11 @@ react-focus-lock@^2.5.0:
     react-clientside-effect "^1.2.5"
     use-callback-ref "^1.2.5"
     use-sidecar "^1.0.5"
+
+react-ga4@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-ga4/-/react-ga4-1.0.6.tgz#35d3da353b8107da005de1cd2f616a6549762c05"
+  integrity sha512-sOMMBjIgf5/xzsBEZHUu1/x2155oPKhOKwibpLbkdT+4yLNOfcpqVF5CE4M5neB+7y56nqKHXt7Jv0HFYv1QTg==
 
 react-helmet@6.1.0:
   version "6.1.0"
