@@ -18,6 +18,7 @@ import {
     GOLD_CONTRACTS,
     MULTIADVENTURE_CONTRACT,
     RARITY_CONTRACTS,
+    RARITY_NAME_CONTRACT,
     SKILLS_CONTRACT,
 } from '../constants'
 
@@ -78,4 +79,9 @@ export function useDungeonContract(): { [k: string]: Contract | null } {
 export function useSkillsContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? SKILLS_CONTRACT[chainId] : undefined, SKILLS_ABI)
+}
+
+export function useRarityNameContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? RARITY_NAME_CONTRACT[chainId] : undefined, '')
 }
