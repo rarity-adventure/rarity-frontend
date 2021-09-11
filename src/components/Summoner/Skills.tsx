@@ -17,32 +17,40 @@ interface SummonerStatsCardProps {
 }
 
 export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps): JSX.Element {
-    const { exp, levelUp } = useRarity()
 
-    const { library, chainId } = useActiveWeb3React()
-
-    const { get_skills, skills_per_level, set_skills } = useSkills()
+    const { library, chainId, account } = useActiveWeb3React()
 
     const windowVisible = useIsWindowVisible()
 
-    const [state, setState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
+    const { exp, levelUp } = useRarity()
+
+    const [expState, setExpState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
+
+    const fetchExp = useCallback( async () => {
+        const experience = await  exp(summoner.id, summoner._level)
+        setExpState({ actual: fromWei(experience.actual.toString()), nextLvl: fromWei(experience.next.toString()) })
+    }, [exp, setExpState, summoner])
+
+    useEffect(() => {
+        if (!library || !windowVisible || !chainId || !account) return
+        fetchExp()
+    }, [library, windowVisible, chainId, account, fetchExp])
+
+    const { get_skills, skills_per_level, set_skills } = useSkills()
 
     const [currSkills, setCurrSkills] = useState<{ [k: string]: number}>({})
 
     const [tempSkills, setTempSkills] = useState<{ [k: string]: number}>({})
 
+    const { scores } = useRarityAttributes()
+
     const [availableSP, setavailableSP] = useState<number>(0)
 
     const [tempSP, setTempSp] = useState<number>(0)
 
-    const { scores } = useRarityAttributes()
-
     const [classSkills, setClassSkills] = useState<{ [k: string]: boolean}>({})
 
-    const fetch = useCallback(async () => {
-        const experience = await exp(summoner.id, summoner._level)
-        setState({ actual: fromWei(experience.actual.toString()), nextLvl: fromWei(experience.next.toString()) })
-
+    const fetchSkills = useCallback( async () => {
         const skills = await get_skills(summoner.id)
         const skillsObj: { [k: string]: number} = {}
         for (let i = 0; i < skills.length; i++) {
@@ -52,29 +60,35 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
         setTempSkills(skillsObj)
 
         const attributes = await scores(summoner.id)
-        const spPerLvl = await skills_per_level(attributes['int'], summoner._class, summoner._level)
-        const availableSP = parseInt(spPerLvl.toString()) - skills.reduce((x, y) => x + y)
+        const skillsPL = await skills_per_level(attributes['int'], summoner._class, summoner._level)
+        const availableSP = parseInt(skillsPL.toString()) - skills.reduce((x, y) => x + y)
         setavailableSP(availableSP)
         setTempSp(availableSP)
 
+    }, [get_skills, setCurrSkills, setTempSkills, summoner, skills_per_level, scores])
+
+    useEffect(() => {
+        if (!library || !chainId || !account) return
+        fetchSkills()
+    }, [library, chainId, account, fetchSkills])
+
+    useEffect(() => {
+        if (!library || !windowVisible || !chainId || !account) return
         const classSkills = CLASS_SKILLS[summoner._class]
         const classSkillsObj: { [k: string]: boolean} = {}
-
         for (let i = 0; i< classSkills.length; i++) {
             classSkillsObj[i + 1] = classSkills[i]
         }
-
         setClassSkills(classSkillsObj)
-    }, [setState, exp, summoner, get_skills, scores, skills_per_level])
+    }, [library, windowVisible, chainId, account, summoner])
 
-    useEffect(() => {
-        if (!library || !windowVisible || !chainId || !exp) return
-        fetch()
-    }, [library, chainId, windowVisible, exp, fetch])
+    function calcTempSPWithState(state: { [k: string]: number}): number {
+        return availableSP - Object.values(state).reduce((x, y) => x + y)
+    }
 
     function handleAssign(skill: number) {
-        const tempState = Object.assign({}, tempSkills, { [skill]: tempSkills[skill] + 1 })
-        if (tempState[skill] <= calcMaxSkillLvl(skill)) {
+        const tempState = Object.assign({}, { [skill]: tempSkills[skill] + 1 })
+        if ((calcTempSPWithState(tempState) >= 0) && tempState[skill] <= calcMaxSkillLvl(skill))  {
             const addition = (tempSkills[skill] += 1)
             const newState = Object.assign({}, tempSkills, { [skill]: addition })
             setTempSkills(newState)
@@ -83,10 +97,13 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
     }
 
     function handleReduce(skill: number) {
-        const addition = (tempSkills[skill] -= 1)
-        const newState = Object.assign({}, tempSkills, { [skill]: addition })
-        setTempSkills(newState)
-        calcTempSP()
+        const tempState = Object.assign({}, { [skill]: tempSkills[skill] - 1 } )
+        if (currSkills[skill] <= tempState[skill] + 1) {
+            const addition = (tempSkills[skill] -= 1)
+            const newState = Object.assign({}, tempSkills, { [skill]: addition })
+            setTempSkills(newState)
+            calcTempSP()
+        }
     }
 
     function calcTempSP() {
@@ -141,10 +158,10 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
                             <span className="text-xs">
-                                ({state.actual}/{state.nextLvl})
+                                ({expState.actual}/{expState.nextLvl})
                             </span>
                         </span>
-                        {parseInt(state.actual) >= parseInt(state.nextLvl) ? (
+                        {parseInt(expState.actual) >= parseInt(expState.nextLvl) ? (
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {

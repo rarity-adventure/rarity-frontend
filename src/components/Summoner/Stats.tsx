@@ -2,7 +2,6 @@ import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect, useState } from 'react'
 import { fromWei } from 'web3-utils'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
@@ -21,8 +20,6 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
 
     const { library, chainId } = useActiveWeb3React()
 
-    const windowVisible = useIsWindowVisible()
-
     const [state, setState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
 
     const fetch = useCallback(async () => {
@@ -31,9 +28,9 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [setState, exp, summoner])
 
     useEffect(() => {
-        if (!library || !windowVisible || !chainId || !exp) return
+        if (!library || !chainId || !exp) return
         fetch()
-    }, [library, chainId, windowVisible, exp, fetch])
+    }, [library, chainId, exp, fetch])
 
     const { scores, calcAP, point_buy } = useRarityAttributes()
 
@@ -73,9 +70,9 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [scores, calcAP, summoner])
 
     useEffect(() => {
-        if (!library || !windowVisible || !chainId) return
+        if (!library || !chainId) return
         fetchAttributes()
-    }, [library, chainId, windowVisible, fetchAttributes])
+    }, [library, chainId, fetchAttributes])
 
     const [gold, setGold] = useState<{
         hasClaimed: number
@@ -97,9 +94,9 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [summoner, claimed, balance, claimable])
 
     useEffect(() => {
-        if (!library || !windowVisible || !chainId) return
+        if (!library || !chainId) return
         fetchGold()
-    }, [library, chainId, windowVisible, fetchGold])
+    }, [library, chainId, fetchGold])
 
     useEffect(() => {
         if (loaded) {
@@ -142,9 +139,8 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
 
     function handleSubstraction(attr: string) {
         if (currAttrs[attr] <= tempAttrs[attr] - 1) {
-            const addition = (tempAttrs[attr] -= 1)
-            const newState = Object.assign({}, tempAttrs, { [attr]: addition })
-            setTempAttrs(newState)
+            tempAttrs[attr] -= 1
+            setTempAttrs(tempAttrs)
             calcTempAP()
         }
     }
