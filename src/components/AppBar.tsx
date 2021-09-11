@@ -54,7 +54,7 @@ function AppBar(): JSX.Element {
                                 </div>
                                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-custom-background lg:relative lg:p-0 lg:bg-transparent">
                                     <a
-                                        className="p-2 mx-2 bg-custom-selected border-white border-2"
+                                        className="p-2 mx-2 bg-custom-selected border-white border-2 hidden sm:block"
                                         target="_blank"
                                         rel="noreferrer"
                                         href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"

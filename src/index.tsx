@@ -1,7 +1,6 @@
 import './styles/index.css'
 import './styles/styles.css'
 import 'react-tabs/style/react-tabs.css'
-import ReactGA from 'react-ga'
 
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import { StrictMode } from 'react'
@@ -15,7 +14,7 @@ import UserUpdater from './state/user/updater'
 import getLibrary from './utils/getLibrary'
 import { NetworkContextName } from './connectors'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import { isMobile } from 'react-device-detect'
+import GA4React from 'ga-4-react'
 
 require('dotenv').config()
 
@@ -25,27 +24,16 @@ if (!!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
 
-const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
+const GOOGLE_ANALYTICS_ID: string | undefined = "G-JP26RFPR5E"
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
-    ReactGA.initialize(GOOGLE_ANALYTICS_ID)
-    ReactGA.set({
-        customBrowserType: !isMobile
-            ? 'desktop'
-            : 'web3' in window || 'ethereum' in window
-                ? 'mobileWeb3'
-                : 'mobileRegular'
-    })
-} else {
-    ReactGA.initialize('test', { testMode: true, debug: true })
+    try {
+        const ga = new GA4React(GOOGLE_ANALYTICS_ID)
+        ga.initialize()
+    } catch (e) {
+        console.log("unable to init ga")
+    }
+
 }
-
-window.addEventListener('error', error => {
-    ReactGA.exception({
-        description: `${error.message} @ ${error.filename}:${error.lineno}:${error.colno}`,
-        fatal: true
-    })
-})
-
 function Updaters() {
     return (
         <>
