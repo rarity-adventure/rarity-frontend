@@ -17,7 +17,7 @@ interface SummonerCardProps {
 }
 
 export default function SummonerAdventureCard({ summoner }: SummonerCardProps): JSX.Element {
-    const { exp, adventure, nextAdventure, levelUp } = useRarity()
+    const { exp, adventure, next_adventure, level_up } = useRarity()
     const { library, chainId } = useActiveWeb3React()
     const windowVisible = useIsWindowVisible()
 
@@ -29,13 +29,13 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
 
     const fetch = useCallback(async () => {
         const experience = await exp(summoner.id, summoner._level)
-        const nextAdv = await nextAdventure(summoner.id)
+        const nextAdv = await next_adventure(summoner.id)
         setState({
             actual: fromWei(experience.actual.toString()),
             nextAdventure: parseInt(nextAdv.toString()),
             nextLvl: fromWei(experience.next.toString()),
         })
-    }, [nextAdventure, setState, exp, summoner])
+    }, [next_adventure, setState, exp, summoner])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId || !exp) return
@@ -167,7 +167,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 Level UP

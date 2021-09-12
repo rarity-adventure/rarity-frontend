@@ -19,7 +19,7 @@ interface SummonerStatsCardProps {
 }
 
 export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps): JSX.Element {
-    const { exp, levelUp } = useRarity()
+    const { exp, level_up } = useRarity()
 
     const { library, chainId } = useActiveWeb3React()
 
@@ -241,7 +241,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 Level UP

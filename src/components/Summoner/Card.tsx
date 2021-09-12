@@ -24,7 +24,7 @@ export default function SummonerCard({
     approveFunc,
     registerFunc,
 }: SummonerCardProps): JSX.Element {
-    const { exp, levelUp } = useRarity()
+    const { exp, level_up } = useRarity()
 
     const { daysRegistered } = useDailyCare()
 
@@ -117,7 +117,7 @@ export default function SummonerCard({
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 Level UP

@@ -9,6 +9,9 @@ import useMultiAdventure from '../../hooks/useMultiAdventure'
 import { Summoner } from '../../state/user/actions'
 import SummonerAdventureCard from '../../components/Summoner/Adventure'
 import Ordering from '../../components/Ordering'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { BigNumber } from '@ethersproject/bignumber'
 
 export default function Adventure(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
@@ -19,7 +22,7 @@ export default function Adventure(): JSX.Element | null {
 
     const [filteredSummoners, setFilteredSummoners] = useState<Summoner[]>(allSummoners)
 
-    const { nextAdventure, allowance, approve } = useRarity()
+    const { allowance, approve, multicall_next_adventure } = useRarity()
     const [multiadv, setMultiAdv] = useState<{
         approved: boolean
         available: boolean
@@ -36,25 +39,24 @@ export default function Adventure(): JSX.Element | null {
         await at(multiadv.summoners)
     }
 
+    const [maLoading, setMaLoading] = useState(true)
+
     const filter = useCallback(async () => {
         if (!chainId) return
         const allowed = await allowance(account, MULTIADVENTURE_CONTRACT[chainId])
-        const filtered = []
-        for (const summoner of filteredSummoners) {
-            const nextAdv = await nextAdventure(summoner.id)
-            const nextAdvTimestamp = parseInt(nextAdv.toString())
-            if (nextAdvTimestamp * 1000 < Date.now()) {
-                filtered.push(summoner)
-            }
-        }
+        const ma: { id: string; next: BigNumber }[] = await multicall_next_adventure(filteredSummoners.map((s) => s.id))
+        const filtered = ma.filter((s) => {
+            return parseInt(s.next.toString()) * 1000 < Date.now()
+        })
         setMultiAdv({
             approved: allowed,
             available: filtered.length > 0,
-            summoners: filtered.map((s: Summoner) => {
+            summoners: filtered.map((s) => {
                 return s.id
             }),
         })
-    }, [filteredSummoners, nextAdventure, allowance, account, chainId])
+        setMaLoading(false)
+    }, [filteredSummoners, multicall_next_adventure, allowance, account, chainId])
 
     const [_, setCurrentTime] = useState(new Date(Date.now()))
     useEffect(() => {
@@ -85,7 +87,7 @@ export default function Adventure(): JSX.Element | null {
                                 await sendMultiAdventure()
                             }}
                         >
-                            Adventure time!
+                            {maLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : <span>Adventure time!</span>}
                         </button>
                     ) : (
                         <button
@@ -99,7 +101,7 @@ export default function Adventure(): JSX.Element | null {
                     )
                 ) : (
                     <button className="opacity-50 cursor-not-allowed bg-custom-green border-8 border-white p-4 rounded-lg text-xl text-white my-4">
-                        No summoner available
+                        {maLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : <span>No summoners available</span>}
                     </button>
                 )}
 
