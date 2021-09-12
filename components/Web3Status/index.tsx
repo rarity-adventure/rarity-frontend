@@ -2,9 +2,10 @@ import React from 'react'
 import { NetworkContextName } from '../../constants'
 import Web3Connect from '../Web3Connect'
 import { shortenAddress } from '../../functions/format'
-import { useWalletModalToggle } from '../../state/application/hooks'
+import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { useWeb3React } from '@web3-react/core'
-import HeadlessUIModal from '../Modal/HeadlessUIModal'
+import Modal from '../Modal'
+import { ApplicationModal } from '../../state/application/actions'
 
 function Web3StatusInner() {
     const { account } = useWeb3React()
@@ -29,6 +30,10 @@ function Web3StatusInner() {
 export default function Web3Status() {
     const { active } = useWeb3React()
 
+    const open = useModalOpen(ApplicationModal.WALLET)
+
+    const toggleModal = useWalletModalToggle()
+
     const contextNetwork = useWeb3React(NetworkContextName)
 
     if (!contextNetwork.active && !active) {
@@ -38,6 +43,9 @@ export default function Web3Status() {
     return (
         <>
             <Web3StatusInner />
+            <Modal isOpen={open} onDismiss={() => toggleModal()}>
+                <div>Hello World</div>
+            </Modal>
         </>
     )
 }

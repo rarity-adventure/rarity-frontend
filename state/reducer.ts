@@ -4,7 +4,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 
 const reducer = combineReducers({
     application,
-    multicall
+    multicall,
 })
 
 export default reducer

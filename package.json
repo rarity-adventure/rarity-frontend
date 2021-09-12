@@ -4,11 +4,10 @@
     "private": false,
     "license": "MIT",
     "scripts": {
-        "gen": "pwa-asset-generator ./public/logo.svg --opaque false --manifest ./public/manifest.json -f -w -p --type png public/",
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "prettier": "prettier --write ."
+        "format": "prettier --write ."
     },
     "dependencies": {
         "@apollo/client": "3.4.10",

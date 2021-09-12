@@ -16,7 +16,7 @@ import getLibrary from '../functions/getLibrary'
 import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
 import MulticallUpdater from '../state/multicall/updater'
-import Head from "next/head";
+import Head from 'next/head'
 
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 

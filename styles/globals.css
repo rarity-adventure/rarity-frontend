@@ -3,26 +3,35 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Work Sans';
+    font-family: 'Bold';
     src: url('/fonts/work_sans_bold.ttf');
 }
 
 @font-face {
-    font-family: 'IBM Plex Mono';
-    src: url('/fonts/ibm_plex_mono.ttf');
+    font-family: 'Regular';
+    src: url('/fonts/work_sans_regular.ttf');
+}
+
+@font-face {
+    font-family: 'Pixelmix';
+    src: url('/fonts/pixelmix.ttf');
 }
 
 body {
-    font-family: 'IBM Plex Mono', serif;
+    font-family: 'Pixelmix', serif;
     overflow: hidden;
 }
-h1,
+
+h1 {
+    font-family: 'Bold', serif;
+}
+
 h2,
 h3,
 h4,
 h5,
 h6 {
-    font-family: 'Work Sans', serif;
+    font-family: 'Regular', serif;
 }
 
 ::-webkit-scrollbar {

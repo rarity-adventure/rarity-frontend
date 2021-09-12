@@ -20,16 +20,11 @@ export default function Web3Connect({ color = 'gray', size = 'sm', className = '
             {error instanceof UnsupportedChainIdError ? 'You are on the wrong network' : 'Error'}
         </div>
     ) : (
-        <Button
-            id="connect-wallet"
+        <button
             onClick={toggleWalletModal}
-            variant="outlined"
-            color={color}
-            className={className}
-            size={size}
-            {...rest}
+            className="uppercase tracking-normal text-lg py-1 px-4 border-2 border-white rounded-2xl"
         >
-            Connect to a wallet
-        </Button>
+            <h1>Connect wallet</h1>
+        </button>
     )
 }
