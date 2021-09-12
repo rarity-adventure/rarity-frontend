@@ -1,9 +1,5 @@
-import React from "react";
+import React from 'react'
 
-export default function IconWrapper({
-  children,
-}: {
-  children: JSX.Element;
-}): JSX.Element {
-  return <div>{children}</div>;
+export default function IconWrapper({ children }: { children: JSX.Element }): JSX.Element {
+    return <div>{children}</div>
 }

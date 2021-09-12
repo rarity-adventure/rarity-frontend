@@ -1,32 +1,32 @@
 function wait(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 function waitRandom(min: number, max: number): Promise<void> {
-  return wait(min + Math.round(Math.random() * Math.max(0, max - min)));
+    return wait(min + Math.round(Math.random() * Math.max(0, max - min)))
 }
 
 /**
  * This error is thrown if the function is cancelled before completing
  */
 export class CancelledError extends Error {
-  public isCancelledError: true = true;
-  constructor() {
-    super("Cancelled");
-  }
+    public isCancelledError: true = true
+    constructor() {
+        super('Cancelled')
+    }
 }
 
 /**
  * Throw this error if the function should retry
  */
 export class RetryableError extends Error {
-  public isRetryableError: true = true;
+    public isRetryableError: true = true
 }
 
 export interface RetryOptions {
-  n: number;
-  minWait: number;
-  maxWait: number;
+    n: number
+    minWait: number
+    maxWait: number
 }
 
 /**
@@ -37,42 +37,42 @@ export interface RetryOptions {
  * @param maxWait max wait between retries in ms
  */
 export function retry<T>(
-  fn: () => Promise<T>,
-  { n, minWait, maxWait }: RetryOptions
+    fn: () => Promise<T>,
+    { n, minWait, maxWait }: RetryOptions
 ): { promise: Promise<T>; cancel: () => void } {
-  let completed = false;
-  let rejectCancelled: (error: Error) => void;
-  const promise = new Promise<T>(async (resolve, reject) => {
-    rejectCancelled = reject;
-    while (true) {
-      let result: T;
-      try {
-        result = await fn();
-        if (!completed) {
-          resolve(result);
-          completed = true;
+    let completed = false
+    let rejectCancelled: (error: Error) => void
+    const promise = new Promise<T>(async (resolve, reject) => {
+        rejectCancelled = reject
+        while (true) {
+            let result: T
+            try {
+                result = await fn()
+                if (!completed) {
+                    resolve(result)
+                    completed = true
+                }
+                break
+            } catch (error: any) {
+                if (completed) {
+                    break
+                }
+                if (n <= 0 || !error.isRetryableError) {
+                    reject(error)
+                    completed = true
+                    break
+                }
+                n--
+            }
+            await waitRandom(minWait, maxWait)
         }
-        break;
-      } catch (error: any) {
-        if (completed) {
-          break;
-        }
-        if (n <= 0 || !error.isRetryableError) {
-          reject(error);
-          completed = true;
-          break;
-        }
-        n--;
-      }
-      await waitRandom(minWait, maxWait);
+    })
+    return {
+        promise,
+        cancel: () => {
+            if (completed) return
+            completed = true
+            rejectCancelled(new CancelledError())
+        },
     }
-  });
-  return {
-    promise,
-    cancel: () => {
-      if (completed) return;
-      completed = true;
-      rejectCancelled(new CancelledError());
-    },
-  };
 }

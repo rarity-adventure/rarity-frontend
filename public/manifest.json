@@ -1,28 +1,28 @@
 {
-  "short_name": "Rarity Analytics",
-  "name": "Rarity Analytics",
-  "icons": [
-    {
-      "src": "manifest-icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "manifest-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "favicon.ico",
-      "sizes": "32x32",
-      "type": "image/png"
-    }
-  ],
-  "orientation": "portrait",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "start_url": "/"
+    "short_name": "Rarity Analytics",
+    "name": "Rarity Analytics",
+    "icons": [
+        {
+            "src": "manifest-icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "manifest-icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "favicon.ico",
+            "sizes": "32x32",
+            "type": "image/png"
+        }
+    ],
+    "orientation": "portrait",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "start_url": "/"
 }

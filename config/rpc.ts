@@ -1,7 +1,7 @@
-import { ChainId } from "../constants";
+import { ChainId } from '../constants'
 
 const rpc = {
-  [ChainId.MAINNET]: "https://rpcapi.fantom.network",
-};
+    [ChainId.MAINNET]: 'https://rpcapi.fantom.network',
+}
 
-export default rpc;
+export default rpc
