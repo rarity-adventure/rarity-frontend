@@ -1,2 +1,2 @@
-# Ignore all CSS files:
-*.css
+.next
+node_modules/
