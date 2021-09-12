@@ -7,6 +7,9 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { fromWei } from 'web3-utils'
 import useDailyCare from '../../hooks/useDailyCare'
 import Transfer from './Transfer'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import useRarityName from '../../hooks/useRarityName'
 
 interface SummonerCardProps {
     summoner: Summoner
@@ -52,6 +55,24 @@ export default function SummonerCard({
         fetch()
     }, [library, chainId, windowVisible, exp, fetch])
 
+    const { summoner_name } = useRarityName()
+
+    const [name, setName] = useState('')
+
+    const fetch_name = useCallback(async () => {
+        const summonerName = await summoner_name(summoner.id)
+        if (!summonerName || summonerName === '') {
+            setName('Unknown')
+        } else {
+            setName(summonerName)
+        }
+    }, [summoner, summoner_name])
+
+    useEffect(() => {
+        if (!library || !windowVisible || !chainId) return
+        fetch_name()
+    }, [fetch_name, library, windowVisible, chainId])
+
     return (
         <div className="w-full border-custom-border border-8">
             <div className="grid grid-cols-1 gap-">
@@ -65,6 +86,17 @@ export default function SummonerCard({
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
                         <h1>{CLASSES[summoner._class].name}</h1>
+                    </div>
+                </div>
+                <div className="m-2 flex flex-row mt-4 p-2 text-white text-sm bg-custom-selected text-center border-white border-2 rounded-lg justify-between">
+                    <div />
+                    <div>
+                        <span>{name}</span>
+                    </div>
+                    <div>
+                        <a rel="noreferrer" target="_blank" href="https://names.rarity.game">
+                            <FontAwesomeIcon icon={faPencilAlt} />
+                        </a>
                     </div>
                 </div>
                 <Transfer summoner={summoner} />

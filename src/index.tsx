@@ -25,18 +25,16 @@ if (!!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
 
-const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID || ""
+const GOOGLE_ANALYTICS_ID: string | undefined = process.env.REACT_APP_GOOGLE_ANALYTICS_ID
 if (typeof GOOGLE_ANALYTICS_ID === 'string') {
     ReactGA.initialize(GOOGLE_ANALYTICS_ID)
     ReactGA.set({
         customBrowserType: !isMobile
             ? 'desktop'
             : 'web3' in window || 'ethereum' in window
-                ? 'mobileWeb3'
-                : 'mobileRegular'
+            ? 'mobileWeb3'
+            : 'mobileRegular',
     })
-} else {
-    ReactGA.initialize('test', { testMode: true })
 }
 
 function Updaters() {
