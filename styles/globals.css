@@ -17,9 +17,37 @@
     src: url('/fonts/pixelmix.ttf');
 }
 
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    font-feature-settings: 'case' 1, 'rlig' 1, 'calt' 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
 body {
     font-family: 'Pixelmix', serif;
-    overflow: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
+}
+
+body {
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -36,4 +64,22 @@ h6 {
 
 ::-webkit-scrollbar {
     display: none;
+}
+
+.hero-bg {
+    position: absolute;
+    z-index: -100;
+    top: 0;
+    height: 1080px;
+    background: radial-gradient(120.69% 74.23% at 50% 32.92%, rgba(15, 47, 91, 0) 64.06%, #0f305d 90.42%), #0a0a0a;
+    mix-blend-mode: normal;
+}
+
+.classes-bg {
+    position: absolute;
+    left: 0;
+    top: 1079px;
+    height: 100%;
+    z-index: -99;
+    background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
 }

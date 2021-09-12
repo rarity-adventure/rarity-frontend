@@ -11,13 +11,13 @@ function AppBar(): JSX.Element {
 
     return (
         //     // <header className="flex flex-row justify-between w-screen flex-nowrap">
-        <header className="flex-shrink-0 w-full">
-            <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
+        <header className="flex-shrink-0 w-full z-20">
+            <Popover as="nav" className="w-full bg-transparent header-border-b">
                 {({ open }) => (
                     <>
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center z-10">
+                                <div className="flex items-center z-20">
                                     <div className="uppercase text-center tracking-widest text-2xl">
                                         <h1>RARITY</h1>
                                         <h1>Adventure</h1>
@@ -58,7 +58,7 @@ function AppBar(): JSX.Element {
                                     </div>
                                 </div>
 
-                                <div className="fixed bottom-0 right-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
+                                <div className="fixed bottom-0 right-0 z-20 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-dark-1000 lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end">
                                         <div className="w-auto flex items-center rounded bg-dark-900 hover:bg-dark-800 p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto">
                                             {account && chainId && userEthBalance && (

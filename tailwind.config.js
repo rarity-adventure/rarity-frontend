@@ -11,4 +11,9 @@ module.exports = {
             contrast: '#2AE7F3',
         },
     },
+    variants: {
+        extend: {
+            animation: ['hover'],
+        },
+    },
 }
