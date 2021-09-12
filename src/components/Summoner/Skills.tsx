@@ -309,18 +309,12 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                 })}
                             </div>
                             <div className="w-full my-6 text-center">
-                                {tempSP === 0 ? (
-                                    <button
-                                        onClick={async () => await assignSkills()}
-                                        className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl"
-                                    >
-                                        Assign Skills
-                                    </button>
-                                ) : (
-                                    <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 border-white border-4 rounded-lg text-2xl">
-                                        Assign Skills
-                                    </button>
-                                )}
+                                <button
+                                    onClick={async () => await assignSkills()}
+                                    className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl"
+                                >
+                                    Assign Skills
+                                </button>
                             </div>
                         </>
                     ) : (
