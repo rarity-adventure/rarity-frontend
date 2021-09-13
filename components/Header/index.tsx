@@ -3,6 +3,7 @@ import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useETHBalances } from '../../state/wallet/hooks'
+import LangSwitcher from '../LanguageSwitch'
 
 function AppBar(): JSX.Element {
     const { account, chainId } = useActiveWeb3React()
@@ -60,6 +61,7 @@ function AppBar(): JSX.Element {
                                 <div className="fixed bottom-0 right-0 z-20 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end ">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto">
+                                            <LangSwitcher />
                                             {account && chainId && userEthBalance && (
                                                 <>
                                                     <div className="px-3 mx-3 py-2 text-primary text-bold border-white border-2 rounded-lg">

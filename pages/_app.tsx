@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import * as plurals from 'make-plural/plurals'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import ReactGA from 'react-ga4'
 import { useEffect } from 'react'
@@ -17,6 +18,12 @@ import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
 import MulticallUpdater from '../state/multicall/updater'
 import Head from 'next/head'
+import { I18nProvider } from '@lingui/react'
+import { i18n } from '@lingui/core'
+import { remoteLoader } from '@lingui/remote-loader'
+import { nanoid } from 'nanoid'
+import { useRouter } from 'next/router'
+
 
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
@@ -29,6 +36,8 @@ if (typeof window !== 'undefined' && !!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
 
+const sessionId = nanoid()
+
 export default function MyApp({
     Component,
     pageProps,
@@ -39,11 +48,38 @@ export default function MyApp({
         Provider: FunctionComponent
     }
 }) {
+    const { locale } = useRouter()
+
     useEffect(() => {
         if (process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS) {
             ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS)
         }
     }, [])
+
+
+    useEffect(() => {
+        async function load(locale) {
+            i18n.loadLocaleData(locale, { plurals: plurals[locale.split('_')[0]] })
+
+            try {
+                // Load messages from AWS, use q session param to get latest version from cache
+                const resp = await fetch(`https://d3l928w2mi7nub.cloudfront.net/${locale}.json?q=${sessionId}`)
+                const remoteMessages = await resp.json()
+
+                const messages = remoteLoader({ messages: remoteMessages, format: 'minimal' })
+                i18n.load(locale, messages)
+            } catch {
+                // Load fallback messages
+                const { messages } = await import(`@lingui/loader!./../../locale/${locale}.json?raw-lingui`)
+                i18n.load(locale, messages)
+            }
+
+            i18n.activate(locale)
+        }
+
+        load(locale)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [locale])
 
     // Allows for conditionally setting a provider to be hoisted per page
     const Provider = Component.Provider || Fragment
@@ -94,27 +130,29 @@ export default function MyApp({
                 <meta key="og:image" property="og:image" content="https://analytics.rarity.game/apple-icon-180.png" />
                 <meta key="og:description" property="og:description" content="Explore rarity" />
             </Head>
-            <Web3ReactProvider getLibrary={getLibrary}>
-                <Web3ProviderNetwork getLibrary={getLibrary}>
-                    <Web3ReactManager>
-                        <ReduxProvider store={store}>
-                            <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
-                                <>
-                                    <ApplicationUpdater />
-                                    <MulticallUpdater />
-                                </>
-                                <Provider>
-                                    <Layout>
-                                        <Guard>
-                                            <Component {...pageProps} />
-                                        </Guard>
-                                    </Layout>
-                                </Provider>
-                            </PersistGate>
-                        </ReduxProvider>
-                    </Web3ReactManager>
-                </Web3ProviderNetwork>
-            </Web3ReactProvider>
+            <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
+                <Web3ReactProvider getLibrary={getLibrary}>
+                    <Web3ProviderNetwork getLibrary={getLibrary}>
+                        <Web3ReactManager>
+                            <ReduxProvider store={store}>
+                                <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
+                                    <>
+                                        <ApplicationUpdater />
+                                        <MulticallUpdater />
+                                    </>
+                                    <Provider>
+                                        <Layout>
+                                            <Guard>
+                                                <Component {...pageProps} />
+                                            </Guard>
+                                        </Layout>
+                                    </Provider>
+                                </PersistGate>
+                            </ReduxProvider>
+                        </Web3ReactManager>
+                    </Web3ProviderNetwork>
+                </Web3ReactProvider>
+            </I18nProvider>
         </Fragment>
     )
 }
