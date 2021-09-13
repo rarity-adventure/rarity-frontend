@@ -84,6 +84,7 @@ export default function Web3Status() {
                                 const option = SUPPORTED_WALLETS[k]
                                 return (
                                     <button
+                                        key={option.name}
                                         onClick={() => {
                                             if (option) {
                                                 option.connector !== connector &&
