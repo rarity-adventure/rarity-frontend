@@ -121,7 +121,7 @@ export default function WalletModal(): JSX.Element {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
     }, [walletModalOpen])
-    
+
     // close modal when a connection is successful
     const activePrevious = usePrevious(active)
     const connectorPrevious = usePrevious(connector)
@@ -147,9 +147,9 @@ export default function WalletModal(): JSX.Element {
             activate(connector, undefined, true).catch((error) => {
                 if (error instanceof UnsupportedChainIdError) {
                     switchOrAddChain(FANTOM_NETWORK).then((res) => {
-                        if(!res){
+                        if (!res) {
                             setPendingError(true)
-                            activate(connector) // No need to activate again if switch was successful 
+                            activate(connector) // No need to activate again if switch was successful
                         }
                     })
                 } else {
@@ -246,20 +246,14 @@ export default function WalletModal(): JSX.Element {
     }
 
     function getModalContent() {
-        if (error && (error instanceof UnsupportedChainIdError) === false) {
+        if (error && error instanceof UnsupportedChainIdError === false) {
             return (
                 <UpperSection>
                     <CloseIcon onClick={toggleWalletModal}>
                         <CloseColor />
                     </CloseIcon>
-                    <HeaderRow>
-                        Error connecting
-                    </HeaderRow>
-                    <ContentWrapper>
-
-                            Error connecting. Try refreshing the page.
-                        
-                    </ContentWrapper>
+                    <HeaderRow>Error connecting</HeaderRow>
+                    <ContentWrapper>Error connecting. Try refreshing the page.</ContentWrapper>
                 </UpperSection>
             )
         }

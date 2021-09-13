@@ -58,7 +58,7 @@ function Web3StatusInner() {
                 {connector && <StatusIcon connector={connector} />}
             </div>
         )
-    } else if (error && (error instanceof UnsupportedChainIdError) === false) {
+    } else if (error && error instanceof UnsupportedChainIdError === false) {
         return (
             <button className="rounded-lg py-2 px-4 m-2 bg-custom-red" onClick={toggleWalletModal}>
                 <p>Error</p>
