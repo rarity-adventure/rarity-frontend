@@ -46,7 +46,7 @@ build/
 public/sw.js
 public/sw.js.map
 public/profile/
-public/workbox-*.js
+public/workbox-*
 # Sentry
 .sentryclirc
 
