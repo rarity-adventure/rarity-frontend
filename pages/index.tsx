@@ -35,73 +35,73 @@ export default function Home(): JSX.Element {
                         <ChevronDoubleDownIcon className="w-6 h-6 mx-2" />
                     </div>
                 </button>
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-16 mx-auto w-full lg:w-3/4 gap-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button>
-                        <img src="/img/classes/barbarian.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/barbarian.png" className="h-44 mx-auto" alt={'barbarian'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">BARBARIAN</span>
                         </div>
                     </button>
                     <button>
-                        <img src="/img/classes/bard.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/bard.png" className="h-44 mx-auto" alt={'bard'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">BARD</span>
                         </div>
                     </button>
                     <button>
-                        <img src="/img/classes/cleric.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/cleric.png" className="h-44 mx-auto" alt={'cleric'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">CLERIC</span>
                         </div>
                     </button>
                     <button>
-                        <img src="/img/classes/druid.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/druid.png" className="h-44 mx-auto" alt={'druid'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">DRUID</span>
                         </div>
                     </button>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-16 mx-auto w-full lg:w-3/4 gap-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-12 lg:mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/fighter.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/fighter.png" className="h-44 mx-auto" alt={'fighter'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">FIGHTER</span>
                         </div>
                     </button>
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/monk.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/monk.png" className="h-44 mx-auto" alt={'monk'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">MONK</span>
                         </div>
                     </button>
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/paladin.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/paladin.png" className="h-44 mx-auto" alt={'paladin'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">PALADIN</span>
                         </div>
                     </button>
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/ranger.png" className="h-44 mx-auto" />
-                        <div className="mt-4 w-2/3 mx-auto border-2 border-white rounded-3xl">
+                        <img src="/img/classes/ranger.png" className="h-44 mx-auto" alt={'ranger'} />
+                        <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">RANGER</span>
                         </div>
                     </button>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-16 mx-auto w-full lg:w-3/4 gap-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-12 lg:mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/rogue.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/rogue.png" className="h-44 mx-auto" alt={'rogue'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">ROGUE</span>
                         </div>
                     </button>
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/sorcerer.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/sorcerer.png" className="h-44 mx-auto" alt={'sorcerer'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">SORCERER</span>
                         </div>
                     </button>
                     <button className="hover:animate-pulse">
-                        <img src="/img/classes/wizard.png" className="h-44 mx-auto" />
+                        <img src="/img/classes/wizard.png" className="h-44 mx-auto" alt={'wizard'} />
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 ">WIZARD</span>
                         </div>

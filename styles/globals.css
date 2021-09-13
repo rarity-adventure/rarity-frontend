@@ -39,7 +39,6 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
 }
 
 body {
@@ -79,7 +78,7 @@ h6 {
     position: absolute;
     left: 0;
     top: 800px;
-    height: 100%;
+    height: 800px;
     z-index: -99;
     background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
 }
