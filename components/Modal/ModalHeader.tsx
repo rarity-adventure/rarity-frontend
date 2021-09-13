@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, XIcon } from '@heroicons/react/outline'
+import { XIcon } from '@heroicons/react/outline'
 
 import React, { FC } from 'react'
 

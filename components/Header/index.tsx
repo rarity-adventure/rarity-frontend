@@ -3,7 +3,6 @@ import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useETHBalances } from '../../state/wallet/hooks'
-import { utils } from 'ethers'
 
 function AppBar(): JSX.Element {
     const { account, chainId } = useActiveWeb3React()
@@ -18,7 +17,7 @@ function AppBar(): JSX.Element {
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center z-20">
-                                    <div className="uppercase text-center tracking-widest text-2xl">
+                                    <div className="uppercase text-center tracking-widest text-2xl ">
                                         <h1>RARITY</h1>
                                         <h1>Adventure</h1>
                                     </div>
