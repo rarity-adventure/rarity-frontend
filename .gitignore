@@ -43,8 +43,12 @@ analysis/index.html
 build/
 
 .next/
+public/sw.js
+public/sw.js.map
+public/profile/
+public/workbox-*.js
 # Sentry
 .sentryclirc
 
-# Sentry
-.sentryclirc
+
+
