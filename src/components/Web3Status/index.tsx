@@ -58,10 +58,10 @@ function Web3StatusInner() {
                 {connector && <StatusIcon connector={connector} />}
             </div>
         )
-    } else if (error) {
+    } else if (error && (error instanceof UnsupportedChainIdError) === false) {
         return (
             <button className="rounded-lg py-2 px-4 m-2 bg-custom-red" onClick={toggleWalletModal}>
-                <p>{error instanceof UnsupportedChainIdError ? 'You are on the wrong network' : 'Error'}</p>
+                <p>Error</p>
             </button>
         )
     } else {

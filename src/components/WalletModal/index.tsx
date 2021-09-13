@@ -1,6 +1,8 @@
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { ChainId, FANTOM_NETWORK } from '../../constants'
+import { useSwitchOrAddChain } from 'hooks/useSwitchOrAddChain'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
@@ -89,13 +91,15 @@ const WALLET_VIEWS = {
 
 export default function WalletModal(): JSX.Element {
     // important that these are destructed from the account-specific web3-react context
-    const { active, account, connector, activate, error } = useWeb3React()
+    const { active, account, connector, activate, error, chainId } = useWeb3React()
 
     const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
     const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
 
     const [pendingError, setPendingError] = useState<boolean>()
+
+    const switchOrAddChain = useSwitchOrAddChain()
 
     const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
 
@@ -117,7 +121,7 @@ export default function WalletModal(): JSX.Element {
             setWalletView(WALLET_VIEWS.ACCOUNT)
         }
     }, [walletModalOpen])
-
+    
     // close modal when a connection is successful
     const activePrevious = usePrevious(active)
     const connectorPrevious = usePrevious(connector)
@@ -142,7 +146,12 @@ export default function WalletModal(): JSX.Element {
         connector &&
             activate(connector, undefined, true).catch((error) => {
                 if (error instanceof UnsupportedChainIdError) {
-                    activate(connector) // a little janky...can't use setError because the connector isn't set
+                    switchOrAddChain(FANTOM_NETWORK).then((res) => {
+                        if(!res){
+                            setPendingError(true)
+                            activate(connector) // No need to activate again if switch was successful 
+                        }
+                    })
                 } else {
                     setPendingError(true)
                 }
@@ -219,7 +228,7 @@ export default function WalletModal(): JSX.Element {
                     <Option
                         id={`connect-${key}`}
                         onClick={() => {
-                            option.connector === connector
+                            option.connector === connector && chainId === ChainId.MAINNET
                                 ? setWalletView(WALLET_VIEWS.ACCOUNT)
                                 : !option.href && tryActivation(option.connector)
                         }}
@@ -237,21 +246,19 @@ export default function WalletModal(): JSX.Element {
     }
 
     function getModalContent() {
-        if (error) {
+        if (error && (error instanceof UnsupportedChainIdError) === false) {
             return (
                 <UpperSection>
                     <CloseIcon onClick={toggleWalletModal}>
                         <CloseColor />
                     </CloseIcon>
                     <HeaderRow>
-                        {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}
+                        Error connecting
                     </HeaderRow>
                     <ContentWrapper>
-                        {error instanceof UnsupportedChainIdError ? (
-                            <h5>Please connect to the appropriate Fantom network.</h5>
-                        ) : (
-                            'Error connecting. Try refreshing the page.'
-                        )}
+
+                            Error connecting. Try refreshing the page.
+                        
                     </ContentWrapper>
                 </UpperSection>
             )

@@ -1,3 +1,4 @@
+import { AddEthereumChainParameter } from 'hooks/useSwitchOrAddChain'
 import Fantom from '../assets/networks/fantom-network.jpg'
 
 export enum ChainId {
@@ -66,4 +67,18 @@ export function calcAPCost(score: number): number {
     } else {
         return Math.floor((score - 8) ** 2 / 6)
     }
+}
+
+
+export const FANTOM_NETWORK: AddEthereumChainParameter = {
+    chainId: "0xfa",
+    chainName: "Fantom Opera",
+    nativeCurrency: {
+        name: "Fantom",
+        symbol: "FTM",
+        decimals: 18
+    },
+    rpcUrls: ["https://rpc.ftm.tools/"],
+    blockExplorerUrls: ["https://ftmscan.com/"],
+
 }
