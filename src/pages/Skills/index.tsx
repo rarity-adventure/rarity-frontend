@@ -3,16 +3,43 @@ import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import skills from '../../assets/images/skills.png'
 import skills_txt from '../../assets/images/skills_text.png'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import SummonerSkillsCard from '../../components/Summoner/Skills'
+import useRarityName from '../../hooks/useRarityName'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 export default function Skills(): JSX.Element | null {
+    const { library, chainId } = useActiveWeb3React()
+
     const summoners = useUserSummoners()
 
     const [summoner, setSummoner] = useState<Summoner | null>(null)
 
+    const { multicall_summoner_name } = useRarityName()
+
+    const [names, setNames] = useState<{ [k: string]: string }>({})
+
+    const fetch_names = useCallback(async () => {
+        const ids = summoners.map((s) => {
+            return s.id
+        })
+        const queryNames = await multicall_summoner_name(ids)
+        const namesState = queryNames.reduce(
+            (obj: { [k: string]: string }, item: any) => Object.assign(obj, { [item.id]: item.name }),
+            {}
+        )
+        setNames(namesState)
+    }, [summoners, multicall_summoner_name])
+
+    useEffect(() => {
+        if (!library || !chainId) return
+        fetch_names()
+    }, [chainId, library, fetch_names])
+
     function summonerDataToString(summoner: Summoner): string {
-        return parseInt(summoner.id).toString() + ' Level ' + summoner._level + ' ' + CLASSES[summoner._class].name
+        return !names[summoner.id] || names[summoner.id] === ''
+            ? parseInt(summoner.id).toString() + ' Level ' + summoner._level + ' ' + CLASSES[summoner._class].name
+            : names[summoner.id]
     }
 
     return (
@@ -26,14 +53,15 @@ export default function Skills(): JSX.Element | null {
                 <div className="mt-4">
                     <p className="w-full text-x text-white my-4">Select a summoner</p>
                     <select
+                        defaultValue={0}
                         className="p-2 border-custom-green border-4 rounded-lg"
                         onChange={(v) => {
-                            setSummoner(JSON.parse(v.target.value))
+                            if (v.target.value !== '0') {
+                                setSummoner(JSON.parse(v.target.value))
+                            }
                         }}
                     >
-                        <option selected disabled hidden>
-                            Select summoner
-                        </option>
+                        <option value={0}>Select summoner</option>
                         {summoners.map((summoner) => {
                             return (
                                 <option key={summoner.id} value={JSON.stringify(summoner)}>
@@ -43,7 +71,7 @@ export default function Skills(): JSX.Element | null {
                         })}
                     </select>
                     {summoner ? (
-                        <div className="w-10/12 xl:w-6/12 mx-auto mt-10 gap-4">
+                        <div className="w-10/12 xl:w-8/12 mx-auto mt-10 gap-4">
                             <SummonerSkillsCard summoner={summoner} />
                         </div>
                     ) : (

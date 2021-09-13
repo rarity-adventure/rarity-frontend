@@ -36,12 +36,22 @@ export const DAILYCARE_CONTRACT = {
     [ChainId.MAINNET]: '0xf1bf34E46ECf465591B7a7fA9635E4C583174fa3',
 }
 
+export const SKILLS_CONTRACT = {
+    [ChainId.MAINNET]: '0x51C0B29A1d84611373BA301706c6B4b72283C80F',
+}
+
 export const DUNGEONS: { [k: string]: { name: string; contract: string } } = {
     cellar: {
         name: 'The Cellar',
         contract: '0x2A0F1cB17680161cF255348dDFDeE94ea8Ca196A',
     },
 }
+
+export const RARITY_NAME_CONTRACT = {
+    [ChainId.MAINNET]: '0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19',
+}
+
+export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
 
 export function secondsToString(d: number): string {
     d = Number(d)

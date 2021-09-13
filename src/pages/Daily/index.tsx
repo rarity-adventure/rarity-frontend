@@ -6,11 +6,17 @@ import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { MULTIADVENTURE_CONTRACT } from '../../constants'
 import useDailyCare from '../../hooks/useDailyCare'
+import Ordering from '../../components/Ordering'
+import { Summoner } from '../../state/user/actions'
 
 export default function Main(): JSX.Element | null {
     const { library, chainId, account } = useActiveWeb3React()
 
-    const summoners = useUserSummoners()
+    const allSummoners = useUserSummoners()
+
+    const [initialSummoners] = useState<Summoner[]>(allSummoners)
+
+    const [filteredSummoners, setFilteredSummoners] = useState<Summoner[]>(allSummoners)
 
     const { allowance, approve } = useRarity()
 
@@ -52,6 +58,7 @@ export default function Main(): JSX.Element | null {
             <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">
                 Automate Daily Check-in For Your Adventure
             </h1>
+            <Ordering summoners={initialSummoners} stateFunc={setFilteredSummoners} />
 
             <div className="w-full bg-custom-blue text-center pb-24">
                 <p className="w-full text-x text-white my-4">Register all summoners to Daily Care!</p>
@@ -68,7 +75,7 @@ export default function Main(): JSX.Element | null {
                         className="bg-custom-green border-8 border-white p-2 rounded-lg text-xl text-white my-4"
                         onClick={async () => {
                             await sendDailyCare(
-                                summoners.map((summoner) => {
+                                filteredSummoners.map((summoner) => {
                                     return summoner.id
                                 }),
                                 registerDays
@@ -88,10 +95,10 @@ export default function Main(): JSX.Element | null {
                     </button>
                 )}
 
-                {summoners ? (
-                    summoners.length > 0 ? (
+                {filteredSummoners ? (
+                    filteredSummoners.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-10/12 xl:w-8/12 mx-auto mt-10 gap-4">
-                            {summoners.map((summoner) => {
+                            {filteredSummoners.map((summoner) => {
                                 return (
                                     <SummonerCard
                                         key={summoner.id}

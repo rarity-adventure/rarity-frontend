@@ -2,7 +2,6 @@ import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect, useState } from 'react'
 import { fromWei } from 'web3-utils'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
@@ -11,17 +10,18 @@ import decrease from '../../assets/images/decrease_attribute.png'
 import useGold from '../../hooks/useRarityGold'
 import { calcAPCost } from '../../constants'
 import Transfer from './Transfer'
+import useRarityName from '../../hooks/useRarityName'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 
 interface SummonerStatsCardProps {
     summoner: Summoner
 }
 
 export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps): JSX.Element {
-    const { exp, levelUp } = useRarity()
+    const { exp, level_up } = useRarity()
 
     const { library, chainId } = useActiveWeb3React()
-
-    const windowVisible = useIsWindowVisible()
 
     const [state, setState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
 
@@ -31,13 +31,14 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [setState, exp, summoner])
 
     useEffect(() => {
-        if (!library || !windowVisible || !chainId || !exp) return
+        if (!library || !chainId || !exp) return
         fetch()
-    }, [library, chainId, windowVisible, exp, fetch])
+    }, [library, chainId, exp, fetch])
 
     const { scores, calcAP, point_buy } = useRarityAttributes()
 
     const [availableAP, setAvailableAP] = useState(0)
+
     const [tempAP, setTempAP] = useState(0)
 
     const [loaded, setLoaded] = useState(false)
@@ -73,9 +74,9 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [scores, calcAP, summoner])
 
     useEffect(() => {
-        if (!library || !windowVisible || !chainId) return
+        if (!library || !chainId) return
         fetchAttributes()
-    }, [library, chainId, windowVisible, fetchAttributes])
+    }, [library, chainId, fetchAttributes])
 
     const [gold, setGold] = useState<{
         hasClaimed: number
@@ -97,9 +98,9 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     }, [summoner, claimed, balance, claimable])
 
     useEffect(() => {
-        if (!library || !windowVisible || !chainId) return
+        if (!library || !chainId) return
         fetchGold()
-    }, [library, chainId, windowVisible, fetchGold])
+    }, [library, chainId, fetchGold])
 
     useEffect(() => {
         if (loaded) {
@@ -142,9 +143,8 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
 
     function handleSubstraction(attr: string) {
         if (currAttrs[attr] <= tempAttrs[attr] - 1) {
-            const addition = (tempAttrs[attr] -= 1)
-            const newState = Object.assign({}, tempAttrs, { [attr]: addition })
-            setTempAttrs(newState)
+            tempAttrs[attr] -= 1
+            setTempAttrs(tempAttrs)
             calcTempAP()
         }
     }
@@ -167,6 +167,24 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
         )
     }
 
+    const { summoner_name } = useRarityName()
+
+    const [name, setName] = useState('')
+
+    const fetch_name = useCallback(async () => {
+        const summonerName = await summoner_name(summoner.id)
+        if (!summonerName || summonerName === '') {
+            setName('Unknown')
+        } else {
+            setName(summonerName)
+        }
+    }, [summoner, summoner_name])
+
+    useEffect(() => {
+        if (!library || !chainId) return
+        fetch_name()
+    }, [fetch_name, chainId, library])
+
     return (
         <div className="w-full border-custom-border border-8">
             <div className="grid grid-cols-1 gap-">
@@ -180,6 +198,17 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
                         <h1>{CLASSES[summoner._class].name}</h1>
+                    </div>
+                    <div className="flex flex-row mt-4 p-2 text-white text-sm bg-custom-selected text-center border-white border-2 rounded-lg justify-between">
+                        <div />
+                        <div>
+                            <span>{name}</span>
+                        </div>
+                        <div>
+                            <a rel="noreferrer" target="_blank" href="https://names.rarity.game">
+                                <FontAwesomeIcon icon={faPencilAlt} />
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -212,7 +241,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 Level UP

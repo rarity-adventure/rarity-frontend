@@ -9,6 +9,9 @@ import ATTRIBUTES_ABI from '../constants/abis/attributes.json'
 import MULTIADVENTURE_ABI from '../constants/abis/multiadventure.json'
 import DAILYCARE_ABI from '../constants/abis/daycare.json'
 import DUNGEON_ABI from '../constants/abis/dungeon.json'
+import SKILLS_ABI from '../constants/abis/skills.json'
+import MULTICALL2_ABI from '../constants/abis/multicall.json'
+import NAMES_ABI from '../constants/abis/names.json'
 import FACTIONS_ABI from '../constants/abis/factions.json'
 import BATTLEFIELD_ABI from '../constants/abis/battlefield.json'
 
@@ -19,7 +22,10 @@ import {
     GOLD_CONTRACTS,
     FACTIONS_CONTRACT,
     MULTIADVENTURE_CONTRACT,
+    MULTICALL2_ADDRESS,
     RARITY_CONTRACTS,
+    RARITY_NAME_CONTRACT,
+    SKILLS_CONTRACT,
 } from '../constants'
 import { BATTLEFIELDS } from 'constants/battlefields'
 
@@ -85,4 +91,18 @@ export function useDungeonContract(): { [k: string]: Contract | null } {
         dungeons[k] = getContract(DUNGEONS[k].contract, DUNGEON_ABI, library, account ? account : undefined)
     }
     return dungeons
+}
+
+export function useSkillsContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? SKILLS_CONTRACT[chainId] : undefined, SKILLS_ABI)
+}
+
+export function useRarityNameContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? RARITY_NAME_CONTRACT[chainId] : undefined, NAMES_ABI)
+}
+
+export function useMulticall2Contract(): Contract | null {
+    return useContract(MULTICALL2_ADDRESS, MULTICALL2_ABI, false)
 }
