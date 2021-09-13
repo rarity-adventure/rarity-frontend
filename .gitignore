@@ -47,6 +47,7 @@ public/sw.js
 public/sw.js.map
 public/profile/
 public/workbox-*
+locale/*.js
 
 
 
