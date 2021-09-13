@@ -14,6 +14,8 @@
     "dependencies": {
         "@apollo/client": "3.4.10",
         "@babel/core": "7.15.5",
+        "babel-plugin-macros": "^3.1.0",
+        "babel-plugin-styled-components": "^1.13.1",
         "@ethersproject/providers": "^5.4.5",
         "@fortawesome/fontawesome-svg-core": "1.2.36",
         "@fortawesome/free-brands-svg-icons": "5.15.4",

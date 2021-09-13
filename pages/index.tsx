@@ -18,7 +18,7 @@ export default function Home(): JSX.Element {
             <div>
                 <div className="hero-bg w-full z-0" />
                 <div className="classes-bg w-full z-0" />
-                <Toaster containerClassName="z-30"/>
+                <Toaster containerClassName="z-30" />
             </div>
             <div className="w-full mt-24 lg:mt-48 rounded-b-3xl">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:11/12 xl:w-9/12 mx-auto">

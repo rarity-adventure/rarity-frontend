@@ -2,7 +2,7 @@ module.exports = {
     catalogs: [
         {
             path: '<rootDir>/locale/{locale}',
-            include: ['<rootDir>/src'],
+            include: ['<rootDir>/components', '<rootDir>/pages'],
             exclude: ['**/node_modules/**'],
         },
     ],
@@ -10,7 +10,7 @@ module.exports = {
     format: 'minimal',
     formatOptions: { origins: false, lineNumbers: false },
     sourceLocale: 'en',
-    locales: ['en', 'es'],
+    locales: ['en'],
     orderBy: 'messageId',
     pseudoLocale: '',
     rootDir: '.',

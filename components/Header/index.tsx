@@ -4,8 +4,12 @@ import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import { useETHBalances } from '../../state/wallet/hooks'
 import LangSwitcher from '../LanguageSwitch'
+import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 function AppBar(): JSX.Element {
+    const { i18n } = useLingui()
+
     const { account, chainId } = useActiveWeb3React()
 
     const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
@@ -28,31 +32,31 @@ function AppBar(): JSX.Element {
                                                 href="#"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
-                                                <h2>Adventure</h2>
+                                                <h2>{i18n._(t`Adventure`)}</h2>
                                             </a>
                                             <a
                                                 href="#"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
-                                                <h2>Profile</h2>
+                                                <h2>{i18n._(t`Profile`)}</h2>
                                             </a>
                                             <a
                                                 href="#"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
-                                                <h2>Analytics</h2>
+                                                <h2>{i18n._(t`Analytics`)}</h2>
                                             </a>
                                             <a
                                                 href="#"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
-                                                <h2>Marketplace</h2>
+                                                <h2>{i18n._(t`Marketplace`)}</h2>
                                             </a>
                                             <a
                                                 href="#"
                                                 className="border-contrast border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
-                                                <h2>Donate</h2>
+                                                <h2>{i18n._(t`Donate`)}</h2>
                                             </a>
                                         </div>
                                     </div>
@@ -75,7 +79,7 @@ function AppBar(): JSX.Element {
                                 </div>
                                 <div className="flex -mr-2 md:hidden">
                                     <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-high-emphesis focus:outline-none">
-                                        <span className="sr-only">Open menu</span>
+                                        <span className="sr-only">{i18n._(t`Open menu`)}</span>
                                         {open ? (
                                             <svg
                                                 className="block w-6 h-6"
@@ -119,31 +123,31 @@ function AppBar(): JSX.Element {
                                     href="#"
                                     className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                 >
-                                    <h2>Adventure</h2>
+                                    <h2>{i18n._(t`Adventure`)}</h2>
                                 </a>
                                 <a
                                     href="#"
                                     className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                 >
-                                    <h2>Profile</h2>
+                                    <h2>{i18n._(t`Profile`)}</h2>
                                 </a>
                                 <a
                                     href="#"
                                     className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                 >
-                                    <h2>Analytics</h2>
+                                    <h2>{i18n._(t`Analytics`)}</h2>
                                 </a>
                                 <a
                                     href="#"
                                     className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                 >
-                                    <h2>Marketplace</h2>
+                                    <h2>{i18n._(t`Marketplace`)}</h2>
                                 </a>
                                 <a
                                     href="#"
                                     className="border-contrast border-transparent border-2 rounded-3xl py-1 px-2"
                                 >
-                                    <h2>Donate</h2>
+                                    <h2>{i18n._(t`Donate`)}</h2>
                                 </a>
                             </div>
                         </Popover.Panel>

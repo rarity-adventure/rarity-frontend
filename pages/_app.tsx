@@ -24,7 +24,6 @@ import { remoteLoader } from '@lingui/remote-loader'
 import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
 
-
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
 const client = new ApolloClient({
@@ -56,23 +55,12 @@ export default function MyApp({
         }
     }, [])
 
-
     useEffect(() => {
         async function load(locale) {
             i18n.loadLocaleData(locale, { plurals: plurals[locale.split('_')[0]] })
 
-            try {
-                // Load messages from AWS, use q session param to get latest version from cache
-                const resp = await fetch(`https://d3l928w2mi7nub.cloudfront.net/${locale}.json?q=${sessionId}`)
-                const remoteMessages = await resp.json()
-
-                const messages = remoteLoader({ messages: remoteMessages, format: 'minimal' })
-                i18n.load(locale, messages)
-            } catch {
-                // Load fallback messages
-                const { messages } = await import(`@lingui/loader!./../../locale/${locale}.json?raw-lingui`)
-                i18n.load(locale, messages)
-            }
+            const { messages } = await import(`@lingui/loader!./../locale/${locale}.json?raw-lingui`)
+            i18n.load(locale, messages)
 
             i18n.activate(locale)
         }
