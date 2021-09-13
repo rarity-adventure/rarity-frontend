@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import daycare_img from '../../assets/images/daycare_img.png'
 import { useUserSummoners } from '../../state/user/hooks'
 import SummonerCard from '../../components/Summoner/Card'
@@ -50,18 +52,20 @@ export default function Main(): JSX.Element | null {
 
     const [registerDays, setRegisterDays] = useState(0)
 
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="w-full mb-44">
                 <img alt="sword" src={daycare_img} className="mx-auto w-16 mt-4 md:w-32" />
             </div>
             <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">
-                Automate Daily Check-in For Your Adventure
+                {t('Automate Daily Check-in For Your Adventure')}
             </h1>
             <Ordering summoners={initialSummoners} stateFunc={setFilteredSummoners} />
 
             <div className="w-full bg-custom-blue text-center pb-24">
-                <p className="w-full text-x text-white my-4">Register all summoners to Daily Care!</p>
+                <p className="w-full text-x text-white my-4">{t('Register all summoners to Daily Care!')}</p>
                 <input
                     className="text-2xl w-16 bg-custom-green border-2 border-white rounded text-center text-white"
                     type="number"
@@ -69,7 +73,7 @@ export default function Main(): JSX.Element | null {
                         setRegisterDays(parseInt(v.target.value))
                     }}
                 />
-                <span className="text-2xl text-white mx-2">Days</span>
+                <span className="text-2xl text-white mx-2">{t('Days')}</span>
                 {multiadv.approved ? (
                     <button
                         className="bg-custom-green border-8 border-white p-2 rounded-lg text-xl text-white my-4"
@@ -82,7 +86,7 @@ export default function Main(): JSX.Element | null {
                             )
                         }}
                     >
-                        Register
+                        {t('Register')}
                     </button>
                 ) : (
                     <button
@@ -91,7 +95,7 @@ export default function Main(): JSX.Element | null {
                             await approveMultiAdventure()
                         }}
                     >
-                        Approve
+                        {t('Approve')}
                     </button>
                 )}
 
@@ -112,7 +116,7 @@ export default function Main(): JSX.Element | null {
                         </div>
                     ) : (
                         <p className="text-white mt-10 text-2xl font-bold">
-                            To be able to manage stats you need to have a summoner
+                            {t('To be able to manage stats you need to have a summoner')}
                         </p>
                     )
                 ) : (

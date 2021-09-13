@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import stats from '../../assets/images/stats.png'
 import title from '../../assets/images/stats_txt.png'
 import SummonerStatsCard from '../../components/Summoner/Stats'
@@ -13,13 +14,15 @@ export default function Stats(): JSX.Element | null {
 
     const [filteredSummoners, setFilteredSummoners] = useState<Summoner[]>(allSummoners)
 
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="w-full mb-44">
                 <img alt="sword" src={stats} className="mx-auto w-16 mt-4 md:w-32" />
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
-            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Upgrade Your Attributes</h1>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">{t('Upgrade Your Attributes')}</h1>
             <Ordering summoners={initialSummoners} stateFunc={setFilteredSummoners} />
             <div className="w-full bg-custom-blue text-center pb-24">
                 {filteredSummoners ? (
@@ -31,7 +34,7 @@ export default function Stats(): JSX.Element | null {
                         </div>
                     ) : (
                         <p className="text-white mt-10 text-2xl font-bold text-center">
-                            To be able to manage stats you need to have a summoner
+                            {t('To be able to manage stats you need to have a summoner')}
                         </p>
                     )
                 ) : (

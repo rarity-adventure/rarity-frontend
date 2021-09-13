@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Summoner } from '../../state/user/actions'
 import { CLASS_SKILLS, CLASSES, intModifierForSkills } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
@@ -18,6 +19,8 @@ interface SummonerStatsCardProps {
 
 export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps): JSX.Element {
     const { library, chainId, account } = useActiveWeb3React()
+
+    const { t } = useTranslation();
 
     const windowVisible = useIsWindowVisible()
 
@@ -143,21 +146,21 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                         <img
                             className="p-4 h-24 mx-auto"
                             src={CLASSES[summoner._class].image}
-                            alt={CLASSES[summoner._class].name}
+                            alt={t(CLASSES[summoner._class].name)}
                         />
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
-                        <h1>{CLASSES[summoner._class].name}</h1>
+                        <h1>{t(CLASSES[summoner._class].name)}</h1>
                     </div>
                 </div>
                 <Transfer summoner={summoner} />
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
-                        <span>Summoner:</span>
+                        <span>{t('Summoner')}:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
                     <div className="flex justify-between items-center my-2">
-                        <span>Level:</span>
+                        <span>{t('Level')}:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
                             <span className="text-xs">
@@ -171,7 +174,7 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                     await levelUp(summoner.id)
                                 }}
                             >
-                                Level UP
+                                {t('Level UP')}
                             </button>
                         ) : (
                             <></>
@@ -180,7 +183,7 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                     {isCreated ? (
                         <>
                             <div className="mt-8 text-lg text-center">
-                                <p>Available SP</p>
+                                <p>{t('Available SP')}</p>
                             </div>
                             <div className="my-2 text-xl text-center">
                                 <p>{tempSP}</p>
@@ -190,7 +193,7 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                     onClick={() => reset()}
                                     className="text-center text-xs bg-custom-green text-white rounded-lg border-2 border-white p-2"
                                 >
-                                    Reset
+                                    {t('Reset')}
                                 </button>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full mx-auto mt-10  gap-5 mb-10">
@@ -228,8 +231,8 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                                     </button>
                                                 </div>
                                                 <div className="flex mx-auto items-center justify-between w-3/4">
-                                                    <span>Cost: 1</span>&nbsp;
-                                                    <span>Max: {calcMaxSkillLvl(parseInt(k))}</span>
+                                                    <span>{t('Cost')}: 1</span>&nbsp;
+                                                    <span>{t('Max')}: {calcMaxSkillLvl(parseInt(k))}</span>
                                                 </div>
                                             </div>
                                         )
@@ -266,8 +269,8 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                                     </button>
                                                 </div>
                                                 <div className="flex mx-auto items-center justify-between w-3/4">
-                                                    <span>Cost: 2</span>&nbsp;
-                                                    <span>Max: {calcMaxSkillLvl(parseInt(k))}</span>
+                                                    <span>{t('Cost')}: 2</span>&nbsp;
+                                                    <span>{t('Max')}: {calcMaxSkillLvl(parseInt(k))}</span>
                                                 </div>
                                             </div>
                                         )
@@ -280,18 +283,18 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                         onClick={async () => await assignSkills()}
                                         className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl"
                                     >
-                                        Assign Skills
+                                        {t('Assign Skills')}
                                     </button>
                                 ) : (
                                     <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 border-white border-4 rounded-lg text-2xl">
-                                        Assign Skills
+                                        {t('Assign Skills')}
                                     </button>
                                 )}
                             </div>
                         </>
                     ) : (
                         <div className="text-center p-10">
-                            <span>The choose your summoner skills you need to have your attributes defined</span>
+                            <span>{t('The choose your summoner skills you need to have your attributes defined')}</span>
                         </div>
                     )}
                 </div>

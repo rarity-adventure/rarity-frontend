@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useUserSummoners } from '../../state/user/hooks'
 import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
@@ -11,8 +13,10 @@ export default function Skills(): JSX.Element | null {
 
     const [summoner, setSummoner] = useState<Summoner | null>(null)
 
+    const { t } = useTranslation();
+
     function summonerDataToString(summoner: Summoner): string {
-        return parseInt(summoner.id).toString() + ' Level ' + summoner._level + ' ' + CLASSES[summoner._class].name
+        return parseInt(summoner.id).toString() + ' '+ t('Level') + ' ' + summoner._level + ' ' + t(CLASSES[summoner._class].name)
     }
 
     return (
@@ -21,10 +25,10 @@ export default function Skills(): JSX.Element | null {
                 <img alt="sword" src={skills} className="mx-auto w-16 mt-4 md:w-32" />
                 <img alt="sword" src={skills_txt} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
-            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Assign skills to your summoners</h1>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">{t('Assign skills to your summoners')}</h1>
             <div className="w-full bg-custom-blue text-center pb-24">
                 <div className="mt-4">
-                    <p className="w-full text-x text-white my-4">Select a summoner</p>
+                    <p className="w-full text-x text-white my-4">{t('Select a summoner')}</p>
                     <select
                         defaultValue={0}
                         className="p-2 border-custom-green border-4 rounded-lg"
@@ -34,7 +38,7 @@ export default function Skills(): JSX.Element | null {
                             }
                         }}
                     >
-                        <option value={0}>Select summoner</option>
+                        <option value={0}>{t('Select summoner')}</option>
                         {summoners.map((summoner) => {
                             return (
                                 <option key={summoner.id} value={JSON.stringify(summoner)}>
@@ -48,7 +52,7 @@ export default function Skills(): JSX.Element | null {
                             <SummonerSkillsCard summoner={summoner} />
                         </div>
                     ) : (
-                        <p className="text-white mt-10 text-2xl font-bold text-center">Select a summoner first</p>
+                        <p className="text-white mt-10 text-2xl font-bold text-center">{t('Select a summoner first')}</p>
                     )}
                 </div>
             </div>

@@ -77,7 +77,7 @@ export default function Adventure(): JSX.Element | null {
                 <img alt="sword" src={adventure} className="mx-auto w-16 mt-4 md:w-32" />
                 <img alt="sword" src={title} className="mx-auto w-52 mt-4 md:w-64" />
             </div>
-            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">Journey Awaiting!</h1>
+            <h1 className="text-md md:text-2xl text-white -mt-32 mb-12 uppercase">{t('Journey Awaiting')}!</h1>
             <Ordering summoners={initialSummoners} stateFunc={setFilteredSummoners} />
             <div className="w-full bg-custom-blue text-center pb-24">
                 <p className="w-full text-x text-white my-4">{t('Send all summoners to adventure')}</p>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Summoner } from '../../state/user/actions'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { CLASSES } from '../../constants/classes'
@@ -44,6 +45,8 @@ export default function Ordering({ summoners, stateFunc }: SummonersOrderingProp
         stateFunc(levelFilter)
     }, [selection, summoners, stateFunc])
 
+    const { t } = useTranslation();
+
     return (
         <div className="flex flex-row-reverse xl:w-2/4 text-center text-white text-md p-4 items-center">
             <div className="bg-custom-background mx-2">
@@ -54,11 +57,11 @@ export default function Ordering({ summoners, stateFunc }: SummonersOrderingProp
                         setSelection({ class: selection.class, level: parseInt(v.target.value) })
                     }}
                 >
-                    <option value={0}>Select a level</option>
+                    <option value={0}>{t('Select a level')}</option>
                     {state.levels.map((l) => {
                         return (
                             <option key={l} value={l}>
-                                Level {l}
+                                {t('Level')} {l}
                             </option>
                         )
                     })}
@@ -72,11 +75,11 @@ export default function Ordering({ summoners, stateFunc }: SummonersOrderingProp
                         setSelection({ class: parseInt(v.target.value), level: selection.level })
                     }}
                 >
-                    <option value={0}>Select a class</option>
+                    <option value={0}>{t('Select a class')}</option>
                     {state.classes.map((c) => {
                         return (
                             <option key={c} value={c}>
-                                {CLASSES[c].name}
+                                {t(CLASSES[c].name)}
                             </option>
                         )
                     })}

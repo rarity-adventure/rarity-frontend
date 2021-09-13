@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
@@ -67,6 +68,8 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
 
     const { scout, explore, log } = useDungeon()
 
+    const { t } = useTranslation();
+
     const [dungeonAvailable, setDungeonAvailable] = useState<boolean>(false)
 
     const fetchLog = useCallback(async () => {
@@ -78,6 +81,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
         if (!library || !windowVisible || !chainId || !exp) return
         fetchLog()
     }, [library, chainId, windowVisible, exp, fetchLog])
+
 
     async function scoutFunc() {
         const scoutInfo = await scout(summoner.id, dungeon)
@@ -109,21 +113,21 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                         <img
                             className="p-4 h-24 mx-auto"
                             src={CLASSES[summoner._class].image}
-                            alt={CLASSES[summoner._class].name}
+                            alt={t(CLASSES[summoner._class].name)}
                         />
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
-                        <h1>{CLASSES[summoner._class].name}</h1>
+                        <h1>{t(CLASSES[summoner._class].name)}</h1>
                     </div>
                 </div>
                 <Transfer summoner={summoner} />
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
-                        <span>Summoner:</span>
+                        <span>{t('Summoner')}:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
                     <div className="flex justify-between items-center my-2">
-                        <span>Level:</span>
+                        <span>{t('Level')}:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
                             <span className="text-xs">
@@ -137,33 +141,33 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                                     await levelUp(summoner.id)
                                 }}
                             >
-                                Level UP
+                                {t('Level UP')}
                             </button>
                         ) : (
                             <></>
                         )}
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="my-2">Adventure:</span>
+                        <span className="my-2">{t('Adventure')}:</span>
                         {state.nextAdventure * 1000 < Date.now() ? (
                             <button
                                 className="bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                 onClick={async () => await adventure(summoner.id)}
                             >
-                                Adventure!
+                                {t('Adventure')}!
                             </button>
                         ) : (
                             <button
                                 className="opacity-50 cursor-not-allowed bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                 disabled
                             >
-                                Adventure!
+                                {t('Adventure')}!
                             </button>
                         )}
                     </div>
                     {state.nextAdventure * 1000 > Date.now() ? (
                         <div className="text-center my-2">
-                            <p className="text-xs my-1">Next adventure</p>
+                            <p className="text-xs my-1">{t('Next adventure')}</p>
                             <p className="text-xs">
                                 {secondsToString((state.nextAdventure * 1000 - Date.now()) / 1000)}
                             </p>
@@ -173,7 +177,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                     )}
                 </div>
                 <div className="bg-custom-green text-center text-white text-2xl font-bold p-1">
-                    <h1>Dungeons</h1>
+                    <h1>{t('Dungeons')}</h1>
                 </div>
                 <div className="p-2 my-2 text-right">
                     <select
@@ -183,7 +187,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                         {Object.keys(DUNGEONS).map((k) => {
                             return (
                                 <option key={k} value={k}>
-                                    {DUNGEONS[k].name}
+                                    {t(DUNGEONS[k].name)}
                                 </option>
                             )
                         })}
@@ -195,11 +199,11 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                             className="bg-custom-green p-2 text-md rounded-md border-2 border-white"
                             onClick={async () => await scoutFunc()}
                         >
-                            Scout
+                            {t('Scout')}
                         </button>
                     ) : (
                         <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 text-md rounded-md border-2 border-white">
-                            Scout
+                            {t('Scout')}
                         </button>
                     )}
 
@@ -208,27 +212,27 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                             className="bg-custom-green text-white p-2 text-md rounded-md border-2 border-white"
                             onClick={async () => await exploreFunc()}
                         >
-                            Explore
+                            {t('Explore')}
                         </button>
                     ) : (
                         <button className="opacity-50 cursor-not-allowed bg-custom-green text-white p-2 text-md rounded-md border-2 border-white">
-                            Explore
+                            {t('Explore')}
                         </button>
                     )}
                 </div>
                 <div className="mx-10 mb-5 p-3 text-center items-center text-white rounded-lg bg-custom-green">
                     {dungeonAvailable ? (
                         actions.explore.loading ? (
-                            <span>Loading...</span>
+                            <span>{t('Loading')}...</span>
                         ) : actions.explore.success ? (
                             <span>{actions.explore.info}</span>
                         ) : actions.scout.success ? (
                             <span>{actions.scout.info}</span>
                         ) : (
-                            <span>Scout first to see your reward</span>
+                            <span>{t('Scout first to see your reward')}</span>
                         )
                     ) : (
-                        <span>You cannot go to the cellar at the moment</span>
+                        <span>{t('You cannot go to the cellar at the moment')}</span>
                     )}
                 </div>
             </div>

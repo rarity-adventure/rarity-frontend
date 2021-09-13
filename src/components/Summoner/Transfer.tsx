@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Summoner } from '../../state/user/actions'
 import { useEffect, useState } from 'react'
 import useRarity from '../../hooks/useRarity'
@@ -37,14 +38,16 @@ export default function Transfer({ summoner }: TransferProps): JSX.Element {
         }
     }, [address, setVerify])
 
+    const { t } = useTranslation();
+
     return (
         <>
             {state ? (
                 <div className="text-white my-3">
-                    <h1>Transfer Summoner</h1>
-                    <p className="text-xs mt-0.5">Warning!</p>
-                    <p className="text-xs mt-0.5">Transfer changes ownership of the summoner!</p>
-                    <p className="text-sm mt-0.5 mb-1">New owner</p>
+                    <h1>{t('Transfer Summoner')}</h1>
+                    <p className="text-xs mt-0.5">{t('Warning')}!</p>
+                    <p className="text-xs mt-0.5">{t('Transfer changes ownership of the summoner')}!</p>
+                    <p className="text-sm mt-0.5 mb-1">{t('New owner')}</p>
                     <input className="text-custom-background p-2" onChange={(e) => setAddress(e.target.value)} />
                     <div>
                         {verify.valid ? (
@@ -52,22 +55,22 @@ export default function Transfer({ summoner }: TransferProps): JSX.Element {
                                 className="m-2 bg-custom-green border-4 border-white p-2 text-xs rounded-lg"
                                 onClick={() => sendTransfer()}
                             >
-                                Transfer
+                                {t('Transfer')}
                             </button>
                         ) : (
                             <button className="opacity-50 cursor-not-allowed m-2 bg-custom-green border-4 border-white p-2 text-xs rounded-lg">
-                                Transfer
+                                {t('Transfer')}
                             </button>
                         )}
                         <button
                             className="m-2 bg-custom-green border-4 border-white p-2 text-xs rounded-lg"
                             onClick={() => setState(false)}
                         >
-                            Cancel
+                            {t('Cancel')}
                         </button>
                     </div>
                     {verify.verified && !verify.valid ? (
-                        <div className="bg-custom-red p-3 mx-2 rounded-lg text-xs">Address is not valid</div>
+                        <div className="bg-custom-red p-3 mx-2 rounded-lg text-xs">{t('Address is not valid')}</div>
                     ) : (
                         <div />
                     )}
@@ -78,7 +81,7 @@ export default function Transfer({ summoner }: TransferProps): JSX.Element {
                         onClick={() => setState(true)}
                         className="m-2 bg-custom-green border-4 border-white p-2 text-xs rounded-lg text-white"
                     >
-                        Transfer
+                        {t('Transfer')}
                     </button>
                 </div>
             )}

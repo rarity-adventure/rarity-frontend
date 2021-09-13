@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
@@ -52,6 +53,8 @@ export default function SummonerCard({
         fetch()
     }, [library, chainId, windowVisible, exp, fetch])
 
+    const { t } = useTranslation();
+
     return (
         <div className="w-full border-custom-border border-8">
             <div className="grid grid-cols-1 gap-">
@@ -60,21 +63,21 @@ export default function SummonerCard({
                         <img
                             className="p-4 h-24 mx-auto"
                             src={CLASSES[summoner._class].image}
-                            alt={CLASSES[summoner._class].name}
+                            alt={t(CLASSES[summoner._class].name)}
                         />
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
-                        <h1>{CLASSES[summoner._class].name}</h1>
+                        <h1>{t(CLASSES[summoner._class].name)}</h1>
                     </div>
                 </div>
                 <Transfer summoner={summoner} />
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
-                        <span>Summoner:</span>
+                        <span>{t('Summoner')}:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
                     <div className="flex justify-between items-center my-2">
-                        <span>Level:</span>
+                        <span>{t('Level')}:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
                             <span className="text-xs">
@@ -88,14 +91,14 @@ export default function SummonerCard({
                                     await levelUp(summoner.id)
                                 }}
                             >
-                                Level UP
+                                {t('Level UP')}
                             </button>
                         ) : (
                             <></>
                         )}
                     </div>
                     <div className="flex justify-between items-center my-2">
-                        <span className="my-1">Days:</span>
+                        <span className="my-1">{t('Days')}:</span>
                         <div className="flex items-center">
                             <input
                                 className="mr-2 w-16 bg-custom-green border-2 border-white rounded text-center"
@@ -110,25 +113,25 @@ export default function SummonerCard({
                                         className="bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                         onClick={async () => await registerFunc([summoner.id], registry)}
                                     >
-                                        Register
+                                        {t('Register')}
                                     </button>
                                 ) : (
                                     <button
                                         className="bg-custom-green p-1 text-xs rounded-md border-2 border-white"
                                         onClick={async () => await approveFunc()}
                                     >
-                                        Approve
+                                        {t('Approve')}
                                     </button>
                                 )
                             ) : (
                                 <button className="opacity-50 cursor-not-allowed bg-custom-green p-1 text-xs rounded-md border-2 border-white">
-                                    Register
+                                    {t('Register')}
                                 </button>
                             )}
                         </div>
                     </div>
                     <div className="text-center py-2">
-                        <span className="text-xs my-1">Registered for: {state.registered} Days</span>
+                        <span className="text-xs my-1">{t('Registered for')}: {state.registered} {t('')}Days</span>
                     </div>
                 </div>
             </div>

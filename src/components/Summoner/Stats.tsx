@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import useRarity from '../../hooks/useRarity'
@@ -19,6 +20,8 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
     const { exp, levelUp } = useRarity()
 
     const { library, chainId } = useActiveWeb3React()
+
+    const { t } = useTranslation();
 
     const [state, setState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
 
@@ -172,11 +175,11 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                         <img
                             className="p-4 h-24 mx-auto"
                             src={CLASSES[summoner._class].image}
-                            alt={CLASSES[summoner._class].name}
+                            alt={t(CLASSES[summoner._class].name)}
                         />
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
-                        <h1>{CLASSES[summoner._class].name}</h1>
+                        <h1>{t(CLASSES[summoner._class].name)}</h1>
                     </div>
                 </div>
                 <div>
@@ -185,7 +188,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                             className="text-xs bg-custom-green border-2 rounded-lg border-white p-1 text-white"
                             onClick={() => reset()}
                         >
-                            Reset
+                            {t('Reset')}
                         </button>
                     ) : (
                         <div />
@@ -194,11 +197,11 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                 <Transfer summoner={summoner} />
                 <div className="px-8 text-left text-white text-md font-bold">
                     <div className="flex justify-between items-center my-2">
-                        <span>Summoner:</span>
+                        <span>{t('Summoner')}:</span>
                         <span>{parseInt(summoner.id, 16)}</span>
                     </div>
                     <div className="flex justify-between items-center my-2">
-                        <span>Level:</span>
+                        <span>{t('Level')}:</span>
                         <span>
                             {parseInt(summoner._level, 16)}{' '}
                             <span className="text-xs">
@@ -212,7 +215,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                                     await levelUp(summoner.id)
                                 }}
                             >
-                                Level UP
+                                {t('Level UP')}
                             </button>
                         ) : (
                             <></>
@@ -220,12 +223,12 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="my-2">
-                            AP <span className="text-xs">(Unassigned):</span>
+                            {t('AP')} <span className="text-xs">({t('Unassigned')}):</span>
                         </span>
                         <span>{tempAP}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                        <span className="my-2">Gold:</span>
+                        <span className="my-2">{t('Gold')}:</span>
                         <div className="flex items-center">
                             <span>{gold.balance.toFixed(4)}</span>
                             {gold.canClaim > 0 ? (
@@ -235,7 +238,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                                         await claim(summoner.id)
                                     }}
                                 >
-                                    Claim
+                                    {t('Claim')}
                                 </button>
                             ) : (
                                 <div />
@@ -245,14 +248,14 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                     {Object.keys(tempAttrs).map((k) => {
                         return (
                             <div key={k} className="flex justify-between items-center">
-                                <span className="my-1">{k.toUpperCase()}:</span>
+                                <span className="my-1">{t(k).toUpperCase()}:</span>
                                 <div className="flex items-center gap-1">
                                     <span className="text-sm">{tempAttrs[k]}</span>
                                     <button onClick={() => handleAddition(k)}>
-                                        <img src={increase} width="20px" alt="increase attribute" />
+                                        <img src={increase} width="20px" alt={t('increase attribute')} />
                                     </button>
                                     <button onClick={() => handleSubstraction(k)}>
-                                        <img src={decrease} width="20px" alt="decrease attribute" />
+                                        <img src={decrease} width="20px" alt={t('decrease attribute')} />
                                     </button>
                                     <span className="text-sm w-4">{calcAPCost(tempAttrs[k])}</span>
                                 </div>
@@ -267,7 +270,7 @@ export default function SummonerStatsCard({ summoner }: SummonerStatsCardProps):
                             assign()
                         }}
                     >
-                        Assign Points
+                        {t('Assign Points')}
                     </button>
                 </div>
             </div>

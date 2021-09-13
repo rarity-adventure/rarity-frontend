@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import sword from '../../assets/images/sword.png'
 import title from '../../assets/images/hero_title.png'
 import mintImg from '../../assets/images/mint.png'
@@ -9,8 +10,11 @@ import { faQuestion } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home(): JSX.Element | null {
     const rarity = useRarity()
+    const { t } = useTranslation();
 
     if (!rarity) return null
+
+
 
     return (
         <>
@@ -37,7 +41,7 @@ export default function Home(): JSX.Element | null {
                             />
                         </div>
                         <div className="text-white bg-custom-blue py-1 px-2 text-2xl border-2 border-solid">
-                            <h1>Random</h1>
+                            <h1>{t('Random')}</h1>
                         </div>
                     </button>
                     {Object.keys(CLASSES).map((k) => {
@@ -54,7 +58,7 @@ export default function Home(): JSX.Element | null {
                                     />
                                 </div>
                                 <div className="text-white bg-custom-blue py-1 px-2 text-2xl border-2 border-solid">
-                                    <h1>{CLASSES[k].name}</h1>
+                                    <h1>{t(CLASSES[k].name)}</h1>
                                 </div>
                             </button>
                         )
