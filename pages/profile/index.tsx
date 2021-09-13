@@ -2,7 +2,7 @@ import { useUserSelectedSummoner, useUserSelectSummoner, useUserSummoners } from
 import { SummonerFullData, useSummonersData } from '../../state/summoners/hooks'
 import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Loader from '../../components/Loader'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
@@ -26,17 +26,17 @@ export default function Profile(): JSX.Element {
     const [summonersState, setSummonersState] = useState<{ id: string }[]>(summoners)
 
     useEffect(() => {
-        if (!windowVisible || !library || !account || !chainId) return
+        console.log('setSummonersState')
         setSummonersState(summoners)
     }, [windowVisible, library, account, chainId, summoners, setSummonersState])
 
-    const summoners_full_info = useSummonersData(summoners)
+    const summonersFullData = useSummonersData(summoners)
 
-    const [fullSummonersState, setFullSummonersState] = useState<{ [k: string]: SummonerFullData }>({})
+    const [summonersDataState, setSummonersDataState] = useState<{ [k: string]: SummonerFullData }>(summonersFullData)
 
     useEffect(() => {
-        if (summonersState.length < 0) return
-        setFullSummonersState(summoners_full_info)
+        console.log('setFullSummonersState')
+        setSummonersDataState(summonersFullData)
     }, [summonersState])
 
     const storedSelectedSummoner = useUserSelectedSummoner()
@@ -45,7 +45,7 @@ export default function Profile(): JSX.Element {
 
     const [selectedSummoner, setSelectedSummoner] = useState<string>(storedSelectedSummoner)
 
-    const [selectedSummonerClass, setSelectedSummonerClass] = useState<{
+    const [selectedSummonerInfo, setSelectedSummonerInfo] = useState<{
         loading: boolean
         img: string
         name: string
@@ -53,14 +53,15 @@ export default function Profile(): JSX.Element {
     }>({ loading: true, img: '', name: '', _class: '' })
 
     useEffect(() => {
+        console.log('setSelectedSummoner')
         if (selectedSummoner === '0') {
             if (summonersState.length > 0) {
                 setSelectedSummoner(summonersState[0].id)
             }
         }
-        const summoner = fullSummonersState[selectedSummoner]
+        const summoner = summonersFullData[selectedSummoner]
         if (summoner) {
-            setSelectedSummonerClass({
+            setSelectedSummonerInfo({
                 loading: false,
                 img: CLASSES_IMAGES[summoner.base._class.toString()],
                 name: summoner.base._name,
@@ -92,15 +93,15 @@ export default function Profile(): JSX.Element {
                         </button>
                     </div>
                     <div>
-                        {Object.keys(fullSummonersState).length > 0 ? (
+                        {Object.keys(summonersFullData).length > 0 ? (
                             <select
                                 defaultValue={undefined}
                                 className="bg-transparent divide-white divide-y-2 p-2 uppercase"
                                 onChange={(v) => setSelectedSummoner(v.target.value)}
                             >
                                 <option id={undefined}>Select a summoner</option>
-                                {Object.keys(fullSummonersState).map((k: string) => {
-                                    const data = fullSummonersState[k]
+                                {Object.keys(summonersFullData).map((k: string) => {
+                                    const data = summonersFullData[k]
                                     return (
                                         <option key={k} value={k}>
                                             {data.base._name !== ''
@@ -121,7 +122,7 @@ export default function Profile(): JSX.Element {
                         )}
                     </div>
                 </div>
-                {selectedSummonerClass.loading ? (
+                {selectedSummonerInfo.loading ? (
                     <div className="relative h-96">
                         <div className="absolute top-1/2 right-1/2">
                             <Loader className="animate-spin" size="40px" />
@@ -131,16 +132,16 @@ export default function Profile(): JSX.Element {
                     <div className="flex flex-row justify-between items-center p-20 mx-14">
                         <>
                             <div className="text-center">
-                                <img src={selectedSummonerClass.img} alt={''} className="h-48 mx-auto" />
+                                <img src={selectedSummonerInfo.img} alt={''} className="h-48 mx-auto" />
                                 <div className="flex flex-row items-center text-center justify-center uppercase text-3xl">
                                     [{' '}
                                     <span className="text-xl mx-10">
-                                        {selectedSummonerClass.name !== '' ? selectedSummonerClass.name : 'Unknown'}
+                                        {selectedSummonerInfo.name !== '' ? selectedSummonerInfo.name : 'Unknown'}
                                     </span>{' '}
                                     ]
                                 </div>
                                 <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl p-2">
-                                    <span className="p-2 uppercase">{i18n._(selectedSummonerClass._class)}</span>{' '}
+                                    <span className="p-2 uppercase">{i18n._(selectedSummonerInfo._class)}</span>{' '}
                                 </div>
                             </div>
                             <div></div>

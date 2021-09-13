@@ -13,7 +13,9 @@ export default function Updater(): null {
 
     const windowVisible = useIsWindowVisible()
 
-    const { data, loading, error } = useQuery(SUMMONERS, { variables: { owner: account.toString().toLowerCase() } })
+    const { data, loading, error } = useQuery(SUMMONERS, {
+        variables: { owner: account ? account.toString().toLowerCase() : '' },
+    })
 
     const fetchSummoners = useCallback(() => {
         dispatch(updateUserSummoners(data.summoners))

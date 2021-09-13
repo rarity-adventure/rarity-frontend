@@ -49,7 +49,7 @@ function AppBar(): JSX.Element {
                                                 <h2>{i18n._(t`Analytics`)}</h2>
                                             </a>
                                             <a
-                                                href="/marketplace"
+                                                href="https://names.rarity.game"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
                                                 <h2>{i18n._(t`Marketplace`)}</h2>
@@ -140,7 +140,7 @@ function AppBar(): JSX.Element {
                                     <h2>{i18n._(t`Analytics`)}</h2>
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://names.rarity.game"
                                     className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Marketplace`)}</h2>

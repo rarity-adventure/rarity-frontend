@@ -82,3 +82,7 @@ h6 {
     z-index: -99;
     background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
 }
+
+.bg {
+    background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
+}
