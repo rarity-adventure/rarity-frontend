@@ -1,0 +1,82 @@
+[
+    { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "_enrolled",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "_enrollments",
+        "outputs": [
+            { "internalType": "uint8", "name": "faction", "type": "uint8" },
+            { "internalType": "uint256", "name": "date", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "summoner", "type": "uint256" },
+            { "internalType": "uint8", "name": "faction", "type": "uint8" }
+        ],
+        "name": "enroll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint8", "name": "faction", "type": "uint8" }],
+        "name": "enrolled",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "name": "enrollments",
+        "outputs": [
+            { "internalType": "uint8", "name": "", "type": "uint8" },
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "factionChangeDelay",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "index", "type": "uint256" }],
+        "name": "factionName",
+        "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "delay", "type": "uint256" }],
+        "name": "setFactionChangeDelay",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+        "name": "setOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

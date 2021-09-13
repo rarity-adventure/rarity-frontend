@@ -1,7 +1,9 @@
 import { useRarityContract } from './useContract'
 import { useCallback } from 'react'
+import { Summoner } from 'state/user/actions'
 
 interface RarityInterface {
+    summoner: (id: string) => Promise<Summoner | undefined>
     img: (id: string) => Promise<string>
     mint: (_class?: string) => Promise<void>
     exp: (id: string, lvl: string) => Promise<{ actual: string; next: string }>
@@ -16,6 +18,22 @@ interface RarityInterface {
 
 export default function useRarity(): RarityInterface {
     const rarity = useRarityContract()
+
+    const summoner = useCallback(
+        async (id: string): Promise<Summoner | undefined> => {
+            try {
+                const res = await rarity?.summoner(id)
+                return {
+                    id: id.toString(),
+                    _class: res[2].toString(),
+                    _level: res[3].toString(),
+                }
+            } catch (e) {
+                return
+            }
+        },
+        [rarity]
+    )
 
     const img = useCallback(
         async (id: string): Promise<string> => {
@@ -127,7 +145,7 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    return { img, mint, exp, nextAdventure, adventure, nextSummoner, approve, allowance, levelUp, transfer }
+    return { summoner, img, mint, exp, nextAdventure, adventure, nextSummoner, approve, allowance, levelUp, transfer }
 }
 
 function rand() {

@@ -49,6 +49,18 @@ function AppBar(): JSX.Element {
                                             >
                                                 <h1>Skills</h1>
                                             </a>
+                                            <a
+                                                href={'/factions'}
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
+                                            >
+                                                <h1>Factions</h1>
+                                            </a>
+                                            <a
+                                                href={'/battlefields'}
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
+                                            >
+                                                <h1>Battlefields</h1>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -138,6 +150,18 @@ function AppBar(): JSX.Element {
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
                                     Skills
+                                </a>
+                                <a
+                                    href={'/factions'}
+                                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                >
+                                    Factions
+                                </a>
+                                <a
+                                    href={'/battlefields'}
+                                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                >
+                                    Battlefields
                                 </a>
                             </div>
                         </Popover.Panel>

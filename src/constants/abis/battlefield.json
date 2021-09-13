@@ -1,0 +1,215 @@
+[
+    {
+        "inputs": [{ "internalType": "address", "name": "factions", "type": "address" }],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "_factions",
+        "outputs": [{ "internalType": "contract Factions", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_rarity",
+        "outputs": [{ "internalType": "contract IRarity", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_skills",
+        "outputs": [{ "internalType": "contract IRaritySkills", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "name": "availableToCollect",
+        "outputs": [{ "internalType": "uint256", "name": "amount", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "clashDelay",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "collected",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint8", "name": "faction", "type": "uint8" }],
+        "name": "factionPower",
+        "outputs": [{ "internalType": "uint256", "name": "power", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "player", "type": "address" },
+            { "internalType": "uint256", "name": "index", "type": "uint256" }
+        ],
+        "name": "getOwnedSummonerAtIndex",
+        "outputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "player", "type": "address" }],
+        "name": "getOwnedSummoners",
+        "outputs": [{ "internalType": "uint256", "name": "number", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lastWinner",
+        "outputs": [{ "internalType": "uint8", "name": "faction", "type": "uint8" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "nextClash",
+        "outputs": [{ "internalType": "uint256", "name": "date", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "numberOfMembersReady",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "name": "powerIncrease",
+        "outputs": [{ "internalType": "uint256", "name": "power", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256[]", "name": "summoners", "type": "uint256[]" }],
+        "name": "readyManySummoners",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "readyMembers",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "name": "readyOneSummoner",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256[]", "name": "summoners", "type": "uint256[]" }],
+        "name": "receiveManyTributeShares",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "name": "receiveOneTributeShare",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256[]", "name": "summoners", "type": "uint256[]" }],
+        "name": "retrieveManySummoners",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
+        "name": "retrieveOneSummoner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "newClashDelay", "type": "uint256" }],
+        "name": "setClashDelay",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+        "name": "setOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "newTribute", "type": "uint256" }],
+        "name": "setTribute",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    { "inputs": [], "name": "startClash", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+        "inputs": [{ "internalType": "uint8", "name": "faction", "type": "uint8" }],
+        "name": "summonersOnTheField",
+        "outputs": [{ "internalType": "uint256", "name": "number", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "totalTributes",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "treasuries",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint8", "name": "faction", "type": "uint8" }],
+        "name": "treasury",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tribute",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    { "stateMutability": "payable", "type": "receive" }
+]

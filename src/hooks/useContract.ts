@@ -9,15 +9,19 @@ import ATTRIBUTES_ABI from '../constants/abis/attributes.json'
 import MULTIADVENTURE_ABI from '../constants/abis/multiadventure.json'
 import DAILYCARE_ABI from '../constants/abis/daycare.json'
 import DUNGEON_ABI from '../constants/abis/dungeon.json'
+import FACTIONS_ABI from '../constants/abis/factions.json'
+import BATTLEFIELD_ABI from '../constants/abis/battlefield.json'
 
 import {
     ATTRIBUTES_CONTRACT,
     DAILYCARE_CONTRACT,
     DUNGEONS,
     GOLD_CONTRACTS,
+    FACTIONS_CONTRACT,
     MULTIADVENTURE_CONTRACT,
     RARITY_CONTRACTS,
 } from '../constants'
+import { BATTLEFIELDS } from 'constants/battlefields'
 
 export function useContract(
     address: string | undefined,
@@ -50,6 +54,16 @@ export function useRarityGoldContract(): Contract | null {
 export function useRarityAttributesContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? ATTRIBUTES_CONTRACT[chainId] : undefined, ATTRIBUTES_ABI)
+}
+
+export function useFactionsContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? FACTIONS_CONTRACT[chainId] : undefined, FACTIONS_ABI)
+}
+
+export function useBattlefieldContract(key?: string): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId && key ? BATTLEFIELDS[chainId][key].address : undefined, BATTLEFIELD_ABI)
 }
 
 export function useMultiAdventureContract(): Contract | null {

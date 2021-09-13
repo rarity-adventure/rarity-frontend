@@ -4,6 +4,8 @@ import Daily from './pages/Daily'
 import Stats from './pages/Stats'
 import Adventure from './pages/Adventure'
 import Skills from './pages/Skills'
+import Factions from './pages/Factions'
+import Battlefields from './pages/Battlefields'
 
 function Routes(): JSX.Element {
     return (
@@ -13,6 +15,8 @@ function Routes(): JSX.Element {
             <Route exact strict path="/stats" component={Stats} />
             <Route exact strict path="/adventures" component={Adventure} />
             <Route exact strict path="/skills" component={Skills} />
+            <Route exact strict path="/factions" component={Factions} />
+            <Route exact strict path="/battlefields" component={Battlefields} />
         </Switch>
     )
 }
