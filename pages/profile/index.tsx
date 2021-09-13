@@ -2,10 +2,11 @@ import { useUserSelectedSummoner, useUserSelectSummoner, useUserSummoners } from
 import { SummonerFullData, useSummonersData } from '../../state/summoners/hooks'
 import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Loader from '../../components/Loader'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 
 enum View {
     stats,
@@ -26,22 +27,24 @@ export default function Profile(): JSX.Element {
 
     useEffect(() => {
         if (!windowVisible || !library || !account || !chainId) return
-        console.log('setSummonerIdsState')
         setSummonersState(summoners)
     }, [windowVisible, library, account, chainId, summoners, setSummonersState])
 
     const summoners_full_info = useSummonersData(summoners)
 
-    const [fullSummoners, setFullSummonersState] = useState<{ [k: string]: SummonerFullData }>({})
+    const [fullSummonersState, setFullSummonersState] = useState<{ [k: string]: SummonerFullData }>({})
 
     useEffect(() => {
-        console.log('setSummonerFullInfoState')
         if (summonersState.length > 0) {
             setFullSummonersState(summoners_full_info)
         }
     }, [summonersState])
 
-    const selectedSummoner = useUserSelectedSummoner()
+    const storedSelectedSummoner = useUserSelectedSummoner()
+
+    const saveSelectedSummoner = useUserSelectSummoner()
+
+    const [selectedSummoner, setSelectedSummoner] = useState<string>(storedSelectedSummoner)
 
     const [selectedSummonerClass, setSelectedSummonerClass] = useState<{
         loading: boolean
@@ -50,7 +53,23 @@ export default function Profile(): JSX.Element {
         _class: string
     }>({ loading: true, img: '', name: '', _class: '' })
 
-    useEffect(() => {}, [selectedSummoner])
+    useEffect(() => {
+        if (selectedSummoner === '0') {
+            if (summonersState.length > 0) {
+                setSelectedSummoner(summonersState[0].id)
+            }
+        }
+
+        if (fullSummonersState[selectedSummoner]) {
+            setSelectedSummonerClass({
+                loading: false,
+                img: CLASSES_IMAGES[fullSummonersState[selectedSummoner].base._class.toString()],
+                name: fullSummonersState[selectedSummoner].base._name,
+                _class: CLASSES_NAMES[fullSummonersState[selectedSummoner].base._class.toString()],
+            })
+            saveSelectedSummoner(selectedSummoner)
+        }
+    }, [selectedSummoner, fullSummonersState])
 
     const [view, setView] = useState<View>(View.stats)
 
@@ -74,7 +93,33 @@ export default function Profile(): JSX.Element {
                         </button>
                     </div>
                     <div>
-                        <select></select>
+                        {Object.keys(fullSummonersState).length > 0 ? (
+                            <select
+                                defaultValue={undefined}
+                                className="bg-transparent divide-white divide-y-2 p-2 uppercase"
+                                onChange={(v) => setSelectedSummoner(v.target.value)}
+                            >
+                                <option id={undefined}>Select a summoner</option>
+                                {Object.keys(fullSummonersState).map((k: string) => {
+                                    const data = fullSummonersState[k]
+                                    return (
+                                        <option key={k} value={k}>
+                                            {data.base._name !== ''
+                                                ? data.base._name
+                                                : parseInt(k, 16) +
+                                                  ' ' +
+                                                  i18n._(t`level`) +
+                                                  ' ' +
+                                                  data.base._level +
+                                                  ' ' +
+                                                  i18n._(CLASSES_NAMES[data.base._class.toString()])}
+                                        </option>
+                                    )
+                                })}
+                            </select>
+                        ) : (
+                            <Loader className="animate-spin" />
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-row justify-between items-center p-20 mx-14">
@@ -84,9 +129,13 @@ export default function Profile(): JSX.Element {
                         ) : (
                             <div className="text-center">
                                 <img src={selectedSummonerClass.img} alt={''} className="h-48 mx-auto" />
-                                <p className="uppercase text-3xl">
-                                    [ <span className="text-xl">{selectedSummonerClass.name}</span> ]
-                                </p>
+                                <div className="flex flex-row items-center text-center justify-center uppercase text-3xl">
+                                    [{' '}
+                                    <span className="text-xl mx-10">
+                                        {selectedSummonerClass.name !== '' ? selectedSummonerClass.name : 'Unknown'}
+                                    </span>{' '}
+                                    ]
+                                </div>
                                 <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl p-2">
                                     <span className="p-2 uppercase">{i18n._(selectedSummonerClass._class)}</span>{' '}
                                 </div>
