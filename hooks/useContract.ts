@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { getContract } from '../functions/getContract'
 import useActiveWeb3React from './useActiveWeb3React'
-import { MULTICALL2_ADDRESS, RARITY_ADDRESS } from '../constants'
+import { MULTICALL2_ADDRESS, RARITY_ADDRESS, RARITY_LIB } from '../constants'
 import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import RARITY_ABI from '../constants/abis/rarity.json'
+import RARITY_LIB_ABI from '../constants/abis/rarity_library.json'
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
     const { library, account } = useActiveWeb3React()
@@ -28,4 +29,9 @@ export function useMulticall2Contract() {
 export function useRarityContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? RARITY_ADDRESS : undefined, RARITY_ABI)
+}
+
+export function useRarityLibContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? RARITY_LIB : undefined, RARITY_LIB_ABI)
 }

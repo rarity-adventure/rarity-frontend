@@ -3,7 +3,7 @@ import '../styles/globals.css'
 import * as plurals from 'make-plural/plurals'
 
 import type { AppProps } from 'next/app'
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import ReactGA from 'react-ga4'
 import { Component, useEffect } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
@@ -19,6 +19,7 @@ import getLibrary from '../functions/getLibrary'
 import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
 import MulticallUpdater from '../state/multicall/updater'
+import UserUpdater from '../state/user/updater'
 import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
@@ -124,27 +125,30 @@ export default function MyApp({
                 <meta key="og:description" property="og:description" content="Free to mint D&D blockchain based game" />
             </Head>
             <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                    <Web3ProviderNetwork getLibrary={getLibrary}>
-                        <Web3ReactManager>
-                            <ReduxProvider store={store}>
-                                <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
-                                    <>
-                                        <ApplicationUpdater />
-                                        <MulticallUpdater />
-                                    </>
-                                    <Provider>
-                                        <Layout>
-                                            <Guard>
-                                                <Component {...pageProps} />
-                                            </Guard>
-                                        </Layout>
-                                    </Provider>
-                                </PersistGate>
-                            </ReduxProvider>
-                        </Web3ReactManager>
-                    </Web3ProviderNetwork>
-                </Web3ReactProvider>
+                <ApolloProvider client={client}>
+                    <Web3ReactProvider getLibrary={getLibrary}>
+                        <Web3ProviderNetwork getLibrary={getLibrary}>
+                            <Web3ReactManager>
+                                <ReduxProvider store={store}>
+                                    <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
+                                        <>
+                                            <ApplicationUpdater />
+                                            <MulticallUpdater />
+                                            <UserUpdater />
+                                        </>
+                                        <Provider>
+                                            <Layout>
+                                                <Guard>
+                                                    <Component {...pageProps} />
+                                                </Guard>
+                                            </Layout>
+                                        </Provider>
+                                    </PersistGate>
+                                </ReduxProvider>
+                            </Web3ReactManager>
+                        </Web3ProviderNetwork>
+                    </Web3ReactProvider>
+                </ApolloProvider>
             </I18nProvider>
         </Fragment>
     )

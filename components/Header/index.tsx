@@ -22,10 +22,10 @@ function AppBar(): JSX.Element {
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center z-20">
-                                    <div className="uppercase text-center tracking-widest text-2xl ">
+                                    <a href="/" className="uppercase text-center tracking-widest text-2xl ">
                                         <h1>RARITY</h1>
                                         <h1>Adventure</h1>
-                                    </div>
+                                    </a>
                                     <div className="hidden md:block sm:ml-4">
                                         <div className="flex space-x-2 uppercase">
                                             <a
