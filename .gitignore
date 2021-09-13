@@ -43,3 +43,5 @@ analysis/index.html
 build/
 
 .next/
+
+locale/*.js
