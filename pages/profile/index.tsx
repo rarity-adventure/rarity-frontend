@@ -23,7 +23,7 @@ export default function Profile(): JSX.Element {
 
     const summoners = useUserSummoners()
 
-    const [summonersState, setSummonersState] = useState<{ id: string }[]>([])
+    const [summonersState, setSummonersState] = useState<{ id: string }[]>(summoners)
 
     useEffect(() => {
         if (!windowVisible || !library || !account || !chainId) return
@@ -35,9 +35,8 @@ export default function Profile(): JSX.Element {
     const [fullSummonersState, setFullSummonersState] = useState<{ [k: string]: SummonerFullData }>({})
 
     useEffect(() => {
-        if (summonersState.length > 0) {
-            setFullSummonersState(summoners_full_info)
-        }
+        if (summonersState.length < 0) return
+        setFullSummonersState(summoners_full_info)
     }, [summonersState])
 
     const storedSelectedSummoner = useUserSelectedSummoner()
@@ -59,17 +58,17 @@ export default function Profile(): JSX.Element {
                 setSelectedSummoner(summonersState[0].id)
             }
         }
-
-        if (fullSummonersState[selectedSummoner]) {
+        const summoner = fullSummonersState[selectedSummoner]
+        if (summoner) {
             setSelectedSummonerClass({
                 loading: false,
-                img: CLASSES_IMAGES[fullSummonersState[selectedSummoner].base._class.toString()],
-                name: fullSummonersState[selectedSummoner].base._name,
-                _class: CLASSES_NAMES[fullSummonersState[selectedSummoner].base._class.toString()],
+                img: CLASSES_IMAGES[summoner.base._class.toString()],
+                name: summoner.base._name,
+                _class: CLASSES_NAMES[summoner.base._class.toString()],
             })
-            saveSelectedSummoner(selectedSummoner)
         }
-    }, [selectedSummoner, fullSummonersState])
+        saveSelectedSummoner(selectedSummoner)
+    }, [selectedSummoner])
 
     const [view, setView] = useState<View>(View.stats)
 
@@ -122,11 +121,15 @@ export default function Profile(): JSX.Element {
                         )}
                     </div>
                 </div>
-                <div className="flex flex-row justify-between items-center p-20 mx-14">
-                    <>
-                        {selectedSummonerClass.loading ? (
-                            <Loader className="animate-spin" />
-                        ) : (
+                {selectedSummonerClass.loading ? (
+                    <div className="relative h-96">
+                        <div className="absolute top-1/2 right-1/2">
+                            <Loader className="animate-spin" size="40px" />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-row justify-between items-center p-20 mx-14">
+                        <>
                             <div className="text-center">
                                 <img src={selectedSummonerClass.img} alt={''} className="h-48 mx-auto" />
                                 <div className="flex flex-row items-center text-center justify-center uppercase text-3xl">
@@ -140,10 +143,10 @@ export default function Profile(): JSX.Element {
                                     <span className="p-2 uppercase">{i18n._(selectedSummonerClass._class)}</span>{' '}
                                 </div>
                             </div>
-                        )}
-                        <div></div>
-                    </>
-                </div>
+                            <div></div>
+                        </>
+                    </div>
+                )}
             </div>
         </div>
     )
