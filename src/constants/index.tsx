@@ -43,6 +43,12 @@ export const DUNGEONS: { [k: string]: { name: string; contract: string } } = {
     },
 }
 
+export const RARITY_NAME_CONTRACT = {
+    [ChainId.MAINNET]: '0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19',
+}
+
+export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
+
 export function secondsToString(d: number): string {
     d = Number(d)
     const h = Math.floor(d / 3600)

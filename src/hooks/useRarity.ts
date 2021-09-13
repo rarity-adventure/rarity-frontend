@@ -1,17 +1,19 @@
-import { useRarityContract } from './useContract'
+import { useMulticall2Contract, useRarityContract } from './useContract'
 import { useCallback } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
 
 interface RarityInterface {
     img: (id: string) => Promise<string>
     mint: (_class?: string) => Promise<void>
     exp: (id: string, lvl: string) => Promise<{ actual: string; next: string }>
     adventure: (id: string) => Promise<void>
-    nextAdventure: (id: string) => Promise<string>
-    nextSummoner: () => Promise<string>
+    next_adventure: (id: string) => Promise<string>
+    next_summoner: () => Promise<string>
     approve: (spender: string) => Promise<void>
     allowance: (owner: string | null | undefined, spender: string) => Promise<boolean>
-    levelUp: (id: string) => Promise<void>
+    level_up: (id: string) => Promise<void>
     transfer: (from: string | null | undefined, to: string, id: string) => Promise<void>
+    multicall_next_adventure: (ids: string[]) => Promise<{ id: string; next: BigNumber }[]>
 }
 
 export default function useRarity(): RarityInterface {
@@ -53,7 +55,7 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    const nextAdventure = useCallback(
+    const next_adventure = useCallback(
         async (id: string): Promise<string> => {
             try {
                 return await rarity?.adventurers_log(id)
@@ -75,7 +77,7 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    const nextSummoner = useCallback(async (): Promise<string> => {
+    const next_summoner = useCallback(async (): Promise<string> => {
         try {
             return await rarity?.next_summoner()
         } catch (e) {
@@ -105,7 +107,7 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    const levelUp = useCallback(
+    const level_up = useCallback(
         async (id: string): Promise<void> => {
             try {
                 return await rarity?.level_up(id)
@@ -127,7 +129,46 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    return { img, mint, exp, nextAdventure, adventure, nextSummoner, approve, allowance, levelUp, transfer }
+    const multicall = useMulticall2Contract()
+
+    const multicall_next_adventure = useCallback(
+        async (ids: string[]): Promise<{ id: string; next: BigNumber }[]> => {
+            try {
+                const fragment = rarity?.interface?.getFunction('adventurers_log')
+                if (fragment) {
+                    const call = ids.map((id) => {
+                        return {
+                            target: rarity?.address,
+                            callData: rarity?.interface.encodeFunctionData(fragment, [id]),
+                        }
+                    })
+                    const result = await multicall?.callStatic.tryAggregate(true, call)
+                    return result.map((r: any, i: number) => {
+                        return { id: ids[i], next: rarity?.interface.decodeFunctionResult(fragment, r.returnData)[0] }
+                    })
+                } else {
+                    return []
+                }
+            } catch (e) {
+                return []
+            }
+        },
+        [rarity, multicall]
+    )
+
+    return {
+        img,
+        mint,
+        exp,
+        next_adventure,
+        adventure,
+        next_summoner,
+        approve,
+        allowance,
+        level_up,
+        transfer,
+        multicall_next_adventure,
+    }
 }
 
 function rand() {

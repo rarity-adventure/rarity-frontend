@@ -9,12 +9,16 @@ import { fromWei } from 'web3-utils'
 import { DUNGEONS, secondsToString } from '../../constants'
 import useDungeon from '../../hooks/useDungeon'
 import Transfer from './Transfer'
+import useRarityName from '../../hooks/useRarityName'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+
 interface SummonerCardProps {
     summoner: Summoner
 }
 
 export default function SummonerAdventureCard({ summoner }: SummonerCardProps): JSX.Element {
-    const { exp, adventure, nextAdventure, levelUp } = useRarity()
+    const { exp, adventure, next_adventure, level_up } = useRarity()
     const { library, chainId } = useActiveWeb3React()
     const windowVisible = useIsWindowVisible()
 
@@ -26,13 +30,13 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
 
     const fetch = useCallback(async () => {
         const experience = await exp(summoner.id, summoner._level)
-        const nextAdv = await nextAdventure(summoner.id)
+        const nextAdv = await next_adventure(summoner.id)
         setState({
             actual: fromWei(experience.actual.toString()),
             nextAdventure: parseInt(nextAdv.toString()),
             nextLvl: fromWei(experience.next.toString()),
         })
-    }, [nextAdventure, setState, exp, summoner])
+    }, [next_adventure, setState, exp, summoner])
 
     useEffect(() => {
         if (!library || !windowVisible || !chainId || !exp) return
@@ -105,6 +109,24 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
         setActions(newState)
     }
 
+    const { summoner_name } = useRarityName()
+
+    const [name, setName] = useState('')
+
+    const fetch_name = useCallback(async () => {
+        const summonerName = await summoner_name(summoner.id)
+        if (!summonerName || summonerName === '') {
+            setName('Unknown')
+        } else {
+            setName(summonerName)
+        }
+    }, [summoner, summoner_name])
+
+    useEffect(() => {
+        if (!library || !windowVisible || !chainId) return
+        fetch_name()
+    }, [fetch_name, library, windowVisible, chainId])
+
     return (
         <div className="w-full border-custom-border border-8">
             <div className="grid grid-cols-1 gap-">
@@ -118,6 +140,17 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
                         <h1>{t(CLASSES[summoner._class].name)}</h1>
+                    </div>
+                    <div className="flex flex-row mt-4 p-2 text-white text-sm bg-custom-selected text-center border-white border-2 rounded-lg justify-between">
+                        <div />
+                        <div>
+                            <span>{name}</span>
+                        </div>
+                        <div>
+                            <a rel="noreferrer" target="_blank" href="https://names.rarity.game">
+                                <FontAwesomeIcon icon={faPencilAlt} />
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <Transfer summoner={summoner} />
@@ -138,7 +171,7 @@ export default function SummonerAdventureCard({ summoner }: SummonerCardProps): 
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 {t('Level UP')}

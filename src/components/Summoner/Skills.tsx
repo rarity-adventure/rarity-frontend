@@ -10,8 +10,9 @@ import Transfer from './Transfer'
 import { SKILLS } from '../../constants/codex'
 import useSkills from '../../hooks/useSkills'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faMinus, faQuestionCircle, faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
+import useRarityName from '../../hooks/useRarityName'
 
 interface SummonerStatsCardProps {
     summoner: Summoner
@@ -24,7 +25,7 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
 
     const windowVisible = useIsWindowVisible()
 
-    const { exp, levelUp } = useRarity()
+    const { exp, level_up } = useRarity()
 
     const [expState, setExpState] = useState<{ actual: string; nextLvl: string }>({ actual: '0', nextLvl: '0' })
 
@@ -67,7 +68,11 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
             setTempSkills(skillsObj)
 
             const attributes = await scores(summoner.id)
-            const skillsPL = await skills_per_level(intModifierForSkills(attributes['int']), summoner._class, summoner._level)
+            const skillsPL = await skills_per_level(
+                intModifierForSkills(attributes['int']),
+                summoner._class,
+                summoner._level
+            )
             const availableSP = parseInt(skillsPL.toString()) - skills.reduce((x, y) => x + y)
             setavailableSP(availableSP)
             setTempSp(availableSP)
@@ -138,6 +143,24 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
         setTempSp(availableSP)
     }
 
+    const { summoner_name } = useRarityName()
+
+    const [name, setName] = useState('')
+
+    const fetch_name = useCallback(async () => {
+        const summonerName = await summoner_name(summoner.id)
+        if (!summonerName || summonerName === '') {
+            setName('Unknown')
+        } else {
+            setName(summonerName)
+        }
+    }, [summoner, summoner_name])
+
+    useEffect(() => {
+        if (!library || !windowVisible || !chainId) return
+        fetch_name()
+    }, [fetch_name, chainId, library, windowVisible])
+
     return (
         <div className="w-full border-custom-border border-8">
             <div className="grid grid-cols-1 gap-">
@@ -151,6 +174,17 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                     </div>
                     <div className="text-white bg-custom-blue px-2 text-xl border-2 border-solid w-32 mx-auto">
                         <h1>{t(CLASSES[summoner._class].name)}</h1>
+                    </div>
+                    <div className="flex flex-row mt-4 p-2 text-white text-sm bg-custom-selected text-center border-white border-2 rounded-lg justify-between">
+                        <div />
+                        <div>
+                            <span>{name}</span>
+                        </div>
+                        <div>
+                            <a rel="noreferrer" target="_blank" href="https://names.rarity.game">
+                                <FontAwesomeIcon icon={faPencilAlt} />
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <Transfer summoner={summoner} />
@@ -171,7 +205,7 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 {t('Level UP')}
@@ -278,18 +312,12 @@ export default function SummonerSkillsCard({ summoner }: SummonerStatsCardProps)
                                 })}
                             </div>
                             <div className="w-full my-6 text-center">
-                                {tempSP === 0 ? (
-                                    <button
-                                        onClick={async () => await assignSkills()}
-                                        className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl"
-                                    >
-                                        {t('Assign Skills')}
-                                    </button>
-                                ) : (
-                                    <button className="opacity-50 cursor-not-allowed bg-custom-green p-2 border-white border-4 rounded-lg text-2xl">
-                                        {t('Assign Skills')}
-                                    </button>
-                                )}
+                                <button
+                                    onClick={async () => await assignSkills()}
+                                    className="bg-custom-green p-2 border-white border-4 rounded-lg text-2xl"
+                                >
+                                    {t('Assign Skills')}
+                                </button>
                             </div>
                         </>
                     ) : (

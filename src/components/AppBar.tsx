@@ -49,10 +49,34 @@ function AppBar(): JSX.Element {
                                             >
                                                 <h1>Skills</h1>
                                             </a>
+                                            <a
+                                                rel="noreferrer"
+                                                target="_blank"
+                                                href="https://names.rarity.game"
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
+                                            >
+                                                <h1>Names</h1>
+                                            </a>
+                                            <a
+                                                rel="noreferrer"
+                                                target="_blank"
+                                                href="https://analytics.rarity.game"
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
+                                            >
+                                                <h1>Analytics</h1>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-custom-background lg:relative lg:p-0 lg:bg-transparent">
+                                    <a
+                                        className="p-2 mx-2 bg-custom-selected border-white border-2 hidden sm:block"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
+                                    >
+                                        Donate
+                                    </a>
                                     <a className="mx-2 text-3xl" href="https://twitter.com/RarityGame">
                                         <FontAwesomeIcon icon={faTwitter} />
                                     </a>
@@ -116,6 +140,14 @@ function AppBar(): JSX.Element {
                         <Popover.Panel className="sm:hidden">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 uppercase font-bold">
                                 <a
+                                    className="p-2 mx-2 bg-custom-selected border-white border-2"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
+                                >
+                                    Donate
+                                </a>
+                                <a
                                     href={'/daily'}
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
@@ -138,6 +170,22 @@ function AppBar(): JSX.Element {
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
                                     Skills
+                                </a>
+                                <a
+                                    rel="noreferrer"
+                                    target="_blank"
+                                    href="https://names.rarity.game"
+                                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                >
+                                    Names
+                                </a>
+                                <a
+                                    rel="noreferrer"
+                                    target="_blank"
+                                    href="https://analytics.rarity.game"
+                                    className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                >
+                                    Analytics
                                 </a>
                             </div>
                         </Popover.Panel>

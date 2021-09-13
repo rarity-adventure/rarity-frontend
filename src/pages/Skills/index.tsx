@@ -5,18 +5,45 @@ import { Summoner } from '../../state/user/actions'
 import { CLASSES } from '../../constants/classes'
 import skills from '../../assets/images/skills.png'
 import skills_txt from '../../assets/images/skills_text.png'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import SummonerSkillsCard from '../../components/Summoner/Skills'
+import useRarityName from '../../hooks/useRarityName'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 export default function Skills(): JSX.Element | null {
+    const { library, chainId } = useActiveWeb3React()
+
     const summoners = useUserSummoners()
 
     const [summoner, setSummoner] = useState<Summoner | null>(null)
 
     const { t } = useTranslation();
 
+    const { multicall_summoner_name } = useRarityName()
+
+    const [names, setNames] = useState<{ [k: string]: string }>({})
+
+    const fetch_names = useCallback(async () => {
+        const ids = summoners.map((s) => {
+            return s.id
+        })
+        const queryNames = await multicall_summoner_name(ids)
+        const namesState = queryNames.reduce(
+            (obj: { [k: string]: string }, item: any) => Object.assign(obj, { [item.id]: item.name }),
+            {}
+        )
+        setNames(namesState)
+    }, [summoners, multicall_summoner_name])
+
+    useEffect(() => {
+        if (!library || !chainId) return
+        fetch_names()
+    }, [chainId, library, fetch_names])
+
     function summonerDataToString(summoner: Summoner): string {
-        return parseInt(summoner.id).toString() + ' '+ t('Level') + ' ' + summoner._level + ' ' + t(CLASSES[summoner._class].name)
+        return !names[summoner.id] || names[summoner.id] === ''
+            ? parseInt(summoner.id).toString() +  ' '+ t('Level') + ' ' + summoner._level + ' ' + t(CLASSES[summoner._class].name)
+            : names[summoner.id]
     }
 
     return (

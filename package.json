@@ -65,6 +65,7 @@
         "eslint-plugin-react-hooks": "4.2.0",
         "ethers": "5.2.0",
         "fuse.js": "6.4.6",
+        "react-ga4": "1.0.6",
         "graphql": "^15.5.3",
         "husky": "6.0.0",
         "i18next": "^20.6.1",
