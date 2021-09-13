@@ -1,4 +1,4 @@
 import { createAction } from '@reduxjs/toolkit'
-import { BigNumber } from 'ethers'
 
-export const updateUserChars = createAction<{ id: string }[]>('user/updateUserChars')
+export const updateUserSummoners = createAction<{ id: string }[]>('user/updateUserSummoners')
+export const updateSelectedSummoner = createAction<string>('user/updateSelectedSummoner')

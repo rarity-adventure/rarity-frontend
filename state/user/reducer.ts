@@ -1,17 +1,22 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { updateUserChars } from './actions'
-import { BigNumber } from 'ethers'
+import { updateSelectedSummoner, updateUserSummoners } from './actions'
 
 export interface UserState {
     readonly summoners: { id: string }[]
+    readonly selected: string
 }
 
 const initialState: UserState = {
     summoners: [],
+    selected: '0',
 }
 
 export default createReducer(initialState, (builder) =>
-    builder.addCase(updateUserChars, (state, action) => {
-        state.summoners = action.payload
-    })
+    builder
+        .addCase(updateUserSummoners, (state, action) => {
+            state.summoners = action.payload
+        })
+        .addCase(updateSelectedSummoner, (state, action) => {
+            state.selected = action.payload
+        })
 )

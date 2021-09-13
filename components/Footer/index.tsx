@@ -5,7 +5,7 @@ const Footer = () => {
     const { i18n } = useLingui()
 
     return (
-        <footer className="flex-shrink-0 w-full text-xs my-20 pb-20 lg:pb-2">
+        <footer className="flex-shrink-0 w-full text-xs my-20 pb-20 md:my-1 md:pb-1">
             <div className="w-full p-5">
                 <div className="grid grid-cols-1 md:grid-cols-4 w-full lg:w-6/12 xl:w-5/12 p-1 md:divide-x-2 md:divide-white gap-1">
                     <div>
@@ -36,7 +36,7 @@ const Footer = () => {
                 <div className="flex flex-row p-1">
                     <h2>
                         {i18n._(
-                            t`Disclaimer: rarity.game is a non-commercial platform to access the public blockchain-based \n rarity game.`
+                            t`Disclaimer: rarity.game is a non-commercial platform to access the public blockchain-based rarity game.`
                         )}
                     </h2>
                 </div>

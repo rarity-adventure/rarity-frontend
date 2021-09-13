@@ -179,7 +179,7 @@ export function useSingleContractMultipleData(
     gasRequired?: number
 ): CallState[] {
     const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
-    console.log(fragment, methodName)
+
     const calls = useMemo(
         () =>
             contract && fragment && callInputs?.length > 0 && callInputs.every((inputs) => isValidMethodArgs(inputs))
@@ -195,7 +195,6 @@ export function useSingleContractMultipleData(
     )
 
     const results = useCallsData(calls, options)
-    console.log(results)
     const latestBlockNumber = useBlockNumber()
 
     return useMemo(() => {

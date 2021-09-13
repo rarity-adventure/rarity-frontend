@@ -4,7 +4,7 @@ import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useQuery } from '@apollo/client'
 import { SUMMONERS } from '../../apollo'
 import { useCallback, useEffect } from 'react'
-import { updateUserChars } from './actions'
+import { updateUserSummoners } from './actions'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()
@@ -16,7 +16,7 @@ export default function Updater(): null {
     const { data, loading, error } = useQuery(SUMMONERS, { variables: { owner: account.toString().toLowerCase() } })
 
     const fetchSummoners = useCallback(() => {
-        dispatch(updateUserChars(data.summoners))
+        dispatch(updateUserSummoners(data.summoners))
     }, [dispatch, data])
 
     useEffect(() => {
