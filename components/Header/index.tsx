@@ -29,25 +29,27 @@ function AppBar(): JSX.Element {
                                     <div className="hidden md:block sm:ml-4">
                                         <div className="flex space-x-2 uppercase">
                                             <a
-                                                href="#"
+                                                href="https://rarity.game"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
                                                 <h2>{i18n._(t`Adventure`)}</h2>
                                             </a>
                                             <a
-                                                href="#"
+                                                href="/profile"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
                                                 <h2>{i18n._(t`Profile`)}</h2>
                                             </a>
                                             <a
-                                                href="#"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                href="https://analytics.rarity.game"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
                                                 <h2>{i18n._(t`Analytics`)}</h2>
                                             </a>
                                             <a
-                                                href="#"
+                                                href="/marketplace"
                                                 className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
                                             >
                                                 <h2>{i18n._(t`Marketplace`)}</h2>

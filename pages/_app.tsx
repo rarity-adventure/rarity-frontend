@@ -93,7 +93,10 @@ export default function MyApp({
                 <meta name="application-name" content="Rarity Game | Free to mint D&D blockchain based game" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-                <meta name="apple-mobile-web-app-title" content="Rarity Game | Free to mint D&D blockchain based game" />
+                <meta
+                    name="apple-mobile-web-app-title"
+                    content="Rarity Game | Free to mint D&D blockchain based game"
+                />
 
                 <meta name="format-detection" content="telephone=no" />
                 <meta name="mobile-web-app-capable" content="yes" />
@@ -103,15 +106,19 @@ export default function MyApp({
                 <meta key="twitter:card" name="twitter:card" content="app" />
                 <meta key="twitter:title" name="twitter:title" content="Rarity Game | Analytics" />
                 <meta key="twitter:url" name="twitter:url" content="https://rarity.game" />
-                <meta key="twitter:description" name="twitter:description" content="Free to mint D&D blockchain based game" />
                 <meta
-                    key="twitter:image"
-                    name="twitter:image"
-                    content="https://rarity.game/manifest-icon-192.png"
+                    key="twitter:description"
+                    name="twitter:description"
+                    content="Free to mint D&D blockchain based game"
                 />
+                <meta key="twitter:image" name="twitter:image" content="https://rarity.game/manifest-icon-192.png" />
                 <meta key="twitter:creator" name="twitter:creator" content="@RarityGame" />
                 <meta key="og:type" property="og:type" content="website" />
-                <meta key="og:site_name" property="og:site_name" content="Rarity Game | Free to mint D&D blockchain based game" />
+                <meta
+                    key="og:site_name"
+                    property="og:site_name"
+                    content="Rarity Game | Free to mint D&D blockchain based game"
+                />
                 <meta key="og:url" property="og:url" content="https://rarity.game" />
                 <meta key="og:image" property="og:image" content="https://rarity.game/apple-icon-180.png" />
                 <meta key="og:description" property="og:description" content="Free to mint D&D blockchain based game" />
