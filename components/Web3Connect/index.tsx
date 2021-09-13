@@ -9,12 +9,12 @@ export default function Web3Connect({ color = 'gray', size = 'sm', className = '
     const toggleWalletModal = useWalletModalToggle()
     const { error } = useWeb3React()
 
-    return error ? (
+    return error && error instanceof UnsupportedChainIdError === false ? (
         <div
             className="flex items-center justify-center px-4 py-2 font-semibold text-white border rounded bg-opacity-80 border-red bg-red hover:bg-opacity-100"
             onClick={toggleWalletModal}
         >
-            <h2>{error instanceof UnsupportedChainIdError ? 'You are on the wrong network' : 'Error'}</h2>
+            <h2>Error</h2>
         </div>
     ) : (
         <button

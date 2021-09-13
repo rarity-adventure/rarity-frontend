@@ -1,5 +1,5 @@
 import React from 'react'
-import { NetworkContextName } from '../../constants'
+import { ChainId, FANTOM_NETWORK, NetworkContextName } from '../../constants'
 import Web3Connect from '../Web3Connect'
 import { shortenAddress } from '../../functions/format'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
@@ -10,6 +10,7 @@ import ModalHeader from '../Modal/ModalHeader'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { SUPPORTED_WALLETS } from '../../config/wallets'
+import { useSwitchOrAddChain } from '../../hooks/useSwitchOrAddChain'
 
 function Web3StatusInner() {
     const { account } = useWeb3React()
@@ -34,11 +35,13 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
-    const { active, account, connector, activate, error } = useWeb3React()
+    const { active, account, connector, activate, error, chainId } = useWeb3React()
 
     const open = useModalOpen(ApplicationModal.WALLET)
 
     const toggleModal = useWalletModalToggle()
+
+    const switchOrAddChain = useSwitchOrAddChain()
 
     const contextNetwork = useWeb3React(NetworkContextName)
 
@@ -47,6 +50,7 @@ export default function Web3Status() {
     }
 
     const tryActivation = async (connector: (() => Promise<AbstractConnector>) | AbstractConnector | undefined) => {
+        console.log('Try activation')
         let name = ''
         let conn = typeof connector === 'function' ? await connector() : connector
 
@@ -66,7 +70,14 @@ export default function Web3Status() {
                 .then(toggleModal)
                 .catch((error) => {
                     if (error instanceof UnsupportedChainIdError) {
-                        activate(conn)
+                        switchOrAddChain(FANTOM_NETWORK).then((success) => {
+                            if (!success) {
+                                // When pending error UI is implemented: setPendingError(true)
+                                activate(conn)
+                            }
+                        })
+                    } else {
+                        // When pending error UI is implemented: setPendingError(true)
                     }
                 })
     }
@@ -75,7 +86,7 @@ export default function Web3Status() {
         <>
             <Web3StatusInner />
             {account && <div />}
-            {!account && !error && (
+            {!account && (
                 <HeadlessUIModal isOpen={open} onDismiss={toggleModal}>
                     <div className="bg-gradient-to-b from-background-start via-background-middle to-background-end rounded-lg border-2 border-white">
                         <ModalHeader title="Choose a wallet" onClose={toggleModal} />
@@ -86,7 +97,7 @@ export default function Web3Status() {
                                     <button
                                         onClick={() => {
                                             if (option) {
-                                                option.connector !== connector &&
+                                                ;(option.connector !== connector || chainId !== ChainId.MAINNET) &&
                                                     !option.href &&
                                                     option &&
                                                     tryActivation(option.connector)

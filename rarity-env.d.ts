@@ -11,6 +11,7 @@ declare global {
             on?: (...args: any[]) => void
             removeListener?: (...args: any[]) => void
             autoRefreshOnNetworkChange?: boolean
+            request?: (RequestArguments: { method: string; params?: unknown[] | object }) => Promise<unknown>
         }
         web3?: Record<string, unknown>
     }
