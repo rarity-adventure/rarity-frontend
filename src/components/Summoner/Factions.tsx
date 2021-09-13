@@ -16,7 +16,7 @@ interface SummonerFactionsCardProps {
 }
 
 export default function SummonerFactionsCard({ summoner }: SummonerFactionsCardProps): JSX.Element {
-    const { exp, levelUp } = useRarity()
+    const { exp, level_up } = useRarity()
     const { calcAP } = useRarityAttributes()
     const { enrolled, factionChangeDelay, enrollment, enroll } = useFactions()
 
@@ -87,7 +87,7 @@ export default function SummonerFactionsCard({ summoner }: SummonerFactionsCardP
                             <button
                                 className="bg-custom-green border-2 rounded-md text-xs p-1"
                                 onClick={async () => {
-                                    await levelUp(summoner.id)
+                                    await level_up(summoner.id)
                                 }}
                             >
                                 Level UP

@@ -58,24 +58,16 @@ function AppBar(): JSX.Element {
                                                 <h1>Names</h1>
                                             </a>
                                             <a
-                                                rel="noreferrer"
-                                                target="_blank"
-                                                href="https://names.rarity.game"
-                                                className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
-                                            >
-                                                Names
-                                            </a>
-                                            <a
                                                 href={'/factions'}
-                                                className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                Factions
+                                                <h1>Factions</h1>
                                             </a>
                                             <a
                                                 href={'/battlefields'}
-                                                className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
+                                                className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                Battlefields
+                                                <h1>Battlefields</h1>
                                             </a>
                                             <a
                                                 rel="noreferrer"
