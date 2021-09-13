@@ -1,4 +1,5 @@
 import { useActiveWeb3React } from '../hooks/useActiveWeb3React'
+import { useTranslation } from 'react-i18next'
 import Web3Network from './Web3Network'
 import Web3Status from './Web3Status'
 import { Popover } from '@headlessui/react'
@@ -7,7 +8,7 @@ import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-ico
 
 function AppBar(): JSX.Element {
     const { library } = useActiveWeb3React()
-
+    const { t } = useTranslation();
     return (
         <header className="flex-shrink-0 w-full text-white">
             <Popover as="nav" className="z-10 w-full bg-transparent header-border-b">
@@ -20,7 +21,7 @@ function AppBar(): JSX.Element {
                                         href={'/'}
                                         className="uppercase text-xl p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                     >
-                                        <h1>Rarity adventure</h1>{' '}
+                                        <h1>{t('Rarity adventure')}</h1>{' '}
                                     </a>
 
                                     <div className="hidden sm:block sm:ml-4 text-sm">
@@ -29,25 +30,25 @@ function AppBar(): JSX.Element {
                                                 href={'/daily'}
                                                 className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                <h1>Daycare</h1>
+                                                <h1>{t('Daycare')}</h1>
                                             </a>
                                             <a
                                                 href={'/stats'}
                                                 className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                <h1>Stats</h1>
+                                                <h1>{t('Stats')}</h1>
                                             </a>
                                             <a
                                                 href={'/adventures'}
                                                 className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                <h1>Adventures</h1>
+                                                <h1>{t('Adventures')}</h1>
                                             </a>
                                             <a
                                                 href={'/skills'}
                                                 className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                <h1>Skills</h1>
+                                                <h1>{t('Skills')}</h1>
                                             </a>
                                             <a
                                                 rel="noreferrer"
@@ -55,7 +56,7 @@ function AppBar(): JSX.Element {
                                                 href="https://names.rarity.game"
                                                 className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                <h1>Names</h1>
+                                                <h1>{t('Names')}</h1>
                                             </a>
                                             <a
                                                 rel="noreferrer"
@@ -63,19 +64,19 @@ function AppBar(): JSX.Element {
                                                 href="https://analytics.rarity.game"
                                                 className="uppercase py-3 px-1 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis whitespace-nowrap"
                                             >
-                                                <h1>Analytics</h1>
+                                                <h1>{t('Analytics')}</h1>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="fixed bottom-0 left-0 z-10 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-custom-background lg:relative lg:p-0 lg:bg-transparent">
                                     <a
-                                        className="p-2 mx-2 bg-custom-selected border-white border-2 hidden sm:block"
+                                        className="p-2 mx-2 w-full bg-custom-selected border-white border-2 hidden sm:block"
                                         target="_blank"
                                         rel="noreferrer"
                                         href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
                                     >
-                                        Donate
+                                        {t('Donate')}
                                     </a>
                                     <a className="mx-2 text-3xl" href="https://twitter.com/RarityGame">
                                         <FontAwesomeIcon icon={faTwitter} />
@@ -140,36 +141,36 @@ function AppBar(): JSX.Element {
                         <Popover.Panel className="sm:hidden">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 uppercase font-bold">
                                 <a
-                                    className="p-2 mx-2 bg-custom-selected border-white border-2"
+                                    className="p-2 mx-2 w-full bg-custom-selected border-white border-2"
                                     target="_blank"
                                     rel="noreferrer"
                                     href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
                                 >
-                                    Donate
+                                    {t('Donate')}
                                 </a>
                                 <a
                                     href={'/daily'}
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
-                                    Daycare
+                                    {t('Daycare')}
                                 </a>
                                 <a
                                     href={'stats'}
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
-                                    Stats
+                                    {t('Stats')}
                                 </a>
                                 <a
                                     href={'/adventures'}
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
-                                    Adventures
+                                    {t('Adventures')}
                                 </a>
                                 <a
                                     href={'/skills'}
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
-                                    Skills
+                                    {t('Skills')}
                                 </a>
                                 <a
                                     rel="noreferrer"
@@ -177,7 +178,7 @@ function AppBar(): JSX.Element {
                                     href="https://names.rarity.game"
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
-                                    Names
+                                    {t('Names')}
                                 </a>
                                 <a
                                     rel="noreferrer"
@@ -185,7 +186,7 @@ function AppBar(): JSX.Element {
                                     href="https://analytics.rarity.game"
                                     className="p-2 text-baseline text-primary hover:text-high-emphesis focus:text-high-emphesis md:p-3 whitespace-nowrap"
                                 >
-                                    Analytics
+                                    {t('Analytics')}
                                 </a>
                             </div>
                         </Popover.Panel>
