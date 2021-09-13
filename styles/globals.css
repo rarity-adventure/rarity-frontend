@@ -70,7 +70,7 @@ h6 {
     position: absolute;
     z-index: -100;
     top: 0;
-    height: 1080px;
+    height: 800px;
     background: radial-gradient(120.69% 74.23% at 50% 32.92%, rgba(15, 47, 91, 0) 64.06%, #0f305d 90.42%), #0a0a0a;
     mix-blend-mode: normal;
 }
@@ -78,7 +78,7 @@ h6 {
 .classes-bg {
     position: absolute;
     left: 0;
-    top: 1079px;
+    top: 800px;
     height: 100%;
     z-index: -99;
     background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);

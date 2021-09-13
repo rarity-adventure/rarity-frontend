@@ -19,14 +19,14 @@ export default function Home(): JSX.Element {
                         <img src="/img/sword.png" className="mx-auto w-64" alt="Rarity Adventure" />
                     </div>
                 </div>
-                <div className="flex flex-row justify-center mx-auto w-full text-center  mt-24 lg:mt-48">
+                <div className="flex flex-row justify-center mx-auto w-full text-center  mt-10 lg:mt-28">
                     <a href="#mint">
                         <ChevronDoubleDownIcon className="animate-bounce h-16 mx-2" />
                     </a>
                 </div>
             </div>
             <div id="mint" />
-            <div className="w-full mt-72 lg:mt-96 rounded-b-3xl text-center">
+            <div className="w-full mt-48 rounded-b-3xl text-center">
                 <h1 className="uppercase text-3xl md:text-3xl xl:text-6xl">MINT A CLASS</h1>
                 <button className="animate-bounce h-6">
                     <div className="flex flex-row w-full mx-auto text-center justify-center my-10">
