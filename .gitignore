@@ -43,5 +43,8 @@ analysis/index.html
 build/
 
 .next/
+# Sentry
+.sentryclirc
 
-locale/*.js
+# Sentry
+.sentryclirc

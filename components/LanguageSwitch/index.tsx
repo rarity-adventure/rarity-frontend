@@ -21,14 +21,7 @@ export default function LangSwitcher() {
                 <>
                     <div>
                         <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-bold bg-transparent border rounded shadow-sm text-primary border-dark-800 hover:bg-dark-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-700 focus:ring-dark-800">
-                            <Image
-                                className="inline w-3 h-3 mr-1 align-middle"
-                                src={`/images/flags/${locale}-flag.png`}
-                                width={20}
-                                height={20}
-                                alt={locale}
-                                aria-hidden="true"
-                            />
+                            <h2>{LANG_TO_COUNTRY[locale]}</h2>
                             <ChevronDownIcon className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
                         </Menu.Button>
                     </div>
@@ -53,20 +46,14 @@ export default function LangSwitcher() {
                                                     <a
                                                         href="#"
                                                         className={classNames(
-                                                            active ? 'bg-dark-700 text-high-emphesis' : 'text-primary',
+                                                            active
+                                                                ? 'bg-background-start text-high-emphesis'
+                                                                : 'text-primary',
                                                             'group flex items-center p-2 text-sm hover:bg-dark-700 focus:bg-dark-700 rounded font-bold'
                                                         )}
                                                         onClick={() => cookieCutter.set('NEXT_LOCALE', locale)}
                                                     >
-                                                        <Image
-                                                            className="inline w-3 h-3 mr-1 align-middle"
-                                                            src={`/images/flags/${locale}-flag.png`}
-                                                            width={20}
-                                                            height={20}
-                                                            alt={locale}
-                                                            aria-hidden="true"
-                                                        />
-                                                        <span className="ml-2">{LANG_TO_COUNTRY[locale]}</span>
+                                                        <h2 className="ml-2">{LANG_TO_COUNTRY[locale]}</h2>
                                                     </a>
                                                 </Link>
                                             )}

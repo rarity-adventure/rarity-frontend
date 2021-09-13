@@ -1,9 +1,11 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+
 import * as plurals from 'make-plural/plurals'
+
+import type { AppProps } from 'next/app'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import ReactGA from 'react-ga4'
-import { useEffect } from 'react'
+import { Component, useEffect } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import DefaultLayout from '../layouts/Default'
@@ -20,10 +22,7 @@ import MulticallUpdater from '../state/multicall/updater'
 import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
-import { remoteLoader } from '@lingui/remote-loader'
-import { nanoid } from 'nanoid'
 import { useRouter } from 'next/router'
-
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
 const client = new ApolloClient({
@@ -34,8 +33,6 @@ const client = new ApolloClient({
 if (typeof window !== 'undefined' && !!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }
-
-const sessionId = nanoid()
 
 export default function MyApp({
     Component,
@@ -50,15 +47,10 @@ export default function MyApp({
     const { locale } = useRouter()
 
     useEffect(() => {
-        if (process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS) {
-            ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS)
-        }
-    }, [])
-
-    useEffect(() => {
         async function load(locale) {
             i18n.loadLocaleData(locale, { plurals: plurals[locale.split('_')[0]] })
 
+            // Load fallback messages
             const { messages } = await import(`@lingui/loader!./../locale/${locale}.json?raw-lingui`)
             i18n.load(locale, messages)
 
@@ -68,6 +60,12 @@ export default function MyApp({
         load(locale)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locale])
+
+    useEffect(() => {
+        if (process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS) {
+            ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS)
+        }
+    }, [])
 
     // Allows for conditionally setting a provider to be hoisted per page
     const Provider = Component.Provider || Fragment

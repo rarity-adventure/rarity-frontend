@@ -79,7 +79,7 @@ function AppBar(): JSX.Element {
                                 </div>
                                 <div className="flex -mr-2 md:hidden">
                                     <Popover.Button className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-high-emphesis focus:outline-none">
-                                        <span className="sr-only">{i18n._(t`Open menu`)}</span>
+                                        <span className="sr-only">{i18n._(t`Open Menu`)}</span>
                                         {open ? (
                                             <svg
                                                 className="block w-6 h-6"
