@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/client'
 import { SUMMONERS } from '../../apollo'
 import { useCallback, useEffect } from 'react'
 import { setLoaded, updateUserSummoners } from './actions'
-import { useSummonersData } from '../summoners/hooks'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()

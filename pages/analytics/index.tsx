@@ -1,19 +1,23 @@
-import { SummonerFullData } from '../../state/summoners/hooks'
 import { useLingui } from '@lingui/react'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
-import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
-import Loader from '../../components/Loader'
-import { BigNumber } from 'ethers'
-import StatsProfile from '../../components/ProfileCard/Stats'
-import { Menu, Popover, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/solid'
-import HeadlessUIModal from '../../components/Modal/HeadlessUIModal'
-import ModalHeader from '../../components/Modal/ModalHeader'
-import { isAddress } from '../../functions/validate'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDoubleRightIcon, ChevronDownIcon } from '@heroicons/react/solid'
+import * as localData from '../global_data.json'
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
+
+    //const {data, loading, error} = useQuery(GLOBAL_DATA)
+
+    /*const [globalData, setGlobalData] = useState<{
+        classes: { id: string; count: number }[]
+        levels: { id: string; count: number }[]
+        globals: { owners: string; summoners: string }[]
+    }>({ classes: [], levels: [], globals: [] })*/
+
+    const [globalData, setGlobalData] = useState<any>(localData)
+    console.log(globalData)
 
     const [view, setView] = useState('level')
     return (
@@ -22,28 +26,28 @@ export default function Profile(): JSX.Element {
                 <h1 className="text-4xl uppercase">{i18n._(t`global analytics`)}</h1>
                 <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity`)}</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-10 mx-10">
                 <div>
-                    <div className="border-white border-2 text-center text-xl rounded-t-xl p-2">
+                    <div className="border-white border-2 text-center text-sm lg:text-xl rounded-t-xl p-2">
                         <span>{i18n._(t`Global Information`)}</span>
                     </div>
                     <div className="border-white border-l-2 border-r-2 border-b-2 rounded-bl-3xl p-2 px-4">
-                        <div className="flex flex-row py-2 w-full uppercase">
+                        <div className="flex flex-row py-2 w-full text-sm lg:text-xl uppercase">
                             <span>{i18n._(t`total summoners`)}:</span>
                         </div>
-                        <div className="flex flex-row-reverse py-2 w-full text-xl">
-                            <span>100000000000000000</span>
+                        <div className="flex flex-row-reverse py-2 w-full text-xl lg:text-3xl">
+                            <span>{globalData.globals[0].summoners}</span>
                         </div>
-                        <div className="flex flex-row py-2 w-full uppercase">
+                        <div className="flex flex-row py-2 w-full text-sm lg:text-xl  uppercase">
                             <span>{i18n._(t`unique owners`)}:</span>
                         </div>
-                        <div className="flex flex-row-reverse py-2 w-full text-xl">
-                            <span>100000000000000000</span>
+                        <div className="flex flex-row-reverse py-4 w-full text-xl lg:text-3xl">
+                            <span>{globalData.globals[0].owners}</span>
                         </div>
                     </div>
                 </div>
                 <div className="col-span-2">
-                    <div className="border-white border-2 rounded-br-3xl rounded-t-3xl p-2 px-4">
+                    <div className="border-white border-2 rounded-br-3xl rounded-t-3xl p-2 px-4 h-full">
                         <Menu as="div" className="relative text-right ml-3 mt-2 z-0">
                             {({ open }) => (
                                 <>
@@ -100,8 +104,66 @@ export default function Profile(): JSX.Element {
                                 </>
                             )}
                         </Menu>
-                        {view === 'level' && <div />}
-                        {view === 'class' && <div />}
+                        {view === 'level' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 gap-5 pb-4">
+                                {globalData.levels.map((level) => {
+                                    return (
+                                        <div key={level.id}>
+                                            <div className="border-white text-xs w-32  bg-card-bottom px-2 py-1 text-center border-2 rounded-2xl">
+                                                <span className="uppercase">
+                                                    {i18n._(t`level`)} {level.id}
+                                                </span>
+                                            </div>
+                                            <div className="mt-2 text-xs">
+                                                <span className="uppercase">{i18n._(t`users`)}</span>
+                                                <span className="ml-14">: </span>
+                                                <span>{level.count}</span>
+                                            </div>
+                                            <div className="mt-1 text-xs">
+                                                <span className="uppercase">{i18n._(t`percentage`)}</span>
+                                                <span className="ml-3">: </span>
+                                                <span>
+                                                    {(
+                                                        (parseInt(level.count) * 100) /
+                                                        parseInt(globalData.globals[0].summoners)
+                                                    ).toFixed(2)}
+                                                    %
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
+                        {view === 'class' && (
+                            <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 mt-4 gap-5 pb-4">
+                                {globalData.classes.map((_class) => {
+                                    return (
+                                        <div key={_class.id}>
+                                            <div className="border-white text-xs w-32  bg-card-bottom px-2 py-1 text-center border-2 rounded-2xl">
+                                                <span className="uppercase">{_class.id}</span>
+                                            </div>
+                                            <div className="mt-2 text-xs">
+                                                <span className="uppercase">{i18n._(t`users`)}</span>
+                                                <span className="ml-14">: </span>
+                                                <span>{_class.count}</span>
+                                            </div>
+                                            <div className="mt-1 text-xs">
+                                                <span className="uppercase">{i18n._(t`percentage`)}</span>
+                                                <span className="ml-3">: </span>
+                                                <span>
+                                                    {(
+                                                        (parseInt(_class.count) * 100) /
+                                                        parseInt(globalData.globals[0].summoners)
+                                                    ).toFixed(2)}
+                                                    %
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

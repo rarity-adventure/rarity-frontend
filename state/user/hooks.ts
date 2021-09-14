@@ -8,11 +8,11 @@ export function useUserSummoners(): { id: string }[] {
     return useSelector((state: AppState) => state.user.summoners)
 }
 
-export function useUserSelectedSummoner(): SummonerFullData | undefined {
+export function useUserSelectedSummoner(): string | undefined {
     return useSelector((state: AppState) => state.user.selected)
 }
 
-export function useUserSelectSummoner(): (summoner: SummonerFullData | undefined) => void {
+export function useUserSelectSummoner(): (summoner: string | undefined) => void {
     const dispatch = useDispatch<AppDispatch>()
     return useCallback((summoner) => dispatch(updateSelectedSummoner(summoner)), [dispatch])
 }

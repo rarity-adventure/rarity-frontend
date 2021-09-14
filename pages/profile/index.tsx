@@ -1,6 +1,6 @@
-import { SummonerFullData } from '../../state/summoners/hooks'
+import { SummonerFullData, useSummonersData } from '../../state/summoners/hooks'
 import { useLingui } from '@lingui/react'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../../components/Loader'
@@ -11,6 +11,7 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 import HeadlessUIModal from '../../components/Modal/HeadlessUIModal'
 import ModalHeader from '../../components/Modal/ModalHeader'
 import { isAddress } from '../../functions/validate'
+import { useUserSelectedSummoner, useUserSelectSummoner, useUserSummoners } from '../../state/user/hooks'
 
 enum View {
     stats,
@@ -19,6 +20,7 @@ enum View {
     crafting,
 }
 
+/*
 const mockSummonersData: { [k: string]: SummonerFullData } = {
     '123': {
         id: '123',
@@ -285,13 +287,33 @@ const mockSummonersData: { [k: string]: SummonerFullData } = {
         },
     },
 }
+*/
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
+    const summoners = useUserSummoners()
+
+    const summonersFullData = useSummonersData(summoners)
+
+    const stateSelectedSummoner = useUserSelectedSummoner()
+
+    const storeStateSelectedSummoner = useUserSelectSummoner()
+
     const [modals, setModal] = useState<{ delete: boolean; transfer: boolean }>({ delete: false, transfer: false })
 
-    const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(mockSummonersData['123'])
+    const [selectedSummoner, setSelectedSummoner] = useState<string | undefined>(stateSelectedSummoner)
+
+    useEffect(() => {
+        if (!stateSelectedSummoner && summoners[0]) {
+            setSelectedSummoner(summoners[0].id)
+            storeStateSelectedSummoner(summoners[0].id)
+        }
+    }, [stateSelectedSummoner, summoners[0]])
+
+    useEffect(() => {
+        storeStateSelectedSummoner(selectedSummoner)
+    }, [selectedSummoner])
 
     const [view, setView] = useState<View>(View.stats)
 
@@ -309,8 +331,6 @@ export default function Profile(): JSX.Element {
     })
 
     function transferAddressHandler(address: string) {
-        console.log(address)
-        console.log(address === '' || !address)
         if (address === '' || !address) {
             setTransferAddress({ input: false, address: false })
         } else {
@@ -320,72 +340,6 @@ export default function Profile(): JSX.Element {
 
     return (
         <div className="w-full z-10">
-            <HeadlessUIModal isOpen={modals.delete} onDismiss={() => setModal({ delete: false, transfer: false })}>
-                <div className="bg-background-end rounded-lg border-2 border-white">
-                    <ModalHeader
-                        title={i18n._(t`delete summoner`)}
-                        onClose={() => setModal({ delete: false, transfer: false })}
-                    />
-                    <div className="text-center text-white p-4 pb-8 gap-5">
-                        <h2>{i18n._(t`Are you sure you want to delete this summoner?`)}</h2>
-                        <h2>
-                            <b>{i18n._(t`This action is IRREVERSIBLE.`)}</b>
-                        </h2>
-                        <h2>
-                            <b>{i18n._(t`All items and experience will be lost.`)}</b>
-                        </h2>
-                    </div>
-                    <div className="flex flex-row justify-center pb-8">
-                        <div className="bg-background-middle hover:bg-background-start text-white border-white border-2 rounded-lg mx-4">
-                            <button
-                                className="w-full uppercase px-2 py-1"
-                                onClick={() => setModal({ delete: false, transfer: false })}
-                            >
-                                <h2>{i18n._(t`cancel`)}</h2>
-                            </button>
-                        </div>
-                        <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
-                            <button className="w-full uppercase px-2 py-1">
-                                <h2>{i18n._(t`confirm`)}</h2>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </HeadlessUIModal>
-            <HeadlessUIModal isOpen={modals.transfer} onDismiss={() => setModal({ delete: false, transfer: false })}>
-                <div className="bg-background-end rounded-lg border-2 border-white">
-                    <ModalHeader
-                        title={i18n._(t`transfer summoner`)}
-                        onClose={() => setModal({ delete: false, transfer: false })}
-                    />
-                    <div className="text-center text-white p-4 pb-4 gap-5">
-                        <h2>{i18n._(t`Write the address to transfer the summoner`)}</h2>
-                    </div>
-                    <div className="text-center text-white p-4 pb-8 gap-5">
-                        <input
-                            className="p-2 text-background-end"
-                            onChange={(v) => transferAddressHandler(v.target.value)}
-                        />
-                    </div>
-                    <div className="flex flex-row justify-center pb-8">
-                        <div className=" text-white  mx-4">
-                            {transferAddress.address ? (
-                                <button className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1">
-                                    <h2>{i18n._(t`confirm`)}</h2>
-                                </button>
-                            ) : (
-                                <>
-                                    {transferAddress.input && (
-                                        <div className="opacity-80 bg-red-hovered text-white w-full mb-4 text-center rounded-lg text-xs">
-                                            <h2 className="p-2 uppercase">{i18n._(t`invalid address`)}</h2>
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </HeadlessUIModal>
             <div className="border-white border-4 p-4 m-10 z-10">
                 <Popover as="nav" className="w-full bg-transparent header-border-b">
                     {({ open }) => (
@@ -470,8 +424,8 @@ export default function Profile(): JSX.Element {
                         </>
                     )}
                 </Popover>
-                {Object.keys(mockSummonersData).length > 0 ? (
-                    <Menu as="div" className="relative text-right ml-3 mt-2 md:-mt-6 z-0">
+                {Object.keys(summonersFullData).length > 0 && (
+                    <Menu as="div" className="relative text-right ml-3 mt-2 md:-mt-6 z-10">
                         {({ open }) => (
                             <>
                                 <div>
@@ -495,15 +449,15 @@ export default function Profile(): JSX.Element {
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95"
                                 >
-                                    <Menu.Items className="absolute right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
+                                    <Menu.Items className="absolute max-h-96 overflow-scroll right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
                                         <div>
-                                            {Object.keys(mockSummonersData).map((k: string) => {
-                                                const data = mockSummonersData[k]
+                                            {Object.keys(summonersFullData).map((k: string) => {
+                                                const data = summonersFullData[k]
                                                 return (
                                                     <Menu.Item key={k}>
                                                         {() => (
                                                             <button
-                                                                onClick={() => setSelectedSummoner(data)}
+                                                                onClick={() => setSelectedSummoner(data.id)}
                                                                 className={
                                                                     'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                                 }
@@ -533,11 +487,9 @@ export default function Profile(): JSX.Element {
                             </>
                         )}
                     </Menu>
-                ) : (
-                    <Loader className="animate-spin" />
                 )}
 
-                {!selectedSummoner ? (
+                {!summonersFullData[selectedSummoner] ? (
                     <div className="relative h-96">
                         <div className="absolute top-1/2 right-1/2">
                             <Loader className="animate-spin" size="40px" />
@@ -547,7 +499,7 @@ export default function Profile(): JSX.Element {
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center p-2 lg:p-20 gap-5">
                         <div className="text-center mx-auto">
                             <img
-                                src={CLASSES_IMAGES[selectedSummoner.base._class.toString()]}
+                                src={CLASSES_IMAGES[summonersFullData[selectedSummoner].base._class.toString()]}
                                 alt={''}
                                 className="h-48 mx-auto"
                             />
@@ -555,8 +507,8 @@ export default function Profile(): JSX.Element {
                                 [{' '}
                                 <div className="w-60 overflow-x-hidden overflow-ellipsis">
                                     <span className="text-xl mx-2 overflow-hidden whitespace-nowrap">
-                                        {selectedSummoner.base._name !== ''
-                                            ? selectedSummoner.base._name
+                                        {summonersFullData[selectedSummoner].base._name !== ''
+                                            ? summonersFullData[selectedSummoner].base._name
                                             : i18n._(t`unknown`)}
                                     </span>
                                 </div>{' '}
@@ -564,14 +516,14 @@ export default function Profile(): JSX.Element {
                             </div>
                             <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl p-2">
                                 <span className="p-2 uppercase">
-                                    {i18n._(CLASSES_NAMES[selectedSummoner.base._class.toString()])}
+                                    {i18n._(CLASSES_NAMES[summonersFullData[selectedSummoner].base._class.toString()])}
                                 </span>{' '}
                             </div>
                         </div>
                         <div className="col-span-2">
                             {view === View.stats && (
                                 <StatsProfile
-                                    summoner={selectedSummoner}
+                                    summoner={summonersFullData[selectedSummoner]}
                                     deleteModal={deleteModal}
                                     transferModal={transferModal}
                                 />
@@ -579,6 +531,75 @@ export default function Profile(): JSX.Element {
                         </div>
                     </div>
                 )}
+                <HeadlessUIModal isOpen={modals.delete} onDismiss={() => setModal({ delete: false, transfer: false })}>
+                    <div className="bg-background-end rounded-lg border-2 border-white">
+                        <ModalHeader
+                            title={i18n._(t`delete summoner`)}
+                            onClose={() => setModal({ delete: false, transfer: false })}
+                        />
+                        <div className="text-center text-white p-4 pb-8 gap-5">
+                            <h2>{i18n._(t`Are you sure you want to delete this summoner?`)}</h2>
+                            <h2>
+                                <b>{i18n._(t`This action is IRREVERSIBLE.`)}</b>
+                            </h2>
+                            <h2>
+                                <b>{i18n._(t`All items and experience will be lost.`)}</b>
+                            </h2>
+                        </div>
+                        <div className="flex flex-row justify-center pb-8">
+                            <div className="bg-background-middle hover:bg-background-start text-white border-white border-2 rounded-lg mx-4">
+                                <button
+                                    className="w-full uppercase px-2 py-1"
+                                    onClick={() => setModal({ delete: false, transfer: false })}
+                                >
+                                    <h2>{i18n._(t`cancel`)}</h2>
+                                </button>
+                            </div>
+                            <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
+                                <button className="w-full uppercase px-2 py-1">
+                                    <h2>{i18n._(t`confirm`)}</h2>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </HeadlessUIModal>
+                <HeadlessUIModal
+                    isOpen={modals.transfer}
+                    onDismiss={() => setModal({ delete: false, transfer: false })}
+                >
+                    <div className="bg-background-end rounded-lg border-2 border-white">
+                        <ModalHeader
+                            title={i18n._(t`transfer summoner`)}
+                            onClose={() => setModal({ delete: false, transfer: false })}
+                        />
+                        <div className="text-center text-white p-4 pb-4 gap-5">
+                            <h2>{i18n._(t`Write the address to transfer the summoner`)}</h2>
+                        </div>
+                        <div className="text-center text-white p-4 pb-8 gap-5">
+                            <input
+                                className="p-2 text-background-end"
+                                onChange={(v) => transferAddressHandler(v.target.value)}
+                            />
+                        </div>
+                        <div className="flex flex-row justify-center pb-8">
+                            <div className=" text-white  mx-4">
+                                {transferAddress.address ? (
+                                    <button className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1">
+                                        <h2>{i18n._(t`confirm`)}</h2>
+                                    </button>
+                                ) : (
+                                    <>
+                                        {transferAddress.input && (
+                                            <div className="opacity-80 bg-red-hovered text-white w-full mb-4 text-center rounded-lg text-xs">
+                                                <h2 className="p-2 uppercase">{i18n._(t`invalid address`)}</h2>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </HeadlessUIModal>
             </div>
         </div>
     )

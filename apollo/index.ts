@@ -7,3 +7,20 @@ export const SUMMONERS = gql`
         }
     }
 `
+
+export const GLOBAL_DATA = gql`
+    query data {
+        globals {
+            summoners
+            owners
+        }
+        classes {
+            id
+            count
+        }
+        levels {
+            id
+            count
+        }
+    }
+`

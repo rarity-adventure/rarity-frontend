@@ -4,7 +4,6 @@ import { SummonerFullData } from '../../state/summoners/hooks'
 import { TrashIcon } from '@heroicons/react/outline'
 import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from '@heroicons/react/solid'
 import { utils } from 'ethers'
-
 interface StatsProfileProps {
     summoner: SummonerFullData
     deleteModal: () => void
@@ -20,7 +19,7 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                 <div className="grid grid-cols-5 gap-2 w-full">
                     <div className="bg-card-top col-span-3 bg-background-cards p-2 border-white border-2 rounded-tl-2xl text-left">
                         <span className="ml-1.5">
-                            {i18n._(t`ID`)}: {summoner.id}
+                            {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
                         </span>
                     </div>
                     <div className="hover:bg-card-content hover:text-grey bg-card-button col-span-2 bg-background-cards border-white border-2 rounded-tr-2xl text-center">
@@ -50,7 +49,9 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                         <div>
                             <span className="uppercase">{i18n._(t`xp`)}</span>
                             <span className="text-transparent ml-11">&nbsp;</span>:
-                            <span className="ml-1.5">{summoner.base._xp.toString()}</span>
+                            <span className="ml-1.5">
+                                {parseInt(utils.formatUnits(summoner.base._xp, 'ether')).toFixed(0)}
+                            </span>
                         </div>
                         <div>
                             <span className="uppercase">{i18n._(t`gold`)}</span>

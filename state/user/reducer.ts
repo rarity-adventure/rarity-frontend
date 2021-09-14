@@ -1,10 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { setLoaded, updateSelectedSummoner, updateUserSummoners } from './actions'
-import { SummonerFullData } from '../summoners/hooks'
 
 export interface UserState {
     readonly summoners: { id: string }[]
-    readonly selected: SummonerFullData | null
+    readonly selected: string | undefined
     readonly loaded: boolean
 }
 
