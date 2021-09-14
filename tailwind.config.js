@@ -7,14 +7,20 @@ module.exports = {
             'background-middle': '#0F1F39',
             'background-end': '#0B1526',
             white: '#ffffff',
+            grey: '#c0c0c0',
             black: '#000000',
             contrast: '#2AE7F3',
             red: '#c70000',
+            'red-hovered': '#830101',
+            'card-top': '#2C394B',
+            'card-content': '#2F3C4F',
+            'card-button': '#334756',
+            'card-bottom': '#3C415C',
         },
     },
     variants: {
         extend: {
-            animation: ['hover'],
+            animation: ['hover, focus'],
         },
     },
 }

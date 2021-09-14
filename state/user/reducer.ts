@@ -11,7 +11,7 @@ export interface UserState {
 const initialState: UserState = {
     summoners: [],
     selected: undefined,
-    loaded: false
+    loaded: false,
 }
 
 export default createReducer(initialState, (builder) =>
@@ -26,4 +26,3 @@ export default createReducer(initialState, (builder) =>
             state.loaded = action.payload
         })
 )
-

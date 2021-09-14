@@ -22,52 +22,43 @@ function AppBar(): JSX.Element {
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center z-20">
-                                    <a href="/" className="uppercase text-center tracking-widest text-2xl ">
+                                    <a href="/" className="uppercase text-center tracking-widest text-xl ">
                                         <h1>RARITY</h1>
                                         <h1>Adventure</h1>
                                     </a>
-                                    <div className="hidden md:block sm:ml-4">
-                                        <div className="flex space-x-2 uppercase">
-                                            <a
-                                                href="https://rarity.game"
-                                                className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
-                                            >
-                                                <h2>{i18n._(t`Adventure`)}</h2>
-                                            </a>
+                                    <div className="hidden md:block sm:ml-2">
+                                        <div className="flex uppercase">
                                             <a
                                                 href="/profile"
-                                                className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
+                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
                                                 <h2>{i18n._(t`Profile`)}</h2>
                                             </a>
                                             <a
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                href="https://analytics.rarity.game"
-                                                className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
+                                                href="/analytics"
+                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
                                                 <h2>{i18n._(t`Analytics`)}</h2>
                                             </a>
                                             <a
                                                 href="https://names.rarity.game"
-                                                className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
+                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
                                                 <h2>{i18n._(t`Marketplace`)}</h2>
                                             </a>
                                             <a
                                                 href="#"
-                                                className="border-contrast border-transparent border-2 rounded-3xl py-1 px-2"
+                                                className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
                                                 <h2>{i18n._(t`Donate`)}</h2>
                                             </a>
                                         </div>
                                     </div>
+                                    <LangSwitcher />
                                 </div>
-
                                 <div className="fixed bottom-0 right-0 z-20 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end ">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto">
-                                            <LangSwitcher />
                                             {account && chainId && userEthBalance && (
                                                 <>
                                                     <div className="px-3 mx-3 py-2 text-primary text-bold border-white border-2 rounded-lg">
@@ -123,31 +114,25 @@ function AppBar(): JSX.Element {
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
                                 <a
                                     href="#"
-                                    className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
-                                >
-                                    <h2>{i18n._(t`Adventure`)}</h2>
-                                </a>
-                                <a
-                                    href="#"
-                                    className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
+                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Profile`)}</h2>
                                 </a>
                                 <a
-                                    href="#"
-                                    className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
+                                    href="/analytics"
+                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Analytics`)}</h2>
                                 </a>
                                 <a
                                     href="https://names.rarity.game"
-                                    className="hover:border-white border-transparent border-2 rounded-3xl py-1 px-2"
+                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Marketplace`)}</h2>
                                 </a>
                                 <a
                                     href="#"
-                                    className="border-contrast border-transparent border-2 rounded-3xl py-1 px-2"
+                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Donate`)}</h2>
                                 </a>

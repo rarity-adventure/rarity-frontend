@@ -10,6 +10,8 @@ import ModalHeader from '../Modal/ModalHeader'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { SUPPORTED_WALLETS } from '../../config/wallets'
+import { t } from '@lingui/macro'
+import { useLingui } from '@lingui/react'
 
 function Web3StatusInner() {
     const { account } = useWeb3React()
@@ -34,6 +36,8 @@ function Web3StatusInner() {
 }
 
 export default function Web3Status() {
+    const { i18n } = useLingui()
+
     const { active, account, connector, activate, error } = useWeb3React()
 
     const open = useModalOpen(ApplicationModal.WALLET)
@@ -77,9 +81,9 @@ export default function Web3Status() {
             {account && <div />}
             {!account && !error && (
                 <HeadlessUIModal isOpen={open} onDismiss={toggleModal}>
-                    <div className="bg-gradient-to-b from-background-start via-background-middle to-background-end rounded-lg border-2 border-white">
-                        <ModalHeader title="Choose a wallet" onClose={toggleModal} />
-                        <div className="grid grid-cols-1 text-white p-4 gap-5">
+                    <div className="bg-background-end rounded-lg border-2 border-white">
+                        <ModalHeader title={i18n._(t`choose a wallet`)} onClose={toggleModal} />
+                        <div className="grid grid-cols-1 text-white p-4 pb-8 gap-5">
                             {Object.keys(SUPPORTED_WALLETS).map((k) => {
                                 const option = SUPPORTED_WALLETS[k]
                                 return (
@@ -93,7 +97,7 @@ export default function Web3Status() {
                                                     tryActivation(option.connector)
                                             }
                                         }}
-                                        className="uppercase border-2 border-white rounded-md mx-5 hover:bg-background-end"
+                                        className="uppercase border-2 border-white rounded-md mx-5 hover:bg-background-start"
                                     >
                                         <div className="flex flex-row justify-between items-center p-2 md:mx-16">
                                             <h1>{option.name}</h1>

@@ -5,6 +5,7 @@ import { useSingleContractMultipleData } from '../multicall/hooks'
 import { BigNumber } from 'ethers'
 
 export interface SummonerFullData {
+    id: string
     ability_scores: {
         attributes: {
             _cha: number
@@ -69,6 +70,7 @@ export function useSummonersData(summoners: { id: string }[]): {
                 const value = results?.[i]?.result?.[0]
                 if (value && chainId) {
                     memo[s.id] = {
+                        id: s.id,
                         ability_scores: {
                             attributes: {
                                 _cha: value.ability_scores.attributes._cha,
