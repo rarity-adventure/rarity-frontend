@@ -1,14 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { updateSelectedSummoner, updateUserSummoners } from './actions'
+import { setLoaded, updateSelectedSummoner, updateUserSummoners } from './actions'
+import { SummonerFullData } from '../summoners/hooks'
 
 export interface UserState {
     readonly summoners: { id: string }[]
-    readonly selected: string
+    readonly selected: SummonerFullData | null
+    readonly loaded: boolean
 }
 
 const initialState: UserState = {
     summoners: [],
-    selected: '0',
+    selected: undefined,
+    loaded: false
 }
 
 export default createReducer(initialState, (builder) =>
@@ -19,4 +22,8 @@ export default createReducer(initialState, (builder) =>
         .addCase(updateSelectedSummoner, (state, action) => {
             state.selected = action.payload
         })
+        .addCase(setLoaded, (state, action) => {
+            state.loaded = action.payload
+        })
 )
+

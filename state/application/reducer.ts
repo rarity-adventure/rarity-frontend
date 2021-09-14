@@ -12,14 +12,12 @@ export interface ApplicationState {
     readonly blockNumber: { readonly [chainId: number]: number }
     readonly popupList: PopupList
     readonly openModal: ApplicationModal | null
-    kashiApprovalPending: string
 }
 
 const initialState: ApplicationState = {
     blockNumber: {},
     popupList: [],
     openModal: null,
-    kashiApprovalPending: '',
 }
 
 export default createReducer(initialState, (builder) =>
