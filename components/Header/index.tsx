@@ -113,7 +113,7 @@ function AppBar(): JSX.Element {
                         <Popover.Panel className="sm:hidden">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
                                 <a
-                                    href="#"
+                                    href="/profile"
                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Profile`)}</h2>

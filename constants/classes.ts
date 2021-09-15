@@ -1,13 +1,5 @@
 const img_path = (name: string) => '/img/classes/' + name + '.png'
 
-export const ATTRIBUTES: { [k: string]: { name: string; description: string; url: string } } = {
-    str: { name: 'strength', description: '', url: '' },
-    dex: { name: 'dexterity', description: '', url: '' },
-    con: { name: 'constitution', description: '', url: '' },
-    int: { name: 'intelligence', description: '', url: '' },
-    wis: { name: 'wisdom', description: '', url: '' },
-    cha: { name: 'charisma', description: '', url: '' },
-}
 export const CLASSES_NAMES: { [k: string]: string } = {
     '1': 'barbarian',
     '2': 'bard',

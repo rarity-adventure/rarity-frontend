@@ -12,6 +12,11 @@ import { isAddress } from '../../functions/validate'
 import { useUserSelectedSummoner, useUserSelectSummoner } from '../../state/user/hooks'
 import { BigNumber } from 'ethers'
 import { SummonerFullData } from '../../state/summoners/hooks'
+import AdventureProfile from '../../components/ProfileCard/Adventure'
+import SkillsProfile from '../../components/ProfileCard/Skills'
+import InventoryProfule from '../../components/ProfileCard/Inventory'
+import CraftProfile from '../../components/ProfileCard/Craft'
+import InventoryProfile from '../../components/ProfileCard/Inventory'
 
 const summonersFullData: { [k: string]: SummonerFullData } = {
     '123': {
@@ -284,6 +289,7 @@ const summoners = [{ id: '123' }, { id: '124' }, { id: '125' }]
 
 enum View {
     stats,
+    adventure,
     skills,
     inventory,
     crafting,
@@ -350,16 +356,34 @@ export default function Profile(): JSX.Element {
                                         <h1 className="text-3xl">{i18n._(t`profile`)}</h1>
                                         <div className="hidden md:block sm:ml-2 text-xs">
                                             <div className="flex uppercase">
-                                                <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                                <button
+                                                    onClick={() => setView(View.stats)}
+                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                >
                                                     <span>{i18n._(t`stats`)}</span>
                                                 </button>
-                                                <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                                <button
+                                                    onClick={() => setView(View.adventure)}
+                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                >
+                                                    <span>{i18n._(t`adventure`)}</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => setView(View.skills)}
+                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                >
                                                     <span>{i18n._(t`skills`)}</span>
                                                 </button>
-                                                <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                                <button
+                                                    onClick={() => setView(View.inventory)}
+                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                >
                                                     <span>{i18n._(t`inventory`)}</span>
                                                 </button>
-                                                <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                                <button
+                                                    onClick={() => setView(View.crafting)}
+                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                >
                                                     <span>{i18n._(t`craft`)}</span>
                                                 </button>
                                             </div>
@@ -407,16 +431,34 @@ export default function Profile(): JSX.Element {
 
                             <Popover.Panel className="sm:hidden">
                                 <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center text-sm">
-                                    <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                    <button
+                                        onClick={() => setView(View.stats)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
                                         <span>{i18n._(t`stats`)}</span>
                                     </button>
-                                    <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                    <button
+                                        onClick={() => setView(View.adventure)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
+                                        <span>{i18n._(t`adventure`)}</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setView(View.skills)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
                                         <span>{i18n._(t`skills`)}</span>
                                     </button>
-                                    <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                    <button
+                                        onClick={() => setView(View.inventory)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
                                         <span>{i18n._(t`inventory`)}</span>
                                     </button>
-                                    <button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase">
+                                    <button
+                                        onClick={() => setView(View.crafting)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
                                         <span>{i18n._(t`craft`)}</span>
                                     </button>
                                 </div>
@@ -425,11 +467,11 @@ export default function Profile(): JSX.Element {
                     )}
                 </Popover>
                 {Object.keys(summonersFullData).length > 0 && (
-                    <Menu as="div" className="relative text-right ml-3 mt-2 md:-mt-6 z-10">
+                    <Menu as="div" className="relative text-right ml-3 mt-2 md:-mt-2 z-10">
                         {({ open }) => (
                             <>
                                 <div>
-                                    <Menu.Button className="flex flex-row justify-end item-center w-full p-2 text-xs font-bold border-b-2 text-white border-white">
+                                    <Menu.Button className="flex flex-row justify-end item-center w-full p-2 text-xs border-b-2 border-white font-bold text-white ">
                                         <div className="h-full mr-1.5">
                                             <span className="uppercase">{i18n._(t`select summoner`)}</span>
                                         </div>
@@ -490,7 +532,7 @@ export default function Profile(): JSX.Element {
                 )}
 
                 {summonersFullData[selectedSummoner] && selectedSummoner ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center p-2 lg:p-20 gap-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto">
                             <img
                                 src={CLASSES_IMAGES[summonersFullData[selectedSummoner].base._class.toString()]}
@@ -520,6 +562,14 @@ export default function Profile(): JSX.Element {
                                     transferModal={transferModal}
                                 />
                             )}
+                            {view === View.adventure && (
+                                <AdventureProfile summoner={summonersFullData[selectedSummoner]} />
+                            )}
+                            {view === View.skills && <SkillsProfile summoner={summonersFullData[selectedSummoner]} />}
+                            {view === View.inventory && (
+                                <InventoryProfile summoner={summonersFullData[selectedSummoner]} />
+                            )}
+                            {view === View.crafting && <CraftProfile summoner={summonersFullData[selectedSummoner]} />}
                         </div>
                     </div>
                 ) : (

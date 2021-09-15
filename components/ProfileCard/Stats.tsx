@@ -2,8 +2,12 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../state/summoners/hooks'
 import { TrashIcon } from '@heroicons/react/outline'
-import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from '@heroicons/react/solid'
+import { QuestionMarkCircleIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import { utils } from 'ethers'
+import React, { useState } from 'react'
+import HeadlessUIModal from '../Modal/HeadlessUIModal'
+import ModalHeader from '../Modal/ModalHeader'
+import { ATTRIBUTES } from '../../constants/codex/attributes'
 interface StatsProfileProps {
     summoner: SummonerFullData
     deleteModal: () => void
@@ -11,14 +15,16 @@ interface StatsProfileProps {
 }
 
 function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProps): JSX.Element {
-    console.log(summoner)
     const { i18n } = useLingui()
 
+    const [attribute, setAttribute] = useState('str')
+    const [modal, setModalOpen] = useState(false)
+
     return (
-        <div>
+        <div className="max-w-screen-md mx-auto">
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
-                    <div className="bg-card-top col-span-3 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl text-left">
+                    <div className="bg-card-top col-span-3 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
                         <span className="ml-1.5">
                             {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
                         </span>
@@ -68,72 +74,186 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                 </div>
                 <div className="flex flex-row w-full">
                     <div className="grid grid-cols-1 md:grid-cols-2 w-full px-4 mt-2">
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-start items-center">
+                            <div className="mr-1 mt-1 -ml-2 opacity-50">
+                                <button
+                                    onClick={() => {
+                                        setAttribute('str')
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    <QuestionMarkCircleIcon width={18} />
+                                </button>
+                            </div>
                             <div>
                                 <span className="uppercase">{i18n._(t`str`)}</span>
-                                <span className="text-transparent ml-5 md:ml-8">&nbsp;</span>:
+                                <span className="text-transparent ml-2 md:ml-5">&nbsp;</span>:
                                 <span className="ml-1.5">{summoner.ability_scores.attributes._str}</span>
                             </div>
-                            <div className="flex flex-row justify-between mr-10">
-                                <PlusIcon width={25} /> <PlusIcon width={25} />
+                            <div className="flex flex-row justify-between ml-20">
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <MinusIcon width={18} />
+                                    </button>
+                                </div>
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <PlusIcon width={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-start items-center">
+                            <div className="mr-1 mt-1 -ml-2 opacity-50">
+                                <button
+                                    onClick={() => {
+                                        setAttribute('int')
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    <QuestionMarkCircleIcon width={18} />
+                                </button>
+                            </div>
                             <div>
                                 <span className="uppercase">{i18n._(t`int`)}</span>
-                                <span className="text-transparent ml-6 md:ml-6">&nbsp;</span>:
+                                <span className="text-transparent ml-3 md:ml-3">&nbsp;</span>:
                                 <span className="ml-1.5">{summoner.ability_scores.attributes._int}</span>
                             </div>
-                            <div className="flex flex-row justify-between mr-10">
-                                <PlusIcon width={25} /> <PlusIcon width={25} />
+                            <div className="flex flex-row justify-between ml-20">
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <MinusIcon width={18} />
+                                    </button>
+                                </div>
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <PlusIcon width={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-row w-full">
                     <div className="grid grid-cols-1 md:grid-cols-2 w-full px-4 md:mt-2">
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-start items-center">
+                            <div className="mr-1 mt-1 -ml-2 opacity-50">
+                                <button
+                                    onClick={() => {
+                                        setAttribute('dex')
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    <QuestionMarkCircleIcon width={18} />
+                                </button>
+                            </div>
                             <div>
                                 <span className="uppercase">{i18n._(t`dex`)}</span>
-                                <span className="text-transparent ml-5 md:ml-8">&nbsp;</span>:
+                                <span className="text-transparent ml-2 md:ml-5">&nbsp;</span>:
                                 <span className="ml-1.5">{summoner.ability_scores.attributes._dex}</span>
                             </div>
-                            <div className="flex flex-row justify-between mr-10">
-                                <PlusIcon width={25} /> <PlusIcon width={25} />
+                            <div className="flex flex-row justify-between ml-20">
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <MinusIcon width={18} />
+                                    </button>
+                                </div>
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <PlusIcon width={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-start items-center">
+                            <div className="mr-1 mt-1 -ml-2 opacity-50">
+                                <button
+                                    onClick={() => {
+                                        setAttribute('wis')
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    <QuestionMarkCircleIcon width={18} />
+                                </button>
+                            </div>
                             <div>
                                 <span className="uppercase">{i18n._(t`wis`)}</span>
-                                <span className="text-transparent ml-6 md:ml-6">&nbsp;</span>:
+                                <span className="text-transparent ml-3 md:ml-3">&nbsp;</span>:
                                 <span className="ml-1.5">{summoner.ability_scores.attributes._wis}</span>
                             </div>
-                            <div className="flex flex-row justify-between mr-10">
-                                <PlusIcon width={25} /> <PlusIcon width={25} />
+                            <div className="flex flex-row justify-between ml-20">
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <MinusIcon width={18} />
+                                    </button>
+                                </div>
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <PlusIcon width={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-row w-full pb-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 w-full px-4 md:mt-2">
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-start items-center">
+                            <div className="mr-1 mt-1 -ml-2 opacity-50">
+                                <button
+                                    onClick={() => {
+                                        setAttribute('con')
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    <QuestionMarkCircleIcon width={18} />
+                                </button>
+                            </div>
                             <div>
                                 <span className="uppercase">{i18n._(t`con`)}</span>
-                                <span className="text-transparent ml-5 md:ml-8">&nbsp;</span>:
+                                <span className="text-transparent ml-2 md:ml-5">&nbsp;</span>:
                                 <span className="ml-1.5">{summoner.ability_scores.attributes._con}</span>
                             </div>
-                            <div className="flex flex-row justify-between mr-10">
-                                <PlusIcon width={25} /> <PlusIcon width={25} />
+                            <div className="flex flex-row justify-between ml-20">
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <MinusIcon width={18} />
+                                    </button>
+                                </div>
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <PlusIcon width={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-start items-center">
+                            <div className="mr-1 mt-1 -ml-2 opacity-50">
+                                <button
+                                    onClick={() => {
+                                        setAttribute('cha')
+                                        setModalOpen(true)
+                                    }}
+                                >
+                                    <QuestionMarkCircleIcon width={18} />
+                                </button>
+                            </div>
                             <div>
                                 <span className="uppercase">{i18n._(t`cha`)}</span>
-                                <span className="text-transparent ml-5 md:ml-5">&nbsp;</span>:
+                                <span className="text-transparent ml-2 md:ml-2">&nbsp;</span>:
                                 <span className="ml-1.5">{summoner.ability_scores.attributes._cha}</span>
                             </div>
-                            <div className="flex flex-row justify-between mr-10">
-                                <PlusIcon width={25} /> <PlusIcon width={25} />
+                            <div className="flex flex-row justify-between ml-20">
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <MinusIcon width={18} />
+                                    </button>
+                                </div>
+                                <div className="mt-1">
+                                    <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <PlusIcon width={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,6 +280,24 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                     </div>
                 </div>
             </div>
+            <HeadlessUIModal isOpen={modal} onDismiss={() => setModalOpen(false)}>
+                <div className="bg-background-end rounded-lg border-2 border-white">
+                    <ModalHeader title={i18n._(ATTRIBUTES[attribute].name)} onClose={() => setModalOpen(false)} />
+                    <div className="text-justify text-white p-4 pb-8 gap-5">
+                        <h2>{i18n._(ATTRIBUTES[attribute].description)}</h2>
+                    </div>
+                    <div className="flex flex-row justify-center pb-8">
+                        <a
+                            className="uppercase border-white border-2 border-round text-white p-2 rounded-lg"
+                            target="_blank"
+                            rel="noreferrer"
+                            href={ATTRIBUTES[attribute].url}
+                        >
+                            <h2>{i18n._(t`read more`)}</h2>
+                        </a>
+                    </div>
+                </div>
+            </HeadlessUIModal>
         </div>
     )
 }
