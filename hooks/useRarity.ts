@@ -26,13 +26,16 @@ export default function useRarity(): RarityInterface {
     )
 
     const transferFrom = useCallback(
-        async (from: string | null | undefined, to: string, id: string) => {
-            try {
-                const tx = await rarity?.transferFrom(from, to, id)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+        async (from: string | null | undefined, to: string, id: string): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await rarity?.transferFrom(from, to, id)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [rarity]
     )

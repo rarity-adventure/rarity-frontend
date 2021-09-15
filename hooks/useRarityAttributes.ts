@@ -26,12 +26,15 @@ export default function useRarityAttributes(): AttributesInterface {
             wis: number,
             cha: number
         ): Promise<void> => {
-            try {
-                await attributes?.point_buy(id, str, dex, con, int, wis, cha)
-                return
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await attributes?.point_buy(id, str, dex, con, int, wis, cha)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [attributes]
     )

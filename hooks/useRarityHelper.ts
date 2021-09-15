@@ -13,52 +13,63 @@ export default function useRarityHelper(): HelperInterface {
 
     const adventure = useCallback(
         async (ids: string[]): Promise<void> => {
-            try {
-                const tx = await helper?.adventure(ids)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await helper?.adventure(ids)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [helper]
     )
 
     const cellar = useCallback(
         async (ids: string[]): Promise<void> => {
-            try {
-                const tx = await helper?.cellar(ids)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await helper?.cellar(ids)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [helper]
     )
 
     const claim_gold = useCallback(
         async (ids: string[]): Promise<void> => {
-            try {
-                const tx = await helper?.claim_gold(ids)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await helper?.claim_gold(ids)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [helper]
     )
 
     const level_up = useCallback(
         async (ids: string[]): Promise<void> => {
-            try {
-                const tx = await helper?.level_up(ids)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await helper?.level_up(ids)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [helper]
     )
-
 
     return { adventure, cellar, claim_gold, level_up }
 }

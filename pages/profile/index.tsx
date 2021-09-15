@@ -19,6 +19,7 @@ import useRarity from '../../hooks/useRarity'
 import toast, { Toaster } from 'react-hot-toast'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { BURN_ADDRESS } from '../../constants'
+import useRarityHelper from '../../hooks/useRarityHelper'
 
 enum View {
     stats,
@@ -38,6 +39,11 @@ export default function Profile(): JSX.Element {
     const summoners = useUserSummoners()
 
     const summonersFullData = useSummonersData(summoners)
+
+    const summonersForAdventure = []
+    const summonersForLevel = []
+    const summonersForClaim = []
+    const summonersForDungeon = []
 
     const stateSelectedSummoner = useUserSelectedSummoner()
 
@@ -100,6 +106,40 @@ export default function Profile(): JSX.Element {
         })
     }
 
+    const { adventure, cellar, claim_gold, level_up } = useRarityHelper()
+
+    async function sendAdventure() {
+        await toast.promise(adventure(summonersForAdventure), {
+            loading: <b>{i18n._(t`Sending summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function sendLevelUP() {
+        await toast.promise(level_up(summonersForLevel), {
+            loading: <b>{i18n._(t`Sending summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function sendClaimGold() {
+        await toast.promise(claim_gold(summonersForClaim), {
+            loading: <b>{i18n._(t`Sending summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function sendDungeon() {
+        await toast.promise(cellar(summonersForDungeon), {
+            loading: <b>{i18n._(t`Sending summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
     return (
         <div className="w-full z-20">
             <Toaster containerClassName="z-30" />
@@ -146,7 +186,7 @@ export default function Profile(): JSX.Element {
                                                 <Popover className="relative">
                                                     {({ open }) => (
                                                         <>
-                                                            <Popover.Button className="uppercase hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase text-center group">
+                                                            <Popover.Button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase text-center group">
                                                                 <span>{i18n._(t`global`)}</span>
                                                             </Popover.Button>
                                                             <Transition
@@ -159,22 +199,138 @@ export default function Profile(): JSX.Element {
                                                                 leaveTo="opacity-0 translate-y-1"
                                                             >
                                                                 <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
-                                                                    <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                                                                        <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-2"></div>
-                                                                        <div className="p-4 bg-gray-50">
-                                                                            <a
-                                                                                href="##"
-                                                                                className="flow-root px-2 py-2 transition duration-150 ease-in-out rounded-md hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                                                                            >
-                                                                                <span className="flex items-center">
-                                                                                    <span className="text-sm font-medium text-gray-900">
-                                                                                        Documentation
-                                                                                    </span>
-                                                                                </span>
-                                                                                <span className="block text-sm text-gray-500">
-                                                                                    Start integrating products and tools
-                                                                                </span>
-                                                                            </a>
+                                                                    <div className="overflow-hidden rounded-lg shadow-2xl ring-2 ring-white ring-opacity-5">
+                                                                        <div className="relative grid gap-8 bg-background-end p-7 lg:grid-cols-2">
+                                                                            <div>
+                                                                                <h2 className="text-lg">
+                                                                                    {i18n._(t`adventures`)}
+                                                                                </h2>
+                                                                                <h2 className="mt-1 text-center text-xs">
+                                                                                    {i18n._(
+                                                                                        t`summoners available for adventure`
+                                                                                    )}
+                                                                                </h2>
+                                                                                {summonersForAdventure.length > 0 ? (
+                                                                                    <div className="text-center">
+                                                                                        <button
+                                                                                            onClick={() =>
+                                                                                                sendAdventure()
+                                                                                            }
+                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                        >
+                                                                                            {i18n._(t`send`)}{' '}
+                                                                                            {
+                                                                                                summonersForAdventure.length
+                                                                                            }{' '}
+                                                                                            {i18n._(t`summoners`)}
+                                                                                        </button>
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <div>
+                                                                                        <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                            {i18n._(
+                                                                                                t`No summoners available`
+                                                                                            )}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                            <div>
+                                                                                <h2 className="text-lg">
+                                                                                    {i18n._(t`level up`)}
+                                                                                </h2>
+                                                                                <h2 className="mt-1 text-center text-xs">
+                                                                                    Summoners available for level up
+                                                                                </h2>
+                                                                                {summonersForLevel.length > 0 ? (
+                                                                                    <div className="text-center">
+                                                                                        <button
+                                                                                            onClick={() =>
+                                                                                                sendLevelUP()
+                                                                                            }
+                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                        >
+                                                                                            {i18n._(t`send`)}{' '}
+                                                                                            {
+                                                                                                summonersForAdventure.length
+                                                                                            }{' '}
+                                                                                            {i18n._(t`summoners`)}
+                                                                                        </button>
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <div>
+                                                                                        <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                            {i18n._(
+                                                                                                t`No summoners available`
+                                                                                            )}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                            <div>
+                                                                                <h2 className="text-lg">
+                                                                                    {i18n._(t`claim gold`)}
+                                                                                </h2>
+                                                                                <h2 className="mt-1 text-center text-xs">
+                                                                                    Summoners available for claim gold
+                                                                                </h2>
+                                                                                {summonersForClaim.length > 0 ? (
+                                                                                    <div className="text-center">
+                                                                                        <button
+                                                                                            onClick={() =>
+                                                                                                sendClaimGold()
+                                                                                            }
+                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                        >
+                                                                                            {i18n._(t`send`)}{' '}
+                                                                                            {
+                                                                                                summonersForAdventure.length
+                                                                                            }{' '}
+                                                                                            {i18n._(t`summoners`)}
+                                                                                        </button>
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <div>
+                                                                                        <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                            {i18n._(
+                                                                                                t`No summoners available`
+                                                                                            )}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                            <div>
+                                                                                <h2 className="text-lg">
+                                                                                    {i18n._(t`dungeons`)}
+                                                                                </h2>
+                                                                                <h2 className="mt-1 text-center text-xs">
+                                                                                    Summoners available for dungeons
+                                                                                </h2>
+                                                                                {summonersForDungeon.length > 0 ? (
+                                                                                    <div className="text-center">
+                                                                                        <button
+                                                                                            onClick={() =>
+                                                                                                sendDungeon()
+                                                                                            }
+                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                        >
+                                                                                            {i18n._(t`send`)}{' '}
+                                                                                            {
+                                                                                                summonersForAdventure.length
+                                                                                            }{' '}
+                                                                                            {i18n._(t`summoners`)}
+                                                                                        </button>
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <div>
+                                                                                        <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                            {i18n._(
+                                                                                                t`No summoners available`
+                                                                                            )}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </Popover.Panel>
@@ -225,7 +381,7 @@ export default function Profile(): JSX.Element {
                                 </div>
                             </div>
 
-                            <Popover.Panel className="sm:hidden">
+                            <Popover.Panel className="md:hidden">
                                 <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center text-sm">
                                     <button
                                         onClick={() => setView(View.stats)}
@@ -257,6 +413,69 @@ export default function Profile(): JSX.Element {
                                     >
                                         <span>{i18n._(t`craft`)}</span>
                                     </button>
+                                    <Popover className="relative">
+                                        {({ open }) => (
+                                            <>
+                                                <Popover.Button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase text-center group">
+                                                    <span>{i18n._(t`global`)}</span>
+                                                </Popover.Button>
+                                                <Transition
+                                                    as={Fragment}
+                                                    enter="transition ease-out duration-200"
+                                                    enterFrom="opacity-0 translate-y-1"
+                                                    enterTo="opacity-100 translate-y-0"
+                                                    leave="transition ease-in duration-150"
+                                                    leaveFrom="opacity-100 translate-y-0"
+                                                    leaveTo="opacity-0 translate-y-1"
+                                                >
+                                                    <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+                                                        <div className="overflow-hidden rounded-lg shadow-2xl ring-2 ring-white ring-opacity-5">
+                                                            <div className="relative grid gap-8 bg-background-end p-7 lg:grid-cols-2">
+                                                                <div>
+                                                                    <h2 className="text-lg">Adventures</h2>
+                                                                    <h2 className="mt-1 text-center text-xs">
+                                                                        Summoners available for adventure
+                                                                    </h2>
+                                                                    {summonersForAdventure.length > 0 ? (
+                                                                        <div className="text-center">
+                                                                            <button className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2">
+                                                                                Send {summonersForAdventure.length}{' '}
+                                                                                Summoners
+                                                                            </button>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div>
+                                                                            <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                No summoners available
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                                <div>
+                                                                    <h2 className="text-lg">Level UP</h2>
+                                                                    <h2 className="mt-1 text-center text-xs">
+                                                                        Summoners available for level up
+                                                                    </h2>
+                                                                </div>
+                                                                <div>
+                                                                    <h2 className="text-lg">Claim Gold</h2>
+                                                                    <h2 className="mt-1 text-center text-xs">
+                                                                        Summoners available for claim gold
+                                                                    </h2>
+                                                                </div>
+                                                                <div>
+                                                                    <h2 className="text-lg">Dungeons</h2>
+                                                                    <h2 className="mt-1 text-center text-xs">
+                                                                        Summoners available for dungeons
+                                                                    </h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Popover.Panel>
+                                                </Transition>
+                                            </>
+                                        )}
+                                    </Popover>
                                 </div>
                             </Popover.Panel>
                         </>

@@ -10,12 +10,15 @@ export default function useRarityGold(): GoldInterface {
 
     const claim = useCallback(
         async (id: string): Promise<void> => {
-            try {
-                const tx = await gold?.claim(id)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await gold?.claim(id)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
         },
         [gold]
     )

@@ -1,8 +1,5 @@
 import { SummonerFullData } from '../../state/summoners/hooks'
 import { t } from '@lingui/macro'
-import { SKILLS } from '../../constants/codex/skills'
-import { CLASS_SKILLS } from '../../constants/classes'
-import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import React from 'react'
 import { useLingui } from '@lingui/react'
 
