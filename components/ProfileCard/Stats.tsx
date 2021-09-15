@@ -119,12 +119,17 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
             <Toaster containerClassName="z-30" />
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
-                    <div className="bg-card-top col-span-3 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
+                    <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
                         <span className="ml-1.5">
                             {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
                         </span>
                     </div>
-                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
+                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-1 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
+                        <button className="w-full" onClick={transferModal}>
+                            <span className="uppercase">{i18n._(t`daycare`)}</span>
+                        </button>
+                    </div>
+                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-t-2xl text-center">
                         <button className="w-full" onClick={transferModal}>
                             <span className="uppercase">{i18n._(t`transfer`)}</span>
                         </button>
