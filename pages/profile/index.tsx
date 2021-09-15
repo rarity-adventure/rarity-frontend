@@ -1,27 +1,19 @@
-import { SummonerFullData, useSummonersData } from '../../state/summoners/hooks'
 import { useLingui } from '@lingui/react'
 import React, { Fragment, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../../components/Loader'
-import { BigNumber } from 'ethers'
 import StatsProfile from '../../components/ProfileCard/Stats'
 import { Menu, Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import HeadlessUIModal from '../../components/Modal/HeadlessUIModal'
 import ModalHeader from '../../components/Modal/ModalHeader'
 import { isAddress } from '../../functions/validate'
-import { useUserSelectedSummoner, useUserSelectSummoner, useUserSummoners } from '../../state/user/hooks'
+import { useUserSelectedSummoner, useUserSelectSummoner } from '../../state/user/hooks'
+import { BigNumber } from 'ethers'
+import { SummonerFullData } from '../../state/summoners/hooks'
 
-enum View {
-    stats,
-    skills,
-    inventory,
-    crafting,
-}
-
-/*
-const mockSummonersData: { [k: string]: SummonerFullData } = {
+const summonersFullData: { [k: string]: SummonerFullData } = {
     '123': {
         id: '123',
         ability_scores: {
@@ -287,14 +279,22 @@ const mockSummonersData: { [k: string]: SummonerFullData } = {
         },
     },
 }
-*/
+
+const summoners = [{ id: '123' }, { id: '124' }, { id: '125' }]
+
+enum View {
+    stats,
+    skills,
+    inventory,
+    crafting,
+}
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const summoners = useUserSummoners()
+    /*    const summoners = useUserSummoners()
 
-    const summonersFullData = useSummonersData(summoners)
+    const summonersFullData = useSummonersData(summoners)*/
 
     const stateSelectedSummoner = useUserSelectedSummoner()
 
@@ -462,7 +462,7 @@ export default function Profile(): JSX.Element {
                                                                     'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                                 }
                                                             >
-                                                                <span className="ml-2 uppercase overflow-x-hidden">
+                                                                <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis w-36">
                                                                     {' '}
                                                                     {data.base._name !== ''
                                                                         ? data.base._name
@@ -489,24 +489,18 @@ export default function Profile(): JSX.Element {
                     </Menu>
                 )}
 
-                {!summonersFullData[selectedSummoner] ? (
-                    <div className="relative h-96">
-                        <div className="absolute top-1/2 right-1/2">
-                            <Loader className="animate-spin" size="40px" />
-                        </div>
-                    </div>
-                ) : (
+                {summonersFullData[selectedSummoner] && selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center p-2 lg:p-20 gap-5">
                         <div className="text-center mx-auto">
                             <img
                                 src={CLASSES_IMAGES[summonersFullData[selectedSummoner].base._class.toString()]}
                                 alt={''}
-                                className="h-48 mx-auto"
+                                className="h-24 mt-2 md:h-48 mx-auto"
                             />
-                            <div className="flex flex-row items-center text-center justify-center uppercase text-3xl ">
+                            <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                 [{' '}
-                                <div className="w-60 overflow-x-hidden overflow-ellipsis">
-                                    <span className="text-xl mx-2 overflow-hidden whitespace-nowrap">
+                                <div className="w-32 md:w-60 overflow-x-hidden overflow-ellipsis">
+                                    <span className="text-xs md:text-xl mx-2 overflow-hidden whitespace-nowrap">
                                         {summonersFullData[selectedSummoner].base._name !== ''
                                             ? summonersFullData[selectedSummoner].base._name
                                             : i18n._(t`unknown`)}
@@ -514,11 +508,9 @@ export default function Profile(): JSX.Element {
                                 </div>{' '}
                                 ]
                             </div>
-                            <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl p-2">
-                                <span className="p-2 uppercase">
-                                    {i18n._(CLASSES_NAMES[summonersFullData[selectedSummoner].base._class.toString()])}
-                                </span>{' '}
-                            </div>
+                            <p className="mt-4 md:text-xl uppercase border-2 border-white rounded-3xl">
+                                {i18n._(CLASSES_NAMES[summonersFullData[selectedSummoner].base._class.toString()])}
+                            </p>
                         </div>
                         <div className="col-span-2">
                             {view === View.stats && (
@@ -528,6 +520,12 @@ export default function Profile(): JSX.Element {
                                     transferModal={transferModal}
                                 />
                             )}
+                        </div>
+                    </div>
+                ) : (
+                    <div className="relative h-96">
+                        <div className="absolute top-1/2 right-1/2">
+                            <Loader className="animate-spin" size="40px" />
                         </div>
                     </div>
                 )}
