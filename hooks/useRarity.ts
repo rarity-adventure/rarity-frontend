@@ -4,6 +4,8 @@ import { useRarityContract } from './useContract'
 interface RarityInterface {
     summon: (_class?: string) => Promise<void>
     transferFrom: (from: string | null | undefined, to: string, id: string) => Promise<void>
+    isApprovedForAll: (owner: string | null | undefined, operator: string) => Promise<boolean>
+    setApprovalForAll: (operator: string) => Promise<void>
 }
 
 export default function useRarity(): RarityInterface {
@@ -40,7 +42,35 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    return { summon, transferFrom }
+    const isApprovedForAll = useCallback(
+        async (owner: string | null | undefined, operator: string): Promise<boolean> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    resolve(await rarity?.isApprovedForAll(owner, operator))
+                } catch (e) {
+                    reject(false)
+                }
+            })
+        },
+        [rarity]
+    )
+
+    const setApprovalForAll = useCallback(
+        async (from: string): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await rarity?.setApprovalForAll(from, true)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
+        },
+        [rarity]
+    )
+
+    return { summon, transferFrom, isApprovedForAll, setApprovalForAll }
 }
 
 function rand() {

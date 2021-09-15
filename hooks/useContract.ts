@@ -65,5 +65,5 @@ export function useRarityHelperContract(): Contract | null {
 
 export function useRaritySkillsContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
-    return useContract(chainId ? RARITY_SKILLS_ADDRESS : undefined, RARITY_HELPER_ABI)
+    return useContract(chainId ? RARITY_SKILLS_ADDRESS : undefined, RARITY_SKILLS_ABI)
 }

@@ -8,7 +8,6 @@ import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
 import { CLASS_SKILLS } from '../../constants/classes'
 import { RefreshIcon } from '@heroicons/react/outline'
-import { add } from 'cheerio/lib/api/traversing'
 import useRaritySkills from '../../hooks/useRaritySkills'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -77,10 +76,12 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     const { set_skills } = useRaritySkills()
 
     async function assignSkills() {
-        const skills = []
+        const skills = new Array(36)
+        skills.fill(0)
         Object.keys(additions).map((k) => {
             skills[parseInt(k) - 1] = additions[k]
         })
+        console.log(skills)
         await toast.promise(set_skills(summoner.id, skills), {
             loading: <b>{i18n._(t`Assigning skill`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,

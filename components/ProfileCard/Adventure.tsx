@@ -16,7 +16,7 @@ function AdventureProfile({ summoner }: SkillProfileProps): JSX.Element {
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
                     <div className="bg-card-top col-span-3 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
                         <span className="ml-1.5 uppercase">
-                            {i18n._(t`ID`)} {parseInt(summoner.id, 16)}
+                            {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
                         </span>
                     </div>
                     <div className="w-full mt-3 md:mt-0 md:p-2 p-1 bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
@@ -25,7 +25,22 @@ function AdventureProfile({ summoner }: SkillProfileProps): JSX.Element {
                 </div>
             </div>
             <div className="border-white border-2 rounded-b-2xl my-3 bg-background-cards w-full bg-card-content">
-                <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 overflow-scroll overflow-hidden h-60"></div>
+                <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 overflow-scroll overflow-hidden h-60">
+                    <div className="uppercase">
+                        <div className="flex flex-row mt-2 justify-between p-4">
+                            <span>{i18n._(t`adventure`)}</span>
+                            {parseInt(summoner.base._log.toString()) * 1000 < Date.now() ? (
+                                <button className="uppercase text-xs p-2 bg-background-end border-white rounded-lg border-2">
+                                    {i18n._(t`go for adventure`)}
+                                </button>
+                            ) : (
+                                <button className="uppercase text-xs p-2 bg-background-end border-white rounded-lg border-2">
+                                    {i18n._(t`go for adventure`)}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

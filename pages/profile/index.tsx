@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../../components/Loader'
@@ -18,8 +18,10 @@ import { useSummonersData } from '../../state/summoners/hooks'
 import useRarity from '../../hooks/useRarity'
 import toast, { Toaster } from 'react-hot-toast'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { BURN_ADDRESS } from '../../constants'
+import { BURN_ADDRESS, RARITY_HELPER_ADDRESS } from '../../constants'
 import useRarityHelper from '../../hooks/useRarityHelper'
+import { utils } from 'ethers'
+import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 
 enum View {
     stats,
@@ -34,15 +36,43 @@ export default function Profile(): JSX.Element {
 
     const { account } = useActiveWeb3React()
 
-    const { transferFrom } = useRarity()
+    const { transferFrom, isApprovedForAll, setApprovalForAll } = useRarity()
 
     const summoners = useUserSummoners()
 
     const summonersFullData = useSummonersData(summoners)
 
-    const summonersForAdventure = []
-    const summonersForLevel = []
-    const summonersForClaim = []
+    const summonersForAdventure =
+        Object.values(summonersFullData).length > 0
+            ? Object.values(summonersFullData)
+                  .filter((s) => parseInt(s.base._log.toString()) * 1000 < Date.now())
+                  .map((s) => {
+                      return s.id
+                  })
+            : []
+
+    const summonersForLevel =
+        Object.values(summonersFullData).length > 0
+            ? Object.values(summonersFullData)
+                  .filter(
+                      (s) =>
+                          parseInt(utils.formatUnits(s.base._xp, 'ether')) >=
+                          calcXPForNextLevel(parseInt(s.base._level.toString()))
+                  )
+                  .map((s) => {
+                      return s.id
+                  })
+            : []
+
+    const summonersForClaim =
+        Object.values(summonersFullData).length > 0
+            ? Object.values(summonersFullData)
+                  .filter((s) => parseInt(utils.formatUnits(s.gold.claimable.toString(), 'ether')) > 0)
+                  .map((s) => {
+                      return s.id
+                  })
+            : []
+    //const summonersForClaim = []
     const summonersForDungeon = []
 
     const stateSelectedSummoner = useUserSelectedSummoner()
@@ -54,15 +84,16 @@ export default function Profile(): JSX.Element {
     const [selectedSummoner, setSelectedSummoner] = useState<string | undefined>(stateSelectedSummoner)
 
     useEffect(() => {
+        if (!account) return
         if (!stateSelectedSummoner && summoners[0]) {
             setSelectedSummoner(summoners[0].id)
             storeStateSelectedSummoner(summoners[0].id)
         }
-    }, [stateSelectedSummoner, summoners[0]])
+    }, [stateSelectedSummoner, summoners[0], account])
 
     useEffect(() => {
         storeStateSelectedSummoner(selectedSummoner)
-    }, [selectedSummoner])
+    }, [selectedSummoner, account])
 
     const [view, setView] = useState<View>(View.stats)
 
@@ -140,6 +171,25 @@ export default function Profile(): JSX.Element {
         })
     }
 
+    async function approveHelper() {
+        await toast.promise(setApprovalForAll(RARITY_HELPER_ADDRESS), {
+            loading: <b>{i18n._(t`Approving helper contract`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    const [helperApproval, setHelperApproval] = useState(false)
+
+    const fetch_approval = useCallback(async () => {
+        const approved = await isApprovedForAll(account, RARITY_HELPER_ADDRESS)
+        setHelperApproval(approved)
+    }, [])
+    useEffect(() => {
+        if (!account) return
+        fetch_approval()
+    }, [isApprovedForAll, account])
+
     return (
         <div className="w-full z-20">
             <Toaster containerClassName="z-30" />
@@ -159,12 +209,12 @@ export default function Profile(): JSX.Element {
                                                 >
                                                     <span>{i18n._(t`stats`)}</span>
                                                 </button>
-                                                <button
+                                                {/*<button
                                                     onClick={() => setView(View.adventure)}
                                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                                 >
                                                     <span>{i18n._(t`adventure`)}</span>
-                                                </button>
+                                                </button>*/}
                                                 <button
                                                     onClick={() => setView(View.skills)}
                                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
@@ -212,18 +262,29 @@ export default function Profile(): JSX.Element {
                                                                                 </h2>
                                                                                 {summonersForAdventure.length > 0 ? (
                                                                                     <div className="text-center">
-                                                                                        <button
-                                                                                            onClick={() =>
-                                                                                                sendAdventure()
-                                                                                            }
-                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
-                                                                                        >
-                                                                                            {i18n._(t`send`)}{' '}
-                                                                                            {
-                                                                                                summonersForAdventure.length
-                                                                                            }{' '}
-                                                                                            {i18n._(t`summoners`)}
-                                                                                        </button>
+                                                                                        {helperApproval ? (
+                                                                                            <button
+                                                                                                onClick={() =>
+                                                                                                    sendAdventure()
+                                                                                                }
+                                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                            >
+                                                                                                {i18n._(t`send`)}{' '}
+                                                                                                {
+                                                                                                    summonersForAdventure.length
+                                                                                                }{' '}
+                                                                                                {i18n._(t`summoners`)}
+                                                                                            </button>
+                                                                                        ) : (
+                                                                                            <button
+                                                                                                onClick={() =>
+                                                                                                    approveHelper()
+                                                                                                }
+                                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                            >
+                                                                                                {i18n._(t`approve`)}{' '}
+                                                                                            </button>
+                                                                                        )}
                                                                                     </div>
                                                                                 ) : (
                                                                                     <div>
@@ -244,50 +305,29 @@ export default function Profile(): JSX.Element {
                                                                                 </h2>
                                                                                 {summonersForLevel.length > 0 ? (
                                                                                     <div className="text-center">
-                                                                                        <button
-                                                                                            onClick={() =>
-                                                                                                sendLevelUP()
-                                                                                            }
-                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
-                                                                                        >
-                                                                                            {i18n._(t`send`)}{' '}
-                                                                                            {
-                                                                                                summonersForAdventure.length
-                                                                                            }{' '}
-                                                                                            {i18n._(t`summoners`)}
-                                                                                        </button>
-                                                                                    </div>
-                                                                                ) : (
-                                                                                    <div>
-                                                                                        <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
-                                                                                            {i18n._(
-                                                                                                t`No summoners available`
-                                                                                            )}
-                                                                                        </p>
-                                                                                    </div>
-                                                                                )}
-                                                                            </div>
-                                                                            <div>
-                                                                                <h2 className="text-lg">
-                                                                                    {i18n._(t`claim gold`)}
-                                                                                </h2>
-                                                                                <h2 className="mt-1 text-center text-xs">
-                                                                                    Summoners available for claim gold
-                                                                                </h2>
-                                                                                {summonersForClaim.length > 0 ? (
-                                                                                    <div className="text-center">
-                                                                                        <button
-                                                                                            onClick={() =>
-                                                                                                sendClaimGold()
-                                                                                            }
-                                                                                            className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
-                                                                                        >
-                                                                                            {i18n._(t`send`)}{' '}
-                                                                                            {
-                                                                                                summonersForAdventure.length
-                                                                                            }{' '}
-                                                                                            {i18n._(t`summoners`)}
-                                                                                        </button>
+                                                                                        {helperApproval ? (
+                                                                                            <button
+                                                                                                onClick={() =>
+                                                                                                    sendLevelUP()
+                                                                                                }
+                                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                            >
+                                                                                                {i18n._(t`send`)}{' '}
+                                                                                                {
+                                                                                                    summonersForLevel.length
+                                                                                                }{' '}
+                                                                                                {i18n._(t`summoners`)}
+                                                                                            </button>
+                                                                                        ) : (
+                                                                                            <button
+                                                                                                onClick={() =>
+                                                                                                    approveHelper()
+                                                                                                }
+                                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                            >
+                                                                                                {i18n._(t`approve`)}{' '}
+                                                                                            </button>
+                                                                                        )}
                                                                                     </div>
                                                                                 ) : (
                                                                                     <div>
@@ -315,9 +355,7 @@ export default function Profile(): JSX.Element {
                                                                                             className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
                                                                                         >
                                                                                             {i18n._(t`send`)}{' '}
-                                                                                            {
-                                                                                                summonersForAdventure.length
-                                                                                            }{' '}
+                                                                                            {summonersForDungeon.length}{' '}
                                                                                             {i18n._(t`summoners`)}
                                                                                         </button>
                                                                                     </div>
@@ -389,12 +427,12 @@ export default function Profile(): JSX.Element {
                                     >
                                         <span>{i18n._(t`stats`)}</span>
                                     </button>
-                                    <button
+                                    {/*<button
                                         onClick={() => setView(View.adventure)}
                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                     >
                                         <span>{i18n._(t`adventure`)}</span>
-                                    </button>
+                                    </button>*/}
                                     <button
                                         onClick={() => setView(View.skills)}
                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
@@ -432,42 +470,94 @@ export default function Profile(): JSX.Element {
                                                         <div className="overflow-hidden rounded-lg shadow-2xl ring-2 ring-white ring-opacity-5">
                                                             <div className="relative grid gap-8 bg-background-end p-7 lg:grid-cols-2">
                                                                 <div>
-                                                                    <h2 className="text-lg">Adventures</h2>
+                                                                    <h2 className="text-lg">{i18n._(t`adventures`)}</h2>
                                                                     <h2 className="mt-1 text-center text-xs">
-                                                                        Summoners available for adventure
+                                                                        {i18n._(t`summoners available for adventure`)}
                                                                     </h2>
                                                                     {summonersForAdventure.length > 0 ? (
                                                                         <div className="text-center">
-                                                                            <button className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2">
-                                                                                Send {summonersForAdventure.length}{' '}
-                                                                                Summoners
-                                                                            </button>
+                                                                            {helperApproval ? (
+                                                                                <button
+                                                                                    onClick={() => sendAdventure()}
+                                                                                    className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                >
+                                                                                    {i18n._(t`send`)}{' '}
+                                                                                    {summonersForAdventure.length}{' '}
+                                                                                    {i18n._(t`summoners`)}
+                                                                                </button>
+                                                                            ) : (
+                                                                                <button
+                                                                                    onClick={() => approveHelper()}
+                                                                                    className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                >
+                                                                                    {i18n._(t`approve`)}{' '}
+                                                                                </button>
+                                                                            )}
                                                                         </div>
                                                                     ) : (
                                                                         <div>
                                                                             <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
-                                                                                No summoners available
+                                                                                {i18n._(t`No summoners available`)}
                                                                             </p>
                                                                         </div>
                                                                     )}
                                                                 </div>
                                                                 <div>
-                                                                    <h2 className="text-lg">Level UP</h2>
+                                                                    <h2 className="text-lg">{i18n._(t`level up`)}</h2>
                                                                     <h2 className="mt-1 text-center text-xs">
                                                                         Summoners available for level up
                                                                     </h2>
+                                                                    {summonersForLevel.length > 0 ? (
+                                                                        <div className="text-center">
+                                                                            {helperApproval ? (
+                                                                                <button
+                                                                                    onClick={() => sendLevelUP()}
+                                                                                    className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                >
+                                                                                    {i18n._(t`send`)}{' '}
+                                                                                    {summonersForLevel.length}{' '}
+                                                                                    {i18n._(t`summoners`)}
+                                                                                </button>
+                                                                            ) : (
+                                                                                <button
+                                                                                    onClick={() => approveHelper()}
+                                                                                    className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                >
+                                                                                    {i18n._(t`approve`)}{' '}
+                                                                                </button>
+                                                                            )}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div>
+                                                                            <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                {i18n._(t`No summoners available`)}
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                                 <div>
-                                                                    <h2 className="text-lg">Claim Gold</h2>
-                                                                    <h2 className="mt-1 text-center text-xs">
-                                                                        Summoners available for claim gold
-                                                                    </h2>
-                                                                </div>
-                                                                <div>
-                                                                    <h2 className="text-lg">Dungeons</h2>
+                                                                    <h2 className="text-lg">{i18n._(t`dungeons`)}</h2>
                                                                     <h2 className="mt-1 text-center text-xs">
                                                                         Summoners available for dungeons
                                                                     </h2>
+                                                                    {summonersForDungeon.length > 0 ? (
+                                                                        <div className="text-center">
+                                                                            <button
+                                                                                onClick={() => sendDungeon()}
+                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                            >
+                                                                                {i18n._(t`send`)}{' '}
+                                                                                {summonersForDungeon.length}{' '}
+                                                                                {i18n._(t`summoners`)}
+                                                                            </button>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div>
+                                                                            <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                {i18n._(t`No summoners available`)}
+                                                                            </p>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>
