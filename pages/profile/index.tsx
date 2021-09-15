@@ -176,7 +176,7 @@ export default function Profile(): JSX.Element {
     return (
         <div className="w-full z-20">
             <Toaster containerClassName="z-30" />
-            <div className="border-white border-4 p-4 m-10 z-10">
+            <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
                 <Popover as="nav" className="w-full bg-transparent header-border-b">
                     {({ open }) => (
                         <>
@@ -661,8 +661,8 @@ export default function Profile(): JSX.Element {
                         </div>
                     </div>
                 ) : (
-                    <div className="relative h-96">
-                        <div className="absolute top-1/2 right-1/2 uppercase text-center">
+                    <div className="relative h-48">
+                        <div className="absolute top-24 right-1/2 uppercase text-center">
                             <Loader className="animate-spin" size="40px" />
                         </div>
                     </div>
