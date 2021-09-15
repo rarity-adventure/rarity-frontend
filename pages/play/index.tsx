@@ -23,6 +23,7 @@ import useRarityHelper from '../../hooks/useRarityHelper'
 import { utils } from 'ethers'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import useRarityDaycare from '../../hooks/useRarityDaycare'
+import { ChevronLeft, ChevronRight } from 'react-feather'
 
 enum View {
     stats,
@@ -207,7 +208,7 @@ export default function Profile(): JSX.Element {
 
     const [daycare, setDaycare] = useState(0)
 
-    const {daysPaid, registerDaycare} = useRarityDaycare()
+    const { daysPaid, registerDaycare } = useRarityDaycare()
 
     const fetch_register = useCallback(async () => {
         const paid = await daysPaid(selectedSummoner)
@@ -229,11 +230,47 @@ export default function Profile(): JSX.Element {
 
     async function registerAllSummoners() {
         setModal({ delete: false, transfer: false, daycare: false })
-        await toast.promise(registerDaycare(summoners.map(s => { return s.id}), dailyCareNewRegister), {
-            loading: <b>{i18n._(t`Registering all summoners`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
+        await toast.promise(
+            registerDaycare(
+                summoners.map((s) => {
+                    return s.id
+                }),
+                dailyCareNewRegister
+            ),
+            {
+                loading: <b>{i18n._(t`Registering all summoners`)}</b>,
+                success: <b>{i18n._(t`Success`)}</b>,
+                error: <b>{i18n._(t`Failed`)}</b>,
+            }
+        )
+    }
+
+    function selectPrevSummoner() {
+        const currIndex = summoners
+            .map((s) => {
+                return s.id
+            })
+            .indexOf(selectedSummoner)
+        if (currIndex !== 0) {
+            const prevSummoner = summoners.map((s) => {
+                return s.id
+            })[currIndex - 1]
+            setSelectedSummoner(prevSummoner)
+        }
+    }
+
+    function selectNextSummoner() {
+        const currIndex = summoners
+            .map((s) => {
+                return s.id
+            })
+            .indexOf(selectedSummoner)
+        if (currIndex < summoners.length - 1) {
+            const nextSummoner = summoners.map((s) => {
+                return s.id
+            })[currIndex + 1]
+            setSelectedSummoner(nextSummoner)
+        }
     }
 
     return (
@@ -246,7 +283,7 @@ export default function Profile(): JSX.Element {
                             <div className="py-4">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center z-20 uppercase">
-                                        <h1 className="text-3xl">{i18n._(t`profile`)}</h1>
+                                        <h1 className="text-3xl">{i18n._(t`play`)}</h1>
                                         <div className="hidden md:block sm:ml-2 text-xs">
                                             <div className="flex uppercase">
                                                 <button
@@ -698,7 +735,7 @@ export default function Profile(): JSX.Element {
                                                                     'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                                 }
                                                             >
-                                                                <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis w-36">
+                                                                <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis w-72">
                                                                     {' '}
                                                                     {data.base._name !== ''
                                                                         ? data.base._name
@@ -734,7 +771,9 @@ export default function Profile(): JSX.Element {
                                 className="h-24 mt-2 md:h-48 mx-auto"
                             />
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
-                                [{' '}
+                                <button onClick={() => selectPrevSummoner()}>
+                                    <ChevronLeft />
+                                </button>{' '}
                                 <div className="w-32 md:w-60 overflow-x-hidden overflow-ellipsis">
                                     <span className="text-xs md:text-xl mx-2 overflow-hidden whitespace-nowrap">
                                         {summonersFullData[selectedSummoner].base._name !== ''
@@ -742,7 +781,9 @@ export default function Profile(): JSX.Element {
                                             : i18n._(t`unknown`)}
                                     </span>
                                 </div>{' '}
-                                ]
+                                <button onClick={() => selectNextSummoner()}>
+                                    <ChevronRight />
+                                </button>
                             </div>
                             <p className="mt-4 md:text-xl uppercase border-2 border-white rounded-3xl">
                                 {i18n._(CLASSES_NAMES[summonersFullData[selectedSummoner].base._class.toString()])}
@@ -867,7 +908,10 @@ export default function Profile(): JSX.Element {
                             <h2>{i18n._(t`The service has a fee of 0.1 FTM for each summoner for each day.`)}</h2>
                         </div>
                         <div className="text-center text-white p-4 pb-4 gap-5">
-                            <h2>{i18n._(t`This summoner is registed for `)} <b>{daycare}</b> {i18n._(t`days in the daily care. `)}</h2>
+                            <h2>
+                                {i18n._(t`This summoner is registed for `)} <b>{daycare}</b>{' '}
+                                {i18n._(t`days in the daily care. `)}
+                            </h2>
                         </div>
                         <div className="text-center text-white p-4 pb-4 gap-5">
                             <h2>{i18n._(t`How many days do you want to register your summoner/s?`)}</h2>
@@ -889,7 +933,10 @@ export default function Profile(): JSX.Element {
                                 </button>
                             </div>
                             <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
-                                <button className="w-full uppercase px-2 py-1" onClick={ async () => await registerAllSummoners()}>
+                                <button
+                                    className="w-full uppercase px-2 py-1"
+                                    onClick={async () => await registerAllSummoners()}
+                                >
                                     <h2>{i18n._(t`register all summoners`)}</h2>
                                 </button>
                             </div>
