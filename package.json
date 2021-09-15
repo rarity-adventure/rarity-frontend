@@ -5,7 +5,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "next dev",
-        "build": "yarn lingui && next build",
+        "build": "next build",
         "lingui": "lingui extract --clean --overwrite && lingui compile",
         "start": "next start",
         "lint": "next lint",
