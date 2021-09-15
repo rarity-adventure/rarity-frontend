@@ -9,13 +9,14 @@ interface DailyCareInterface {
 
 export default function useRarityDaycare(): DailyCareInterface {
     const daycare = useRarityDaycareContract()
-
+    console.log(daycare)
     const daysPaid = useCallback(
         async (id: string): Promise<number> => {
             try {
                 const days = await daycare?.daysPaid(id)
                 return parseInt(days.toString())
             } catch (e) {
+                console.log(e)
                 return 0
             }
         },
@@ -27,9 +28,10 @@ export default function useRarityDaycare(): DailyCareInterface {
             try {
                 const daysRegistry = Array(ids.length).fill(days, 0, ids.length)
                 const fee = utils.parseUnits((0.1 * ids.length * days).toString(), 'ether')
-                await daycare?.registerDaycare(ids, daysRegistry, { value: fee })
-                return
+                const tx = await daycare?.registerDaycare(ids, daysRegistry, { value: fee })
+                return await tx.wait()
             } catch (e) {
+                console.log(e)
                 return
             }
         },

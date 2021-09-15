@@ -22,6 +22,7 @@ import { BURN_ADDRESS, RARITY_HELPER_ADDRESS } from '../../constants'
 import useRarityHelper from '../../hooks/useRarityHelper'
 import { utils } from 'ethers'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
+import useRarityDaycare from '../../hooks/useRarityDaycare'
 
 enum View {
     stats,
@@ -79,7 +80,11 @@ export default function Profile(): JSX.Element {
 
     const storeStateSelectedSummoner = useUserSelectSummoner()
 
-    const [modals, setModal] = useState<{ delete: boolean; transfer: boolean }>({ delete: false, transfer: false })
+    const [modals, setModal] = useState<{ delete: boolean; transfer: boolean; daycare: boolean }>({
+        delete: false,
+        transfer: false,
+        daycare: false,
+    })
 
     const [selectedSummoner, setSelectedSummoner] = useState<string | undefined>(stateSelectedSummoner)
 
@@ -98,11 +103,15 @@ export default function Profile(): JSX.Element {
     const [view, setView] = useState<View>(View.stats)
 
     function deleteModal() {
-        setModal({ delete: !modals.delete, transfer: false })
+        setModal({ delete: !modals.delete, transfer: false, daycare: false })
     }
 
     function transferModal() {
-        setModal({ delete: false, transfer: !modals.transfer })
+        setModal({ delete: false, transfer: !modals.transfer, daycare: false })
+    }
+
+    function daycareModal() {
+        setModal({ delete: false, transfer: false, daycare: !modals.daycare })
     }
 
     const [transferAddress, setTransferAddress] = useState<{ input: boolean; address: string | boolean }>({
@@ -118,8 +127,14 @@ export default function Profile(): JSX.Element {
         }
     }
 
+    const [dailyCareNewRegister, setDailyCareNewRegister] = useState(0)
+
+    function daycareRegister(days: number) {
+        setDailyCareNewRegister(days)
+    }
+
     async function deleteConfirm() {
-        setModal({ delete: false, transfer: false })
+        setModal({ delete: false, transfer: false, daycare: false })
         await toast.promise(transferFrom(account, BURN_ADDRESS, selectedSummoner), {
             loading: <b>{i18n._(t`Deleting summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
@@ -128,7 +143,7 @@ export default function Profile(): JSX.Element {
     }
 
     async function transferConfirm() {
-        setModal({ delete: false, transfer: false })
+        setModal({ delete: false, transfer: false, daycare: false })
         const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
         await toast.promise(transferFrom(account, address, selectedSummoner), {
             loading: <b>{i18n._(t`Transferring summoner`)}</b>,
@@ -189,6 +204,37 @@ export default function Profile(): JSX.Element {
         if (!account) return
         fetch_approval()
     }, [isApprovedForAll, account])
+
+    const [daycare, setDaycare] = useState(0)
+
+    const {daysPaid, registerDaycare} = useRarityDaycare()
+
+    const fetch_register = useCallback(async () => {
+        const paid = await daysPaid(selectedSummoner)
+        setDaycare(paid)
+    }, [])
+
+    useEffect(() => {
+        fetch_register()
+    }, [daysPaid])
+
+    async function registerSingleSummoner() {
+        setModal({ delete: false, transfer: false, daycare: false })
+        await toast.promise(registerDaycare([selectedSummoner], dailyCareNewRegister), {
+            loading: <b>{i18n._(t`Registering summoner`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function registerAllSummoners() {
+        setModal({ delete: false, transfer: false, daycare: false })
+        await toast.promise(registerDaycare(summoners.map(s => { return s.id}), dailyCareNewRegister), {
+            loading: <b>{i18n._(t`Registering all summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
 
     return (
         <div className="w-full z-20">
@@ -708,6 +754,7 @@ export default function Profile(): JSX.Element {
                                     summoner={summonersFullData[selectedSummoner]}
                                     deleteModal={deleteModal}
                                     transferModal={transferModal}
+                                    daycareModal={daycareModal}
                                 />
                             )}
                             {view === View.adventure && (
@@ -727,11 +774,14 @@ export default function Profile(): JSX.Element {
                         </div>
                     </div>
                 )}
-                <HeadlessUIModal isOpen={modals.delete} onDismiss={() => setModal({ delete: false, transfer: false })}>
+                <HeadlessUIModal
+                    isOpen={modals.delete}
+                    onDismiss={() => setModal({ delete: false, transfer: false, daycare: false })}
+                >
                     <div className="bg-background-end rounded-lg border-2 border-white">
                         <ModalHeader
                             title={i18n._(t`delete summoner`)}
-                            onClose={() => setModal({ delete: false, transfer: false })}
+                            onClose={() => setModal({ delete: false, transfer: false, daycare: false })}
                         />
                         <div className="text-center text-white p-4 pb-8 gap-5">
                             <h2>{i18n._(t`Are you sure you want to delete this summoner?`)}</h2>
@@ -746,7 +796,7 @@ export default function Profile(): JSX.Element {
                             <div className="bg-background-middle hover:bg-background-start text-white border-white border-2 rounded-lg mx-4">
                                 <button
                                     className="w-full uppercase px-2 py-1"
-                                    onClick={() => setModal({ delete: false, transfer: false })}
+                                    onClick={() => setModal({ delete: false, transfer: false, daycare: false })}
                                 >
                                     <h2>{i18n._(t`cancel`)}</h2>
                                 </button>
@@ -761,12 +811,12 @@ export default function Profile(): JSX.Element {
                 </HeadlessUIModal>
                 <HeadlessUIModal
                     isOpen={modals.transfer}
-                    onDismiss={() => setModal({ delete: false, transfer: false })}
+                    onDismiss={() => setModal({ delete: false, transfer: false, daycare: false })}
                 >
                     <div className="bg-background-end rounded-lg border-2 border-white">
                         <ModalHeader
                             title={i18n._(t`transfer summoner`)}
-                            onClose={() => setModal({ delete: false, transfer: false })}
+                            onClose={() => setModal({ delete: false, transfer: false, daycare: false })}
                         />
                         <div className="text-center text-white p-4 pb-4 gap-5">
                             <h2>{i18n._(t`Write the address to transfer the summoner`)}</h2>
@@ -795,6 +845,53 @@ export default function Profile(): JSX.Element {
                                         )}
                                     </>
                                 )}
+                            </div>
+                        </div>
+                    </div>
+                </HeadlessUIModal>
+                <HeadlessUIModal
+                    isOpen={modals.daycare}
+                    onDismiss={() => setModal({ delete: false, transfer: false, daycare: false })}
+                >
+                    <div className="bg-background-end rounded-lg border-2 border-white">
+                        <ModalHeader
+                            title={i18n._(t`summoner daily care`)}
+                            onClose={() => setModal({ delete: false, transfer: false, daycare: false })}
+                        />
+                        <div className="text-center text-white p-4 pb-4 gap-5">
+                            <h2>
+                                {i18n._(t`The daily care is a community run system to take care of your summoners`)}
+                            </h2>
+                        </div>
+                        <div className="text-center text-white p-4 pb-4 gap-5">
+                            <h2>{i18n._(t`The service has a fee of 0.1 FTM for each summoner for each day.`)}</h2>
+                        </div>
+                        <div className="text-center text-white p-4 pb-4 gap-5">
+                            <h2>{i18n._(t`This summoner is registed for `)} <b>{daycare}</b> {i18n._(t`days in the daily care. `)}</h2>
+                        </div>
+                        <div className="text-center text-white p-4 pb-4 gap-5">
+                            <h2>{i18n._(t`How many days do you want to register your summoner/s?`)}</h2>
+                        </div>
+                        <div className="text-center text-white p-4 pb-8 gap-5">
+                            <input
+                                type="number"
+                                className="p-2 text-background-end"
+                                onChange={(v) => daycareRegister(parseInt(v.target.value))}
+                            />
+                        </div>
+                        <div className="flex flex-row justify-center pb-8">
+                            <div className="bg-background-middle hover:bg-background-start text-white border-white border-2 rounded-lg mx-4">
+                                <button
+                                    className="w-full uppercase px-2 py-1"
+                                    onClick={async () => await registerSingleSummoner()}
+                                >
+                                    <h2>{i18n._(t`register summoner`)}</h2>
+                                </button>
+                            </div>
+                            <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
+                                <button className="w-full uppercase px-2 py-1" onClick={ async () => await registerAllSummoners()}>
+                                    <h2>{i18n._(t`register all summoners`)}</h2>
+                                </button>
                             </div>
                         </div>
                     </div>

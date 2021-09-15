@@ -16,9 +16,10 @@ interface StatsProfileProps {
     summoner: SummonerFullData
     deleteModal: () => void
     transferModal: () => void
+    daycareModal: () => void
 }
 
-function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProps): JSX.Element {
+function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: StatsProfileProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { point_buy } = useRarityAttributes()
@@ -125,7 +126,7 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                         </span>
                     </div>
                     <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-1 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
-                        <button className="w-full" onClick={transferModal}>
+                        <button className="w-full" onClick={daycareModal}>
                             <span className="uppercase">{i18n._(t`daycare`)}</span>
                         </button>
                     </div>

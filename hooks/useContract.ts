@@ -72,5 +72,5 @@ export function useRaritySkillsContract(): Contract | null {
 
 export function useRarityDaycareContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
-    return useContract(chainId ? RARITY_DAYCARE_ADDRESS : undefined, RARITY_SKILLS_ABI)
+    return useContract(chainId ? RARITY_DAYCARE_ADDRESS : undefined, RARITY_DAYCARE_ABI)
 }
