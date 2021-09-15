@@ -2,22 +2,25 @@ import { useLingui } from '@lingui/react'
 import React, { Fragment, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
-import { ChevronDoubleRightIcon, ChevronDownIcon } from '@heroicons/react/solid'
-import * as localData from '../global_data.json'
+import { ChevronDownIcon } from '@heroicons/react/solid'
+import { useQuery } from '@apollo/client'
+import { GLOBAL_DATA } from '../../apollo'
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    //const {data, loading, error} = useQuery(GLOBAL_DATA)
+    const { data, loading, error } = useQuery(GLOBAL_DATA)
 
-    /*const [globalData, setGlobalData] = useState<{
+    const [globalData, setGlobalData] = useState<{
         classes: { id: string; count: number }[]
         levels: { id: string; count: number }[]
         globals: { owners: string; summoners: string }[]
-    }>({ classes: [], levels: [], globals: [] })*/
+    }>({ classes: [], levels: [], globals: [] })
 
-    const [globalData, setGlobalData] = useState<any>(localData)
-    console.log(globalData)
+    useEffect(() => {
+        if (loading || error) return
+        setGlobalData(data)
+    }, [data, loading, error])
 
     const [view, setView] = useState('level')
     return (
@@ -124,7 +127,7 @@ export default function Profile(): JSX.Element {
                                                 <span className="ml-3">: </span>
                                                 <span>
                                                     {(
-                                                        (parseInt(level.count) * 100) /
+                                                        (level.count * 100) /
                                                         parseInt(globalData.globals[0].summoners)
                                                     ).toFixed(2)}
                                                     %
@@ -153,7 +156,7 @@ export default function Profile(): JSX.Element {
                                                 <span className="ml-3">: </span>
                                                 <span>
                                                     {(
-                                                        (parseInt(_class.count) * 100) /
+                                                        (_class.count * 100) /
                                                         parseInt(globalData.globals[0].summoners)
                                                     ).toFixed(2)}
                                                     %

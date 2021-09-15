@@ -6,6 +6,8 @@ import { useLingui } from '@lingui/react'
 import { SKILL_URL, SKILLS } from '../../constants/codex/skills'
 import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
+import { use } from 'ast-types'
+import { add } from 'cheerio/lib/api/traversing'
 
 interface SkillProfileProps {
     summoner: SummonerFullData
@@ -17,6 +19,25 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     const [skill, setSkill] = useState(1)
     const [modal, setModalOpen] = useState(false)
 
+    const [availableSP, setAvailableSP] = useState(128)
+
+    const [additions, setAdditions] = useState<{ [k: string]: number }>({})
+
+    function handleAddition(id: string) {
+        const addition = additions[id] ? additions[id] + 1 : 1
+        const newState = Object.assign({}, additions, { [id]: addition })
+        setAdditions(newState)
+    }
+
+    function handleSubstraction(id: string) {
+        if (additions[id]) {
+            const addition = additions[id] - 1
+            const newState = Object.assign({}, additions, { [id]: addition })
+            setAdditions(newState)
+            console.log(newState)
+        }
+    }
+
     return (
         <div className="max-w-screen-md mx-auto">
             <div className="flex flex-row w-full items-center">
@@ -25,13 +46,15 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                         <span className="ml-1.5 uppercase">{i18n._(t`skills`)}</span>
                     </div>
                     <div className="w-full mt-3 md:mt-0 md:p-2 p-1 bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
-                        <span className="uppercase">{i18n._(t`SP`)}: 123123</span>
+                        <span className="uppercase">
+                            {i18n._(t`SP`)}: {availableSP}
+                        </span>
                     </div>
                 </div>
             </div>
             <div className="border-white border-2 my-3 bg-background-cards w-full bg-card-content">
                 <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 overflow-scroll overflow-hidden h-60">
-                    {Object.keys(SKILLS).map((k) => {
+                    {Object.keys(SKILLS).map((k, i) => {
                         const data = SKILLS[k]
                         return (
                             <div className="flex flex-row items-center justify-between">
@@ -43,7 +66,7 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                                                 setModalOpen(true)
                                             }}
                                         >
-                                            IMG
+                                            <img src={'/img/skills/' + data.id + '.png'} alt={data.name} />
                                         </button>
                                     </div>
                                     <div>
@@ -55,15 +78,25 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                                 </div>
                                 <div className="flex flex-row justify-between items-center">
                                     <div className="text-lg md:text-xl my-auto mr-10">
-                                        <p>0</p>
+                                        <p>
+                                            {additions[k] !== undefined
+                                                ? summoner.skills.skills[i] + additions[k]
+                                                : summoner.skills.skills[i]}
+                                        </p>
                                     </div>
                                     <div className="mt-1">
-                                        <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <button
+                                            className="text-white rounded-full hover:bg-white hover:bg-opacity-5"
+                                            onClick={() => handleSubstraction(k)}
+                                        >
                                             <MinusIcon width={18} />
                                         </button>
                                     </div>
                                     <div className="mt-1">
-                                        <button className="text-white rounded-full hover:bg-white hover:bg-opacity-5">
+                                        <button
+                                            className="text-white rounded-full hover:bg-white hover:bg-opacity-5"
+                                            onClick={() => handleAddition(k)}
+                                        >
                                             <PlusIcon width={18} />
                                         </button>
                                     </div>

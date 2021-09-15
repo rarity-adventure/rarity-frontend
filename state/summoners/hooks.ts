@@ -73,12 +73,30 @@ export function useSummonersData(summoners: { id: string }[]): {
                         id: s.id,
                         ability_scores: {
                             attributes: {
-                                _cha: value.ability_scores.attributes._cha,
-                                _con: value.ability_scores.attributes._con,
-                                _dex: value.ability_scores.attributes._dex,
-                                _int: value.ability_scores.attributes._int,
-                                _str: value.ability_scores.attributes._str,
-                                _wis: value.ability_scores.attributes._wis,
+                                _cha:
+                                    value.ability_scores.attributes._cha === 0
+                                        ? 8
+                                        : value.ability_scores.attributes._cha,
+                                _con:
+                                    value.ability_scores.attributes._con === 0
+                                        ? 8
+                                        : value.ability_scores.attributes._con,
+                                _dex:
+                                    value.ability_scores.attributes._dex === 0
+                                        ? 8
+                                        : value.ability_scores.attributes._dex,
+                                _int:
+                                    value.ability_scores.attributes._int === 0
+                                        ? 8
+                                        : value.ability_scores.attributes._int,
+                                _str:
+                                    value.ability_scores.attributes._str === 0
+                                        ? 8
+                                        : value.ability_scores.attributes._str,
+                                _wis:
+                                    value.ability_scores.attributes._wis === 0
+                                        ? 8
+                                        : value.ability_scores.attributes._wis,
                             },
                             created: value.ability_scores.created,
                             modifiers: {
