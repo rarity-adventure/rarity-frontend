@@ -51,7 +51,7 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     }
 
     function maxLevel(id: string): number {
-        return CLASS_SKILLS[summoner.base._class.toString()][id - 1]
+        return CLASS_SKILLS[summoner.base._class.toString()][parseInt(id) - 1]
             ? parseInt(summoner.base._level.toString()) + 3
             : Math.floor((parseInt(summoner.base._level.toString()) + 3) / 2)
     }
