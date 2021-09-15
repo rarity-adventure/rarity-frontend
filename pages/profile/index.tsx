@@ -64,6 +64,15 @@ export default function Profile(): JSX.Element {
                   })
             : []
 
+    const summonersForClaim =
+        Object.values(summonersFullData).length > 0
+            ? Object.values(summonersFullData)
+                  .filter((s) => parseInt(utils.formatUnits(s.gold.claimable.toString(), 'ether')) > 0)
+                  .map((s) => {
+                      return s.id
+                  })
+            : []
+
     const summonersForDungeon = []
 
     const stateSelectedSummoner = useUserSelectedSummoner()
@@ -128,7 +137,7 @@ export default function Profile(): JSX.Element {
         })
     }
 
-    const { adventure, cellar, level_up } = useRarityHelper()
+    const { adventure, claim_gold, cellar, level_up } = useRarityHelper()
 
     async function sendAdventure() {
         await toast.promise(adventure(summonersForAdventure), {
@@ -148,6 +157,14 @@ export default function Profile(): JSX.Element {
 
     async function sendDungeon() {
         await toast.promise(cellar(summonersForDungeon), {
+            loading: <b>{i18n._(t`Sending summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function sendClaimGold() {
+        await toast.promise(claim_gold(summonersForClaim), {
             loading: <b>{i18n._(t`Sending summoners`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
@@ -175,7 +192,7 @@ export default function Profile(): JSX.Element {
 
     return (
         <div className="w-full z-20">
-            <Toaster containerClassName="z-30" />
+            <Toaster containerClassName="z-40" />
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
                 <Popover as="nav" className="w-full bg-transparent header-border-b">
                     {({ open }) => (
@@ -233,7 +250,7 @@ export default function Profile(): JSX.Element {
                                                             >
                                                                 <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
                                                                     <div className="overflow-hidden rounded-lg shadow-2xl ring-2 ring-white ring-opacity-5">
-                                                                        <div className="relative grid gap-8 bg-background-end p-7 lg:grid-cols-2">
+                                                                        <div className="relative grid gap-8 bg-background-contrast p-7 lg:grid-cols-2">
                                                                             <div>
                                                                                 <h2 className="text-lg">
                                                                                     {i18n._(t`adventures`)}
@@ -298,6 +315,49 @@ export default function Profile(): JSX.Element {
                                                                                                 {i18n._(t`send`)}{' '}
                                                                                                 {
                                                                                                     summonersForLevel.length
+                                                                                                }{' '}
+                                                                                                {i18n._(t`summoners`)}
+                                                                                            </button>
+                                                                                        ) : (
+                                                                                            <button
+                                                                                                onClick={() =>
+                                                                                                    approveHelper()
+                                                                                                }
+                                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                            >
+                                                                                                {i18n._(t`approve`)}{' '}
+                                                                                            </button>
+                                                                                        )}
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <div>
+                                                                                        <p className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2 opacity-50 text-center">
+                                                                                            {i18n._(
+                                                                                                t`No summoners available`
+                                                                                            )}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                            <div>
+                                                                                <h2 className="text-lg">
+                                                                                    {i18n._(t`claim gold`)}
+                                                                                </h2>
+                                                                                <h2 className="mt-1 text-center text-xs">
+                                                                                    Summoners available for claim gold
+                                                                                </h2>
+                                                                                {summonersForClaim.length > 0 ? (
+                                                                                    <div className="text-center">
+                                                                                        {helperApproval ? (
+                                                                                            <button
+                                                                                                onClick={() =>
+                                                                                                    sendClaimGold()
+                                                                                                }
+                                                                                                className="rounded-lg border-2 border-white p-2 uppercase text-xs mt-2"
+                                                                                            >
+                                                                                                {i18n._(t`send`)}{' '}
+                                                                                                {
+                                                                                                    summonersForClaim.length
                                                                                                 }{' '}
                                                                                                 {i18n._(t`summoners`)}
                                                                                             </button>

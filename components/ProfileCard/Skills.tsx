@@ -89,11 +89,18 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     }
 
     function skillUrl(skill: number) {
-       const name = SKILLS[skill].name.toLowerCase();
-       const split = name.split(" ")
-       if (split.length === 1) return SKILL_URL(name);
-       if (split.length === 2) return SKILL_URL(split[0] + split[1][0].toUpperCase() + split[1].substring(1));
-       if (split.length === 3) return SKILL_URL(split[0] + split[1][0].toUpperCase() + split[1].substring(1) + split[2][0].toUpperCase() + split[2].substring(1));
+        const name = SKILLS[skill].name.toLowerCase()
+        const split = name.split(' ')
+        if (split.length === 1) return SKILL_URL(name)
+        if (split.length === 2) return SKILL_URL(split[0] + split[1][0].toUpperCase() + split[1].substring(1))
+        if (split.length === 3)
+            return SKILL_URL(
+                split[0] +
+                    split[1][0].toUpperCase() +
+                    split[1].substring(1) +
+                    split[2][0].toUpperCase() +
+                    split[2].substring(1)
+            )
 
         return
     }

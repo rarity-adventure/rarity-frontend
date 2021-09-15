@@ -6,6 +6,7 @@ import {
     MULTICALL2_ADDRESS,
     RARITY_ADDRESS,
     RARITY_ATTRIBUTES_ADDRESS,
+    RARITY_DAYCARE_ADDRESS,
     RARITY_GOLD_ADDRESS,
     RARITY_HELPER_ADDRESS,
     RARITY_LIB,
@@ -18,6 +19,7 @@ import RARITY_GOLD_ABI from '../constants/abis/gold.json'
 import RARITY_ATTRIBUTES_ABI from '../constants/abis/attributes.json'
 import RARITY_HELPER_ABI from '../constants/abis/helper.json'
 import RARITY_SKILLS_ABI from '../constants/abis/skills.json'
+import RARITY_DAYCARE_ABI from '../constants/abis/daycare.json'
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
     const { library, account } = useActiveWeb3React()
@@ -66,4 +68,9 @@ export function useRarityHelperContract(): Contract | null {
 export function useRaritySkillsContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? RARITY_SKILLS_ADDRESS : undefined, RARITY_SKILLS_ABI)
+}
+
+export function useRarityDaycareContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? RARITY_DAYCARE_ADDRESS : undefined, RARITY_SKILLS_ABI)
 }

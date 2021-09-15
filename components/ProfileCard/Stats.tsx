@@ -418,11 +418,20 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                             </div>
                         </button>
                     </div>
-                    <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
-                        <button className="w-full p-2" onClick={() => claimGold()}>
-                            <span className="uppercase">{i18n._(t`claim gold`)}</span>
-                        </button>
-                    </div>
+                    {parseInt(utils.formatUnits(summoner.gold.claimable.toString(), 'ether')) > 0 ? (
+                        <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
+                            <button className="w-full p-2" onClick={() => claimGold()}>
+                                <span className="uppercase">{i18n._(t`claim gold`)}</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="bg-card-content cursor-not-allowed text-lg text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
+                            <button className="w-full p-2">
+                                <span className="uppercase">{i18n._(t`claim gold`)}</span>
+                            </button>
+                        </div>
+                    )}
+
                     {totalAP === 0 && assignable ? (
                         <div className="hover:bg-card-content text-lg hover:text-grey col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-white">
                             <button className="w-full p-2" onClick={() => assignPoints()}>

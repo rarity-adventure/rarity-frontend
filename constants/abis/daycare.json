@@ -1,0 +1,52 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            { "indexed": false, "internalType": "address", "name": "_executor", "type": "address" },
+            { "indexed": false, "internalType": "uint256", "name": "_summonerId", "type": "uint256" }
+        ],
+        "name": "executedDaycare",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            { "indexed": false, "internalType": "address", "name": "_registerer", "type": "address" },
+            { "indexed": false, "internalType": "uint256", "name": "_summonerId", "type": "uint256" },
+            { "indexed": false, "internalType": "uint256", "name": "_days", "type": "uint256" }
+        ],
+        "name": "registeredDaycare",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "DAILY_FEE",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "name": "daysPaid",
+        "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256[]", "name": "_summonerIds", "type": "uint256[]" }],
+        "name": "executeDaycare",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256[]", "name": "_summonerIds", "type": "uint256[]" },
+            { "internalType": "uint256[]", "name": "_days", "type": "uint256[]" }
+        ],
+        "name": "registerDaycare",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

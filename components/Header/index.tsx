@@ -15,13 +15,13 @@ function AppBar(): JSX.Element {
     const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
 
     return (
-        <header className="flex-shrink-0 w-full z-40">
+        <header className="flex-shrink-0 w-full z-30">
             <Popover as="nav" className="w-full bg-transparent header-border-b">
                 {({ open }) => (
                     <>
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center z-20">
+                                <div className="flex items-center z-10">
                                     <a href="/" className="uppercase text-center tracking-widest text-xl ">
                                         <h1>RARITY</h1>
                                         <h1>Adventure</h1>
