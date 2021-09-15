@@ -4,12 +4,11 @@ import { SummonerFullData } from '../../state/summoners/hooks'
 import { TrashIcon, RefreshIcon } from '@heroicons/react/outline'
 import { QuestionMarkCircleIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import { utils } from 'ethers'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
 import { ATTRIBUTES } from '../../constants/codex/attributes'
 import { calcAPCost } from '../../functions/calcAPCost'
-import { useRarityGoldContract } from '../../hooks/useContract'
 import toast, { Toaster } from 'react-hot-toast'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
@@ -36,9 +35,18 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
         cha: number
     }>({ str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 })
 
-    const [totalAP, setTotalApp] = useState(
-        parseInt(summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString())
-    )
+    const [totalAP, setTotalApp] = useState(0)
+
+    const [assignable, setAssignable] = useState(false)
+
+    useEffect(() => {
+        const points = parseInt(
+            summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString()
+        )
+        const assignable = points > 0
+        setAssignable(assignable)
+        setTotalApp(points)
+    }, [summoner])
 
     function handleAddition(attr: string) {
         const addition = additions[attr] + 1
@@ -396,14 +404,14 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
             </div>
             <div className="flex flex-row w-full">
                 <div className="grid grid-cols-1 md:grid-cols-7 md:gap-2 w-full">
-                    <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom w-full bg-red col-span-1 bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
+                    <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom w-full bg-red bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
                         <button className="w-full md:p-1" onClick={() => reset()}>
                             <div className="flex flex-row p-1 justify-center items-center">
                                 <RefreshIcon width={30} />
                             </div>
                         </button>
                     </div>
-                    <div className="hover:bg-red-hovered hover:text-grey w-full bg-red col-span-1 bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
+                    <div className="hover:bg-red-hovered hover:text-grey w-full bg-red  bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
                         <button className="w-full md:p-1" onClick={() => deleteModal()}>
                             <div className="flex flex-row p-1 justify-center items-center">
                                 <TrashIcon width={30} />
@@ -415,11 +423,19 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                             <span className="uppercase">{i18n._(t`claim gold`)}</span>
                         </button>
                     </div>
-                    <div className="hover:bg-card-content text-lg hover:text-grey focus:animate-bounce col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-whiter">
-                        <button className="w-full p-2" onClick={() => assignPoints()}>
-                            <span className="uppercase">{i18n._(t`assign points`)}</span>
-                        </button>
-                    </div>
+                    {totalAP === 0 && assignable ? (
+                        <div className="hover:bg-card-content text-lg hover:text-grey col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-white">
+                            <button className="w-full p-2" onClick={() => assignPoints()}>
+                                <span className="uppercase">{i18n._(t`assign points`)}</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="bg-card-content text-grey text-lg cursor-not-allowed col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-white">
+                            <button className="w-full p-2">
+                                <span className="uppercase">{i18n._(t`assign points`)}</span>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <HeadlessUIModal isOpen={modal} onDismiss={() => setModalOpen(false)}>

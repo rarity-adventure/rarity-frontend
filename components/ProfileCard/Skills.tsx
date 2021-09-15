@@ -1,12 +1,13 @@
 import { SummonerFullData } from '../../state/summoners/hooks'
 import { t } from '@lingui/macro'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { SKILL_URL, SKILLS } from '../../constants/codex/skills'
 import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
 import { CLASS_SKILLS } from '../../constants/classes'
+import { RefreshIcon } from '@heroicons/react/outline'
 
 interface SkillProfileProps {
     summoner: SummonerFullData
@@ -18,14 +19,21 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     const [skill, setSkill] = useState(1)
     const [modal, setModalOpen] = useState(false)
 
-    const [availableSP, setAvailableSP] = useState(128)
+    const [availableSP, setAvailableSP] = useState(0)
+
+    useEffect(() => {
+        const points = parseInt(summoner.skills.total_points.sub(summoner.skills.spent_points).toString())
+        setAvailableSP(points)
+    }, [summoner])
 
     const [additions, setAdditions] = useState<{ [k: string]: number }>({})
 
     function handleAddition(id: string) {
         const addition = additions[id] ? additions[id] + 1 : 1
-        const newState = Object.assign({}, additions, { [id]: addition })
-        setAdditions(newState)
+        if (addition <= maxLevel(id)) {
+            const newState = Object.assign({}, additions, { [id]: addition })
+            setAdditions(newState)
+        }
     }
 
     function handleSubstraction(id: string) {
@@ -34,6 +42,17 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
             const newState = Object.assign({}, additions, { [id]: addition })
             setAdditions(newState)
         }
+    }
+
+    function maxLevel(id: string): number {
+        return CLASS_SKILLS[summoner.base._class.toString()][id]
+            ? parseInt(summoner.base._level.toString()) + 3
+            : Math.floor((parseInt(summoner.base._level.toString()) + 3) / 2)
+    }
+
+    function reset() {
+        setAdditions({})
+        setAvailableSP(parseInt(summoner.skills.total_points.sub(summoner.skills.spent_points).toString()))
     }
 
     return (
@@ -72,10 +91,8 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                                         <p className="text-xs">
                                             {i18n._(t`SP cost`)}:{' '}
                                             {CLASS_SKILLS[summoner.base._class.toString()][k] ? '1' : '2'}{' '}
-                                            {i18n._(t`Max lvl`)}:{' '}
-                                            {CLASS_SKILLS[summoner.base._class.toString()][k]
-                                                ? parseInt(summoner.base._level.toString()) + 3
-                                                : Math.floor((parseInt(summoner.base._level.toString()) + 3) / 2)}
+                                            {i18n._(t`Max lvl`)}: {maxLevel(k)}
+                                            {}
                                         </p>
                                     </div>
                                 </div>
@@ -109,11 +126,22 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                     })}
                 </div>
             </div>
+
             <div className="flex flex-row justify-end w-full">
-                <div className="hover:bg-card-content text-lg hover:text-grey focus:animate-bounce col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-whiter">
-                    <button className="w-full p-2">
-                        <span className="uppercase">{i18n._(t`assign points`)}</span>
-                    </button>
+                <div className="grid grid-cols-1 md:grid-cols-4 md:gap-2 w-full">
+                    <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom w-full bg-red bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
+                        <button className="w-full md:p-1" onClick={() => reset()}>
+                            <div className="flex flex-row p-1 justify-center items-center">
+                                <RefreshIcon width={30} />
+                            </div>
+                        </button>
+                    </div>
+                    <div />
+                    <div className="hover:bg-card-content text-lg col-span-2 hover:text-grey focus:animate-bounce col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-whiter">
+                        <button className="w-full p-2">
+                            <span className="uppercase">{i18n._(t`assign points`)}</span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <HeadlessUIModal isOpen={modal} onDismiss={() => setModalOpen(false)}>
