@@ -1,6 +1,4 @@
 import { Menu, Transition } from '@headlessui/react'
-
-import { ChevronDownIcon } from '@heroicons/react/solid'
 import React, { Fragment } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -22,7 +20,6 @@ export default function LangSwitcher() {
                     <div>
                         <Menu.Button className="inline-flex justify-center w-full p-1.5 text-xs bg-background-end font-bold border rounded shadow-sm text-primary border-white">
                             <h2>{LANG_TO_COUNTRY[locale]}</h2>
-                            <ChevronDownIcon aria-hidden="true" />
                         </Menu.Button>
                     </div>
 
