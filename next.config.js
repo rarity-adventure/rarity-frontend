@@ -2,9 +2,6 @@ const linguiConfig = require('./lingui.config.js')
 const { locales, sourceLocale } = linguiConfig
 const runtimeCaching = require('next-pwa/cache')
 const withPWA = require('next-pwa')
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-    enabled: process.env.ANALYZE === 'true',
-})
 
 const nextConfig = {
     webpack: (config) => {
@@ -31,6 +28,4 @@ const nextConfig = {
     },
 }
 
-// Make sure adding Sentry options is the last code to run before exporting, to
-// ensure that your source maps include changes from all other Webpack plugins
-module.exports = withPWA(withBundleAnalyzer(nextConfig))
+module.exports = withPWA(nextConfig)
