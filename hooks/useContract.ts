@@ -7,7 +7,7 @@ import {
     RARITY_ADDRESS,
     RARITY_ATTRIBUTES_ADDRESS,
     RARITY_GOLD_ADDRESS,
-    RARITY_LIB
+    RARITY_LIB,
 } from '../constants'
 import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import RARITY_ABI from '../constants/abis/rarity.json'

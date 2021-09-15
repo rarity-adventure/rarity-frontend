@@ -6,8 +6,7 @@ import { useLingui } from '@lingui/react'
 import { SKILL_URL, SKILLS } from '../../constants/codex/skills'
 import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
-import { use } from 'ast-types'
-import { add } from 'cheerio/lib/api/traversing'
+import { CLASS_SKILLS } from '../../constants/classes'
 
 interface SkillProfileProps {
     summoner: SummonerFullData
@@ -34,7 +33,6 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
             const addition = additions[id] - 1
             const newState = Object.assign({}, additions, { [id]: addition })
             setAdditions(newState)
-            console.log(newState)
         }
     }
 
@@ -72,7 +70,12 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                                     <div>
                                         <p className="uppercase text-sm md:text-lg">{i18n._(data.name)}</p>
                                         <p className="text-xs">
-                                            {i18n._(t`SP cost`)}: 2 {i18n._(t`Max lvl`)}: 4
+                                            {i18n._(t`SP cost`)}:{' '}
+                                            {CLASS_SKILLS[summoner.base._class.toString()][k] ? '1' : '2'}{' '}
+                                            {i18n._(t`Max lvl`)}:{' '}
+                                            {CLASS_SKILLS[summoner.base._class.toString()][k]
+                                                ? parseInt(summoner.base._level.toString()) + 3
+                                                : Math.floor((parseInt(summoner.base._level.toString()) + 3) / 2)}
                                         </p>
                                     </div>
                                 </div>

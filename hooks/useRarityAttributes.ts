@@ -36,6 +36,5 @@ export default function useRarityAttributes(): AttributesInterface {
         [attributes]
     )
 
-
     return { point_buy }
 }

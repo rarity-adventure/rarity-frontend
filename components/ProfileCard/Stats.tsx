@@ -88,18 +88,22 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
     }
 
     async function assignPoints() {
-        await toast.promise(point_buy(summoner.id,
-            additions['str'] + summoner.ability_scores.attributes._str,
-            additions['dex'] + summoner.ability_scores.attributes._dex,
-            additions['con'] + summoner.ability_scores.attributes._con,
-            additions['int'] + summoner.ability_scores.attributes._int,
-            additions['wis'] + summoner.ability_scores.attributes._wis,
-            additions['cha'] + summoner.ability_scores.attributes._cha,
-            ), {
-            loading: <b>{i18n._(t`Assigning points`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
+        await toast.promise(
+            point_buy(
+                summoner.id,
+                additions['str'] + summoner.ability_scores.attributes._str,
+                additions['dex'] + summoner.ability_scores.attributes._dex,
+                additions['con'] + summoner.ability_scores.attributes._con,
+                additions['int'] + summoner.ability_scores.attributes._int,
+                additions['wis'] + summoner.ability_scores.attributes._wis,
+                additions['cha'] + summoner.ability_scores.attributes._cha
+            ),
+            {
+                loading: <b>{i18n._(t`Assigning points`)}</b>,
+                success: <b>{i18n._(t`Success`)}</b>,
+                error: <b>{i18n._(t`Failed`)}</b>,
+            }
+        )
     }
 
     return (
