@@ -47,7 +47,7 @@ function AppBar(): JSX.Element {
                                                 <h2>{i18n._(t`Marketplace`)}</h2>
                                             </a>
                                             <a
-                                                href="#"
+                                                href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
                                                 className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
                                                 <h2>{i18n._(t`Donate`)}</h2>
@@ -131,7 +131,7 @@ function AppBar(): JSX.Element {
                                     <h2>{i18n._(t`Marketplace`)}</h2>
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Donate`)}</h2>
