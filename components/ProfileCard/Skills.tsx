@@ -57,7 +57,7 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                     {Object.keys(SKILLS).map((k, i) => {
                         const data = SKILLS[k]
                         return (
-                            <div className="flex flex-row items-center justify-between">
+                            <div key={k} className="flex flex-row items-center justify-between">
                                 <div className="flex flex-row justify-start items-center p-2">
                                     <div className="text-xl mr-2">
                                         <button
