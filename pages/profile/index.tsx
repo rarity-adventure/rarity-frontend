@@ -15,6 +15,10 @@ import SkillsProfile from '../../components/ProfileCard/Skills'
 import CraftProfile from '../../components/ProfileCard/Craft'
 import InventoryProfile from '../../components/ProfileCard/Inventory'
 import { useSummonersData } from '../../state/summoners/hooks'
+import useRarity from '../../hooks/useRarity'
+import toast, { Toaster } from 'react-hot-toast'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { BURN_ADDRESS } from '../../constants'
 
 enum View {
     stats,
@@ -26,6 +30,10 @@ enum View {
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
+
+    const { account } = useActiveWeb3React()
+
+    const { transferFrom } = useRarity()
 
     const summoners = useUserSummoners()
 
@@ -73,8 +81,28 @@ export default function Profile(): JSX.Element {
         }
     }
 
+    async function deleteConfirm() {
+        setModal({ delete: false, transfer: false })
+        await toast.promise(transferFrom(account, BURN_ADDRESS, selectedSummoner), {
+            loading: <b>{i18n._(t`Deleting summoner`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function transferConfirm() {
+        setModal({ delete: false, transfer: false })
+        const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
+        await toast.promise(transferFrom(account, address, selectedSummoner), {
+            loading: <b>{i18n._(t`Transferring summoner`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
     return (
-        <div className="w-full z-10">
+        <div className="w-full z-20">
+            <Toaster containerClassName="z-30" />
             <div className="border-white border-4 p-4 m-10 z-10">
                 <Popover as="nav" className="w-full bg-transparent header-border-b">
                     {({ open }) => (
@@ -333,7 +361,7 @@ export default function Profile(): JSX.Element {
                                 </button>
                             </div>
                             <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
-                                <button className="w-full uppercase px-2 py-1">
+                                <button className="w-full uppercase px-2 py-1" onClick={() => deleteConfirm()}>
                                     <h2>{i18n._(t`confirm`)}</h2>
                                 </button>
                             </div>
@@ -361,7 +389,10 @@ export default function Profile(): JSX.Element {
                         <div className="flex flex-row justify-center pb-8">
                             <div className=" text-white  mx-4">
                                 {transferAddress.address ? (
-                                    <button className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1">
+                                    <button
+                                        className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1"
+                                        onClick={() => transferConfirm()}
+                                    >
                                         <h2>{i18n._(t`confirm`)}</h2>
                                     </button>
                                 ) : (

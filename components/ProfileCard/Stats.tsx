@@ -9,6 +9,10 @@ import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
 import { ATTRIBUTES } from '../../constants/codex/attributes'
 import { calcAPCost } from '../../functions/calcAPCost'
+import { useRarityGoldContract } from '../../hooks/useContract'
+import toast, { Toaster } from 'react-hot-toast'
+import useRarityGold from '../../hooks/useRarityGold'
+import useRarityAttributes from '../../hooks/useRarityAttributes'
 interface StatsProfileProps {
     summoner: SummonerFullData
     deleteModal: () => void
@@ -17,6 +21,8 @@ interface StatsProfileProps {
 
 function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProps): JSX.Element {
     const { i18n } = useLingui()
+
+    const { point_buy } = useRarityAttributes()
 
     const [attribute, setAttribute] = useState('str')
     const [modal, setModalOpen] = useState(false)
@@ -71,8 +77,34 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
         setTotalApp(ap)
     }
 
+    const { claim } = useRarityGold()
+
+    async function claimGold() {
+        await toast.promise(claim(summoner.id), {
+            loading: <b>{i18n._(t`Claiming gold`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function assignPoints() {
+        await toast.promise(point_buy(summoner.id,
+            additions['str'] + summoner.ability_scores.attributes._str,
+            additions['dex'] + summoner.ability_scores.attributes._dex,
+            additions['con'] + summoner.ability_scores.attributes._con,
+            additions['int'] + summoner.ability_scores.attributes._int,
+            additions['wis'] + summoner.ability_scores.attributes._wis,
+            additions['cha'] + summoner.ability_scores.attributes._cha,
+            ), {
+            loading: <b>{i18n._(t`Assigning points`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
     return (
-        <div className="max-w-screen-md mx-auto">
+        <div className="max-w-screen-md mx-auto z-20">
+            <Toaster containerClassName="z-30" />
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
                     <div className="bg-card-top col-span-3 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
@@ -375,12 +407,12 @@ function StatsProfile({ summoner, deleteModal, transferModal }: StatsProfileProp
                         </button>
                     </div>
                     <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
-                        <button className="w-full p-2">
+                        <button className="w-full p-2" onClick={() => claimGold()}>
                             <span className="uppercase">{i18n._(t`claim gold`)}</span>
                         </button>
                     </div>
                     <div className="hover:bg-card-content text-lg hover:text-grey focus:animate-bounce col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-whiter">
-                        <button className="w-full p-2">
+                        <button className="w-full p-2" onClick={() => assignPoints()}>
                             <span className="uppercase">{i18n._(t`assign points`)}</span>
                         </button>
                     </div>

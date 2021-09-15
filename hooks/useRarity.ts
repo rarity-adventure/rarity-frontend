@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 import { useRarityContract } from './useContract'
-import { rejects } from 'assert'
 
 interface RarityInterface {
     summon: (_class?: string) => Promise<void>
+    transferFrom: (from: string | null | undefined, to: string, id: string) => Promise<void>
 }
 
 export default function useRarity(): RarityInterface {
@@ -25,7 +25,19 @@ export default function useRarity(): RarityInterface {
         [rarity]
     )
 
-    return { summon }
+    const transferFrom = useCallback(
+        async (from: string | null | undefined, to: string, id: string) => {
+            try {
+                const tx = await rarity?.transferFrom(from, to, id)
+                return await tx.wait()
+            } catch (e) {
+                return
+            }
+        },
+        [rarity]
+    )
+
+    return { summon, transferFrom }
 }
 
 function rand() {
