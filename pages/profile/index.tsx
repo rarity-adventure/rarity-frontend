@@ -64,15 +64,6 @@ export default function Profile(): JSX.Element {
                   })
             : []
 
-    const summonersForClaim =
-        Object.values(summonersFullData).length > 0
-            ? Object.values(summonersFullData)
-                  .filter((s) => parseInt(utils.formatUnits(s.gold.claimable.toString(), 'ether')) > 0)
-                  .map((s) => {
-                      return s.id
-                  })
-            : []
-    //const summonersForClaim = []
     const summonersForDungeon = []
 
     const stateSelectedSummoner = useUserSelectedSummoner()
@@ -679,7 +670,7 @@ export default function Profile(): JSX.Element {
                     </div>
                 ) : (
                     <div className="relative h-96">
-                        <div className="absolute top-1/2 right-1/2">
+                        <div className="absolute top-1/2 right-1/2 uppercase text-center">
                             <Loader className="animate-spin" size="40px" />
                         </div>
                     </div>
