@@ -24,7 +24,6 @@ const nextConfig = {
         disable: process.env.NODE_ENV === 'development',
     },
     reactStrictMode: true,
-    distDir: 'build',
     i18n: {
         localeDetection: true,
         locales,
