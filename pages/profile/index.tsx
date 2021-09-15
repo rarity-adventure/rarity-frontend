@@ -146,14 +146,6 @@ export default function Profile(): JSX.Element {
         })
     }
 
-    async function sendClaimGold() {
-        await toast.promise(claim_gold(summonersForClaim), {
-            loading: <b>{i18n._(t`Sending summoners`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
-
     async function sendDungeon() {
         await toast.promise(cellar(summonersForDungeon), {
             loading: <b>{i18n._(t`Sending summoners`)}</b>,

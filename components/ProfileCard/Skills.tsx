@@ -51,19 +51,19 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     }
 
     function maxLevel(id: string): number {
-        return CLASS_SKILLS[summoner.base._class.toString()][id]
+        return CLASS_SKILLS[summoner.base._class.toString()][id - 1]
             ? parseInt(summoner.base._level.toString()) + 3
             : Math.floor((parseInt(summoner.base._level.toString()) + 3) / 2)
     }
 
     function spCost(id: string): number {
-        return CLASS_SKILLS[summoner.base._class.toString()][id] ? 1 : 2
+        return CLASS_SKILLS[summoner.base._class.toString()][parseInt(id) - 1] ? 1 : 2
     }
 
     function calcAvailableSP(state: { [k: string]: number }): number {
         let sp = parseInt(summoner.skills.total_points.sub(summoner.skills.spent_points).toString())
         Object.keys(state).map((k) => {
-            CLASS_SKILLS[summoner.base._class.toString()][k] ? (sp -= state[k]) : (sp -= state[k] * 2)
+            CLASS_SKILLS[summoner.base._class.toString()][parseInt(k) - 1] ? (sp -= state[k]) : (sp -= state[k] * 2)
         })
         return sp
     }
