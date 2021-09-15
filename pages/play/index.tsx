@@ -237,8 +237,8 @@ export default function Profile(): JSX.Element {
     }
 
     return (
-        <div className="w-full z-20">
-            <Toaster containerClassName="z-40" />
+        <div className="w-full z-25">
+            <Toaster containerClassName="z-25" />
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
                 <Popover as="nav" className="w-full bg-transparent header-border-b">
                     {({ open }) => (
