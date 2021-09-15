@@ -40,7 +40,7 @@
         "ethers": "5.4.6",
         "graphql": "15.5.3",
         "next": "11.1.2",
-        "next-pwa": "^5.3.1",
+        "next-pwa": "5.3.1",
         "numeral": "^2.0.6",
         "postcss": "8.3.6",
         "prettier": "2.3.2",
