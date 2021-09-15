@@ -128,7 +128,7 @@ export default function Profile(): JSX.Element {
         })
     }
 
-    const { adventure, cellar, claim_gold, level_up } = useRarityHelper()
+    const { adventure, cellar, level_up } = useRarityHelper()
 
     async function sendAdventure() {
         await toast.promise(adventure(summonersForAdventure), {
@@ -434,7 +434,7 @@ export default function Profile(): JSX.Element {
                                     >
                                         <span>{i18n._(t`craft`)}</span>
                                     </button>
-                                    <Popover className="relative">
+                                    <Popover className="relative uppercase">
                                         {({ open }) => (
                                             <>
                                                 <Popover.Button className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase text-center group">

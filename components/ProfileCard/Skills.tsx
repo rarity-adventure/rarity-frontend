@@ -81,12 +81,21 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
         Object.keys(additions).map((k) => {
             skills[parseInt(k) - 1] = additions[k]
         })
-        console.log(skills)
         await toast.promise(set_skills(summoner.id, skills), {
             loading: <b>{i18n._(t`Assigning skill`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
         })
+    }
+
+    function skillUrl(skill: number) {
+       const name = SKILLS[skill].name.toLowerCase();
+       const split = name.split(" ")
+       if (split.length === 1) return SKILL_URL(name);
+       if (split.length === 2) return SKILL_URL(split[0] + split[1][0].toUpperCase() + split[1].substring(1));
+       if (split.length === 3) return SKILL_URL(split[0] + split[1][0].toUpperCase() + split[1].substring(1) + split[2][0].toUpperCase() + split[2].substring(1));
+
+        return
     }
 
     return (
@@ -202,7 +211,7 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
                             className="uppercase border-white border-2 border-round text-white p-2 rounded-lg"
                             target="_blank"
                             rel="noreferrer"
-                            href={SKILL_URL(SKILLS[skill].name.toLowerCase())}
+                            href={skillUrl(skill)}
                         >
                             <h2>{i18n._(t`read more`)}</h2>
                         </a>
