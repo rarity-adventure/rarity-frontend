@@ -110,19 +110,12 @@ function AdventureProfile({ summoner }: SkillProfileProps): JSX.Element {
                                     <button className="uppercase text-xs bg-red cursor-not-allowed p-2 bg-background-end border-white rounded-lg border-2">
                                         {i18n._(t`You wont get anything`)}
                                     </button>
-                                ) : helperApproval ? (
+                                ) : (
                                     <button
                                         className="uppercase text-xs p-2 bg-background-end border-white rounded-lg border-2"
                                         onClick={() => cellarSend()}
                                     >
                                         {i18n._(t`go to the cellar`)}
-                                    </button>
-                                ) : (
-                                    <button
-                                        className="uppercase text-xs p-2 bg-background-end border-white rounded-lg border-2"
-                                        onClick={() => approveHelper()}
-                                    >
-                                        {i18n._(t`approve`)}
                                     </button>
                                 )
                             ) : (
