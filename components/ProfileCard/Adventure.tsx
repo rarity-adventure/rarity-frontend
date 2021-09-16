@@ -23,7 +23,7 @@ function AdventureProfile({ summoner }: SkillProfileProps): JSX.Element {
     const { isApprovedForAll, setApprovalForAll } = useRarity()
 
     async function cellarSend() {
-        await toast.promise(cellar([summoner.id]), {
+        await toast.promise(cellar([summoner.id], [summoner.id]), {
             loading: <b>{i18n._(t`Sending summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
@@ -103,7 +103,7 @@ function AdventureProfile({ summoner }: SkillProfileProps): JSX.Element {
                             )}
                         </div>
                         <h1 className="text-center text-xl">{i18n._(t`Dungeons`)}</h1>
-                        {/*<div className="flex flex-row mt-2 justify-between p-4">
+                        <div className="flex flex-row mt-2 justify-between p-4">
                             <span>{i18n._(t`The Cellar`)}</span>
                             {parseInt(summoner.materials.log.toString()) * 1000 < Date.now() ? (
                                 summoner.materials.scout.toString() === '0' ? (
@@ -132,7 +132,7 @@ function AdventureProfile({ summoner }: SkillProfileProps): JSX.Element {
                                     )}
                                 </button>
                             )}
-                        </div>*/}
+                        </div>
                     </div>
                 </div>
             </div>
