@@ -1,7 +1,19 @@
 {
-    "short_name": "React Dapp Bolierplate",
-    "name": "React Dapp Bolierplate",
+    "short_name": "Rarity Game",
+    "name": "Rarity Game | Free to mint D&D blockchain based game",
     "icons": [
+        {
+            "src": "manifest-icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "manifest-icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
         {
             "src": "favicon.ico",
             "sizes": "32x32",
@@ -10,7 +22,7 @@
     ],
     "orientation": "portrait",
     "display": "standalone",
-    "theme_color": "#ff007a",
-    "background_color": "#fff",
+    "theme_color": "#000000",
+    "background_color": "#000000",
     "start_url": "/"
 }

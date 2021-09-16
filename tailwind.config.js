@@ -1,18 +1,27 @@
 module.exports = {
-    purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+    purge: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
     theme: {
         colors: {
             transparent: 'transparent',
-            current: 'currentColor',
-            custom: {
-                background: '#000000',
-                blue: '#0A1931',
-                green: '#007580',
-                selected: '#004046',
-                border: '#D8EBE4',
-                red: '#c70000',
-            },
+            'background-start': '#0F2F5C',
+            'background-middle': '#0F1F39',
+            'background-end': '#0B1526',
+            'background-contrast': '#3C415C',
             white: '#ffffff',
+            grey: '#c0c0c0',
+            black: '#000000',
+            contrast: '#2AE7F3',
+            red: '#c70000',
+            'red-hovered': '#830101',
+            'card-top': '#2C394B',
+            'card-content': '#2F3C4F',
+            'card-button': '#334756',
+            'card-bottom': '#3C415C',
+        },
+    },
+    variants: {
+        extend: {
+            animation: ['hover, focus'],
         },
     },
 }
