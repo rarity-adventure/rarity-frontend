@@ -19,7 +19,6 @@ import getLibrary from '../functions/getLibrary'
 import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
 import MulticallUpdater from '../state/multicall/updater'
-import UserUpdater from '../state/user/updater'
 import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
@@ -138,7 +137,6 @@ export default function MyApp({
                                         <>
                                             <ApplicationUpdater />
                                             <MulticallUpdater />
-                                            <UserUpdater />
                                         </>
                                         <Provider>
                                             <Layout>

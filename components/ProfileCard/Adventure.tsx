@@ -1,4 +1,3 @@
-import { SummonerFullData } from '../../state/summoners/hooks'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
@@ -8,6 +7,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { RARITY_HELPER_ADDRESS } from '../../constants'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
 interface SkillProfileProps {
     summoner: SummonerFullData

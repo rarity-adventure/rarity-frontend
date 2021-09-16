@@ -1,4 +1,3 @@
-import { SummonerFullData } from '../../state/summoners/hooks'
 import { t } from '@lingui/macro'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import React, { useEffect, useState } from 'react'
@@ -10,6 +9,7 @@ import { CLASS_SKILLS } from '../../constants/classes'
 import { RefreshIcon } from '@heroicons/react/outline'
 import useRaritySkills from '../../hooks/useRaritySkills'
 import toast, { Toaster } from 'react-hot-toast'
+import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
 interface SkillProfileProps {
     summoner: SummonerFullData

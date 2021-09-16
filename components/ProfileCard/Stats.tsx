@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { SummonerFullData } from '../../state/summoners/hooks'
 import { TrashIcon, RefreshIcon } from '@heroicons/react/outline'
 import { QuestionMarkCircleIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import { utils } from 'ethers'
@@ -12,6 +11,8 @@ import { calcAPCost } from '../../functions/calcAPCost'
 import toast, { Toaster } from 'react-hot-toast'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
+import { SummonerFullData } from '../../hooks/useRarityLibrary'
+
 interface StatsProfileProps {
     summoner: SummonerFullData
     deleteModal: () => void

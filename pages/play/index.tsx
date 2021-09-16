@@ -9,12 +9,10 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 import HeadlessUIModal from '../../components/Modal/HeadlessUIModal'
 import ModalHeader from '../../components/Modal/ModalHeader'
 import { isAddress } from '../../functions/validate'
-import { useUserSelectedSummoner, useUserSelectSummoner, useUserSummoners } from '../../state/user/hooks'
 import AdventureProfile from '../../components/ProfileCard/Adventure'
 import SkillsProfile from '../../components/ProfileCard/Skills'
 import CraftProfile from '../../components/ProfileCard/Craft'
 import InventoryProfile from '../../components/ProfileCard/Inventory'
-import { useSummonersData } from '../../state/summoners/hooks'
 import useRarity from '../../hooks/useRarity'
 import toast, { Toaster } from 'react-hot-toast'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
@@ -24,6 +22,10 @@ import { utils } from 'ethers'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import useRarityDaycare from '../../hooks/useRarityDaycare'
 import { ChevronLeft, ChevronRight } from 'react-feather'
+import useRarityLibrary, { SummonerFullData } from '../../hooks/useRarityLibrary'
+import useIsWindowVisible from '../../hooks/useIsWindowVisible'
+import { useQuery } from '@apollo/client'
+import { SUMMONERS } from '../../apollo'
 
 enum View {
     stats,
@@ -34,19 +36,59 @@ enum View {
 }
 
 export default function Profile(): JSX.Element {
+
+    const { library, chainId, account } = useActiveWeb3React()
+
+    const windowVisible = useIsWindowVisible()
+
+    const { data, loading, error } = useQuery(SUMMONERS, {
+        variables: { owner: account ? account.toString().toLowerCase() : '' },
+    })
+
+    const [summoners, setSummoners] = useState([])
+
+    const fetchSummoners = useCallback(() => {
+        const summoners =  data.summoners.map((s) => {
+            return s.id
+        })
+        setSummoners(summoners)
+    }, [data])
+
+    useEffect(() => {
+        if (!library || !chainId || !windowVisible || !account || loading || error) return
+        fetchSummoners()
+    }, [chainId, library, windowVisible, account, fetchSummoners, loading])
+
     const { i18n } = useLingui()
 
-    const { account } = useActiveWeb3React()
+    const { summoners_full } = useRarityLibrary()
 
     const { transferFrom, isApprovedForAll, setApprovalForAll } = useRarity()
 
-    const summoners = useUserSummoners()
+    const [summonersFullData, setSummonersFullData] = useState<SummonerFullData[]>([])
 
-    const summonersFullData = useSummonersData(summoners)
+    const fetch_summoners_data = useCallback(async () => {
+        const full_data = await summoners_full(summoners)
+        setSummonersFullData(full_data)
+    }, [summoners_full, summoners])
+
+    useEffect( () => {
+        if (!library || !chainId || !windowVisible || !account) return
+        fetch_summoners_data()
+    }, [summoners, fetch_summoners_data, windowVisible, library, chainId, account])
+
+    const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
+
+    useEffect(() => {
+        if (!library || !account || !windowVisible || !chainId) return
+        if (summonersFullData.length > 0) {
+            setSelectedSummoner(summonersFullData[0])
+        }
+    }, [summonersFullData])
 
     const summonersForAdventure =
-        Object.values(summonersFullData).length > 0
-            ? Object.values(summonersFullData)
+        summonersFullData.length > 0
+            ? summonersFullData
                   .filter((s) => parseInt(s.base._log.toString()) * 1000 < Date.now())
                   .map((s) => {
                       return s.id
@@ -54,8 +96,8 @@ export default function Profile(): JSX.Element {
             : []
 
     const summonersForLevel =
-        Object.values(summonersFullData).length > 0
-            ? Object.values(summonersFullData)
+        summonersFullData.length > 0
+            ? summonersFullData
                   .filter(
                       (s) =>
                           parseInt(utils.formatUnits(s.base._xp, 'ether')) >=
@@ -67,8 +109,8 @@ export default function Profile(): JSX.Element {
             : []
 
     const summonersForClaim =
-        Object.values(summonersFullData).length > 0
-            ? Object.values(summonersFullData)
+        summonersFullData.length > 0
+            ? summonersFullData
                   .filter((s) => parseInt(utils.formatUnits(s.gold.claimable.toString(), 'ether')) > 0)
                   .map((s) => {
                       return s.id
@@ -76,8 +118,8 @@ export default function Profile(): JSX.Element {
             : []
 
     const summonersForDungeon =
-        Object.values(summonersFullData).length > 0
-            ? Object.values(summonersFullData)
+        summonersFullData.length > 0
+            ? summonersFullData
                   .filter(
                       (s) =>
                           parseInt(s.materials.log.toString()) * 1000 < Date.now() &&
@@ -88,9 +130,6 @@ export default function Profile(): JSX.Element {
                   })
             : []
 
-    const stateSelectedSummoner = useUserSelectedSummoner()
-
-    const storeStateSelectedSummoner = useUserSelectSummoner()
 
     const [modals, setModal] = useState<{ delete: boolean; transfer: boolean; daycare: boolean }>({
         delete: false,
@@ -98,19 +137,6 @@ export default function Profile(): JSX.Element {
         daycare: false,
     })
 
-    const [selectedSummoner, setSelectedSummoner] = useState<string | undefined>(stateSelectedSummoner)
-
-    useEffect(() => {
-        if (!account) return
-        if (!stateSelectedSummoner && summoners[0]) {
-            setSelectedSummoner(summoners[0].id)
-            storeStateSelectedSummoner(summoners[0].id)
-        }
-    }, [stateSelectedSummoner, summoners[0], account])
-
-    useEffect(() => {
-        storeStateSelectedSummoner(selectedSummoner)
-    }, [selectedSummoner, account])
 
     const [view, setView] = useState<View>(View.stats)
 
@@ -147,7 +173,7 @@ export default function Profile(): JSX.Element {
 
     async function deleteConfirm() {
         setModal({ delete: false, transfer: false, daycare: false })
-        await toast.promise(transferFrom(account, BURN_ADDRESS, selectedSummoner), {
+        await toast.promise(transferFrom(account, BURN_ADDRESS, selectedSummoner.id), {
             loading: <b>{i18n._(t`Deleting summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
@@ -157,7 +183,7 @@ export default function Profile(): JSX.Element {
     async function transferConfirm() {
         setModal({ delete: false, transfer: false, daycare: false })
         const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
-        await toast.promise(transferFrom(account, address, selectedSummoner), {
+        await toast.promise(transferFrom(account, address, selectedSummoner.id), {
             loading: <b>{i18n._(t`Transferring summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
@@ -183,7 +209,6 @@ export default function Profile(): JSX.Element {
     }
 
     async function sendDungeon() {
-        console.log(summonersForDungeon)
         await toast.promise(cellar(summonersForDungeon, summonersForDungeon), {
             loading: <b>{i18n._(t`Sending summoners`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
@@ -223,17 +248,18 @@ export default function Profile(): JSX.Element {
     const { daysPaid, registerDaycare } = useRarityDaycare()
 
     const fetch_register = useCallback(async () => {
-        const paid = await daysPaid(selectedSummoner)
+        const paid = await daysPaid(selectedSummoner.id)
         setDaycare(paid)
     }, [selectedSummoner])
 
     useEffect(() => {
+        if (!selectedSummoner) return
         fetch_register()
     }, [daysPaid, selectedSummoner])
 
     async function registerSingleSummoner() {
         setModal({ delete: false, transfer: false, daycare: false })
-        await toast.promise(registerDaycare([selectedSummoner], dailyCareNewRegister), {
+        await toast.promise(registerDaycare([selectedSummoner.id], dailyCareNewRegister), {
             loading: <b>{i18n._(t`Registering summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
@@ -242,46 +268,24 @@ export default function Profile(): JSX.Element {
 
     async function registerAllSummoners() {
         setModal({ delete: false, transfer: false, daycare: false })
-        await toast.promise(
-            registerDaycare(
-                summoners.map((s) => {
-                    return s.id
-                }),
-                dailyCareNewRegister
-            ),
-            {
-                loading: <b>{i18n._(t`Registering all summoners`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            }
-        )
+        await toast.promise(registerDaycare(summoners, dailyCareNewRegister), {
+            loading: <b>{i18n._(t`Registering all summoners`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
     }
 
     function selectPrevSummoner() {
-        const currIndex = summoners
-            .map((s) => {
-                return s.id
-            })
-            .indexOf(selectedSummoner)
+        const currIndex = summoners.indexOf(selectedSummoner.id)
         if (currIndex !== 0) {
-            const prevSummoner = summoners.map((s) => {
-                return s.id
-            })[currIndex - 1]
-            setSelectedSummoner(prevSummoner)
+            setSelectedSummoner(summonersFullData[currIndex - 1])
         }
     }
 
     function selectNextSummoner() {
-        const currIndex = summoners
-            .map((s) => {
-                return s.id
-            })
-            .indexOf(selectedSummoner)
+        const currIndex = summoners.indexOf(selectedSummoner.id)
         if (currIndex < summoners.length - 1) {
-            const nextSummoner = summoners.map((s) => {
-                return s.id
-            })[currIndex + 1]
-            setSelectedSummoner(nextSummoner)
+            setSelectedSummoner(summonersFullData[currIndex + 1])
         }
     }
 
@@ -747,29 +751,28 @@ export default function Profile(): JSX.Element {
                                 >
                                     <Menu.Items className="absolute max-h-96 z-30 overflow-scroll right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
                                         <div>
-                                            {Object.keys(summonersFullData).map((k: string) => {
-                                                const data = summonersFullData[k]
+                                            {summonersFullData.map((s: SummonerFullData) => {
                                                 return (
-                                                    <Menu.Item key={k}>
+                                                    <Menu.Item key={s.id}>
                                                         {() => (
                                                             <button
-                                                                onClick={() => setSelectedSummoner(data.id)}
+                                                                onClick={() => setSelectedSummoner(s)}
                                                                 className={
                                                                     'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                                 }
                                                             >
                                                                 <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis w-72">
                                                                     {' '}
-                                                                    {data.base._name !== ''
-                                                                        ? data.base._name
-                                                                        : parseInt(k, 16) +
+                                                                    {s.base._name !== ''
+                                                                        ? s.base._name
+                                                                        : parseInt(s.id, 16) +
                                                                           ' ' +
                                                                           i18n._(t`level`) +
                                                                           ' ' +
-                                                                          data.base._level +
+                                                                          s.base._level +
                                                                           ' ' +
                                                                           i18n._(
-                                                                              CLASSES_NAMES[data.base._class.toString()]
+                                                                              CLASSES_NAMES[s.base._class.toString()]
                                                                           )}
                                                                 </span>
                                                             </button>
@@ -785,11 +788,11 @@ export default function Profile(): JSX.Element {
                     </Menu>
                 )}
 
-                {summonersFullData[selectedSummoner] && selectedSummoner ? (
+                {selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto">
                             <img
-                                src={CLASSES_IMAGES[summonersFullData[selectedSummoner].base._class.toString()]}
+                                src={CLASSES_IMAGES[selectedSummoner.base._class.toString()]}
                                 alt={''}
                                 className="h-24 mt-2 md:h-48 mx-auto"
                             />
@@ -799,8 +802,8 @@ export default function Profile(): JSX.Element {
                                 </button>{' '}
                                 <div className="w-32 md:w-60 overflow-x-hidden overflow-ellipsis">
                                     <span className="text-xs md:text-xl mx-2 overflow-hidden whitespace-nowrap">
-                                        {summonersFullData[selectedSummoner].base._name !== ''
-                                            ? summonersFullData[selectedSummoner].base._name
+                                        {selectedSummoner.base._name !== ''
+                                            ? selectedSummoner.base._name
                                             : i18n._(t`unknown`)}
                                     </span>
                                 </div>{' '}
@@ -809,26 +812,26 @@ export default function Profile(): JSX.Element {
                                 </button>
                             </div>
                             <p className="mt-4 md:text-xl uppercase border-2 border-white rounded-3xl">
-                                {i18n._(CLASSES_NAMES[summonersFullData[selectedSummoner].base._class.toString()])}
+                                {i18n._(CLASSES_NAMES[selectedSummoner.base._class.toString()])}
                             </p>
                         </div>
                         <div className="col-span-2">
                             {view === View.stats && (
                                 <StatsProfile
-                                    summoner={summonersFullData[selectedSummoner]}
+                                    summoner={selectedSummoner}
                                     deleteModal={deleteModal}
                                     transferModal={transferModal}
                                     daycareModal={daycareModal}
                                 />
                             )}
                             {view === View.adventure && (
-                                <AdventureProfile summoner={summonersFullData[selectedSummoner]} />
+                                <AdventureProfile summoner={selectedSummoner} />
                             )}
-                            {view === View.skills && <SkillsProfile summoner={summonersFullData[selectedSummoner]} />}
+                            {view === View.skills && <SkillsProfile summoner={selectedSummoner} />}
                             {view === View.inventory && (
-                                <InventoryProfile summoner={summonersFullData[selectedSummoner]} />
+                                <InventoryProfile summoner={selectedSummoner} />
                             )}
-                            {view === View.crafting && <CraftProfile summoner={summonersFullData[selectedSummoner]} />}
+                            {view === View.crafting && <CraftProfile summoner={selectedSummoner} />}
                         </div>
                     </div>
                 ) : (

@@ -1,7 +1,7 @@
-import { SummonerFullData } from '../../state/summoners/hooks'
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
+import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
 interface SkillProfileProps {
     summoner: SummonerFullData
