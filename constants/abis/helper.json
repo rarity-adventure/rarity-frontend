@@ -8,22 +8,35 @@
     },
     {
         "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }],
+        "name": "approve_all",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256[]", "name": "_delvers", "type": "uint256[]" },
+            { "internalType": "uint256[]", "name": "_need_approval", "type": "uint256[]" }
+        ],
         "name": "cellar",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }],
+        "inputs": [
+            { "internalType": "uint256[]", "name": "_claimers", "type": "uint256[]" },
+            { "internalType": "uint256[]", "name": "_need_approval", "type": "uint256[]" }
+        ],
         "name": "claim_gold",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "inputs": [{ "internalType": "uint256", "name": "summoner", "type": "uint256" }],
-        "name": "claimable_gold",
-        "outputs": [{ "internalType": "uint256", "name": "remaining_claimable_gold", "type": "uint256" }],
+        "inputs": [{ "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" }],
+        "name": "is_approved",
+        "outputs": [{ "internalType": "bool[]", "name": "_is_approved", "type": "bool[]" }],
         "stateMutability": "view",
         "type": "function"
     },
@@ -32,20 +45,6 @@
         "name": "level_up",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [{ "internalType": "uint256", "name": "level", "type": "uint256" }],
-        "name": "wealth_by_level",
-        "outputs": [{ "internalType": "uint256", "name": "wealth", "type": "uint256" }],
-        "stateMutability": "pure",
-        "type": "function"
-    },
-    {
-        "inputs": [{ "internalType": "uint256", "name": "curent_level", "type": "uint256" }],
-        "name": "xp_required",
-        "outputs": [{ "internalType": "uint256", "name": "xp_to_next_level", "type": "uint256" }],
-        "stateMutability": "pure",
         "type": "function"
     }
 ]

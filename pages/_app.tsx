@@ -105,7 +105,11 @@ export default function MyApp({
                 <meta name="theme-color" content="#3E4A94" />
 
                 <meta key="twitter:card" name="twitter:card" content="app" />
-                <meta key="twitter:title" name="twitter:title" content="Rarity Game | Free to mint D&D blockchain based game" />
+                <meta
+                    key="twitter:title"
+                    name="twitter:title"
+                    content="Rarity Game | Free to mint D&D blockchain based game"
+                />
                 <meta key="twitter:url" name="twitter:url" content="https://rarity.game" />
                 <meta
                     key="twitter:description"
