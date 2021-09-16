@@ -44,7 +44,7 @@ function AppBar(): JSX.Element {
                                                 href="https://names.rarity.game"
                                                 className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
-                                                <h2>{i18n._(t`Marketplace`)}</h2>
+                                                <h2>{i18n._(t`Names shop`)}</h2>
                                             </a>
                                             <a
                                                 href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
@@ -128,7 +128,7 @@ function AppBar(): JSX.Element {
                                     href="https://names.rarity.game"
                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
-                                    <h2>{i18n._(t`Marketplace`)}</h2>
+                                    <h2>{i18n._(t`Names shop`)}</h2>
                                 </a>
                                 <a
                                     href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
