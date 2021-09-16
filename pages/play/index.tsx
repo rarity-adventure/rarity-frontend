@@ -438,11 +438,6 @@ export default function Profile(): JSX.Element {
                                                                                 <h2 className="text-lg">
                                                                                     {i18n._(t`claim gold`)}
                                                                                 </h2>
-                                                                                <p className="text-xs text-red">
-                                                                                    {i18n._(
-                                                                                        t`Warning: Claiming gold is gas expensive`
-                                                                                    )}
-                                                                                </p>
                                                                                 <h2 className="mt-1 text-center text-xs">
                                                                                     Summoners available for claim gold
                                                                                 </h2>
@@ -473,11 +468,6 @@ export default function Profile(): JSX.Element {
                                                                                 <h2 className="text-lg">
                                                                                     {i18n._(t`dungeons`)}
                                                                                 </h2>
-                                                                                <p className="text-xs text-center text-red">
-                                                                                    {i18n._(
-                                                                                        t`Warning: Sending summoners to dungeons is gas expensive`
-                                                                                    )}
-                                                                                </p>
                                                                                 <h2 className="mt-1 text-center text-xs">
                                                                                     Summoners available for dungeons
                                                                                 </h2>
@@ -672,11 +662,6 @@ export default function Profile(): JSX.Element {
                                                                 </div>
                                                                 <div>
                                                                     <h2 className="text-lg">{i18n._(t`claim gold`)}</h2>
-                                                                    <p className="text-xs text-red">
-                                                                        {i18n._(
-                                                                            t`Warning: Claiming gold is gas expensive`
-                                                                        )}
-                                                                    </p>
                                                                     <h2 className="mt-1 text-center text-xs">
                                                                         Summoners available for claim gold
                                                                     </h2>
@@ -701,11 +686,6 @@ export default function Profile(): JSX.Element {
                                                                 </div>
                                                                 <div>
                                                                     <h2 className="text-lg">{i18n._(t`dungeons`)}</h2>
-                                                                    <p className="text-xs text-center text-red">
-                                                                        {i18n._(
-                                                                            t`Warning: Sending summoners to dungeons is gas expensive`
-                                                                        )}
-                                                                    </p>
                                                                     <h2 className="mt-1 text-center text-xs">
                                                                         Summoners available for dungeons
                                                                     </h2>
