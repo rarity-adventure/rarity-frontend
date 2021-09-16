@@ -15,12 +15,9 @@ import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
 interface StatsProfileProps {
     summoner: SummonerFullData
-    deleteModal: () => void
-    transferModal: () => void
-    daycareModal: () => void
 }
 
-function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: StatsProfileProps): JSX.Element {
+function StatsProfile({ summoner }: StatsProfileProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { point_buy } = useRarityAttributes()
@@ -125,16 +122,6 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
                         <span className="ml-1.5">
                             {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
                         </span>
-                    </div>
-                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-1 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
-                        <button className="w-full" onClick={daycareModal}>
-                            <span className="uppercase">{i18n._(t`daycare`)}</span>
-                        </button>
-                    </div>
-                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-t-2xl text-center">
-                        <button className="w-full" onClick={transferModal}>
-                            <span className="uppercase">{i18n._(t`transfer`)}</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -415,13 +402,6 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
                         <button className="w-full md:p-1" onClick={() => reset()}>
                             <div className="flex flex-row p-1 justify-center items-center">
                                 <RefreshIcon width={30} />
-                            </div>
-                        </button>
-                    </div>
-                    <div className="hover:bg-red-hovered hover:text-grey w-full bg-red  bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
-                        <button className="w-full md:p-1" onClick={() => deleteModal()}>
-                            <div className="flex flex-row p-1 justify-center items-center">
-                                <TrashIcon width={30} />
                             </div>
                         </button>
                     </div>
