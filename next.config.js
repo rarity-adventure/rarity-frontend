@@ -26,6 +26,35 @@ const nextConfig = {
         locales,
         defaultLocale: sourceLocale,
     },
+    async redirects() {
+        return [
+            {
+                source: '/adventures',
+                destination: '/play',
+                permanent: true,
+            },
+            {
+                source: '/daily',
+                destination: '/play',
+                permanent: true,
+            },
+            {
+                source: '/skills',
+                destination: '/play',
+                permanent: true,
+            },
+            {
+                source: '/global',
+                destination: '/analytics',
+                permanent: true,
+            },
+            {
+                source: '/stats',
+                destination: '/analytics',
+                permanent: true,
+            },
+        ]
+    },
 }
 
 module.exports = withPWA(nextConfig)
