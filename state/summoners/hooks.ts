@@ -40,6 +40,7 @@ export interface SummonerFullData {
         claimed: BigNumber
     }
     materials: {
+        log: BigNumber
         balance: BigNumber
         scout: BigNumber
     }
@@ -123,8 +124,9 @@ export function useSummonersData(summoners: { id: string }[]): {
                             claimed: value.gold.claimed,
                         },
                         materials: {
-                            balance: value.gold.materials,
-                            scout: value.gold.scout,
+                            balance: value.materials[0].balance,
+                            scout: value.materials[0].scout,
+                            log: value.materials[0].log,
                         },
                         skills: {
                             class_skills: value.skills.class_skills,
@@ -134,7 +136,6 @@ export function useSummonersData(summoners: { id: string }[]): {
                         },
                     }
                 }
-
                 return memo
             }, {}),
         [summoners, chainId, results]
