@@ -1,4 +1,6 @@
 {
+
+
     "headers": [
         {
             "source": "/service-worker.js",
