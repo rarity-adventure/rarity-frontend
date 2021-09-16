@@ -11,7 +11,7 @@ module.exports = {
             grey: '#c0c0c0',
             black: '#000000',
             contrast: '#2AE7F3',
-            red: '#c70000',
+            red: '#8F384D',
             'red-hovered': '#830101',
             'card-top': '#2C394B',
             'card-content': '#2F3C4F',
