@@ -13,7 +13,7 @@ interface TransferModalProps {
     summoners: SummonerFullData[]
 }
 
-export default function DaycareSingleModal({ open, closeFunction, summoners }: TransferModalProps): JSX.Element {
+export default function DaycareMultiModal({ open, closeFunction, summoners }: TransferModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { registerDaycare } = useRarityDaycare()

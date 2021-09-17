@@ -5,12 +5,13 @@ import useActiveWeb3React from './useActiveWeb3React'
 import {
     MULTICALL2_ADDRESS,
     RARITY_ADDRESS,
-    RARITY_ATTRIBUTES_ADDRESS, RARITY_CELLAR_ADDRESS,
+    RARITY_ATTRIBUTES_ADDRESS,
+    RARITY_CELLAR_ADDRESS,
     RARITY_DAYCARE_ADDRESS,
     RARITY_GOLD_ADDRESS,
     RARITY_HELPER_ADDRESS,
     RARITY_LIB,
-    RARITY_SKILLS_ADDRESS
+    RARITY_SKILLS_ADDRESS,
 } from '../constants'
 import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import RARITY_ABI from '../constants/abis/rarity.json'
@@ -76,9 +77,7 @@ export function useRarityDaycareContract(): Contract | null {
     return useContract(chainId ? RARITY_DAYCARE_ADDRESS : undefined, RARITY_DAYCARE_ABI)
 }
 
-
 export function useRarityCellarContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? RARITY_CELLAR_ADDRESS : undefined, RARITY_CELLAR_ABI)
 }
-

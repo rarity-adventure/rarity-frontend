@@ -112,13 +112,16 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                         <p>{i18n._(t`dungeon`)}</p>
                     </div>
                     <div className="flex flex-row justify-end mr-2 items-center my-2">
-                        {summoner.materials.log * 1000 > Date.now() ? (
-                            <button className="px-1 opacity-50 py-1 cursor-not-allowed items-center uppercase text-xs border-white border-2 bg-red rounded-lg">
-                                {i18n._(t`not available`)}
+                        {summoner.materials.log * 1000 < Date.now() && summoner.materials.scout !== 0 ? (
+                            <button
+                                onClick={async () => sendDungeon()}
+                                className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
+                            >
+                                {i18n._(t`go to dungeon!`)}
                             </button>
                         ) : (
-                            <button onClick={ async () => sendDungeon()} className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg">
-                                {i18n._(t`go to dungeon!`)}
+                            <button className="px-1 opacity-50 py-1 cursor-not-allowed items-center uppercase text-xs border-white border-2 bg-red rounded-lg">
+                                {i18n._(t`not available`)}
                             </button>
                         )}
                     </div>
@@ -133,7 +136,9 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                     </p>
                     <p>
                         <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
-                            <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">{i18n._(t`delete`)}</div>
+                            <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
+                                {i18n._(t`delete`)}
+                            </div>
                         </button>
                     </p>
                 </div>

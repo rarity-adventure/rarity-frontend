@@ -25,4 +25,3 @@ export default function useRarityCellar(): CellarInterface {
 
     return { adventure_cellar }
 }
-

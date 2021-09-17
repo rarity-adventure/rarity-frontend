@@ -53,11 +53,11 @@ export interface SummonerFullData {
     }
 }
 
-interface GoldInterface {
+interface LibraryInterface {
     summoners_full: (ids: string[]) => Promise<SummonerFullData[]>
 }
 
-export default function useRarityLibrary(): GoldInterface {
+export default function useRarityLibrary(): LibraryInterface {
     const lib = useRarityLibContract()
 
     const summoners_full = useCallback(
