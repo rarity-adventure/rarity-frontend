@@ -8,8 +8,7 @@ import TransferModal from '../Modal/modals/Transfer'
 import DaycareSingleModal from '../Modal/modals/DaycareSingle'
 import useRarity from '../../hooks/useRarity'
 import toast from 'react-hot-toast'
-import { BURN_ADDRESS } from '../../constants'
-import { useRarityCellarContract } from '../../hooks/useContract'
+import useRarityCellar from '../../hooks/useRarityCellar'
 
 enum Modals {
     TRANSFER = 1,
@@ -24,8 +23,6 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
 
     const { adventure } = useRarity()
 
-    const { adventure_cellar } = useRarityCellarContract()
-
     function closeModals() {
         setModalOpen(0)
     }
@@ -37,6 +34,8 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
             error: <b>{i18n._(t`Failed`)}</b>,
         })
     }
+
+    const { adventure_cellar } = useRarityCellar()
 
     async function sendDungeon() {
         await toast.promise(adventure_cellar(summoner.id), {
@@ -127,14 +126,14 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                 <div className="p-2 text-xs w-full">
                     <p>
                         <button className="w-full my-1" onClick={() => setModalOpen(Modals.TRANSFER)}>
-                            <div className="px-2 py-2 items-center border-white border-2 bg-background-start rounded-lg">
+                            <div className="uppercase px-2 py-2 items-center border-white border-2 bg-background-start rounded-lg">
                                 {i18n._(t`transfer`)}
                             </div>
                         </button>
                     </p>
                     <p>
                         <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
-                            <div className="px-2 py-2 items-center border-white border-2 bg-red rounded-lg">{i18n._(t`delete`)}</div>
+                            <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">{i18n._(t`delete`)}</div>
                         </button>
                     </p>
                 </div>

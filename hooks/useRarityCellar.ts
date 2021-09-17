@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import { useRarityCellarContract, useRarityContract } from './useContract'
 
-interface RarityInterface {
+interface CellarInterface {
     adventure_cellar: (id: string) => Promise<void>
 }
 
-export default function useRarity(): RarityInterface {
+export default function useRarityCellar(): CellarInterface {
     const cellar = useRarityCellarContract()
 
     const adventure_cellar = useCallback(
