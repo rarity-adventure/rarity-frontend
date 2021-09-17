@@ -50,7 +50,20 @@ function AppBar(): JSX.Element {
         return (
             <Link href="https://names.rarity.game" passHref={true}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
-                    <h2>{i18n._(t`Names shop`)}</h2>
+                    <h2>{i18n._(t`names`)}</h2>
+                </div>
+            </Link>
+        )
+    }
+
+    function market(): JSX.Element {
+        return (
+            <Link
+                href="https://paintswap.finance/nfts/collections/0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19"
+                passHref={true}
+            >
+                <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
+                    <h2>{i18n._(t`market`)}</h2>
                 </div>
             </Link>
         )
@@ -90,6 +103,7 @@ function AppBar(): JSX.Element {
                                                     <h2>{i18n._(t`Donate`)}</h2>
                                                 </button>
                                             )}
+                                            {market()}
                                         </div>
                                     </div>
                                 </div>
@@ -164,6 +178,7 @@ function AppBar(): JSX.Element {
                                         <h2>{i18n._(t`Donate`)}</h2>
                                     </button>
                                 )}
+                                {market()}
                             </div>
                         </Popover.Panel>
                     </>
