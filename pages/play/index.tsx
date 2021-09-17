@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../../components/Loader'
-import StatsProfile from '../../components/Profile/Stats'
 import { Popover } from '@headlessui/react'
-import SkillsProfile from '../../components/Profile/Skills'
-import CraftProfile from '../../components/Profile/Craft'
-import InventoryProfile from '../../components/Profile/Inventory'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import Selector from '../../components/Selector'
 import { useSummoners } from '../../state/summoners/hooks'
+import SummonerCraftCard from '../../components/Cards/Craft'
+import SummonerInventoryCard from '../../components/Cards/Inventory'
+import SummonerSkillsCard from '../../components/Cards/Skills'
+import SummonerStatsCard from '../../components/Cards/Stats'
 
 enum View {
     stats,
@@ -195,16 +195,16 @@ export default function Profile(): JSX.Element {
                             </p>
                         </div>
                         <div className="col-span-2">
-                            {view === View.stats && <StatsProfile summoner={selectedSummoner} />}
-                            {view === View.skills && <SkillsProfile summoner={selectedSummoner} />}
-                            {view === View.inventory && <InventoryProfile summoner={selectedSummoner} />}
-                            {view === View.crafting && <CraftProfile summoner={selectedSummoner} />}
+                            {view === View.stats && <SummonerStatsCard summoner={selectedSummoner} />}
+                            {view === View.skills && <SummonerSkillsCard summoner={selectedSummoner} />}
+                            {view === View.inventory && <SummonerInventoryCard summoner={selectedSummoner} />}
+                            {view === View.crafting && <SummonerCraftCard summoner={selectedSummoner} />}
                         </div>
                     </div>
                 ) : (
                     <div className="relative h-48">
                         <div className="absolute top-24 right-1/2 uppercase text-center">
-                            <Loader className="animate-spin" size="40px" />
+                            <Loader size="40px" />
                         </div>
                     </div>
                 )}

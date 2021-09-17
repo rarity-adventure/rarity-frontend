@@ -11,11 +11,7 @@ import useRaritySkills from '../../hooks/useRaritySkills'
 import toast, { Toaster } from 'react-hot-toast'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
-interface SkillProfileProps {
-    summoner: SummonerFullData
-}
-
-function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
+function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
 
     const [skill, setSkill] = useState(1)
@@ -229,4 +225,4 @@ function SkillsProfile({ summoner }: SkillProfileProps): JSX.Element {
     )
 }
 
-export default SkillsProfile
+export default SummonerSkillsCard

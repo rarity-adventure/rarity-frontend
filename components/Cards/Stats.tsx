@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { TrashIcon, RefreshIcon } from '@heroicons/react/outline'
+import { RefreshIcon } from '@heroicons/react/outline'
 import { QuestionMarkCircleIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import { utils } from 'ethers'
 import React, { useEffect, useState } from 'react'
@@ -12,12 +12,9 @@ import toast, { Toaster } from 'react-hot-toast'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
+import SummonerCraftCard from './Craft'
 
-interface StatsProfileProps {
-    summoner: SummonerFullData
-}
-
-function StatsProfile({ summoner }: StatsProfileProps): JSX.Element {
+function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
 
     const { point_buy } = useRarityAttributes()
@@ -456,4 +453,4 @@ function StatsProfile({ summoner }: StatsProfileProps): JSX.Element {
     )
 }
 
-export default StatsProfile
+export default SummonerStatsCard

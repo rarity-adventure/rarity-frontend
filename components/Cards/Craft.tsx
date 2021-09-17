@@ -3,11 +3,7 @@ import React from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
-interface SkillProfileProps {
-    summoner: SummonerFullData
-}
-
-function InventoryProfile({ summoner }: SkillProfileProps): JSX.Element {
+function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
 
     return (
@@ -20,7 +16,7 @@ function InventoryProfile({ summoner }: SkillProfileProps): JSX.Element {
                         </span>
                     </div>
                     <div className="w-full mt-3 md:mt-0 md:p-2 p-1 bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
-                        <span className="uppercase">{i18n._(t`inventory`)}</span>
+                        <span className="uppercase">{i18n._(t`crafting`)}</span>
                     </div>
                 </div>
             </div>
@@ -33,4 +29,4 @@ function InventoryProfile({ summoner }: SkillProfileProps): JSX.Element {
     )
 }
 
-export default InventoryProfile
+export default SummonerCraftCard
