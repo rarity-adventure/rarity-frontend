@@ -1,8 +1,10 @@
 import { ChevronDoubleDownIcon } from '@heroicons/react/outline'
 import useRarity from '../hooks/useRarity'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import Image from 'next/image'
+import { CLASSES_IMAGES } from '../constants/classes'
 
 export default function Home(): JSX.Element {
     const { summon } = useRarity()
@@ -21,18 +23,17 @@ export default function Home(): JSX.Element {
             <div>
                 <div className="hero-bg w-full z-0" />
                 <div className="classes-bg w-full z-0" />
-                <Toaster containerClassName="z-30" />
             </div>
             <div className="w-full mt-24 lg:mt-48 rounded-b-3xl">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:11/12 xl:w-9/12 mx-auto">
                     <div className="text-center col-span-3">
                         <h1 className="uppercase text-3xl md:text-3xl xl:text-6xl">RARITY ADVENTURE</h1>
-                        <p className="text-sm m-3">{i18n._(t`A FREE-TO-MINT D&D Game from Fantom Network`)}</p>
+                        <p className="text-sm m-3">{i18n._(t`A FREE-TO-MINT D&D Game in the Fantom Network`)}</p>
                         <p className="text-sm m-3">{i18n._(t`We are the ONE-STOP-SOLUTION for`)}:</p>
-                        <p className="text-sm m-3">{i18n._(t`USER STATS. ADVENTURE. MARKETPLACE`)}.</p>
+                        <p className="text-sm m-3">{i18n._(t`SUMMONER MANAGE. ADVENTURE. GLOBAL STATS`)}.</p>
                     </div>
-                    <div className="col-span-2">
-                        <img src="/img/sword.png" className="mx-auto w-64" alt="Rarity Adventure" />
+                    <div className="col-span-2 mx-auto">
+                        <Image src="/img/sword.png" width={256} height={208} alt="Rarity Adventure" />
                     </div>
                 </div>
                 <div className="flex flex-row justify-center mx-auto w-full text-center  mt-10 lg:mt-28">
@@ -53,25 +54,25 @@ export default function Home(): JSX.Element {
                 </button>
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('1')}>
-                        <img src="/img/classes/barbarian.png" className="h-44 mx-auto" alt={'barbarian'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['1']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`barbarian`)}</span>
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('2')}>
-                        <img src="/img/classes/bard.png" className="h-44 mx-auto" alt={'bard'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['2']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`bard`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('3')}>
-                        <img src="/img/classes/cleric.png" className="h-44 mx-auto" alt={'cleric'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['3']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`cleric`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('4')}>
-                        <img src="/img/classes/druid.png" className="h-44 mx-auto" alt={'druid'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['4']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`druid`)}</span>{' '}
                         </div>
@@ -79,25 +80,25 @@ export default function Home(): JSX.Element {
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-12 lg:mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('5')}>
-                        <img src="/img/classes/fighter.png" className="h-44 mx-auto" alt={'fighter'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['5']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`fighter`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('6')}>
-                        <img src="/img/classes/monk.png" className="h-44 mx-auto" alt={'monk'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['6']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`monk`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('7')}>
-                        <img src="/img/classes/paladin.png" className="h-44 mx-auto" alt={'paladin'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['7']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`paladin`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('8')}>
-                        <img src="/img/classes/ranger.png" className="h-44 mx-auto" alt={'ranger'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['8']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`ranger`)}</span>{' '}
                         </div>
@@ -105,19 +106,19 @@ export default function Home(): JSX.Element {
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-12 lg:mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('9')}>
-                        <img src="/img/classes/rogue.png" className="h-44 mx-auto" alt={'rogue'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['9']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`rogue`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('10')}>
-                        <img src="/img/classes/sorcerer.png" className="h-44 mx-auto" alt={'sorcerer'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['10']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`sorcerer`)}</span>{' '}
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('11')}>
-                        <img src="/img/classes/wizard.png" className="h-44 mx-auto" alt={'wizard'} />
+                        <div className="mx-auto">{CLASSES_IMAGES['11']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`wizard`)}</span>{' '}
                         </div>

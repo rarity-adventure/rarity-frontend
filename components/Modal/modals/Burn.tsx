@@ -1,10 +1,9 @@
 import HeadlessUIModal from '../HeadlessUIModal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
-import React, { useState } from 'react'
+import React from 'react'
 import { useLingui } from '@lingui/react'
-import { isAddress } from '../../../functions/validate'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import useRarity from '../../../hooks/useRarity'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import { BURN_ADDRESS } from '../../../constants'
@@ -33,7 +32,6 @@ export default function BurnModal({ open, closeFunction, summoner }: BurnModalPr
 
     return (
         <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
-            <Toaster containerClassName="z-25" />
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`delete summoner`)} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-8 gap-5">

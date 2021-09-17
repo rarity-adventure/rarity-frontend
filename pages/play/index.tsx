@@ -4,10 +4,8 @@ import { t } from '@lingui/macro'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../../components/Loader'
 import { Popover } from '@headlessui/react'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import Selector from '../../components/Selector'
 import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
@@ -25,16 +23,11 @@ enum View {
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const { library, chainId, account } = useActiveWeb3React()
-
-    const windowVisible = useIsWindowVisible()
-
     const summoners = useSummoners()
 
     const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
 
     useEffect(() => {
-        if (!library || !account || !windowVisible || !chainId) return
         if (summoners.length > 0) {
             setSelectedSummoner(summoners[0])
         }
@@ -169,12 +162,8 @@ export default function Profile(): JSX.Element {
                 <Selector summoners={summoners} select={setSelectedSummoner} />
                 {selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
-                        <div className="text-center mx-auto">
-                            <img
-                                src={CLASSES_IMAGES[selectedSummoner.base._class.toString()]}
-                                alt={''}
-                                className="h-24 mt-2 md:h-48 mx-auto"
-                            />
+                        <div className="text-center mx-auto  mt-2">
+                            { CLASSES_IMAGES[selectedSummoner.base._class.toString()] }
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                 <button onClick={() => selectPrevSummoner()}>
                                     <ChevronLeft />

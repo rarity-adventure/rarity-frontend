@@ -8,11 +8,10 @@ import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
 import { ATTRIBUTES } from '../../constants/codex/attributes'
 import { calcAPCost } from '../../functions/calcAPCost'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import SummonerCraftCard from './Craft'
 
 function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
@@ -112,7 +111,6 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     return (
         <div className="max-w-screen-md mx-auto z-20">
-            <Toaster containerClassName="z-30" />
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
                     <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
