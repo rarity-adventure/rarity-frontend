@@ -12,6 +12,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { SUPPORTED_WALLETS } from '../../config/wallets'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import Image from 'next/image'
 
 function Web3StatusInner() {
     const { account } = useWeb3React()
@@ -31,7 +32,7 @@ function Web3StatusInner() {
             </div>
         )
     } else {
-        return <Web3Connect style={{ paddingTop: '6px', paddingBottom: '6px' }} />
+        return <Web3Connect />
     }
 }
 
@@ -101,10 +102,11 @@ export default function Web3Status() {
                                     >
                                         <div className="flex flex-row justify-between items-center p-2 md:mx-16">
                                             <h1>{option.name}</h1>
-                                            <img
+                                            <Image
                                                 src={'/img/wallets/' + option.iconName}
                                                 alt={option.name}
-                                                className="h-12"
+                                                width={48}
+                                                height={48}
                                             />
                                         </div>
                                     </button>

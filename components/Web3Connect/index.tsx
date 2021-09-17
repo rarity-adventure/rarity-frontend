@@ -1,11 +1,8 @@
-import Button, { ButtonProps } from '../Button'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
-
-import { Activity } from 'react-feather'
 import React from 'react'
 import { useWalletModalToggle } from '../../state/application/hooks'
 
-export default function Web3Connect({ color = 'gray', size = 'sm', className = '', ...rest }: ButtonProps) {
+export default function Web3Connect() {
     const toggleWalletModal = useWalletModalToggle()
     const { error } = useWeb3React()
 

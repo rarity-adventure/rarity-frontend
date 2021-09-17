@@ -174,7 +174,7 @@ export default function Profile(): JSX.Element {
                 </div>
             ) : (
                 <div className="flex mt-10 justify-center">
-                    <Loader size={'50px'} className="animate-spin" />
+                    <Loader size={'50px'} />
                 </div>
             )}
         </div>

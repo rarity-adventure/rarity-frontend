@@ -6,6 +6,7 @@ import { useETHBalances } from '../../state/wallet/hooks'
 import LangSwitcher from '../LanguageSwitch'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
+import Link from 'next/link'
 
 function AppBar(): JSX.Element {
     const { i18n } = useLingui()
@@ -13,6 +14,46 @@ function AppBar(): JSX.Element {
     const { account, chainId } = useActiveWeb3React()
 
     const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+
+    function play(): JSX.Element {
+        return (
+            <Link href="/play" passHref={true}>
+                <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2">
+                    <h2>{i18n._(t`Play`)}</h2>
+                </div>
+            </Link>
+        )
+    }
+
+    function summoners(): JSX.Element {
+        return (
+            <Link href="/summoners" passHref={true}>
+                <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2">
+                    <h2>{i18n._(t`Summoners`)}</h2>
+                </div>
+            </Link>
+        )
+    }
+
+    function analytics(): JSX.Element {
+        return (
+            <Link href="/analytics" passHref={false}>
+                <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
+                    <h2>{i18n._(t`Analytics`)}</h2>
+                </div>
+            </Link>
+        )
+    }
+
+    function names(): JSX.Element {
+        return (
+            <Link href="https://names.rarity.game" passHref={true}>
+                <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
+                    <h2>{i18n._(t`Names shop`)}</h2>
+                </div>
+            </Link>
+        )
+    }
 
     return (
         <header className="flex-shrink-0 w-full z-30">
@@ -22,30 +63,18 @@ function AppBar(): JSX.Element {
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center z-10">
-                                    <a href="/" className="uppercase text-center tracking-widest text-xl ">
-                                        <h1>RARITY</h1>
-                                        <h1>Adventure</h1>
-                                    </a>
+                                    <Link href="/" passHref={true}>
+                                        <div className="uppercase cursor-pointer text-center tracking-widest text-xl">
+                                            <h1>RARITY</h1>
+                                            <h1>Adventure</h1>
+                                        </div>
+                                    </Link>
                                     <div className="hidden md:block sm:ml-2">
                                         <div className="flex uppercase">
-                                            <a
-                                                href="/play"
-                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                            >
-                                                <h2>{i18n._(t`Play`)}</h2>
-                                            </a>
-                                            <a
-                                                href="/analytics"
-                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                            >
-                                                <h2>{i18n._(t`Analytics`)}</h2>
-                                            </a>
-                                            <a
-                                                href="https://names.rarity.game"
-                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                            >
-                                                <h2>{i18n._(t`Names shop`)}</h2>
-                                            </a>
+                                            {summoners()}
+                                            {play()}
+                                            {analytics()}
+                                            {names()}
                                             <a
                                                 href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
                                                 className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
@@ -54,11 +83,13 @@ function AppBar(): JSX.Element {
                                             </a>
                                         </div>
                                     </div>
-                                    <LangSwitcher />
                                 </div>
                                 <div className="fixed bottom-0 right-0 z-40 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end z-20">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
+                                            <div className="mx-2">
+                                                <LangSwitcher />
+                                            </div>
                                             {account && chainId && userEthBalance && (
                                                 <>
                                                     <div className="px-3 mx-3 py-2 text-primary text-bold border-white border-2 rounded-lg">
@@ -110,29 +141,15 @@ function AppBar(): JSX.Element {
                             </div>
                         </div>
 
-                        <Popover.Panel className="sm:hidden">
+                        <Popover.Panel className="sm:hidden uppercase">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
-                                <a
-                                    href="/play"
-                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
-                                >
-                                    <h2>{i18n._(t`Play`)}</h2>
-                                </a>
-                                <a
-                                    href="/analytics"
-                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
-                                >
-                                    <h2>{i18n._(t`Analytics`)}</h2>
-                                </a>
-                                <a
-                                    href="https://names.rarity.game"
-                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
-                                >
-                                    <h2>{i18n._(t`Names shop`)}</h2>
-                                </a>
+                                {summoners()}
+                                {play()}
+                                {analytics()}
+                                {names()}
                                 <a
                                     href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
-                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
+                                    className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                 >
                                     <h2>{i18n._(t`Donate`)}</h2>
                                 </a>

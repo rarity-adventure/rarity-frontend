@@ -1,6 +1,6 @@
-import { useRarityGoldContract, useRarityLibContract } from './useContract'
+import { useRarityLibContract } from './useContract'
 import { useCallback } from 'react'
-import { BigNumber } from 'ethers'
+import { utils } from 'ethers'
 
 export interface SummonerFullData {
     id: string
@@ -22,39 +22,42 @@ export interface SummonerFullData {
             _str: number
             _wis: number
         }
-        spent_points: BigNumber
-        total_points: BigNumber
+        spent_points: number
+        total_points: number
     }
     base: {
-        _class: BigNumber
-        _level: BigNumber
-        _log: BigNumber
+        _class: number
+        _level: number
+        _log: number
         _name: string
-        _xp: BigNumber
+        _xp: number
     }
     gold: {
-        balance: BigNumber
-        claimable: BigNumber
-        claimed: BigNumber
+        balance: number
+        claimable: number
+        claimed: number
     }
     materials: {
-        log: BigNumber
-        balance: BigNumber
-        scout: BigNumber
+        log: number
+        balance: number
+        scout: number
     }
     skills: {
         class_skills: boolean[]
         skills: number[]
-        spent_points: BigNumber
-        total_points: BigNumber
+        spent_points: number
+        total_points: number
+    }
+    misc: {
+        daycare_days_paid: number
     }
 }
 
-interface GoldInterface {
+interface LibraryInterface {
     summoners_full: (ids: string[]) => Promise<SummonerFullData[]>
 }
 
-export default function useRarityLibrary(): GoldInterface {
+export default function useRarityLibrary(): LibraryInterface {
     const lib = useRarityLibContract()
 
     const summoners_full = useCallback(
@@ -65,7 +68,7 @@ export default function useRarityLibrary(): GoldInterface {
                     resolve(
                         summoners.map((value, i) => {
                             return {
-                                id: ids[i],
+                                id: parseInt(ids[i], 16),
                                 ability_scores: {
                                     attributes: {
                                         _cha:
@@ -102,31 +105,34 @@ export default function useRarityLibrary(): GoldInterface {
                                         _str: value.ability_scores.modifiers._str,
                                         _wis: value.ability_scores.modifiers._wis,
                                     },
-                                    spent_points: value.ability_scores.spent_points,
-                                    total_points: value.ability_scores.total_points,
+                                    spent_points: parseInt(value.ability_scores.spent_points.toString()),
+                                    total_points: parseInt(value.ability_scores.total_points.toString()),
                                 },
                                 base: {
-                                    _class: value.base.class,
-                                    _level: value.base.level,
-                                    _log: value.base.log,
+                                    _class: parseInt(value.base.class.toString()),
+                                    _level: parseInt(value.base.level.toString()),
+                                    _log: parseInt(value.base.log.toString()),
                                     _name: value.base.name,
-                                    _xp: value.base.xp,
+                                    _xp: parseInt(utils.formatUnits(value.base.xp.toString(), 'ether')),
                                 },
                                 gold: {
-                                    balance: value.gold.balance,
-                                    claimable: value.gold.claimable,
-                                    claimed: value.gold.claimed,
+                                    balance: parseInt(utils.formatUnits(value.gold.balance, 'ether')),
+                                    claimable: parseInt(utils.formatUnits(value.gold.claimable, 'ether')),
+                                    claimed: parseInt(utils.formatUnits(value.gold.claimed, 'ether')),
                                 },
                                 materials: {
-                                    balance: value.materials[0].balance,
-                                    scout: value.materials[0].scout,
-                                    log: value.materials[0].log,
+                                    balance: parseInt(utils.formatUnits(value.materials[0].balance, 'ether')),
+                                    scout: parseInt(value.materials[0].scout.toString()),
+                                    log: parseInt(value.materials[0].log.toString()),
                                 },
                                 skills: {
                                     class_skills: value.skills.class_skills,
                                     skills: value.skills.skills,
-                                    spent_points: value.skills.spent_points,
-                                    total_points: value.skills.total_points,
+                                    spent_points: parseInt(value.skills.spent_points.toString()),
+                                    total_points: parseInt(value.skills.total_points.toString()),
+                                },
+                                misc: {
+                                    daycare_days_paid: parseInt(value.misc.daycare_days_paid.toString()),
                                 },
                             }
                         })

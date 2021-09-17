@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 const img_path = (name: string) => '/img/classes/' + name + '.png'
 
 export const CLASSES_NAMES: { [k: string]: string } = {
@@ -13,18 +15,18 @@ export const CLASSES_NAMES: { [k: string]: string } = {
     '10': 'sorcerer',
     '11': 'wizard',
 }
-export const CLASSES_IMAGES: { [k: string]: string } = {
-    '1': img_path('barbarian'),
-    '2': img_path('bard'),
-    '3': img_path('cleric'),
-    '4': img_path('druid'),
-    '5': img_path('fighter'),
-    '6': img_path('monk'),
-    '7': img_path('paladin'),
-    '8': img_path('ranger'),
-    '9': img_path('rogue'),
-    '10': img_path('sorcerer'),
-    '11': img_path('wizard'),
+export const CLASSES_IMAGES: { [k: string]: JSX.Element } = {
+    '1': <Image src="/img/classes/barbarian.png" width={106} height={176} alt={'barbarian'} />,
+    '2': <Image src="/img/classes/bard.png" width={105} height={176} alt={'bard'} />,
+    '3': <Image src="/img/classes/cleric.png" width={97} height={176} alt={'cleric'} />,
+    '4': <Image src="/img/classes/druid.png" width={110} height={176} alt={'druid'} />,
+    '5': <Image src="/img/classes/fighter.png" width={107} height={176} alt={'fighter'} />,
+    '6': <Image src="/img/classes/monk.png" width={113} height={176} alt={'monk'} />,
+    '7': <Image src="/img/classes/paladin.png" width={107} height={176} alt={'paladin'} />,
+    '8': <Image src="/img/classes/ranger.png" width={107} height={176} alt={'ranger'} />,
+    '9': <Image src="/img/classes/rogue.png" width={103} height={176} alt={'rogue'} />,
+    '10': <Image src="/img/classes/sorcerer.png" width={110} height={176} alt={'sorcerer'} />,
+    '11': <Image src="/img/classes/wizard.png" width={103} height={176} alt={'wizard'} />,
 }
 
 export const CLASS_SKILLS: { [k: string]: boolean[] } = {

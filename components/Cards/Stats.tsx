@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { TrashIcon, RefreshIcon } from '@heroicons/react/outline'
+import { RefreshIcon } from '@heroicons/react/outline'
 import { QuestionMarkCircleIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import { utils } from 'ethers'
 import React, { useEffect, useState } from 'react'
@@ -8,19 +8,12 @@ import HeadlessUIModal from '../Modal/HeadlessUIModal'
 import ModalHeader from '../Modal/ModalHeader'
 import { ATTRIBUTES } from '../../constants/codex/attributes'
 import { calcAPCost } from '../../functions/calcAPCost'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 
-interface StatsProfileProps {
-    summoner: SummonerFullData
-    deleteModal: () => void
-    transferModal: () => void
-    daycareModal: () => void
-}
-
-function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: StatsProfileProps): JSX.Element {
+function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
 
     const { point_buy } = useRarityAttributes()
@@ -42,9 +35,7 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
     const [assignable, setAssignable] = useState(false)
 
     useEffect(() => {
-        const points = parseInt(
-            summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString()
-        )
+        const points = summoner.ability_scores.total_points - summoner.ability_scores.spent_points
         const assignable = points > 0
         setAssignable(assignable)
         setTotalApp(points)
@@ -71,7 +62,7 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
     }
 
     function calcAvailableAP(state: { [k: string]: number }): number {
-        let ap = parseInt(summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString())
+        let ap = summoner.ability_scores.total_points - summoner.ability_scores.spent_points
         ap -= calcAPCost(state['str'] + summoner.ability_scores.attributes._str)
         ap -= calcAPCost(state['dex'] + summoner.ability_scores.attributes._dex)
         ap -= calcAPCost(state['con'] + summoner.ability_scores.attributes._con)
@@ -82,7 +73,7 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
     }
 
     function reset() {
-        let ap = parseInt(summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString())
+        let ap = summoner.ability_scores.total_points - summoner.ability_scores.spent_points
         setAddition({ str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 })
         setTotalApp(ap)
     }
@@ -118,23 +109,12 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
 
     return (
         <div className="max-w-screen-md mx-auto z-20">
-            <Toaster containerClassName="z-30" />
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
-                    <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
+                    <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl text-left">
                         <span className="ml-1.5">
-                            {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
+                            {i18n._(t`ID`)}: {summoner.id}
                         </span>
-                    </div>
-                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-1 bg-background-cards border-white border-2 md:rounded-tr-2xl text-center">
-                        <button className="w-full" onClick={daycareModal}>
-                            <span className="uppercase">{i18n._(t`daycare`)}</span>
-                        </button>
-                    </div>
-                    <div className="w-full mt-3 md:mt-0 hover:bg-card-content md:p-2 p-1 hover:text-grey bg-card-button col-span-2 bg-background-cards border-white border-2 md:rounded-t-2xl text-center">
-                        <button className="w-full" onClick={transferModal}>
-                            <span className="uppercase">{i18n._(t`transfer`)}</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -158,16 +138,12 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
                         <div>
                             <span className="uppercase">{i18n._(t`xp`)}</span>
                             <span className="text-transparent ml-8 md:ml-11">&nbsp;</span>:
-                            <span className="ml-1.5">
-                                {parseInt(utils.formatUnits(summoner.base._xp, 'ether')).toFixed(0)}
-                            </span>
+                            <span className="ml-1.5">{summoner.base._xp}</span>
                         </div>
                         <div>
                             <span className="uppercase">{i18n._(t`gold`)}</span>
                             <span className="text-transparent ml-2 md:ml-2">&nbsp;</span>:
-                            <span className="ml-1.5">
-                                {utils.formatUnits(summoner.gold.balance.toString(), 'ether').toString()}
-                            </span>
+                            <span className="ml-1.5">{summoner.gold.balance}</span>
                         </div>
                     </div>
                 </div>
@@ -418,14 +394,7 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
                             </div>
                         </button>
                     </div>
-                    <div className="hover:bg-red-hovered hover:text-grey w-full bg-red  bg-background-cards border-white border-2 md:rounded-b-2xl mb-3 md:mb-0 text-left">
-                        <button className="w-full md:p-1" onClick={() => deleteModal()}>
-                            <div className="flex flex-row p-1 justify-center items-center">
-                                <TrashIcon width={30} />
-                            </div>
-                        </button>
-                    </div>
-                    {parseInt(utils.formatUnits(summoner.gold.claimable.toString(), 'ether')) > 0 ? (
+                    {summoner.gold.claimable > 0 ? (
                         <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
                             <button className="w-full p-2" onClick={() => claimGold()}>
                                 <span className="uppercase">{i18n._(t`claim gold`)}</span>
@@ -476,4 +445,4 @@ function StatsProfile({ summoner, deleteModal, transferModal, daycareModal }: St
     )
 }
 
-export default StatsProfile
+export default SummonerStatsCard
