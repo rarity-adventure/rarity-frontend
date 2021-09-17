@@ -28,7 +28,6 @@ export default function Profile(): JSX.Element {
     const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
 
     useEffect(() => {
-        console.log(s)
         setSummoners(s)
     }, [s])
 

@@ -5,10 +5,12 @@ import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import BurnModal from '../Modal/modals/Burn'
 import TransferModal from '../Modal/modals/Transfer'
+import DaycareModal from '../Modal/modals/Daycare'
 
 enum Modals {
     TRANSFER = 1,
     DELETE,
+    DAYCARE,
 }
 
 function SummonerSummaryCard({
@@ -20,26 +22,22 @@ function SummonerSummaryCard({
 }): JSX.Element {
     const { i18n } = useLingui()
 
-    function registerDaycareModal() {}
-
-    function transferModal() {
-        setModalOpen(Modals.TRANSFER)
-    }
-
-    function deleteModal() {
-        setModalOpen(Modals.DELETE)
-    }
-
     const [modalOpen, setModalOpen] = useState<Modals>(0)
 
     function closeModals() {
         setModalOpen(0)
     }
+
     return (
         <div className="mx-auto w-56">
             <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
             <TransferModal open={modalOpen === Modals.TRANSFER} closeFunction={closeModals} summoner={summoner} />
-
+            <DaycareModal
+                open={modalOpen === Modals.DAYCARE}
+                closeFunction={closeModals}
+                summoner={summoner}
+                summoners={summoners}
+            />
             <div className="p-5 w-32 mx-auto">{CLASSES_IMAGES[summoner.base._class]}</div>
 
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
@@ -69,13 +67,13 @@ function SummonerSummaryCard({
                 <div className="p-2 text-xs">
                     <div className="flex flex-row justify-between mr-2 items-center">
                         <p>{i18n._(t`daycare`)}</p>
-                        <button onClick={() => registerDaycareModal()}>
+                        <button onClick={() => setModalOpen(Modals.DAYCARE)}>
                             {summoner.misc.daycare_days_paid === 0 ? (
-                                <div className="px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
+                                <div className="px-2 py-2 text-center items-center border-white border-2 bg-red rounded-lg">
                                     {summoner.misc.daycare_days_paid}
                                 </div>
                             ) : (
-                                <div className="p-1 border-white border-2 bg-green">
+                                <div className="px-2 py-2 text-center items-center border-white border-2 bg-green rounded-lg">
                                     {summoner.misc.daycare_days_paid}
                                 </div>
                             )}
@@ -92,14 +90,14 @@ function SummonerSummaryCard({
                 </div>
                 <div className="p-2 text-xs w-full">
                     <p>
-                        <button className="w-full my-1" onClick={() => transferModal()}>
+                        <button className="w-full my-1" onClick={() => setModalOpen(Modals.TRANSFER)}>
                             <div className="px-2 py-2 items-center border-white border-2 bg-background-start rounded-lg">
                                 TRANSFER
                             </div>
                         </button>
                     </p>
                     <p>
-                        <button className="w-full my-1" onClick={() => deleteModal()}>
+                        <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
                             <div className="px-2 py-2 items-center border-white border-2 bg-red rounded-lg">DELETE</div>
                         </button>
                     </p>

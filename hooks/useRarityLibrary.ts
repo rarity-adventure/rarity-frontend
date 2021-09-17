@@ -65,6 +65,7 @@ export default function useRarityLibrary(): GoldInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const summoners = await lib?.summoners_full(ids)
+                    console.log(summoners)
                     resolve(
                         summoners.map((value, i) => {
                             return {

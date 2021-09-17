@@ -185,6 +185,7 @@
         "outputs": [
             {
                 "components": [
+                    { "internalType": "uint256", "name": "token_id", "type": "uint256" },
                     { "internalType": "uint8", "name": "base_type", "type": "uint8" },
                     { "internalType": "uint8", "name": "item_type", "type": "uint8" },
                     { "internalType": "uint32", "name": "crafted", "type": "uint32" },
@@ -221,7 +222,7 @@
         "name": "misc",
         "outputs": [
             {
-                "components": [{ "internalType": "uint256", "name": "daycare_days_pad", "type": "uint256" }],
+                "components": [{ "internalType": "uint256", "name": "daycare_days_paid", "type": "uint256" }],
                 "internalType": "struct rl._misc",
                 "name": "m",
                 "type": "tuple"
@@ -342,7 +343,7 @@
                         "type": "tuple[]"
                     },
                     {
-                        "components": [{ "internalType": "uint256", "name": "daycare_days_pad", "type": "uint256" }],
+                        "components": [{ "internalType": "uint256", "name": "daycare_days_paid", "type": "uint256" }],
                         "internalType": "struct rl._misc",
                         "name": "misc",
                         "type": "tuple"
@@ -442,7 +443,7 @@
                         "type": "tuple[]"
                     },
                     {
-                        "components": [{ "internalType": "uint256", "name": "daycare_days_pad", "type": "uint256" }],
+                        "components": [{ "internalType": "uint256", "name": "daycare_days_paid", "type": "uint256" }],
                         "internalType": "struct rl._misc",
                         "name": "misc",
                         "type": "tuple"
