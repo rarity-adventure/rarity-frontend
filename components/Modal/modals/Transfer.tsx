@@ -7,11 +7,12 @@ import { isAddress } from '../../../functions/validate'
 import toast from 'react-hot-toast'
 import useRarity from '../../../hooks/useRarity'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 
 interface TransferModalProps {
     open: boolean
     closeFunction: () => void
-    summoner: string
+    summoner: SummonerFullData
 }
 
 export default function TransferModal({ open, closeFunction, summoner }: TransferModalProps): JSX.Element {
@@ -23,7 +24,7 @@ export default function TransferModal({ open, closeFunction, summoner }: Transfe
 
     async function transferConfirm() {
         const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
-        await toast.promise(transferFrom(account, address, summoner), {
+        await toast.promise(transferFrom(account, address, summoner.id), {
             loading: <b>{i18n._(t`Transferring summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,

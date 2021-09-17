@@ -7,11 +7,12 @@ import toast from 'react-hot-toast'
 import useRarity from '../../../hooks/useRarity'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import { BURN_ADDRESS } from '../../../constants'
+import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 
 interface BurnModalProps {
     open: boolean
     closeFunction: () => void
-    summoner: string
+    summoner: SummonerFullData
 }
 
 export default function BurnModal({ open, closeFunction, summoner }: BurnModalProps): JSX.Element {
@@ -22,7 +23,7 @@ export default function BurnModal({ open, closeFunction, summoner }: BurnModalPr
     const { account } = useActiveWeb3React()
 
     async function deleteConfirm() {
-        await toast.promise(transferFrom(account, BURN_ADDRESS, summoner), {
+        await toast.promise(transferFrom(account, BURN_ADDRESS, summoner.id), {
             loading: <b>{i18n._(t`Deleting summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,

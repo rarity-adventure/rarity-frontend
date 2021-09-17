@@ -3,9 +3,14 @@ import { useCallback } from 'react'
 
 interface HelperInterface {
     adventure: (ids: string[]) => Promise<void>
+    //adventure_donate: (ids: string[], amount: number) => Promise<void>
     cellar: (ids: string[], approval: string[]) => Promise<void>
+    //cellar_donate: (ids: string[], amount: number) => Promise<void>
     claim_gold: (ids: string[], approval: string[]) => Promise<void>
+    //claim_gold_donate: (ids: string[], approval: string[]) => Promise<void>
     level_up: (ids: string[]) => Promise<void>
+    //level_up_donate: (ids: string[]) => Promise<void>
+    donate: (amount: string) => Promise<void>
 }
 
 export default function useRarityHelper(): HelperInterface {
@@ -71,5 +76,20 @@ export default function useRarityHelper(): HelperInterface {
         [helper]
     )
 
-    return { adventure, cellar, claim_gold, level_up }
+    const donate = useCallback(
+        async (amount: string): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await helper?.approve_all([], { value: amount })
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
+        },
+        [helper]
+    )
+
+    return { adventure, cellar, claim_gold, level_up, donate }
 }
