@@ -32,25 +32,10 @@ export function chunkArray<T>(items: T[], gasLimit = CONSERVATIVE_BLOCK_GAS_LIMI
 }
 
 export function chunkArrayByNumber<T>(items: T[], elements: number): T[][] {
-    const chunks: T[][] = []
-    let currentChunk: T[] = []
-    let currentChunkElements = 0
-
-    for (let i = 0; i < items.length; i++) {
-        const item = items[i]
-
-        if (currentChunk.length === 0 || currentChunkElements + 1 < elements) {
-            currentChunk.push(item)
-            currentChunkElements += 1
-        } else {
-            // otherwise, push the current chunk and create a new chunk
-            chunks.push(currentChunk)
-            currentChunk = [item]
-            currentChunkElements += 1
-        }
+    const res = [];
+    for (let i = 0; i < items.length; i += elements) {
+        const chunk = items.slice(i, i + elements);
+        res.push(chunk);
     }
-
-    if (currentChunk.length > 0) chunks.push(currentChunk)
-
-    return chunks
+    return res;
 }
