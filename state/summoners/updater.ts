@@ -37,18 +37,18 @@ export default function Updater(): null {
             const full_data = await summoners_full(summoners)
             dispatch(updateSummoners(full_data))
             return
+        } else {
+            const chunks = chunkArrayByNumber(summoners, 50)
+            let full_data = []
+
+            for (let chunk of chunks) {
+                const chunk_data = await summoners_full(chunk)
+                full_data = full_data.concat(chunk_data)
+            }
+
+            dispatch(updateSummoners(full_data))
+            return
         }
-
-        const chunks = chunkArrayByNumber(summoners, 50)
-        let full_data = []
-
-        for (let chunk of chunks) {
-            const chunk_data = await summoners_full(chunk)
-            full_data = full_data.concat(chunk_data)
-        }
-
-        dispatch(updateSummoners(full_data))
-        return
     }, [summoners_full, summoners])
 
     useEffect(() => {

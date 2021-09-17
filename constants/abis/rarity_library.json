@@ -8,6 +8,13 @@
     },
     {
         "inputs": [],
+        "name": "_daycare",
+        "outputs": [{ "internalType": "contract rarity_daycare", "name": "", "type": "address" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "_gold",
         "outputs": [{ "internalType": "contract rarity_gold", "name": "", "type": "address" }],
         "stateMutability": "view",
@@ -211,6 +218,20 @@
     },
     {
         "inputs": [{ "internalType": "uint256", "name": "_s", "type": "uint256" }],
+        "name": "misc",
+        "outputs": [
+            {
+                "components": [{ "internalType": "uint256", "name": "daycare_days_pad", "type": "uint256" }],
+                "internalType": "struct rl._misc",
+                "name": "m",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [{ "internalType": "uint256", "name": "_s", "type": "uint256" }],
         "name": "name",
         "outputs": [{ "internalType": "string", "name": "summoner_name", "type": "string" }],
         "stateMutability": "view",
@@ -319,6 +340,12 @@
                         "internalType": "struct rl._material[]",
                         "name": "materials",
                         "type": "tuple[]"
+                    },
+                    {
+                        "components": [{ "internalType": "uint256", "name": "daycare_days_pad", "type": "uint256" }],
+                        "internalType": "struct rl._misc",
+                        "name": "misc",
+                        "type": "tuple"
                     }
                 ],
                 "internalType": "struct rl._summoner",
@@ -413,6 +440,12 @@
                         "internalType": "struct rl._material[]",
                         "name": "materials",
                         "type": "tuple[]"
+                    },
+                    {
+                        "components": [{ "internalType": "uint256", "name": "daycare_days_pad", "type": "uint256" }],
+                        "internalType": "struct rl._misc",
+                        "name": "misc",
+                        "type": "tuple"
                     }
                 ],
                 "internalType": "struct rl._summoner[]",

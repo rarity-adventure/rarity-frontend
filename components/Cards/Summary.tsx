@@ -9,7 +9,7 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
 
     return (
         <div className="mx-autow-56">
-            <div className="p-5 w-32 mx-auto">{CLASSES_IMAGES[summoner.base._class.toString()]}</div>
+            <div className="p-5 w-32 mx-auto">{CLASSES_IMAGES[summoner.base._class]}</div>
             <div className="text-white text-xs text-center">
                 <h2>{summoner.base._name}</h2>
             </div>
@@ -17,7 +17,7 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
             <div className="grid grid-cols-2 rounded-lg border-white border-2 ">
                 <div className="mt-4 w-3/4 mx-auto border-2 border-white text-xs rounded-3xl text-center">
                     <div className="py-1 px-1  uppercase">
-                        <span>{i18n._(CLASSES_NAMES[summoner.base._class.toString()])}</span>
+                        <span>{i18n._(CLASSES_NAMES[summoner.base._class])}</span>
                     </div>
                 </div>
 

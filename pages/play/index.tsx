@@ -23,7 +23,14 @@ enum View {
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const summoners = useSummoners()
+    const s = useSummoners()
+
+    const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
+
+    useEffect(() => {
+        console.log(s)
+        setSummoners(s)
+    }, [s])
 
     const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
 

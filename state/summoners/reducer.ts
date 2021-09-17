@@ -2,10 +2,16 @@ import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { createReducer } from '@reduxjs/toolkit'
 import { updateSummoners } from './actions'
 
-const initialState: SummonerFullData[] = []
+export interface SummonersState {
+    readonly data: SummonerFullData[]
+}
+
+const initialState: SummonersState = {
+    data: [],
+}
 
 export default createReducer(initialState, (builder) =>
     builder.addCase(updateSummoners, (state, action) => {
-        state = action.payload
+        state.data = action.payload
     })
 )

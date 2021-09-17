@@ -35,9 +35,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     const [assignable, setAssignable] = useState(false)
 
     useEffect(() => {
-        const points = parseInt(
-            summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString()
-        )
+        const points = summoner.ability_scores.total_points - summoner.ability_scores.spent_points
         const assignable = points > 0
         setAssignable(assignable)
         setTotalApp(points)
@@ -64,7 +62,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }
 
     function calcAvailableAP(state: { [k: string]: number }): number {
-        let ap = parseInt(summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString())
+        let ap = summoner.ability_scores.total_points - summoner.ability_scores.spent_points
         ap -= calcAPCost(state['str'] + summoner.ability_scores.attributes._str)
         ap -= calcAPCost(state['dex'] + summoner.ability_scores.attributes._dex)
         ap -= calcAPCost(state['con'] + summoner.ability_scores.attributes._con)
@@ -75,7 +73,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }
 
     function reset() {
-        let ap = parseInt(summoner.ability_scores.total_points.sub(summoner.ability_scores.spent_points).toString())
+        let ap = summoner.ability_scores.total_points - summoner.ability_scores.spent_points
         setAddition({ str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 })
         setTotalApp(ap)
     }
@@ -113,7 +111,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         <div className="max-w-screen-md mx-auto z-20">
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
-                    <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
+                    <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl text-left">
                         <span className="ml-1.5">
                             {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
                         </span>
@@ -140,16 +138,12 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                         <div>
                             <span className="uppercase">{i18n._(t`xp`)}</span>
                             <span className="text-transparent ml-8 md:ml-11">&nbsp;</span>:
-                            <span className="ml-1.5">
-                                {parseInt(utils.formatUnits(summoner.base._xp, 'ether')).toFixed(0)}
-                            </span>
+                            <span className="ml-1.5">{summoner.base._xp}</span>
                         </div>
                         <div>
                             <span className="uppercase">{i18n._(t`gold`)}</span>
                             <span className="text-transparent ml-2 md:ml-2">&nbsp;</span>:
-                            <span className="ml-1.5">
-                                {utils.formatUnits(summoner.gold.balance.toString(), 'ether').toString()}
-                            </span>
+                            <span className="ml-1.5">{summoner.gold.balance}</span>
                         </div>
                     </div>
                 </div>
@@ -400,7 +394,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                             </div>
                         </button>
                     </div>
-                    {parseInt(utils.formatUnits(summoner.gold.claimable.toString(), 'ether')) > 0 ? (
+                    {summoner.gold.claimable > 0 ? (
                         <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
                             <button className="w-full p-2" onClick={() => claimGold()}>
                                 <span className="uppercase">{i18n._(t`claim gold`)}</span>

@@ -21,7 +21,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
     const [availableSP, setAvailableSP] = useState(0)
 
     useEffect(() => {
-        const points = parseInt(summoner.skills.total_points.sub(summoner.skills.spent_points).toString())
+        const points = summoner.skills.total_points - summoner.skills.spent_points
         setAvailableSP(points)
     }, [summoner])
 
@@ -58,7 +58,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
     }
 
     function calcAvailableSP(state: { [k: string]: number }): number {
-        let sp = parseInt(summoner.skills.total_points.sub(summoner.skills.spent_points).toString())
+        let sp = summoner.skills.total_points - summoner.skills.spent_points
         Object.keys(state).map((k) => {
             CLASS_SKILLS[summoner.base._class.toString()][parseInt(k) - 1] ? (sp -= state[k]) : (sp -= state[k] * 2)
         })
@@ -67,7 +67,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
 
     function reset() {
         setAdditions({})
-        setAvailableSP(parseInt(summoner.skills.total_points.sub(summoner.skills.spent_points).toString()))
+        setAvailableSP(summoner.skills.total_points - summoner.skills.spent_points)
     }
 
     const { set_skills } = useRaritySkills()

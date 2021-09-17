@@ -44,7 +44,6 @@ export default function Summoners(): JSX.Element {
                         <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
                     </div>
                 </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
                     {parsedSummoners.map((s) => {
                         return <SummonerSummaryCard key={s.id} summoner={s} />
