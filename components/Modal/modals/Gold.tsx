@@ -24,7 +24,7 @@ export default function GoldModal({ open, closeFunction, summoners }: GoldModalP
 
     const { isApprovedForAll, setApprovalForAll } = useRarity()
 
-    const { claim_gold, is_approved } = useRarityHelper()
+    const { claim_gold, claim_gold_donate, is_approved } = useRarityHelper()
 
     const [approved, setApproved] = useState(false)
 
@@ -72,6 +72,44 @@ export default function GoldModal({ open, closeFunction, summoners }: GoldModalP
         }
     }
 
+    async function submitTIP() {
+        const chunks = chunkArrayByNumber(summoners, 100)
+        for (let i = 0; i < chunks.length; i++) {
+            const chunk_summoners = chunks[i].map((s) => {
+                return s.id
+            })
+            const approvals = await is_approved(chunk_summoners)
+            const summoners_approve = []
+            for (let j = 0; j < approvals.length; j++) {
+                if (!approvals[j]) {
+                    summoners_approve.push(chunk_summoners[j])
+                }
+            }
+
+            if (i === 0) {
+                await toast.promise(claim_gold_donate(chunk_summoners, summoners_approve), {
+                    loading: (
+                        <b>
+                            {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
+                        </b>
+                    ),
+                    success: <b>{i18n._(t`Success`)}</b>,
+                    error: <b>{i18n._(t`Failed`)}</b>,
+                })
+            } else {
+                await toast.promise(claim_gold(chunk_summoners, summoners_approve), {
+                    loading: (
+                        <b>
+                            {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
+                        </b>
+                    ),
+                    success: <b>{i18n._(t`Success`)}</b>,
+                    error: <b>{i18n._(t`Failed`)}</b>,
+                })
+            }
+        }
+    }
+
     return (
         <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
@@ -84,12 +122,24 @@ export default function GoldModal({ open, closeFunction, summoners }: GoldModalP
                             </h2>
                             <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
                             {approved ? (
-                                <button
-                                    onClick={() => submit()}
-                                    className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
-                                >
-                                    {i18n._(t`claim gold`)}
-                                </button>
+                                <>
+                                    <div>
+                                        <button
+                                            onClick={() => submitTIP()}
+                                            className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                        >
+                                            {i18n._(t`claim gold with 0.1 FTM tip for devs`)}
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            onClick={() => submit()}
+                                            className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                        >
+                                            {i18n._(t`claim gold`)}
+                                        </button>
+                                    </div>
+                                </>
                             ) : (
                                 <button
                                     onClick={() => approveHelper()}

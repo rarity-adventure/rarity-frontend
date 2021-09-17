@@ -23,7 +23,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     const { account } = useActiveWeb3React()
 
     const { isApprovedForAll, setApprovalForAll } = useRarity()
-    const { adventure } = useRarityHelper()
+    const { adventure, adventure_donate } = useRarityHelper()
 
     const [approved, setApproved] = useState(false)
 
@@ -58,6 +58,47 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
         }
     }
 
+    async function submitTIP() {
+        const chunks = chunkArrayByNumber(summoners, 100)
+        for (let i = 0; i < chunks.length; i++) {
+            if (i === 0) {
+                await toast.promise(
+                    adventure_donate(
+                        chunks[i].map((s) => {
+                            return s.id
+                        })
+                    ),
+                    {
+                        loading: (
+                            <b>
+                                {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
+                            </b>
+                        ),
+                        success: <b>{i18n._(t`Success`)}</b>,
+                        error: <b>{i18n._(t`Failed`)}</b>,
+                    }
+                )
+            } else {
+                await toast.promise(
+                    adventure(
+                        chunks[i].map((s) => {
+                            return s.id
+                        })
+                    ),
+                    {
+                        loading: (
+                            <b>
+                                {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
+                            </b>
+                        ),
+                        success: <b>{i18n._(t`Success`)}</b>,
+                        error: <b>{i18n._(t`Failed`)}</b>,
+                    }
+                )
+            }
+        }
+    }
+
     async function approveHelper() {
         toast
             .promise(setApprovalForAll(RARITY_HELPER_ADDRESS), {
@@ -81,12 +122,24 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
                             </h2>
                             <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
                             {approved ? (
-                                <button
-                                    onClick={() => submit()}
-                                    className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
-                                >
-                                    {i18n._(t`send summoners`)}
-                                </button>
+                                <>
+                                    <div>
+                                        <button
+                                            onClick={() => submitTIP()}
+                                            className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                        >
+                                            {i18n._(t`send with 0.1 FTM tip for devs`)}
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            onClick={() => submit()}
+                                            className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                        >
+                                            {i18n._(t`send summoners`)}
+                                        </button>
+                                    </div>
+                                </>
                             ) : (
                                 <button
                                     onClick={() => approveHelper()}
