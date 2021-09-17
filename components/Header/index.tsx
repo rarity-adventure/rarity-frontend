@@ -37,7 +37,7 @@ function AppBar(): JSX.Element {
 
     function analytics(): JSX.Element {
         return (
-            <Link href="/analytics" passHref={true}>
+            <Link href="/analytics" passHref={false}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
                     <h2>{i18n._(t`Analytics`)}</h2>
                 </div>
@@ -75,6 +75,12 @@ function AppBar(): JSX.Element {
                                             {play()}
                                             {analytics()}
                                             {names()}
+                                            <a
+                                                href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
+                                                className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
+                                            >
+                                                <h2>{i18n._(t`Donate`)}</h2>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -141,6 +147,12 @@ function AppBar(): JSX.Element {
                                 {play()}
                                 {analytics()}
                                 {names()}
+                                <a
+                                    href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
+                                    className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
+                                >
+                                    <h2>{i18n._(t`Donate`)}</h2>
+                                </a>
                             </div>
                         </Popover.Panel>
                     </>
