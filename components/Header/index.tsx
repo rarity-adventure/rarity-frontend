@@ -29,6 +29,12 @@ function AppBar(): JSX.Element {
                                     <div className="hidden md:block sm:ml-2">
                                         <div className="flex uppercase">
                                             <a
+                                                href="/summoners"
+                                                className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
+                                            >
+                                                <h2>{i18n._(t`Summoners`)}</h2>
+                                            </a>
+                                            <a
                                                 href="/play"
                                                 className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1"
                                             >
@@ -46,19 +52,15 @@ function AppBar(): JSX.Element {
                                             >
                                                 <h2>{i18n._(t`Names shop`)}</h2>
                                             </a>
-                                            <a
-                                                href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
-                                                className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                            >
-                                                <h2>{i18n._(t`Donate`)}</h2>
-                                            </a>
                                         </div>
                                     </div>
-                                    <LangSwitcher />
                                 </div>
                                 <div className="fixed bottom-0 right-0 z-40 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end z-20">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
+                                            <div className="mx-2">
+                                                <LangSwitcher />
+                                            </div>
                                             {account && chainId && userEthBalance && (
                                                 <>
                                                     <div className="px-3 mx-3 py-2 text-primary text-bold border-white border-2 rounded-lg">
@@ -110,8 +112,14 @@ function AppBar(): JSX.Element {
                             </div>
                         </div>
 
-                        <Popover.Panel className="sm:hidden">
+                        <Popover.Panel className="sm:hidden uppercase">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
+                                <a
+                                    href="/summoners"
+                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
+                                >
+                                    <h2>{i18n._(t`Summoners`)}</h2>
+                                </a>
                                 <a
                                     href="/play"
                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
@@ -129,12 +137,6 @@ function AppBar(): JSX.Element {
                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
                                 >
                                     <h2>{i18n._(t`Names shop`)}</h2>
-                                </a>
-                                <a
-                                    href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
-                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2"
-                                >
-                                    <h2>{i18n._(t`Donate`)}</h2>
                                 </a>
                             </div>
                         </Popover.Panel>

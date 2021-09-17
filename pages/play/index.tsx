@@ -1,26 +1,22 @@
 import { useLingui } from '@lingui/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../../components/Loader'
 import StatsProfile from '../../components/Profile/Stats'
 import { Popover } from '@headlessui/react'
-import AdventureProfile from '../../components/Profile/Adventure'
 import SkillsProfile from '../../components/Profile/Skills'
 import CraftProfile from '../../components/Profile/Craft'
 import InventoryProfile from '../../components/Profile/Inventory'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { ChevronLeft, ChevronRight } from 'react-feather'
-import useRarityLibrary, { SummonerFullData } from '../../hooks/useRarityLibrary'
+import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
-import { useQuery } from '@apollo/client'
-import { SUMMONERS } from '../../apollo'
-import { chunkArrayByNumber } from '../../functions/array'
 import Selector from '../../components/Selector'
+import { useSummoners } from '../../state/summoners/hooks'
 
 enum View {
     stats,
-    adventure,
     skills,
     inventory,
     crafting,
@@ -33,71 +29,30 @@ export default function Profile(): JSX.Element {
 
     const windowVisible = useIsWindowVisible()
 
-    const { data, loading, error } = useQuery(SUMMONERS, {
-        variables: { owner: account ? account.toString().toLowerCase() : '' },
-    })
-
-    const [summoners, setSummoners] = useState([])
-
-    useEffect(() => {
-        if (!library || !chainId || !windowVisible || !account || loading || error) return
-        const summoners = data.summoners.map((s) => {
-            return s.id
-        })
-        setSummoners(summoners)
-    }, [library, chainId, windowVisible, account, loading, error])
-
-    const { summoners_full } = useRarityLibrary()
-
-    const [summonersFull, setSummonersFull] = useState<SummonerFullData[]>([])
-
-    const fetch_summoners_data = useCallback(async () => {
-        // If the user has lest than 50 summoners fetch the data and return
-        if (summoners.length <= 50) {
-            const full_data = await summoners_full(summoners)
-            setSummonersFull(full_data)
-            return
-        }
-
-        const chunks = chunkArrayByNumber(summoners, 50)
-        let full_data = []
-
-        for (let chunk of chunks) {
-            const chunk_data = await summoners_full(chunk)
-            full_data = full_data.concat(chunk_data)
-        }
-
-        setSummonersFull(full_data)
-        return
-    }, [summoners_full, summoners])
-
-    useEffect(() => {
-        if (!library || !chainId || !windowVisible || !account) return
-        fetch_summoners_data()
-    }, [summoners, fetch_summoners_data, windowVisible, library, chainId, account])
+    const summoners = useSummoners()
 
     const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
 
     useEffect(() => {
         if (!library || !account || !windowVisible || !chainId) return
-        if (summonersFull.length > 0) {
-            setSelectedSummoner(summonersFull[0])
+        if (summoners.length > 0) {
+            setSelectedSummoner(summoners[0])
         }
-    }, [summonersFull])
+    }, [summoners])
 
     const [view, setView] = useState<View>(View.stats)
 
     function selectPrevSummoner() {
-        const currIndex = summoners.indexOf(selectedSummoner.id)
+        const currIndex = summoners.map((s) => s.id).indexOf(selectedSummoner.id)
         if (currIndex !== 0) {
-            setSelectedSummoner(summonersFull[currIndex - 1])
+            setSelectedSummoner(summoners[currIndex - 1])
         }
     }
 
     function selectNextSummoner() {
-        const currIndex = summoners.indexOf(selectedSummoner.id)
+        const currIndex = summoners.map((s) => s.id).indexOf(selectedSummoner.id)
         if (currIndex < summoners.length - 1) {
-            setSelectedSummoner(summonersFull[currIndex + 1])
+            setSelectedSummoner(summoners[currIndex + 1])
         }
     }
 
@@ -118,12 +73,6 @@ export default function Profile(): JSX.Element {
                                                     className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                                 >
                                                     <span>{i18n._(t`stats`)}</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => setView(View.adventure)}
-                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                >
-                                                    <span>{i18n._(t`adventure`)}</span>
                                                 </button>
                                                 <button
                                                     onClick={() => setView(View.skills)}
@@ -194,12 +143,6 @@ export default function Profile(): JSX.Element {
                                     >
                                         <span>{i18n._(t`stats`)}</span>
                                     </button>
-                                    {/*<button
-                                        onClick={() => setView(View.adventure)}
-                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                    >
-                                        <span>{i18n._(t`adventure`)}</span>
-                                    </button>*/}
                                     <button
                                         onClick={() => setView(View.skills)}
                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
@@ -223,7 +166,7 @@ export default function Profile(): JSX.Element {
                         </>
                     )}
                 </Popover>
-                <Selector summoners={summonersFull} select={setSelectedSummoner} />
+                <Selector summoners={summoners} select={setSelectedSummoner} />
                 {selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto">
@@ -253,7 +196,6 @@ export default function Profile(): JSX.Element {
                         </div>
                         <div className="col-span-2">
                             {view === View.stats && <StatsProfile summoner={selectedSummoner} />}
-                            {view === View.adventure && <AdventureProfile summoner={selectedSummoner} />}
                             {view === View.skills && <SkillsProfile summoner={selectedSummoner} />}
                             {view === View.inventory && <InventoryProfile summoner={selectedSummoner} />}
                             {view === View.crafting && <CraftProfile summoner={selectedSummoner} />}
