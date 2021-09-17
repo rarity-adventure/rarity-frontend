@@ -1,12 +1,15 @@
 import HeadlessUIModal from '../HeadlessUIModal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import { chunkArrayByNumber } from '../../../functions/array'
 import useRarityHelper from '../../../hooks/useRarityHelper'
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import useRarity from '../../../hooks/useRarity'
+import { RARITY_HELPER_ADDRESS } from '../../../constants'
 
 interface GoldModalProps {
     open: boolean
@@ -17,7 +20,32 @@ interface GoldModalProps {
 export default function GoldModal({ open, closeFunction, summoners }: GoldModalProps): JSX.Element {
     const { i18n } = useLingui()
 
+    const { account } = useActiveWeb3React()
+
+    const { isApprovedForAll, setApprovalForAll } = useRarity()
+
     const { claim_gold, is_approved } = useRarityHelper()
+
+    const [approved, setApproved] = useState(false)
+
+    const fetch_approval = useCallback(async () => {
+        const approved = await isApprovedForAll(account, RARITY_HELPER_ADDRESS)
+        setApproved(approved)
+    }, [])
+
+    useEffect(() => {
+        fetch_approval()
+    }, [summoners])
+
+    async function approveHelper() {
+        toast
+            .promise(setApprovalForAll(RARITY_HELPER_ADDRESS), {
+                loading: <b>{i18n._(t`Approving helper contract`)}</b>,
+                success: <b>{i18n._(t`Success`)}</b>,
+                error: <b>{i18n._(t`Failed`)}</b>,
+            })
+            .then(() => setApproved(true))
+    }
 
     async function submit() {
         const chunks = chunkArrayByNumber(summoners, 100)
@@ -55,12 +83,21 @@ export default function GoldModal({ open, closeFunction, summoners }: GoldModalP
                                 {i18n._(t`You have`)} {summoners.length} {i18n._(t`summoners available to claim gold.`)}{' '}
                             </h2>
                             <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
-                            <button
-                                onClick={() => submit()}
-                                className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
-                            >
-                                {i18n._(t`claim gold`)}
-                            </button>
+                            {approved ? (
+                                <button
+                                    onClick={() => submit()}
+                                    className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                >
+                                    {i18n._(t`claim gold`)}
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => approveHelper()}
+                                    className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                >
+                                    {i18n._(t`approve helper`)}
+                                </button>
+                            )}
                         </div>
                     ) : (
                         <div>
