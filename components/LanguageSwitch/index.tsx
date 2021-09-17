@@ -1,6 +1,7 @@
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import cookieCutter from 'cookie-cutter'
 import { classNames } from '../../functions/classNames'
@@ -18,8 +19,15 @@ export default function LangSwitcher() {
             {({ open }) => (
                 <>
                     <div>
-                        <Menu.Button className="inline-flex justify-center w-full p-1.5 text-xs bg-background-end font-bold border rounded shadow-sm text-primary border-white">
-                            <h2>{LANG_TO_COUNTRY[locale]}</h2>
+                        <Menu.Button className="inline-flex justify-center w-full p-1.5 text-xs font-bold border rounded shadow-sm text-primary border-white">
+                            <Image
+                                className="inline w-3 h-3 mr-1 align-middle"
+                                src={`/img/flags/${locale}-flag.png`}
+                                width={20}
+                                height={20}
+                                alt={locale}
+                                aria-hidden="true"
+                            />
                         </Menu.Button>
                     </div>
 
@@ -33,7 +41,7 @@ export default function LangSwitcher() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute right-0 w-38 mt-2 rounded shadow-lg bg-black">
+                        <Menu.Items className="absolute right-0 w-36 mt-2 rounded shadow-lg bg-background-contrast">
                             <div className="p-1">
                                 {locales.map((locale) => {
                                     return (
@@ -50,6 +58,14 @@ export default function LangSwitcher() {
                                                         )}
                                                         onClick={() => cookieCutter.set('NEXT_LOCALE', locale)}
                                                     >
+                                                        <Image
+                                                            className="inline w-3 h-3 mr-1 align-middle"
+                                                            src={`/img/flags/${locale}-flag.png`}
+                                                            width={20}
+                                                            height={20}
+                                                            alt={locale}
+                                                            aria-hidden="true"
+                                                        />
                                                         <h2 className="ml-2">{LANG_TO_COUNTRY[locale]}</h2>
                                                     </a>
                                                 </Link>

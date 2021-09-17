@@ -82,21 +82,21 @@ function AppBar(): JSX.Element {
                                             {play()}
                                             {analytics()}
                                             {names()}
-                                            { account &&
-                                            <button
-                                                onClick={() => setModal(true)}
-                                                className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                            >
-                                                <h2>{i18n._(t`Donate`)}</h2>
-                                            </button>
-                                            }
+                                            {account && (
+                                                <button
+                                                    onClick={() => setModal(true)}
+                                                    className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
+                                                >
+                                                    <h2>{i18n._(t`Donate`)}</h2>
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="fixed bottom-0 right-0 z-40 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end z-20">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
-                                            <div className="mx-2">
+                                            <div className="hidden md:inline-block mx-2">
                                                 <LangSwitcher />
                                             </div>
                                             {account && chainId && userEthBalance && (
@@ -156,15 +156,14 @@ function AppBar(): JSX.Element {
                                 {play()}
                                 {analytics()}
                                 {names()}
-                                { account &&
-                                <button
-                                    onClick={() => setModal(true)}
-                                    className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                >
-                                    <h2>{i18n._(t`Donate`)}</h2>
-                                </button>
-                                }
-
+                                {account && (
+                                    <button
+                                        onClick={() => setModal(true)}
+                                        className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
+                                    >
+                                        <h2>{i18n._(t`Donate`)}</h2>
+                                    </button>
+                                )}
                             </div>
                         </Popover.Panel>
                     </>
