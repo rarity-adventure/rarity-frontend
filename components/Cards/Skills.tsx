@@ -10,7 +10,7 @@ import { RefreshIcon } from '@heroicons/react/outline'
 import useRaritySkills from '../../hooks/useRaritySkills'
 import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import Image from "next/image"
+import Image from 'next/image'
 
 function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
@@ -130,7 +130,12 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
                                                 setModalOpen(true)
                                             }}
                                         >
-                                            <Image src={'/img/skills/' + data.id + '.png'} width={32} height={32} alt={data.name} />
+                                            <Image
+                                                src={'/img/skills/' + data.id + '.png'}
+                                                width={32}
+                                                height={32}
+                                                alt={data.name}
+                                            />
                                         </button>
                                     </div>
                                     <div>

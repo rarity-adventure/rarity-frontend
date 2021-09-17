@@ -25,62 +25,23 @@ export default function Summoners(): JSX.Element {
     return (
         <div className="w-full z-25">
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10 uppercase">
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center justify-start">
                     <div>
                         <h1 className="text-2xl xl:text-3xl">{i18n._(t`summoners`)}</h1>
                     </div>
-                    <div className="w-48">
-                        <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
+                    <div className="ml-10 hidden md:block uppercase">
+                        <h1 className="text-lg">{i18n._(t`one-click`)}</h1>
+                        <div className="text-xs">
+                            <button className="mx-1 uppercase">{i18n._(t`adventure`)}</button>
+                            <button className="mx-1 uppercase">{i18n._(t`level-up`)}</button>
+                            <button className="mx-1 uppercase">{i18n._(t`claim gold`)}</button>
+                            <button className="mx-1 uppercase">{i18n._(t`dungeon`)}</button>
+                        </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
-                    <div className="mx-2 text-center uppercase">
-                        <p>{i18n._(t`adventure`)}</p>
-                        {adventure.length > 0 ? (
-                            <button className="uppercase bg-red border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`send`)} {adventure.length} {i18n._(t`summoners`)}
-                            </button>
-                        ) : (
-                            <button className="opacity-50 cursor-not-allowed uppercase border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`no summoners available`)}
-                            </button>
-                        )}
-                    </div>
-                    <div className="mx-2 text-center uppercase">
-                        <p>{i18n._(t`claim gold`)}</p>
-                        {claim.length > 0 ? (
-                            <button className="uppercase bg-red border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`send`)} {claim.length} {i18n._(t`summoners`)}
-                            </button>
-                        ) : (
-                            <button className="opacity-50 cursor-not-allowed uppercase border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`no summoners available`)}
-                            </button>
-                        )}
-                    </div>
-                    <div className="mx-2 text-center uppercase">
-                        <p>{i18n._(t`level-up`)}</p>
-                        {level.length > 0 ? (
-                            <button className="uppercase bg-red border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`send`)} {level.length} {i18n._(t`summoners`)}
-                            </button>
-                        ) : (
-                            <button className="opacity-50 cursor-not-allowed uppercase border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`no summoners available`)}
-                            </button>
-                        )}
-                    </div>
-                    <div className="mx-2 text-center uppercase">
-                        <p>{i18n._(t`cellar`)}</p>
-                        {dungeon.length > 0 ? (
-                            <button className="uppercase bg-red border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`send`)} {dungeon.length} {i18n._(t`summoners`)}
-                            </button>
-                        ) : (
-                            <button className="opacity-50 cursor-not-allowed uppercase border-2 mt-2 border-white rounded-lg text-xs p-2">
-                                {i18n._(t`no summoners available`)}
-                            </button>
-                        )}
+                <div className="flex flex-row items-center justify-end">
+                    <div className="w-48">
+                        <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
                     </div>
                 </div>
 

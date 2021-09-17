@@ -163,7 +163,7 @@ export default function Profile(): JSX.Element {
                 {selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto  mt-2">
-                            { CLASSES_IMAGES[selectedSummoner.base._class.toString()] }
+                            {CLASSES_IMAGES[selectedSummoner.base._class.toString()]}
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                 <button onClick={() => selectPrevSummoner()}>
                                     <ChevronLeft />
