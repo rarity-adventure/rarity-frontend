@@ -65,7 +65,6 @@ export default function useRarityLibrary(): GoldInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const summoners = await lib?.summoners_full(ids)
-                    console.log(summoners)
                     resolve(
                         summoners.map((value, i) => {
                             return {
@@ -133,7 +132,7 @@ export default function useRarityLibrary(): GoldInterface {
                                     total_points: parseInt(value.skills.total_points.toString()),
                                 },
                                 misc: {
-                                    daycare_days_paid: parseInt(value.misc.daycare_days_pad.toString()),
+                                    daycare_days_paid: parseInt(value.misc.daycare_days_paid.toString()),
                                 },
                             }
                         })

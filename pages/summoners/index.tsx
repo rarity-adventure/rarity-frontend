@@ -55,7 +55,7 @@ export default function Summoners(): JSX.Element {
                 </div>*/}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
                             {summoners.map((s) => {
-                                return <SummonerSummaryCard key={s.id} summoner={s} summoners={summoners} />
+                                return <SummonerSummaryCard key={s.id} summoner={s} />
                             })}
                         </div>
                     </>

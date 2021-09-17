@@ -10,27 +10,17 @@ import useRarityDaycare from '../../../hooks/useRarityDaycare'
 interface TransferModalProps {
     open: boolean
     closeFunction: () => void
-    summoner: SummonerFullData
     summoners: SummonerFullData[]
 }
 
-export default function DaycareModal({ open, closeFunction, summoner, summoners }: TransferModalProps): JSX.Element {
+export default function DaycareSingleModal({ open, closeFunction, summoners }: TransferModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { registerDaycare } = useRarityDaycare()
 
     const [days, setDays] = useState(0)
 
-    async function registerSingleConfirm() {
-        await toast.promise(registerDaycare([summoner.id], days), {
-            loading: <b>{i18n._(t`Registering summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-        closeFunction()
-    }
-
-    async function registerAllConfirm() {
+    async function registerConfirm() {
         await toast.promise(
             registerDaycare(
                 summoners.map((s) => {
@@ -51,22 +41,16 @@ export default function DaycareModal({ open, closeFunction, summoner, summoners 
         <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`summoner daily care`)} onClose={closeFunction} />
-                <div className="text-center text-white p-4 pb-4 gap-5">
+                <div className="text-center text-white p-4 pb-2 gap-5">
                     <h2>{i18n._(t`The daily care is a community run system to take care of your summoners`)}</h2>
                 </div>
-                <div className="text-center text-white p-4 pb-4 gap-5">
+                <div className="text-center text-white p-4 pb-2 gap-5">
                     <h2>{i18n._(t`The service has a fee of 0.1 FTM for each summoner for each day.`)}</h2>
                 </div>
-                <div className="text-center text-white p-4 pb-4 gap-5">
-                    <h2>
-                        {i18n._(t`This summoner is registered for `)} <b>{summoner.misc.daycare_days_paid}</b>{' '}
-                        {i18n._(t`days in the daily care. `)}
-                    </h2>
+                <div className="text-center text-white p-4 pb-2 gap-5">
+                    <h2>{i18n._(t`How many days do you want to register your summoners?`)}</h2>
                 </div>
                 <div className="text-center text-white p-4 pb-4 gap-5">
-                    <h2>{i18n._(t`How many days do you want to register your summoner/s?`)}</h2>
-                </div>
-                <div className="text-center text-white p-4 pb-8 gap-5">
                     <input
                         type="number"
                         className="p-2 text-background-end"
@@ -75,16 +59,8 @@ export default function DaycareModal({ open, closeFunction, summoner, summoners 
                 </div>
                 <div className="flex flex-row justify-center pb-8">
                     <div className="bg-background-middle hover:bg-background-start text-white border-white border-2 rounded-lg mx-4">
-                        <button
-                            className="w-full uppercase px-2 py-1"
-                            onClick={async () => await registerSingleConfirm()}
-                        >
-                            <h2>{i18n._(t`register summoner`)}</h2>
-                        </button>
-                    </div>
-                    <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
-                        <button className="w-full uppercase px-2 py-1" onClick={async () => await registerAllConfirm()}>
-                            <h2>{i18n._(t`register all summoners`)}</h2>
+                        <button className="w-full uppercase px-2 py-1" onClick={async () => await registerConfirm()}>
+                            <h2>{i18n._(t`register summoners`)}</h2>
                         </button>
                     </div>
                 </div>
