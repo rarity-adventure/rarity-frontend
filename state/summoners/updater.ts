@@ -33,12 +33,12 @@ export default function Updater(): null {
 
     const fetch_summoners_data = useCallback(async () => {
         // If the user has lest than 50 summoners fetch the data and return
-        if (summoners.length <= 50) {
+        if (summoners.length <= 200) {
             const full_data = await summoners_full(summoners)
             dispatch(updateSummoners(full_data))
             return
         } else {
-            const chunks = chunkArrayByNumber(summoners, 50)
+            const chunks = chunkArrayByNumber(summoners, 200)
             let full_data = []
 
             for (let chunk of chunks) {
