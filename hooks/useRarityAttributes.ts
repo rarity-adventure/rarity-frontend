@@ -3,7 +3,7 @@ import { useRarityAttributesContract } from './useContract'
 
 interface AttributesInterface {
     point_buy: (
-        id: string,
+        id: number,
         str: number,
         dex: number,
         con: number,
@@ -18,7 +18,7 @@ export default function useRarityAttributes(): AttributesInterface {
 
     const point_buy = useCallback(
         async (
-            id: string,
+            id: number,
             str: number,
             dex: number,
             con: number,

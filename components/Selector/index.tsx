@@ -56,7 +56,7 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
                                                             {' '}
                                                             {s.base._name !== ''
                                                                 ? s.base._name
-                                                                : parseInt(s.id, 16) +
+                                                                : s.id.toString() +
                                                                   ' ' +
                                                                   i18n._(t`level`) +
                                                                   ' ' +

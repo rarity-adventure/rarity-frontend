@@ -11,6 +11,7 @@ import LevelModal from '../../components/Modal/modals/Level'
 import DaycareMultiModal from '../../components/Modal/modals/DaycareMulti'
 import GoldModal from '../../components/Modal/modals/Gold'
 import DungeonModal from '../../components/Modal/modals/Dungeon'
+import Filter from '../../components/Filter'
 
 enum Modal {
     ADVENTURE = 1,
@@ -44,6 +45,8 @@ export default function Summoners(): JSX.Element {
     function closeModal() {
         setModal(0)
     }
+
+    const [parsedSummoners, setParsedSummoners] = useState<SummonerFullData[]>(summoners)
 
     return (
         <div className="w-full z-25">
@@ -95,13 +98,13 @@ export default function Summoners(): JSX.Element {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="flex flex-row items-center justify-end">
-                    <div className="w-48">
-                        <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
-                    </div>
-                </div>*/}
+                        <div className="flex flex-row items-center justify-end mt-5">
+                            <div className="w-52">
+                                <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
+                            </div>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
-                            {summoners.map((s) => {
+                            {parsedSummoners.map((s) => {
                                 return <SummonerSummaryCard key={s.id} summoner={s} />
                             })}
                         </div>

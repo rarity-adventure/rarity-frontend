@@ -3,14 +3,14 @@ import { utils } from 'ethers'
 import { useRarityDaycareContract } from './useContract'
 
 interface DailyCareInterface {
-    registerDaycare: (ids: string[], days: number) => Promise<void>
-    daysPaid: (id: string) => Promise<number>
+    registerDaycare: (ids: number[], days: number) => Promise<void>
+    daysPaid: (id: number) => Promise<number>
 }
 
 export default function useRarityDaycare(): DailyCareInterface {
     const daycare = useRarityDaycareContract()
     const daysPaid = useCallback(
-        async (id: string): Promise<number> => {
+        async (id: number): Promise<number> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const days = await daycare?.daysPaid(id)
@@ -24,7 +24,7 @@ export default function useRarityDaycare(): DailyCareInterface {
     )
 
     const registerDaycare = useCallback(
-        async (ids: string[], days: number): Promise<void> => {
+        async (ids: number[], days: number): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const daysRegistry = Array(ids.length).fill(days, 0, ids.length)

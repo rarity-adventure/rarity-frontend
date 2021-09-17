@@ -3,23 +3,23 @@ import { useCallback } from 'react'
 import { utils } from 'ethers'
 
 interface HelperInterface {
-    adventure: (ids: string[]) => Promise<void>
-    adventure_donate: (ids: string[]) => Promise<void>
-    cellar: (ids: string[], approval: string[]) => Promise<void>
-    cellar_donate: (ids: string[], approval: string[]) => Promise<void>
-    claim_gold: (ids: string[], approval: string[]) => Promise<void>
-    claim_gold_donate: (ids: string[], approval: string[]) => Promise<void>
-    level_up: (ids: string[]) => Promise<void>
-    level_up_donate: (ids: string[]) => Promise<void>
+    adventure: (ids: number[]) => Promise<void>
+    adventure_donate: (ids: number[]) => Promise<void>
+    cellar: (ids: number[], approval: number[]) => Promise<void>
+    cellar_donate: (ids: number[], approval: number[]) => Promise<void>
+    claim_gold: (ids: number[], approval: number[]) => Promise<void>
+    claim_gold_donate: (ids: number[], approval: number[]) => Promise<void>
+    level_up: (ids: number[]) => Promise<void>
+    level_up_donate: (ids: number[]) => Promise<void>
     donate: (amount: string) => Promise<void>
-    is_approved: (ids: string[]) => Promise<boolean[]>
+    is_approved: (ids: number[]) => Promise<boolean[]>
 }
 
 export default function useRarityHelper(): HelperInterface {
     const helper = useRarityHelperContract()
 
     const adventure = useCallback(
-        async (ids: string[]): Promise<void> => {
+        async (ids: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.adventure(ids)
@@ -34,7 +34,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const adventure_donate = useCallback(
-        async (ids: string[]): Promise<void> => {
+        async (ids: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.adventure(ids, { value: utils.parseUnits('0.1', 'ether') })
@@ -49,7 +49,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const cellar = useCallback(
-        async (ids: string[], approval: string[]): Promise<void> => {
+        async (ids: number[], approval: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.cellar(ids, approval)
@@ -64,7 +64,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const cellar_donate = useCallback(
-        async (ids: string[], approval: string[]): Promise<void> => {
+        async (ids: number[], approval: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.cellar(ids, approval, { value: utils.parseUnits('0.1', 'ether') })
@@ -79,7 +79,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const claim_gold = useCallback(
-        async (ids: string[], approval: string[]): Promise<void> => {
+        async (ids: number[], approval: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.claim_gold(ids, approval)
@@ -94,7 +94,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const claim_gold_donate = useCallback(
-        async (ids: string[], approval: string[]): Promise<void> => {
+        async (ids: number[], approval: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.claim_gold(ids, approval, { value: utils.parseUnits('0.1', 'ether') })
@@ -109,7 +109,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const level_up = useCallback(
-        async (ids: string[]): Promise<void> => {
+        async (ids: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.level_up(ids)
@@ -124,7 +124,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const level_up_donate = useCallback(
-        async (ids: string[]): Promise<void> => {
+        async (ids: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await helper?.level_up(ids, { value: utils.parseUnits('0.1', 'ether') })
@@ -154,7 +154,7 @@ export default function useRarityHelper(): HelperInterface {
     )
 
     const is_approved = useCallback(
-        async (ids: string[]): Promise<boolean[]> => {
+        async (ids: number[]): Promise<boolean[]> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     resolve(await helper?.is_approved(ids))

@@ -3,8 +3,8 @@ import { useRarityContract } from './useContract'
 
 interface RarityInterface {
     summon: (_class?: string) => Promise<void>
-    adventure: (id: string) => Promise<void>
-    transferFrom: (from: string | null | undefined, to: string, id: string) => Promise<void>
+    adventure: (id: number) => Promise<void>
+    transferFrom: (from: string | null | undefined, to: string, id: number) => Promise<void>
     isApprovedForAll: (owner: string | null | undefined, operator: string) => Promise<boolean>
     setApprovalForAll: (operator: string) => Promise<void>
 }
@@ -29,7 +29,7 @@ export default function useRarity(): RarityInterface {
     )
 
     const adventure = useCallback(
-        async (id: string): Promise<void> => {
+        async (id: number): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await rarity?.adventure(id)
@@ -44,7 +44,7 @@ export default function useRarity(): RarityInterface {
     )
 
     const transferFrom = useCallback(
-        async (from: string | null | undefined, to: string, id: string): Promise<void> => {
+        async (from: string | null | undefined, to: string, id: number): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await rarity?.transferFrom(from, to, id)

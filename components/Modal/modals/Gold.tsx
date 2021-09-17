@@ -31,11 +31,11 @@ export default function GoldModal({ open, closeFunction, summoners }: GoldModalP
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_HELPER_ADDRESS)
         setApproved(approved)
-    }, [])
+    }, [account, isApprovedForAll])
 
     useEffect(() => {
         fetch_approval()
-    }, [summoners])
+    }, [summoners, fetch_approval])
 
     async function approveHelper() {
         toast

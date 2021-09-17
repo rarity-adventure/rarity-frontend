@@ -38,7 +38,7 @@ function AppBar(): JSX.Element {
 
     function analytics(): JSX.Element {
         return (
-            <Link href="/analytics" passHref={false}>
+            <Link href="/analytics" passHref={true}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
                     <h2>{i18n._(t`Analytics`)}</h2>
                 </div>

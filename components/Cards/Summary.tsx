@@ -75,6 +75,10 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                         <p>{i18n._(t`gold`)}</p>
                         <span> {summoner.gold.balance}</span>
                     </div>
+                    <div className="flex flex-row justify-between mr-2">
+                        <p>{i18n._(t`craft material`)}</p>
+                        <span> {summoner.materials.balance}</span>
+                    </div>
                 </div>
                 <div className="p-2 text-xs">
                     <div className="flex flex-row justify-between mr-2 items-center text-center">

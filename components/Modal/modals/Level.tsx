@@ -30,11 +30,11 @@ export default function LevelModal({ open, closeFunction, summoners }: LevelModa
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_HELPER_ADDRESS)
         setApproved(approved)
-    }, [])
+    }, [account, isApprovedForAll])
 
     useEffect(() => {
         fetch_approval()
-    }, [summoners])
+    }, [summoners, fetch_approval])
 
     async function submit() {
         const chunks = chunkArrayByNumber(summoners, 100)
