@@ -113,7 +113,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
                     <div className="bg-card-top col-span-2 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl text-left">
                         <span className="ml-1.5">
-                            {i18n._(t`ID`)}: {parseInt(summoner.id, 16)}
+                            {i18n._(t`ID`)}: {summoner.id}
                         </span>
                     </div>
                 </div>

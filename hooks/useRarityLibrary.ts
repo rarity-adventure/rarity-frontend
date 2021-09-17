@@ -68,7 +68,7 @@ export default function useRarityLibrary(): GoldInterface {
                     resolve(
                         summoners.map((value, i) => {
                             return {
-                                id: ids[i],
+                                id: parseInt(ids[i], 16),
                                 ability_scores: {
                                     attributes: {
                                         _cha:
