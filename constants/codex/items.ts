@@ -4,7 +4,21 @@ enum ITEM_TYPE {
     WEAPON,
 }
 
-interface ItemInfo {
+interface ItemWeapon {
+    name: string
+    cost: number
+    proficiency: number
+    encumbrance: number
+    damage_type: number
+    weight: number
+    damage: number
+    critical: number
+    critical_modifier: number
+    range_increment: number
+    description: string
+}
+
+interface ItemArmor {
     name: string
     cost: number
     proficiency: number
@@ -16,7 +30,18 @@ interface ItemInfo {
     description: string
 }
 
-export const ITEM_INFO: { [k: ITEM_TYPE]: { [k: string]: ItemInfo } } = {
+interface ItemGood {
+    name: string
+    cost: number
+    weight: number
+    description: string
+}
+
+export const ITEM_INFO: {
+    [ITEM_TYPE.GOOD]: { [k: string]: ItemGood }
+    [ITEM_TYPE.ARMOR]: { [k: string]: ItemArmor }
+    [ITEM_TYPE.WEAPON]: { [k: string]: ItemWeapon }
+} = {
     [ITEM_TYPE.GOOD]: {
         '1': {
             name: 'Caltrops',
