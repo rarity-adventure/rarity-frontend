@@ -10,6 +10,7 @@ import useRarity from '../../hooks/useRarity'
 import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
+import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 
 enum Modals {
     TRANSFER = 1,
@@ -22,7 +23,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
 
     const [modalOpen, setModalOpen] = useState<Modals>(0)
 
-    const { adventure } = useRarity()
+    const { adventure, level_up } = useRarity()
 
     function closeModals() {
         setModalOpen(0)
@@ -41,6 +42,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
     async function sendDungeon() {
         await toast.promise(adventure_cellar(summoner.id), {
             loading: <b>{i18n._(t`Sending summoner`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    async function sendLevelUP() {
+        await toast.promise(level_up(summoner.id), {
+            loading: <b>{i18n._(t`Level-UP Summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
         })
@@ -82,6 +91,10 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                     <div className="flex flex-row justify-between mr-2">
                         <p>{i18n._(t`craft material`)}</p>
                         <span> {summoner.materials.balance}</span>
+                    </div>
+                    <div className="mt-2 uppercase text-center">
+                        <button onClick={() => sendLevelUP()} className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2">{i18n._(t`level-up`)}</button>
+                        {/*{summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && <button>level up</button>}*/}
                     </div>
                 </div>
                 <div className="p-2 text-xs">

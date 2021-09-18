@@ -135,9 +135,14 @@ export default function Summoners(): JSX.Element {
                             </div>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
-                            {parsedSummoners.map((s) => {
-                                return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
-                            })}
+                            {}
+                            {parsedSummoners.length === 0
+                                ? summoners.map((s) => {
+                                      return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
+                                  })
+                                : parsedSummoners.map((s) => {
+                                      return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
+                                  })}
                         </div>
                     </>
                 ) : (

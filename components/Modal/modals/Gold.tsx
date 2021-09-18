@@ -120,17 +120,21 @@ export default function GoldModal({ open, closeFunction, summoners }: GoldModalP
                             <h2>
                                 {i18n._(t`You have`)} {summoners.length} {i18n._(t`summoners available to claim gold.`)}{' '}
                             </h2>
-                            <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
+                            {summoners.length >= 100 && (
+                                <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
+                            )}
                             {approved ? (
                                 <>
-                                    <div>
-                                        <button
-                                            onClick={() => submitTIP()}
-                                            className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
-                                        >
-                                            {i18n._(t`claim gold with 0.1 FTM tip for devs`)}
-                                        </button>
-                                    </div>
+                                    {summoners.length >= 10 && (
+                                        <div>
+                                            <button
+                                                onClick={() => submitTIP()}
+                                                className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
+                                            >
+                                                {i18n._(t`send with 0.1 FTM tip for devs`)}
+                                            </button>
+                                        </div>
+                                    )}
                                     <div>
                                         <button
                                             onClick={() => submit()}
