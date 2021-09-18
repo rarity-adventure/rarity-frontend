@@ -93,8 +93,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                         <span> {summoner.materials.balance}</span>
                     </div>
                     <div className="mt-2 uppercase text-center">
-                        <button onClick={() => sendLevelUP()} className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2">{i18n._(t`level-up`)}</button>
-                        {/*{summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && <button>level up</button>}*/}
+                        {summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && (
+                            <button
+                                onClick={() => sendLevelUP()}
+                                className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2"
+                            >
+                                {i18n._(t`level-up`)}
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="p-2 text-xs">
