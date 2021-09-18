@@ -55,10 +55,13 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
 
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
                 <div className="mx-auto p-2">
-                    <span>{i18n._(CLASSES_NAMES[summoner.base._class])}</span>
+                    {summoner.base._name !== '' ? (
+                        <p>{summoner.base._name}</p>
+                    ) : (
+                        <span>{i18n._(CLASSES_NAMES[summoner.base._class])}</span>
+                    )}
                 </div>
                 <div className="p-2 text-xs">
-                    <p>{summoner.base._name}</p>
                     <p>
                         {i18n._(t`id`)}: {summoner.id}
                     </p>
