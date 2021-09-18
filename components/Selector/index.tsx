@@ -16,7 +16,7 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
 
     return (
         summoners.length > 0 && (
-            <Menu as="div" className="relative text-right ml-3 mt-2 md:-mt-2">
+            <Menu as="div" className="relative text-right ml-3 mt-2">
                 {({ open }) => (
                     <>
                         <div>
@@ -40,7 +40,7 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="absolute max-h-96 z-30 overflow-scroll right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
+                            <Menu.Items className="absolute max-h-96 z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
                                 <div>
                                     {summoners.map((s: SummonerFullData) => {
                                         return (

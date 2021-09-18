@@ -21,9 +21,33 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 </div>
             </div>
             <div className="border-white border-2 rounded-b-2xl my-3 bg-background-cards w-full bg-card-content">
-                <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 overflow-scroll overflow-hidden h-60">
-                    <h1 className="uppercase mt-10 mx-auto text-2xl">Coming Soon</h1>
+                <div className="flex flex-row">
+                    <div className="ml-1.5 md:ml-3 text-center mt-2">
+                        <button
+                            style={{ fontSize: '0.8rem' }}
+                            className="py-1 border-2 px-4 border-white rounded-l-lg uppercase"
+                        >
+                            {i18n._(t`goods`)}
+                        </button>
+                    </div>
+                    <div className="text-center -ml-1 mt-2">
+                        <button
+                            style={{ fontSize: '0.8rem' }}
+                            className="py-1 border-t-2 border-b-2 px-4 border-white uppercase"
+                        >
+                            {i18n._(t`weapons`)}
+                        </button>
+                    </div>
+                    <div className="text-center mt-2">
+                        <button
+                            style={{ fontSize: '0.8rem' }}
+                            className="py-1 border-2 px-4 border-white rounded-r-lg uppercase"
+                        >
+                            armors
+                        </button>
+                    </div>
                 </div>
+                <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 overflow-scroll overflow-hidden h-60"></div>
             </div>
         </div>
     )

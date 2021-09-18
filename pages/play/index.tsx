@@ -12,6 +12,7 @@ import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerInventoryCard from '../../components/Cards/Inventory'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
+import Image from 'next/image'
 
 enum View {
     stats,
@@ -66,32 +67,47 @@ export default function Profile(): JSX.Element {
                                     <div className="flex items-center z-20 uppercase">
                                         <h1 className="text-3xl">{i18n._(t`play`)}</h1>
                                         <div className="hidden md:block sm:ml-2 text-xs">
-                                            <div className="flex uppercase">
-                                                <button
-                                                    onClick={() => setView(View.stats)}
-                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                >
-                                                    <span>{i18n._(t`stats`)}</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => setView(View.skills)}
-                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                >
-                                                    <span>{i18n._(t`skills`)}</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => setView(View.inventory)}
-                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                >
-                                                    <span>{i18n._(t`inventory`)}</span>
-                                                </button>
-                                                <button
-                                                    onClick={() => setView(View.crafting)}
-                                                    className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                >
-                                                    <span>{i18n._(t`craft`)}</span>
-                                                </button>
+                                            <div className="flex flex-row justify-between w-full">
+                                                <div className="flex uppercase">
+                                                    <button
+                                                        onClick={() => setView(View.stats)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`stats`)}</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setView(View.skills)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`skills`)}</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setView(View.inventory)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`inventory`)}</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setView(View.crafting)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`craft`)}</span>
+                                                    </button>
+                                                </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex flex-row justify-between hidden sm:inline-flex">
+                                            {selectedSummoner && (
+                                                <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-lg">
+                                                    <Image src="/img/gold.png" width={50} height={40} />
+                                                    <div className="py-1">
+                                                        <p>{selectedSummoner.gold.balance}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <Selector summoners={summoners} select={setSelectedSummoner} />
                                         </div>
                                     </div>
                                     <div className="flex -mr-2 md:hidden">
@@ -132,6 +148,17 @@ export default function Profile(): JSX.Element {
                                         </Popover.Button>
                                     </div>
                                 </div>
+                                <div className="sm:hidden mt-2 flex flex-row justify-between">
+                                    {selectedSummoner && (
+                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-lg">
+                                            <Image src="/img/gold.png" width={50} height={40} />
+                                            <div className="py-1">
+                                                <p>{selectedSummoner.gold.balance}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <Selector summoners={summoners} select={setSelectedSummoner} />
+                                </div>
                             </div>
 
                             <Popover.Panel className="md:hidden">
@@ -165,7 +192,7 @@ export default function Profile(): JSX.Element {
                         </>
                     )}
                 </Popover>
-                <Selector summoners={summoners} select={setSelectedSummoner} />
+                <div className="flex flex-row justify-end"></div>
                 {selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto  mt-2">
@@ -189,6 +216,7 @@ export default function Profile(): JSX.Element {
                                 {i18n._(CLASSES_NAMES[selectedSummoner.base._class.toString()])}
                             </p>
                         </div>
+
                         <div className="col-span-2">
                             {view === View.stats && <SummonerStatsCard summoner={selectedSummoner} />}
                             {view === View.skills && <SummonerSkillsCard summoner={selectedSummoner} />}
