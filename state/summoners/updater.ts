@@ -7,13 +7,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { chunkArrayByNumber } from '../../functions/array'
 import useRarityLibrary from '../../hooks/useRarityLibrary'
 import { updateSummoners } from './actions'
-import * as local from './local_summoners.json'
 
 export default function Updater(): null {
-    const dispatch = useDispatch()
-    dispatch(updateSummoners(Object.values(local).filter((s) => s.id)))
-    /*const { library, chainId, account } = useActiveWeb3React()
+    const { library, chainId, account } = useActiveWeb3React()
 
+    const dispatch = useDispatch()
 
     const windowVisible = useIsWindowVisible()
 
@@ -37,7 +35,7 @@ export default function Updater(): null {
         // If the user has lest than 50 summoners fetch the data and return
         if (summoners.length <= 50) {
             const full_data = await summoners_full(summoners)
-
+            dispatch(updateSummoners(full_data))
             return
         } else {
             const chunks = chunkArrayByNumber(summoners, 50)
@@ -49,7 +47,6 @@ export default function Updater(): null {
             }
 
             dispatch(updateSummoners(full_data))
-            console.log(full_data)
             return
         }
     }, [summoners_full, summoners])
@@ -58,6 +55,5 @@ export default function Updater(): null {
         if (!library || !chainId || !account || !windowVisible) return
         fetch_summoners_data()
     }, [summoners, windowVisible, fetch_summoners_data, library, chainId, account])
-*/
     return null
 }
