@@ -67,6 +67,7 @@ export default function useRarityLibrary(): LibraryInterface {
                     const summoners = await lib?.summoners_full(ids)
                     resolve(
                         summoners.map((value, i) => {
+                            console.log(value.materials[0].balance)
                             return {
                                 id: parseInt(ids[i], 16),
                                 ability_scores: {
@@ -121,7 +122,7 @@ export default function useRarityLibrary(): LibraryInterface {
                                     claimed: parseInt(utils.formatUnits(value.gold.claimed, 'ether')),
                                 },
                                 materials: {
-                                    balance: parseInt(utils.formatUnits(value.materials[0].balance, 'ether')),
+                                    balance: parseInt(value.materials[0].balance),
                                     scout: parseInt(value.materials[0].scout.toString()),
                                     log: parseInt(value.materials[0].log.toString()),
                                 },
