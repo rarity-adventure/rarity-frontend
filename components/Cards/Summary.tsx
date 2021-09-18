@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
@@ -9,6 +9,7 @@ import DaycareSingleModal from '../Modal/modals/DaycareSingle'
 import useRarity from '../../hooks/useRarity'
 import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
+import { secondsRender } from '../../functions/secondsToText'
 
 enum Modals {
     TRANSFER = 1,
@@ -16,7 +17,7 @@ enum Modals {
     DAYCARE,
 }
 
-function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
+function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; time: number }): JSX.Element {
     const { i18n } = useLingui()
 
     const [modalOpen, setModalOpen] = useState<Modals>(0)
@@ -98,10 +99,13 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                     <div className="flex flex-row justify-between mr-2 items-center my-2">
                         <p>{i18n._(t`adventure`)}</p>
                     </div>
-                    <div className="flex flex-row justify-end mr-2 items-center my-2">
-                        {summoner.base._log * 1000 > Date.now() ? (
-                            <button className="px-1 opacity-50 cursor-not-allowed py-1 items-center uppercase text-xs border-white border-2 bg-red rounded-lg">
-                                {i18n._(t`not available`)}
+                    <div className="flex flex-row justify-center mr-2 items-center my-2 text-center">
+                        {summoner.base._log * 1000 > time ? (
+                            <button
+                                style={{ fontSize: '0.5rem' }}
+                                className="px-1.5 opacity-50 cursor-not-allowed py-1 items-center uppercase border-white border-2 bg-background-contrast rounded-lg"
+                            >
+                                {secondsRender((summoner.base._log * 1000 - time) / 1000)}
                             </button>
                         ) : (
                             <button
@@ -115,8 +119,15 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                     <div className="flex flex-row justify-between mr-2 items-center my-2">
                         <p>{i18n._(t`dungeon`)}</p>
                     </div>
-                    <div className="flex flex-row justify-end mr-2 items-center my-2">
-                        {summoner.materials.log * 1000 < Date.now() && summoner.materials.scout !== 0 ? (
+                    <div className="flex flex-row justify-center mr-2 items-center my-2 text-center">
+                        {summoner.materials.scout === 0 ? (
+                            <button
+                                style={{ fontSize: '0.5rem' }}
+                                className="px-2 opacity-50 cursor-not-allowed py-1 items-center uppercase border-white border-2 bg-background-contrast rounded-lg"
+                            >
+                                {i18n._(t`no rewards found`)}
+                            </button>
+                        ) : summoner.materials.log * 1000 < time && summoner.materials.scout !== 0 ? (
                             <button
                                 onClick={async () => sendDungeon()}
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
@@ -124,8 +135,11 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                                 {i18n._(t`go to dungeon!`)}
                             </button>
                         ) : (
-                            <button className="px-1 opacity-50 py-1 cursor-not-allowed items-center uppercase text-xs border-white border-2 bg-red rounded-lg">
-                                {i18n._(t`not available`)}
+                            <button
+                                style={{ fontSize: '0.5rem' }}
+                                className="px-2 opacity-50 cursor-not-allowed py-1 items-center uppercase border-white border-2 bg-background-contrast rounded-lg"
+                            >
+                                {secondsRender((summoner.materials.log * 1000 - time) / 1000)}
                             </button>
                         )}
                     </div>

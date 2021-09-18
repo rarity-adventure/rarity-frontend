@@ -13,6 +13,7 @@ import GoldModal from '../../components/Modal/modals/Gold'
 import DungeonModal from '../../components/Modal/modals/Dungeon'
 import Filter from '../../components/Filter'
 import { classNames } from '../../functions/classNames'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 enum Modal {
     ADVENTURE = 1,
@@ -23,6 +24,8 @@ enum Modal {
 }
 export default function Summoners(): JSX.Element {
     const { i18n } = useLingui()
+
+    const { library, account } = useActiveWeb3React()
 
     const s = useSummoners()
 
@@ -46,6 +49,17 @@ export default function Summoners(): JSX.Element {
     function closeModal() {
         setModal(0)
     }
+
+    const [time, setCurrentTime] = useState(Date.now())
+
+    useEffect(() => {
+        if (!account || !library) return
+        const timer = setInterval(() => {
+            setCurrentTime(Date.now())
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [account, library])
 
     const [parsedSummoners, setParsedSummoners] = useState<SummonerFullData[]>(summoners)
 
@@ -122,7 +136,7 @@ export default function Summoners(): JSX.Element {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
                             {parsedSummoners.map((s) => {
-                                return <SummonerSummaryCard key={s.id} summoner={s} />
+                                return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
                             })}
                         </div>
                     </>
