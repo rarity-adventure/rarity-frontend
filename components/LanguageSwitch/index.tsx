@@ -8,7 +8,20 @@ import { classNames } from '../../functions/classNames'
 
 const LANG_TO_COUNTRY = {
     en: 'English',
-    es: 'Spanish',
+    de: 'Deutsch',
+    fr: 'Français',
+    it: 'Italiano',
+    ro: 'Română',
+    ru: 'Русский',
+    vi: 'Tiếng Việt',
+    zh_CN: '简体中文',
+    zh_TW: '繁體中文',
+    ko: '한국어',
+    ja: '日本語',
+    fa: 'فارسی',
+    pt_BR: 'Português',
+    hi: 'हिन्दी',
+    es: 'Español',
 }
 
 export default function LangSwitcher() {
