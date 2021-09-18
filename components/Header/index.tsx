@@ -57,7 +57,10 @@ function AppBar(): JSX.Element {
 
     function market(): JSX.Element {
         return (
-            <Link href="https://paintswap.finance/nfts/collections/0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19" passHref={true}>
+            <Link
+                href="https://paintswap.finance/nfts/collections/0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19"
+                passHref={true}
+            >
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
                     <h2>{i18n._(t`market`)}</h2>
                 </div>
@@ -98,7 +101,7 @@ function AppBar(): JSX.Element {
                                 <div className="fixed bottom-0 right-0 z-40 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end z-20">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
-                                            <div className="mx-2">
+                                            <div className="hidden md:inline-block mx-2">
                                                 <LangSwitcher />
                                             </div>
                                             {account && chainId && userEthBalance && (
