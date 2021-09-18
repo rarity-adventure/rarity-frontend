@@ -95,6 +95,7 @@ function AppBar(): JSX.Element {
                                             {play()}
                                             {analytics()}
                                             {names()}
+                                            {market()}
                                             {account && (
                                                 <button
                                                     onClick={() => setModal(true)}
@@ -103,7 +104,6 @@ function AppBar(): JSX.Element {
                                                     <h2>{i18n._(t`Donate`)}</h2>
                                                 </button>
                                             )}
-                                            {market()}
                                         </div>
                                     </div>
                                 </div>
@@ -170,6 +170,7 @@ function AppBar(): JSX.Element {
                                 {play()}
                                 {analytics()}
                                 {names()}
+                                {market()}
                                 {account && (
                                     <button
                                         onClick={() => setModal(true)}
@@ -178,7 +179,6 @@ function AppBar(): JSX.Element {
                                         <h2>{i18n._(t`Donate`)}</h2>
                                     </button>
                                 )}
-                                {market()}
                             </div>
                         </Popover.Panel>
                     </>

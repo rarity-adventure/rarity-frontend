@@ -67,7 +67,6 @@ export default function useRarityLibrary(): LibraryInterface {
                     const summoners = await lib?.summoners_full(ids)
                     resolve(
                         summoners.map((value, i) => {
-                            console.log(value.materials[0].balance)
                             return {
                                 id: parseInt(ids[i], 16),
                                 ability_scores: {

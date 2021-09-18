@@ -1,6 +1,8 @@
 import { useRarityHelperContract } from './useContract'
 import { useCallback } from 'react'
 import { utils } from 'ethers'
+import useActiveWeb3React from './useActiveWeb3React'
+import { RARITY_HELPER_ADDRESS } from '../constants'
 
 interface HelperInterface {
     adventure: (ids: number[]) => Promise<void>
@@ -17,6 +19,8 @@ interface HelperInterface {
 
 export default function useRarityHelper(): HelperInterface {
     const helper = useRarityHelperContract()
+
+    const { library, account } = useActiveWeb3React()
 
     const adventure = useCallback(
         async (ids: number[]): Promise<void> => {
@@ -142,10 +146,12 @@ export default function useRarityHelper(): HelperInterface {
         async (amount: string): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const tx = await helper?.approve_all([], { value: amount })
-                    await tx.wait()
+                    const signer = await library.getSigner(account)
+                    const s = await signer.sendTransaction({ to: RARITY_HELPER_ADDRESS, value: amount })
+                    await s.wait()
                     resolve()
                 } catch (e) {
+                    console.log(e)
                     reject()
                 }
             })

@@ -18,14 +18,12 @@ interface DonateModalProps {
 export default function DonateModal({ open, closeFunction }: DonateModalProps): JSX.Element {
     const { i18n } = useLingui()
 
-    const { account } = useActiveWeb3React()
-
     const [amount, setAmount] = useState('0')
 
     const { donate } = useRarityHelper()
 
     async function submit() {
-        const parsedAmount = utils.parseUnits(amount.toString(), 'ether')
+        const parsedAmount = utils.parseUnits(amount.toString(), 'ether').toHexString()
         await toast.promise(donate(parsedAmount.toString()), {
             loading: <b>{i18n._(t`Donating! Thanks!`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
