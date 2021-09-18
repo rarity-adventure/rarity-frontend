@@ -49,8 +49,8 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
 
     function maxLevel(id: string): number {
         return CLASS_SKILLS[summoner.base._class.toString()][parseInt(id) - 1]
-            ? parseInt(summoner.base._level.toString()) + 3
-            : Math.floor((parseInt(summoner.base._level.toString()) + 3) / 2)
+            ? summoner.base._level + 3
+            : Math.floor((summoner.base._level + 3) / 2)
     }
 
     function spCost(id: string): number {

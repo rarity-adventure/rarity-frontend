@@ -2,14 +2,14 @@ import { useCallback } from 'react'
 import { useRaritySkillsContract } from './useContract'
 
 interface SkillsInterface {
-    set_skills: (id: string, skills: number[]) => Promise<void>
+    set_skills: (id: number, skills: number[]) => Promise<void>
 }
 
 export default function useRaritySkills(): SkillsInterface {
     const skills = useRaritySkillsContract()
 
     const set_skills = useCallback(
-        async (id: string, _skills: number[]): Promise<void> => {
+        async (id: number, _skills: number[]): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await skills?.set_skills(id, _skills)

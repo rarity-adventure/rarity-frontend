@@ -55,6 +55,5 @@ export default function Updater(): null {
         if (!library || !chainId || !account || !windowVisible) return
         fetch_summoners_data()
     }, [summoners, windowVisible, fetch_summoners_data, library, chainId, account])
-
     return null
 }

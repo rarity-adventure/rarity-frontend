@@ -13,7 +13,72 @@ interface SelectorProps {
 export default function Filter({ summoners, filteredSummoners }: SelectorProps): JSX.Element {
     const { i18n } = useLingui()
 
-    function filterByLevel() {}
+    const filters = [
+        {
+            name: 'by classes',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => a.base._class - b.base._class)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by level',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => b.base._level - a.base._level)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by xp',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => b.base._xp - a.base._xp)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by gold',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => b.gold.balance - a.gold.balance)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by craft materials',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => b.materials.balance - a.materials.balance)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by id-low to high',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => a.id - b.id)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by id-high to low',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => b.id - a.id)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+        {
+            name: 'by daycare registry ',
+            func: (s: SummonerFullData[]) => {
+                const summonersFiltered: SummonerFullData[] = [].concat(s)
+                summonersFiltered.sort((a, b) => a.misc.daycare_days_paid - b.misc.daycare_days_paid)
+                filteredSummoners(summonersFiltered)
+            },
+        },
+    ]
 
     return (
         <Menu as="div" className="relative text-right ml-3 mt-2 md:-mt-2">
@@ -41,18 +106,24 @@ export default function Filter({ summoners, filteredSummoners }: SelectorProps):
                         leaveTo="transform opacity-0 scale-95"
                     >
                         <Menu.Items className="absolute max-h-96 z-30 overflow-scroll right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
-                            <Menu.Item>
-                                <button
-                                    onClick={() => filterByLevel()}
-                                    className={
-                                        'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
-                                    }
-                                >
-                                    <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis">
-                                        By LEVEL
-                                    </span>
-                                </button>
-                            </Menu.Item>
+                            {filters.map((f, i) => {
+                                {
+                                    return (
+                                        <Menu.Item key={i}>
+                                            <button
+                                                onClick={() => f.func(summoners)}
+                                                className={
+                                                    'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
+                                                }
+                                            >
+                                                <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis">
+                                                    {f.name}
+                                                </span>
+                                            </button>
+                                        </Menu.Item>
+                                    )
+                                }
+                            })}
                         </Menu.Items>
                     </Transition>
                 </>

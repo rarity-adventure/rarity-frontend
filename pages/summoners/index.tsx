@@ -11,6 +11,9 @@ import LevelModal from '../../components/Modal/modals/Level'
 import DaycareMultiModal from '../../components/Modal/modals/DaycareMulti'
 import GoldModal from '../../components/Modal/modals/Gold'
 import DungeonModal from '../../components/Modal/modals/Dungeon'
+import Filter from '../../components/Filter'
+import { classNames } from '../../functions/classNames'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 enum Modal {
     ADVENTURE = 1,
@@ -21,6 +24,8 @@ enum Modal {
 }
 export default function Summoners(): JSX.Element {
     const { i18n } = useLingui()
+
+    const { library, account } = useActiveWeb3React()
 
     const s = useSummoners()
 
@@ -45,6 +50,19 @@ export default function Summoners(): JSX.Element {
         setModal(0)
     }
 
+    const [time, setCurrentTime] = useState(Date.now())
+
+    useEffect(() => {
+        if (!account || !library) return
+        const timer = setInterval(() => {
+            setCurrentTime(Date.now())
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [account, library])
+
+    const [parsedSummoners, setParsedSummoners] = useState<SummonerFullData[]>(summoners)
+
     return (
         <div className="w-full z-25">
             <AdventureModal open={modal === Modal.ADVENTURE} closeFunction={closeModal} summoners={adventure} />
@@ -63,28 +81,44 @@ export default function Summoners(): JSX.Element {
                                 <h1 className="text-lg">{i18n._(t`one-click`)}</h1>
                                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 text-xs gap-y-3">
                                     <button
-                                        className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
+                                        className={classNames(
+                                            'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
+                                            adventure.length === 0 ? 'opacity-50' : ''
+                                        )}
                                         onClick={() => setModal(Modal.ADVENTURE)}
                                     >
-                                        {i18n._(t`adventure`)}
+                                        <p>{i18n._(t`adventure`)}</p>
+                                        <p className="mt-1">{adventure.length}</p>
                                     </button>
                                     <button
-                                        className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
+                                        className={classNames(
+                                            'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
+                                            level.length === 0 ? 'opacity-50' : ''
+                                        )}
                                         onClick={() => setModal(Modal.LEVELUP)}
                                     >
-                                        {i18n._(t`level-up`)}
+                                        <p>{i18n._(t`level-up`)}</p>
+                                        <p className="mt-1">{level.length}</p>
                                     </button>
                                     <button
-                                        className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
+                                        className={classNames(
+                                            'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
+                                            gold.length === 0 ? 'opacity-50' : ''
+                                        )}
                                         onClick={() => setModal(Modal.GOLD)}
                                     >
-                                        {i18n._(t`claim gold`)}
+                                        <p>{i18n._(t`claim gold`)}</p>
+                                        <p className="mt-1">{gold.length}</p>
                                     </button>
                                     <button
-                                        className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
+                                        className={classNames(
+                                            'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
+                                            dungeon.length === 0 ? 'opacity-50' : ''
+                                        )}
                                         onClick={() => setModal(Modal.DUNGEON)}
                                     >
-                                        {i18n._(t`dungeon`)}
+                                        <p>{i18n._(t`dungeon`)}</p>
+                                        <p className="mt-1">{dungeon.length}</p>
                                     </button>
                                     <button
                                         className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
@@ -95,15 +129,20 @@ export default function Summoners(): JSX.Element {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="flex flex-row items-center justify-end">
-                    <div className="w-48">
-                        <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
-                    </div>
-                </div>*/}
+                        <div className="flex flex-row items-center justify-end mt-5">
+                            <div className="w-52">
+                                <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
+                            </div>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
-                            {summoners.map((s) => {
-                                return <SummonerSummaryCard key={s.id} summoner={s} />
-                            })}
+                            {}
+                            {parsedSummoners.length === 0
+                                ? summoners.map((s) => {
+                                      return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
+                                  })
+                                : parsedSummoners.map((s) => {
+                                      return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
+                                  })}
                         </div>
                     </>
                 ) : (

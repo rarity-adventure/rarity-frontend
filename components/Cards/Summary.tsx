@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
@@ -9,6 +9,8 @@ import DaycareSingleModal from '../Modal/modals/DaycareSingle'
 import useRarity from '../../hooks/useRarity'
 import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
+import { secondsRender } from '../../functions/secondsToText'
+import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 
 enum Modals {
     TRANSFER = 1,
@@ -16,12 +18,12 @@ enum Modals {
     DAYCARE,
 }
 
-function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
+function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; time: number }): JSX.Element {
     const { i18n } = useLingui()
 
     const [modalOpen, setModalOpen] = useState<Modals>(0)
 
-    const { adventure } = useRarity()
+    const { adventure, level_up } = useRarity()
 
     function closeModals() {
         setModalOpen(0)
@@ -45,6 +47,14 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
         })
     }
 
+    async function sendLevelUP() {
+        await toast.promise(level_up(summoner.id), {
+            loading: <b>{i18n._(t`Level-UP Summoner`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
     return (
         <div className="mx-auto w-56">
             <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
@@ -54,10 +64,13 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
 
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
                 <div className="mx-auto p-2">
-                    <span>{i18n._(CLASSES_NAMES[summoner.base._class])}</span>
+                    {summoner.base._name !== '' ? (
+                        <p>{summoner.base._name}</p>
+                    ) : (
+                        <span>{i18n._(CLASSES_NAMES[summoner.base._class])}</span>
+                    )}
                 </div>
                 <div className="p-2 text-xs">
-                    <p>{summoner.base._name}</p>
                     <p>
                         {i18n._(t`id`)}: {summoner.id}
                     </p>
@@ -74,6 +87,20 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                     <div className="flex flex-row justify-between mr-2">
                         <p>{i18n._(t`gold`)}</p>
                         <span> {summoner.gold.balance}</span>
+                    </div>
+                    <div className="flex flex-row justify-between mr-2">
+                        <p>{i18n._(t`craft material`)}</p>
+                        <span> {summoner.materials.balance}</span>
+                    </div>
+                    <div className="mt-2 uppercase text-center">
+                        {summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && (
+                            <button
+                                onClick={() => sendLevelUP()}
+                                className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2"
+                            >
+                                {i18n._(t`level-up`)}
+                            </button>
+                        )}
                     </div>
                 </div>
                 <div className="p-2 text-xs">
@@ -94,10 +121,13 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                     <div className="flex flex-row justify-between mr-2 items-center my-2">
                         <p>{i18n._(t`adventure`)}</p>
                     </div>
-                    <div className="flex flex-row justify-end mr-2 items-center my-2">
-                        {summoner.base._log * 1000 > Date.now() ? (
-                            <button className="px-1 opacity-50 cursor-not-allowed py-1 items-center uppercase text-xs border-white border-2 bg-red rounded-lg">
-                                {i18n._(t`not available`)}
+                    <div className="flex flex-row justify-center mr-2 items-center my-2 text-center">
+                        {summoner.base._log * 1000 > time ? (
+                            <button
+                                style={{ fontSize: '0.5rem' }}
+                                className="px-1.5 opacity-50 cursor-not-allowed py-1 items-center uppercase border-white border-2 bg-background-contrast rounded-lg"
+                            >
+                                {secondsRender((summoner.base._log * 1000 - time) / 1000)}
                             </button>
                         ) : (
                             <button
@@ -111,8 +141,15 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                     <div className="flex flex-row justify-between mr-2 items-center my-2">
                         <p>{i18n._(t`dungeon`)}</p>
                     </div>
-                    <div className="flex flex-row justify-end mr-2 items-center my-2">
-                        {summoner.materials.log * 1000 < Date.now() && summoner.materials.scout !== 0 ? (
+                    <div className="flex flex-row justify-center mr-2 items-center my-2 text-center">
+                        {summoner.materials.scout === 0 ? (
+                            <button
+                                style={{ fontSize: '0.5rem' }}
+                                className="px-2 opacity-50 cursor-not-allowed py-1 items-center uppercase border-white border-2 bg-background-contrast rounded-lg"
+                            >
+                                {i18n._(t`no rewards found`)}
+                            </button>
+                        ) : summoner.materials.log * 1000 < time && summoner.materials.scout !== 0 ? (
                             <button
                                 onClick={async () => sendDungeon()}
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
@@ -120,8 +157,11 @@ function SummonerSummaryCard({ summoner }: { summoner: SummonerFullData }): JSX.
                                 {i18n._(t`go to dungeon!`)}
                             </button>
                         ) : (
-                            <button className="px-1 opacity-50 py-1 cursor-not-allowed items-center uppercase text-xs border-white border-2 bg-red rounded-lg">
-                                {i18n._(t`not available`)}
+                            <button
+                                style={{ fontSize: '0.5rem' }}
+                                className="px-2 opacity-50 cursor-not-allowed py-1 items-center uppercase border-white border-2 bg-background-contrast rounded-lg"
+                            >
+                                {secondsRender((summoner.materials.log * 1000 - time) / 1000)}
                             </button>
                         )}
                     </div>

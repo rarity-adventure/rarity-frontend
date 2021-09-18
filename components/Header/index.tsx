@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
@@ -7,6 +7,7 @@ import LangSwitcher from '../LanguageSwitch'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Link from 'next/link'
+import DonateModal from '../Modal/modals/Donate'
 
 function AppBar(): JSX.Element {
     const { i18n } = useLingui()
@@ -37,7 +38,7 @@ function AppBar(): JSX.Element {
 
     function analytics(): JSX.Element {
         return (
-            <Link href="/analytics" passHref={false}>
+            <Link href="/analytics" passHref={true}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
                     <h2>{i18n._(t`Analytics`)}</h2>
                 </div>
@@ -68,8 +69,14 @@ function AppBar(): JSX.Element {
         )
     }
 
+    const [modal, setModal] = useState(false)
+
+    function close() {
+        setModal(false)
+    }
     return (
         <header className="flex-shrink-0 w-full z-30">
+            <DonateModal open={modal} closeFunction={close} />
             <Popover as="nav" className="w-full bg-transparent header-border-b">
                 {({ open }) => (
                     <>
@@ -88,12 +95,14 @@ function AppBar(): JSX.Element {
                                             {play()}
                                             {analytics()}
                                             {names()}
-                                            <a
-                                                href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
-                                                className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                            >
-                                                <h2>{i18n._(t`Donate`)}</h2>
-                                            </a>
+                                            {account && (
+                                                <button
+                                                    onClick={() => setModal(true)}
+                                                    className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
+                                                >
+                                                    <h2>{i18n._(t`Donate`)}</h2>
+                                                </button>
+                                            )}
                                             {market()}
                                         </div>
                                     </div>
@@ -161,12 +170,14 @@ function AppBar(): JSX.Element {
                                 {play()}
                                 {analytics()}
                                 {names()}
-                                <a
-                                    href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
-                                    className="border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                >
-                                    <h2>{i18n._(t`Donate`)}</h2>
-                                </a>
+                                {account && (
+                                    <button
+                                        onClick={() => setModal(true)}
+                                        className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
+                                    >
+                                        <h2>{i18n._(t`Donate`)}</h2>
+                                    </button>
+                                )}
                                 {market()}
                             </div>
                         </Popover.Panel>

@@ -1,10 +1,10 @@
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import cookieCutter from 'cookie-cutter'
 import { classNames } from '../../functions/classNames'
-import Image from 'next/image'
 
 const LANG_TO_COUNTRY = {
     en: 'English',
@@ -34,7 +34,7 @@ export default function LangSwitcher() {
                     <div>
                         <Menu.Button className="inline-flex justify-center w-full p-1.5 text-xs font-bold border rounded shadow-sm text-primary border-white">
                             <Image
-                                className="inline align-middle items-center"
+                                className="inline w-3 h-3 mr-1 align-middle"
                                 src={`/img/flags/${locale}-flag.png`}
                                 width={20}
                                 height={20}

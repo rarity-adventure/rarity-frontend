@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { utils } from 'ethers'
 
 export interface SummonerFullData {
-    id: string
+    id: number
     ability_scores: {
         attributes: {
             _cha: number
