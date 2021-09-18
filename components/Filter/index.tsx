@@ -109,7 +109,7 @@ export default function Filter({ summoners, filteredSummoners }: SelectorProps):
                             {filters.map((f) => {
                                 {
                                     return (
-                                        <Menu.Item>
+                                        <Menu.Item key="f.name">
                                             <button
                                                 onClick={() => f.func(summoners)}
                                                 className={
