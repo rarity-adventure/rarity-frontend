@@ -11,25 +11,23 @@ const Footer = () => {
                     <div>
                         <h2>{i18n._(t`CREATED BY`)}:</h2>
                         <a target="_blank" rel="noreferrer" href="https://twitter.com/AndreCronjeTech">
-                            <h2>@ANDRECRONJE</h2>
+                            <span>@ANDRECRONJE</span>
                         </a>
                     </div>
                     <div className="col-span-2">
                         <h2 className="md:ml-4">{i18n._(t`BUILT BY`)}:</h2>
                         <a className="md:ml-4" target="_blank" rel="noreferrer" href="https://twitter.com/0xchronos">
-                            <span style={{ fontFamily: 'Regular' }}>@0xCHRONOS </span>
+                            <span>@0xCHRONOS </span>
                         </a>
-                        <span className="md:mx-2" style={{ fontFamily: 'Regular' }}>
-                            and
-                        </span>
+                        <span className="md:mx-2">and</span>
                         <a target="_blank" rel="noreferrer" href="https://twitter.com/mat_nadler">
-                            <span style={{ fontFamily: 'Regular' }}> @MAT_NADLER</span>
+                            <span> @MAT_NADLER</span>
                         </a>
                     </div>
                     <div>
                         <h2 className="md:ml-4">{i18n._(t`DESIGNED BY`)}:</h2>
                         <a className="md:ml-4" target="_blank" rel="noreferrer" href="https://twitter.com/0xlucid">
-                            <span style={{ fontFamily: 'Regular' }}>@0xLUCID</span>
+                            <span>@0xLUCID</span>
                         </a>
                     </div>
                 </div>
