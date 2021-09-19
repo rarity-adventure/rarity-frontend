@@ -2,12 +2,12 @@ import { useCallback } from 'react'
 import { utils } from 'ethers'
 import { useRarityDaycareContract } from './useContract'
 
-interface DailyCareInterface {
+interface DailycareInterface {
     registerDaycare: (ids: number[], days: number) => Promise<void>
     daysPaid: (id: number) => Promise<number>
 }
 
-export default function useRarityDaycare(): DailyCareInterface {
+export default function useRarityDaycare(): DailycareInterface {
     const daycare = useRarityDaycareContract()
     const daysPaid = useCallback(
         async (id: number): Promise<number> => {

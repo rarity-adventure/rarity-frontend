@@ -7,6 +7,7 @@ module.exports = {
             'background-middle': '#0F1F39',
             'background-end': '#0B1526',
             'background-contrast': '#3C415C',
+            'background-contrast-dark': '#2F3C4F',
             white: '#ffffff',
             grey: '#c0c0c0',
             black: '#000000',

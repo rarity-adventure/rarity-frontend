@@ -35,7 +35,7 @@ export default function Profile(): JSX.Element {
     const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
 
     useEffect(() => {
-        if (summoners.length > 0) {
+        if (summoners.length > 0 && !selectedSummoner) {
             setSelectedSummoner(summoners[0])
         }
     }, [summoners])
@@ -100,11 +100,11 @@ export default function Profile(): JSX.Element {
                                     <div>
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
                                             {selectedSummoner && (
-                                                <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-lg">
-                                                    <Image src="/img/gold.png" width={50} height={40} />
-                                                    <div className="py-1">
+                                                <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                    <div className="py-1 w-2/3 text-center">
                                                         <p>{selectedSummoner.gold.balance}</p>
                                                     </div>
+                                                    <Image src="/img/gold.png" width={50} height={40} />
                                                 </div>
                                             )}
                                             <Selector summoners={summoners} select={setSelectedSummoner} />
@@ -150,11 +150,11 @@ export default function Profile(): JSX.Element {
                                 </div>
                                 <div className="sm:hidden mt-2 flex flex-row justify-between">
                                     {selectedSummoner && (
-                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-lg">
-                                            <Image src="/img/gold.png" width={50} height={40} />
-                                            <div className="py-1">
+                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                            <div className="py-1 w-2/3 text-center">
                                                 <p>{selectedSummoner.gold.balance}</p>
                                             </div>
+                                            <Image src="/img/gold.png" width={50} height={40} />
                                         </div>
                                     )}
                                     <Selector summoners={summoners} select={setSelectedSummoner} />

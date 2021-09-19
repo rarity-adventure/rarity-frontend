@@ -4,43 +4,28 @@ export enum ITEM_TYPE {
     WEAPON,
 }
 
-interface ItemWeapon {
-    name: string
-    cost: number
-    proficiency: number
-    encumbrance: number
-    damage_type: number
-    weight: number
-    damage: number
-    critical: number
-    critical_modifier: number
-    range_increment: number
-    description: string
-}
-
-interface ItemArmor {
-    name: string
-    cost: number
-    proficiency: number
-    weight: number
-    armor_bonus: number
-    max_dex_bonus: number
-    penalty: number
-    spell_failure: number
-    description: string
-}
-
-interface ItemGood {
+export interface Item {
     name: string
     cost: number
     weight: number
     description: string
+    proficiency?: number
+    encumbrance?: number
+    damage_type?: number
+    damage?: number
+    critical?: number
+    critical_modifier?: number
+    range_increment?: number
+    armor_bonus?: number
+    max_dex_bonus?: number
+    penalty?: number
+    spell_failure?: number
 }
 
 export const ITEMS: {
-    [ITEM_TYPE.GOOD]: { [k: string]: ItemGood }
-    [ITEM_TYPE.ARMOR]: { [k: string]: ItemArmor }
-    [ITEM_TYPE.WEAPON]: { [k: string]: ItemWeapon }
+    [ITEM_TYPE.GOOD]: { [k: string]: Item }
+    [ITEM_TYPE.ARMOR]: { [k: string]: Item }
+    [ITEM_TYPE.WEAPON]: { [k: string]: Item }
 } = {
     [ITEM_TYPE.GOOD]: {
         '1': {
