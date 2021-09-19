@@ -8,20 +8,10 @@ import { classNames } from '../../functions/classNames'
 
 const LANG_TO_COUNTRY = {
     en: 'English',
-    de: 'Deutsch',
-    fr: 'Français',
-    it: 'Italiano',
-    ro: 'Română',
-    ru: 'Русский',
-    vi: 'Tiếng Việt',
     zh_CN: '简体中文',
     zh_TW: '繁體中文',
-    ko: '한국어',
-    ja: '日本語',
-    fa: 'فارسی',
-    pt_BR: 'Português',
-    hi: 'हिन्दी',
-    es: 'Español',
+    tr: 'Türkçe',
+    el: 'Ελληνικά',
 }
 
 export default function LangSwitcher() {
@@ -33,14 +23,7 @@ export default function LangSwitcher() {
                 <>
                     <div>
                         <Menu.Button className="inline-flex justify-center w-full p-1.5 text-xs font-bold border rounded shadow-sm text-primary border-white">
-                            <Image
-                                className="inline w-3 h-3 mr-1 align-middle"
-                                src={`/img/flags/${locale}-flag.png`}
-                                width={20}
-                                height={20}
-                                alt={locale}
-                                aria-hidden="true"
-                            />
+                            <h2>{LANG_TO_COUNTRY[locale]}</h2>
                         </Menu.Button>
                     </div>
 
@@ -71,14 +54,6 @@ export default function LangSwitcher() {
                                                         )}
                                                         onClick={() => cookieCutter.set('NEXT_LOCALE', locale)}
                                                     >
-                                                        <Image
-                                                            className="inline w-3 h-3 mr-1 align-middle"
-                                                            src={`/img/flags/${locale}-flag.png`}
-                                                            width={20}
-                                                            height={20}
-                                                            alt={locale}
-                                                            aria-hidden="true"
-                                                        />
                                                         <h2 className="ml-2">{LANG_TO_COUNTRY[locale]}</h2>
                                                     </a>
                                                 </Link>

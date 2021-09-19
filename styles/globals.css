@@ -1,16 +1,9 @@
+@import '@fontsource/work-sans/index.css';
+@import '@fontsource/dm-mono/index.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-    font-family: 'Bold';
-    src: url('/fonts/work_sans_bold.ttf');
-}
-
-@font-face {
-    font-family: 'Regular';
-    src: url('/fonts/work_sans_regular.ttf');
-}
 
 @font-face {
     font-family: 'Pixelmix';
@@ -29,10 +22,23 @@ html {
 
 html,
 body {
-    font-family: 'Pixelmix', serif;
+    font-family: 'Pixelmix', "Work Sans", sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+    font-weight: bold;
+    font-family: 'Work Sans', sans-serif;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Work Sans', sans-serif;
 }
 
 body {
@@ -41,18 +47,6 @@ body {
     min-height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
-}
-
-h1 {
-    font-family: 'Bold', serif;
-}
-
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Regular', serif;
 }
 
 ::-webkit-scrollbar {
