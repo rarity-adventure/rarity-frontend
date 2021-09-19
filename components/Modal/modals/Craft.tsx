@@ -17,16 +17,32 @@ interface CraftModalProps {
     open: boolean
     closeFunction: (craft: boolean) => void
     success: boolean
+    item: Item
 }
 
-export default function ItemModal({ open, closeFunction }: CraftModalProps): JSX.Element {
+export default function CraftResultModal({ open, closeFunction, success, item }: CraftModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     return (
         <Modal isOpen={open} onDismiss={() => closeFunction(false)}>
             <div className="bg-card-bottom rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`Craft Result`)} onClose={() => closeFunction(false)} />
-                <div></div>
+                {success ? (
+                    <>
+                        <ModalHeader title={i18n._(t`CONGRATULATIONS!`)} onClose={() => closeFunction(false)} />
+                        <div className="text-center">
+                            <p className="text-center">{i18n._(t`You have successfully crafted`)}</p>
+                            <p className="text-center">{item.name}</p>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <ModalHeader title={i18n._(t`OH NO...`)} onClose={() => closeFunction(false)} />
+                        <div className="text-center">
+                            <p>{i18n._(t`Crafting failed`)}</p>
+                            <p>{i18n._(t`Please try again`)}</p>
+                        </div>
+                    </>
+                )}
             </div>
         </Modal>
     )

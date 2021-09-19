@@ -14,6 +14,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { utils } from 'ethers'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
+import CraftResultModal from '../Modal/modals/Craft'
 
 enum View {
     GOODS,
@@ -180,6 +181,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 itemType={getTypeFromView()}
                 checkOnly={checkOnly}
             />
+            <CraftResultModal open={resultModal} closeFunction={setResultModal} success={craftResult} item={item} />
             <>
                 {' '}
                 <div className="flex flex-row w-full items-center">
@@ -446,12 +448,23 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                         >
                                             {i18n._(t`cancel`)}
                                         </button>
-                                        <button
-                                            onClick={async () => await craftButton()}
-                                            className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg"
-                                        >
-                                            {i18n._(t`craft`)}
-                                        </button>
+                                        {summoner.base._xp >= 250 &&
+                                        summoner.gold.balance >= item.cost &&
+                                        summoner.skills.skills[5] > 0 &&
+                                        summoner.skills.skills[5] + summoner.ability_scores.modifiers._int > 0 &&
+                                        approval.gold &&
+                                        approval.material ? (
+                                            <button
+                                                onClick={async () => await craftButton()}
+                                                className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg"
+                                            >
+                                                {i18n._(t`craft`)}
+                                            </button>
+                                        ) : (
+                                            <button className="bg-green opacity-50 cursor-not-allowed px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg">
+                                                {i18n._(t`craft`)}
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             )}
