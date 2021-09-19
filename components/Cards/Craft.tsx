@@ -98,9 +98,6 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }
 
     function calcSuccessRate(): string {
-        console.log(summoner.skills)
-        console.log(summoner.skills.skills[5])
-
         const check_base = summoner.skills.skills[5] + summoner.ability_scores.modifiers._int
         const DC = getDC()
         let p = (20 - DC + check_base + Math.floor(materialUse / 10)) / 20
@@ -130,6 +127,11 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         }
     }
     const [view, setView] = useState<View>(0)
+
+    function craft() {
+
+    }
+    
     return (
         <div className="max-w-screen-md mx-auto">
             <ItemModal open={modal} closeFunction={craftModal} item={item} itemType={getTypeFromView()} />
@@ -335,18 +337,20 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="mt-2 justify-center">
+                                    <div className="mt-2 justify-center text-center">
                                         <span> {i18n._(t`Material to use`)}</span>
                                         <input
                                             className="text-center border-white border-2 py-1 rounded-lg bg-background-contrast w-40 ml-5"
                                             type="number"
+                                            min="0"
                                             onChange={(v) => materialUsageSetter(v.target.value)}
                                         />
-                                    </div>
-                                    <span>
+                                        <p className="my-2">
                                         {' '}
-                                        {i18n._(t`Success rate`)}: {calcSuccessRate()}
-                                    </span>
+                                            {i18n._(t`Success rate`)}: {calcSuccessRate()}
+                                    </p>
+                                    </div>
+
                                     <div className="flex flex-row justify-center p-2">
                                         <button
                                             onClick={() => {
