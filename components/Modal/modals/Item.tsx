@@ -34,7 +34,7 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                 {item && (
                     <div className="px-3 text-white pb-5 ">
                         <p>{item.name}</p>
-                        <p>COST: {utils.formatUnits(item.cost.toString(), 'ether')} GOLD</p>
+                        <p>COST: {item.cost} GOLD</p>
                         {item.proficiency ||
                         item.weight ||
                         item.spell_failure ||

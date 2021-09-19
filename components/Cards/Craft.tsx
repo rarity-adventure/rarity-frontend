@@ -342,18 +342,15 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                         <div className="grid grid-cols-1 lg:grid-cols-3 py-3 px-2 gap-y-1 text-xs">
                                             <p className="p-1">
                                                 GOLD:{' '}
-                                                {summoner.gold.balance >=
-                                                parseInt(utils.formatUnits(item.cost.toString(), 'ether')) ? (
+                                                {summoner.gold.balance >= item.cost ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {summoner.gold.balance}/
-                                                        {utils.formatUnits(item.cost.toString())}
+                                                        {summoner.gold.balance}/{item.cost}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {summoner.gold.balance}/
-                                                        {utils.formatUnits(item.cost.toString())}
+                                                        {summoner.gold.balance}/{item.cost}
                                                     </span>
                                                 )}
                                             </p>

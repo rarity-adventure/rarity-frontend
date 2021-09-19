@@ -30,162 +30,162 @@ export const ITEMS: {
     [ITEM_TYPE.GOOD]: {
         '1': {
             name: 'Caltrops',
-            cost: 1e18,
+            cost: 1,
             weight: 2,
             description:
                 'A caltrop is a four-pronged iron spike crafted so that one prong faces up no matter how the caltrop comes to rest. You scatter caltrops on the ground in the hope that your enemies step on them or are at least forced to slow down to avoid them. One 2-pound bag of caltrops covers an area 5 feet square.',
         },
         '2': {
             name: 'Candle',
-            cost: 1e16,
+            cost: 0.01,
             weight: 0,
             description: 'A candle dimly illuminates a 5-foot radius and burns for 1 hour.',
         },
         '3': {
             name: 'Chain',
-            cost: 30e18,
+            cost: 30,
             weight: 2,
             description: 'Chain has hardness 10 and 5 hit points. It can be burst with a DC 26 Strength check.',
         },
         '4': {
             name: 'Crowbar',
-            cost: 2e18,
+            cost: 2,
             weight: 5,
             description:
                 'A crowbar grants a +2 circumstance bonus on Strength checks made for such purposes. If used in combat, treat a crowbar as a one-handed improvised weapon that deals bludgeoning damage equal to that of a club of its size.',
         },
         '5': {
             name: 'Flint and Steel',
-            cost: 1e18,
+            cost: 1,
             weight: 0,
             description:
                 'Lighting a torch with flint and steel is a full-round action, and lighting any other fire with them takes at least that long.',
         },
         '6': {
             name: 'Grappling Hook',
-            cost: 1e18,
+            cost: 1,
             weight: 4,
             description:
                 'Throwing a grappling hook successfully requires a Use Rope check (DC 10, +2 per 10 feet of distance thrown).',
         },
         '7': {
             name: 'Hammer',
-            cost: 5e17,
+            cost: 0.5,
             weight: 2,
             description:
                 'If a hammer is used in combat, treat it as a one-handed improvised weapon that deals bludgeoning damage equal to that of a spiked gauntlet of its size.',
         },
         '8': {
             name: 'Ink',
-            cost: 8e18,
+            cost: 8,
             weight: 0,
             description: 'This is black ink. You can buy ink in other colors, but it costs twice as much.',
         },
         '9': {
             name: 'Jug, Clay',
-            cost: 3e16,
+            cost: 0.03,
             weight: 9,
             description: 'This basic ceramic jug is fitted with a stopper and holds 1 gallon of liquid.',
         },
         '10': {
             name: 'Lamp, Common',
-            cost: 1e17,
+            cost: 0.1,
             weight: 1,
             description:
                 'A lamp clearly illuminates a 15-foot radius, provides shadowy illumination out to a 30-foot radius, and burns for 6 hours on a pint of oil. You can carry a lamp in one hand.',
         },
         '11': {
             name: 'Lantern, Bullseye',
-            cost: 12e18,
+            cost: 12,
             weight: 3,
             description:
                 'A bullseye lantern provides clear illumination in a 60-foot cone and shadowy illumination in a 120-foot cone. It burns for 6 hours on a pint of oil. You can carry a bullseye lantern in one hand.',
         },
         '12': {
             name: 'Lantern, Hooded',
-            cost: 7e18,
+            cost: 7,
             weight: 2,
             description:
                 'A hooded lantern clearly illuminates a 30-foot radius and provides shadowy illumination in a 60-foot radius. It burns for 6 hours on a pint of oil. You can carry a hooded lantern in one hand.',
         },
         '13': {
             name: 'Lock (very simple)',
-            cost: 20e18,
+            cost: 20,
             weight: 1,
             description:
                 'The DC to open a lock with the Open Lock skill depends on the locks quality: simple (DC 20), average (DC 25), good (DC 30), or superior (DC 40).',
         },
         '14': {
             name: 'Lock (average)',
-            cost: 40e18,
+            cost: 40,
             weight: 1,
             description:
                 'The DC to open a lock with the Open Lock skill depends on the locks quality: simple (DC 20), average (DC 25), good (DC 30), or superior (DC 40).',
         },
         '15': {
             name: 'Lock (good)',
-            cost: 80e18,
+            cost: 80,
             weight: 1,
             description:
                 'The DC to open a lock with the Open Lock skill depends on the locks quality: simple (DC 20), average (DC 25), good (DC 30), or superior (DC 40).',
         },
         '16': {
             name: 'Lock (amazing)',
-            cost: 150e18,
+            cost: 150,
             weight: 1,
             description:
                 'The DC to open a lock with the Open Lock skill depends on the locks quality: simple (DC 20), average (DC 25), good (DC 30), or superior (DC 40).',
         },
         '17': {
             name: 'Manacles',
-            cost: 15e18,
+            cost: 15,
             weight: 2,
             description:
                 'Manacles can bind a Medium creature. A manacled creature can use the Escape Artist skill to slip free (DC 30, or DC 35 for masterwork manacles). Breaking the manacles requires a Strength check (DC 26, or DC 28 for masterwork manacles). Manacles have hardness 10 and 10 hit points',
         },
         '18': {
             name: 'Manacles, masterwork',
-            cost: 50e18,
+            cost: 50,
             weight: 2,
             description:
                 'Manacles can bind a Medium creature. A manacled creature can use the Escape Artist skill to slip free (DC 30, or DC 35 for masterwork manacles). Breaking the manacles requires a Strength check (DC 26, or DC 28 for masterwork manacles). Manacles have hardness 10 and 10 hit points',
         },
         '19': {
             name: 'Oil',
-            cost: 1e17,
+            cost: 0.1,
             weight: 1,
             description:
                 'A pint of oil burns for 6 hours in a lantern. You can use a flask of oil as a splash weapon. Use the rules for alchemists fire, except that it takes a full round action to prepare a flask with a fuse. Once it is thrown, there is a 50% chance of the flask igniting successfully. You can pour a pint of oil on the ground to cover an area 5 feet square, provided that the surface is smooth. If lit, the oil burns for 2 rounds and deals 1d3 points of fire damage to each creature in the area.',
         },
         '20': {
             name: 'Rope, Hempen',
-            cost: 1e18,
+            cost: 1,
             weight: 10,
             description: 'This rope has 2 hit points and can be burst with a DC 23 Strength check.',
         },
         '21': {
             name: 'Rope, Silk',
-            cost: 10e18,
+            cost: 10,
             weight: 5,
             description:
                 'This rope has 4 hit points and can be burst with a DC 24 Strength check. It is so supple that it provides a +2 circumstance bonus on Use Rope checks.',
         },
         '22': {
             name: 'Spyglass',
-            cost: 1000e18,
+            cost: 1000,
             weight: 1,
             description: 'Objects viewed through a spyglass are magnified to twice their size.',
         },
         '23': {
             name: 'Torch',
-            cost: 1e16,
+            cost: 0.01,
             weight: 1,
             description:
                 'A torch burns for 1 hour, clearly illuminating a 20-foot radius and providing shadowy illumination out to a 40-foot radius. If a torch is used in combat, treat it as a one-handed improvised weapon that deals bludgeoning damage equal to that of a gauntlet of its size, plus 1 point of fire damage.',
         },
         '24': {
             name: 'Vial',
-            cost: 1e18,
+            cost: 1,
             weight: 1,
             description:
                 'A vial holds 1 ounce of liquid. The stoppered container usually is no more than 1 inch wide and 3 inches high.',
@@ -194,7 +194,7 @@ export const ITEMS: {
     [ITEM_TYPE.ARMOR]: {
         '1': {
             name: 'Padded',
-            cost: 5e18,
+            cost: 5,
             proficiency: 1,
             weight: 10,
             armor_bonus: 1,
@@ -205,7 +205,7 @@ export const ITEMS: {
         },
         '2': {
             name: 'Leather',
-            cost: 10e18,
+            cost: 10,
             proficiency: 1,
             weight: 15,
             armor_bonus: 2,
@@ -216,7 +216,7 @@ export const ITEMS: {
         },
         '3': {
             name: 'Studded leather',
-            cost: 25e18,
+            cost: 25,
             proficiency: 1,
             weight: 20,
             armor_bonus: 3,
@@ -227,7 +227,7 @@ export const ITEMS: {
         },
         '4': {
             name: 'Chain shirt',
-            cost: 100e18,
+            cost: 100,
             proficiency: 1,
             weight: 25,
             armor_bonus: 4,
@@ -238,7 +238,7 @@ export const ITEMS: {
         },
         '5': {
             name: 'Hide',
-            cost: 15e18,
+            cost: 15,
             proficiency: 2,
             weight: 25,
             armor_bonus: 3,
@@ -249,7 +249,7 @@ export const ITEMS: {
         },
         '6': {
             name: 'Scale mail',
-            cost: 50e18,
+            cost: 50,
             proficiency: 2,
             weight: 30,
             armor_bonus: 4,
@@ -260,7 +260,7 @@ export const ITEMS: {
         },
         '7': {
             name: 'Chainmail',
-            cost: 150e18,
+            cost: 150,
             proficiency: 2,
             weight: 40,
             armor_bonus: 5,
@@ -271,7 +271,7 @@ export const ITEMS: {
         },
         '8': {
             name: 'Breastplate',
-            cost: 200e18,
+            cost: 200,
             proficiency: 2,
             weight: 30,
             armor_bonus: 5,
@@ -282,7 +282,7 @@ export const ITEMS: {
         },
         '9': {
             name: 'Splint mail',
-            cost: 200e18,
+            cost: 200,
             proficiency: 3,
             weight: 45,
             armor_bonus: 6,
@@ -293,7 +293,7 @@ export const ITEMS: {
         },
         '10': {
             name: 'Banded mail',
-            cost: 250e18,
+            cost: 250,
             proficiency: 3,
             weight: 35,
             armor_bonus: 6,
@@ -304,7 +304,7 @@ export const ITEMS: {
         },
         '11': {
             name: 'Half-plate',
-            cost: 600e18,
+            cost: 600,
             proficiency: 3,
             weight: 50,
             armor_bonus: 7,
@@ -315,7 +315,7 @@ export const ITEMS: {
         },
         '12': {
             name: 'Full plate',
-            cost: 1500e18,
+            cost: 1500,
             proficiency: 3,
             weight: 50,
             armor_bonus: 8,
@@ -327,7 +327,7 @@ export const ITEMS: {
         },
         '13': {
             name: 'Buckler',
-            cost: 15e18,
+            cost: 15,
             proficiency: 4,
             weight: 5,
             armor_bonus: 1,
@@ -339,7 +339,7 @@ export const ITEMS: {
         },
         '14': {
             name: 'Shield, light wooden',
-            cost: 3e18,
+            cost: 3,
             proficiency: 4,
             weight: 5,
             armor_bonus: 1,
@@ -351,7 +351,7 @@ export const ITEMS: {
         },
         '15': {
             name: 'Shield, light steel',
-            cost: 9e18,
+            cost: 9,
             proficiency: 4,
             weight: 6,
             armor_bonus: 1,
@@ -363,7 +363,7 @@ export const ITEMS: {
         },
         '16': {
             name: 'Shield, heavy wooden',
-            cost: 7e18,
+            cost: 7,
             proficiency: 4,
             weight: 10,
             armor_bonus: 2,
@@ -375,7 +375,7 @@ export const ITEMS: {
         },
         '17': {
             name: 'Shield, heavy steel',
-            cost: 20e18,
+            cost: 20,
             proficiency: 4,
             weight: 15,
             armor_bonus: 2,
@@ -387,7 +387,7 @@ export const ITEMS: {
         },
         '18': {
             name: 'Shield, tower',
-            cost: 30e18,
+            cost: 30,
             proficiency: 4,
             weight: 45,
             armor_bonus: 4,
@@ -401,7 +401,7 @@ export const ITEMS: {
     [ITEM_TYPE.WEAPON]: {
         '1': {
             name: 'Gauntlet',
-            cost: 2e18,
+            cost: 2,
             proficiency: 1,
             encumbrance: 1,
             damage_type: 1,
@@ -415,7 +415,7 @@ export const ITEMS: {
         },
         '2': {
             name: 'Dagger',
-            cost: 2e18,
+            cost: 2,
             proficiency: 1,
             encumbrance: 2,
             damage_type: 2,
@@ -429,7 +429,7 @@ export const ITEMS: {
         },
         '3': {
             name: 'Gauntlet, spiked',
-            cost: 5e18,
+            cost: 5,
             proficiency: 1,
             encumbrance: 2,
             damage_type: 2,
@@ -443,7 +443,7 @@ export const ITEMS: {
         },
         '4': {
             name: 'Mace, light',
-            cost: 5e18,
+            cost: 5,
             proficiency: 1,
             encumbrance: 2,
             damage_type: 1,
@@ -456,7 +456,7 @@ export const ITEMS: {
         },
         '5': {
             name: 'Sickle',
-            cost: 6e18,
+            cost: 6,
             proficiency: 1,
             encumbrance: 2,
             damage_type: 3,
@@ -470,7 +470,7 @@ export const ITEMS: {
         },
         '6': {
             name: 'Club',
-            cost: 1e17,
+            cost: 0.1,
             proficiency: 1,
             encumbrance: 3,
             damage_type: 1,
@@ -483,7 +483,7 @@ export const ITEMS: {
         },
         '7': {
             name: 'Mace, heavy',
-            cost: 12e18,
+            cost: 12,
             proficiency: 1,
             encumbrance: 3,
             damage_type: 1,
@@ -496,7 +496,7 @@ export const ITEMS: {
         },
         '8': {
             name: 'Morningstar',
-            cost: 8e18,
+            cost: 8,
             proficiency: 1,
             encumbrance: 3,
             damage_type: 1,
@@ -509,7 +509,7 @@ export const ITEMS: {
         },
         '9': {
             name: 'Shortspear',
-            cost: 1e18,
+            cost: 1,
             proficiency: 1,
             encumbrance: 3,
             damage_type: 2,
@@ -522,7 +522,7 @@ export const ITEMS: {
         },
         '10': {
             name: 'Longspear',
-            cost: 5e18,
+            cost: 5,
             proficiency: 1,
             encumbrance: 4,
             damage_type: 2,
@@ -536,7 +536,7 @@ export const ITEMS: {
         },
         '11': {
             name: 'Quarterstaff',
-            cost: 1e17,
+            cost: 0.1,
             proficiency: 1,
             encumbrance: 4,
             damage_type: 1,
@@ -550,7 +550,7 @@ export const ITEMS: {
         },
         '12': {
             name: 'Spear',
-            cost: 2e18,
+            cost: 2,
             proficiency: 1,
             encumbrance: 4,
             damage_type: 2,
@@ -563,7 +563,7 @@ export const ITEMS: {
         },
         '13': {
             name: 'Crossbow, heavy',
-            cost: 50e18,
+            cost: 50,
             proficiency: 1,
             encumbrance: 5,
             damage_type: 2,
@@ -577,7 +577,7 @@ export const ITEMS: {
         },
         '14': {
             name: 'Crossbow, light',
-            cost: 35e18,
+            cost: 35,
             proficiency: 1,
             encumbrance: 5,
             damage_type: 2,
@@ -591,7 +591,7 @@ export const ITEMS: {
         },
         '15': {
             name: 'Dart',
-            cost: 5e17,
+            cost: 0.5,
             proficiency: 1,
             encumbrance: 5,
             damage_type: 2,
@@ -604,7 +604,7 @@ export const ITEMS: {
         },
         '16': {
             name: 'Javelin',
-            cost: 1e18,
+            cost: 1,
             proficiency: 1,
             encumbrance: 5,
             damage_type: 2,
@@ -618,7 +618,7 @@ export const ITEMS: {
         },
         '17': {
             name: 'Sling',
-            cost: 1e17,
+            cost: 0.1,
             proficiency: 1,
             encumbrance: 5,
             damage_type: 1,
@@ -632,7 +632,7 @@ export const ITEMS: {
         },
         '18': {
             name: 'Axe',
-            cost: 8e18,
+            cost: 8,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 3,
@@ -645,7 +645,7 @@ export const ITEMS: {
         },
         '19': {
             name: 'Hammer, light',
-            cost: 1e18,
+            cost: 1,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 1,
@@ -658,7 +658,7 @@ export const ITEMS: {
         },
         '20': {
             name: 'Handaxe',
-            cost: 6e18,
+            cost: 6,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 3,
@@ -671,7 +671,7 @@ export const ITEMS: {
         },
         '21': {
             name: 'Kukri',
-            cost: 8e18,
+            cost: 8,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 3,
@@ -684,7 +684,7 @@ export const ITEMS: {
         },
         '22': {
             name: 'Pick, light',
-            cost: 4e18,
+            cost: 4,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 2,
@@ -697,7 +697,7 @@ export const ITEMS: {
         },
         '23': {
             name: 'Sap',
-            cost: 1e18,
+            cost: 1,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 1,
@@ -710,7 +710,7 @@ export const ITEMS: {
         },
         '24': {
             name: 'Sword, short',
-            cost: 10e18,
+            cost: 10,
             proficiency: 2,
             encumbrance: 2,
             damage_type: 2,
@@ -723,7 +723,7 @@ export const ITEMS: {
         },
         '25': {
             name: 'Battleaxe',
-            cost: 10e18,
+            cost: 10,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 3,
@@ -736,7 +736,7 @@ export const ITEMS: {
         },
         '26': {
             name: 'Flail',
-            cost: 8e18,
+            cost: 8,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 1,
@@ -750,7 +750,7 @@ export const ITEMS: {
         },
         '27': {
             name: 'Longsword',
-            cost: 15e18,
+            cost: 15,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 3,
@@ -763,7 +763,7 @@ export const ITEMS: {
         },
         '28': {
             name: 'Pick, heavy',
-            cost: 8e18,
+            cost: 8,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 2,
@@ -776,7 +776,7 @@ export const ITEMS: {
         },
         '29': {
             name: 'Rapier',
-            cost: 20e18,
+            cost: 20,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 2,
@@ -790,7 +790,7 @@ export const ITEMS: {
         },
         '30': {
             name: 'Scimitar',
-            cost: 15e18,
+            cost: 15,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 3,
@@ -803,7 +803,7 @@ export const ITEMS: {
         },
         '31': {
             name: 'Trident',
-            cost: 15e18,
+            cost: 15,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 2,
@@ -817,7 +817,7 @@ export const ITEMS: {
         },
         '32': {
             name: 'Warhammer',
-            cost: 12e18,
+            cost: 12,
             proficiency: 2,
             encumbrance: 3,
             damage_type: 1,
@@ -830,7 +830,7 @@ export const ITEMS: {
         },
         '33': {
             name: 'Falchion',
-            cost: 75e18,
+            cost: 75,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 3,
@@ -843,7 +843,7 @@ export const ITEMS: {
         },
         '34': {
             name: 'Glaive',
-            cost: 8e18,
+            cost: 8,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 3,
@@ -857,7 +857,7 @@ export const ITEMS: {
         },
         '35': {
             name: 'Greataxe',
-            cost: 20e18,
+            cost: 20,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 3,
@@ -870,7 +870,7 @@ export const ITEMS: {
         },
         '36': {
             name: 'Greatclub',
-            cost: 5e18,
+            cost: 5,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 1,
@@ -883,7 +883,7 @@ export const ITEMS: {
         },
         '37': {
             name: 'Flail, heavy',
-            cost: 15e18,
+            cost: 15,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 1,
@@ -897,7 +897,7 @@ export const ITEMS: {
         },
         '38': {
             name: 'Greatsword',
-            cost: 50e18,
+            cost: 50,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 3,
@@ -910,7 +910,7 @@ export const ITEMS: {
         },
         '39': {
             name: 'Guisarme',
-            cost: 9e18,
+            cost: 9,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 3,
@@ -924,7 +924,7 @@ export const ITEMS: {
         },
         '40': {
             name: 'Halberd',
-            cost: 10e18,
+            cost: 10,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 2,
@@ -938,7 +938,7 @@ export const ITEMS: {
         },
         '41': {
             name: 'Lance',
-            cost: 10e18,
+            cost: 10,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 2,
@@ -952,7 +952,7 @@ export const ITEMS: {
         },
         '42': {
             name: 'Ranseur',
-            cost: 10e18,
+            cost: 10,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 2,
@@ -966,7 +966,7 @@ export const ITEMS: {
         },
         '43': {
             name: 'Scythe',
-            cost: 18e18,
+            cost: 18,
             proficiency: 2,
             encumbrance: 4,
             damage_type: 3,
@@ -980,7 +980,7 @@ export const ITEMS: {
         },
         '44': {
             name: 'Longbow',
-            cost: 75e18,
+            cost: 75,
             proficiency: 2,
             encumbrance: 5,
             damage_type: 2,
@@ -994,7 +994,7 @@ export const ITEMS: {
         },
         '45': {
             name: 'Longbow, composite',
-            cost: 100e18,
+            cost: 100,
             proficiency: 2,
             encumbrance: 5,
             damage_type: 2,
@@ -1008,7 +1008,7 @@ export const ITEMS: {
         },
         '46': {
             name: 'Shortbow',
-            cost: 30e18,
+            cost: 30,
             proficiency: 2,
             encumbrance: 5,
             damage_type: 2,
@@ -1022,7 +1022,7 @@ export const ITEMS: {
         },
         '47': {
             name: 'Shortbow, composite',
-            cost: 75e18,
+            cost: 75,
             proficiency: 2,
             encumbrance: 5,
             damage_type: 2,
@@ -1036,7 +1036,7 @@ export const ITEMS: {
         },
         '48': {
             name: 'Kama',
-            cost: 2e18,
+            cost: 2,
             proficiency: 3,
             encumbrance: 2,
             damage_type: 3,
@@ -1050,7 +1050,7 @@ export const ITEMS: {
         },
         '49': {
             name: 'Nunchaku',
-            cost: 2e18,
+            cost: 2,
             proficiency: 3,
             encumbrance: 2,
             damage_type: 1,
@@ -1064,7 +1064,7 @@ export const ITEMS: {
         },
         '50': {
             name: 'Sai',
-            cost: 1e18,
+            cost: 1,
             proficiency: 3,
             encumbrance: 2,
             damage_type: 1,
@@ -1078,7 +1078,7 @@ export const ITEMS: {
         },
         '51': {
             name: 'Siangham',
-            cost: 3e18,
+            cost: 3,
             proficiency: 3,
             encumbrance: 2,
             damage_type: 2,
@@ -1092,7 +1092,7 @@ export const ITEMS: {
         },
         '52': {
             name: 'Sword, bastard',
-            cost: 35e18,
+            cost: 35,
             proficiency: 3,
             encumbrance: 3,
             damage_type: 3,
@@ -1106,7 +1106,7 @@ export const ITEMS: {
         },
         '53': {
             name: 'Waraxe, dwarven',
-            cost: 30e18,
+            cost: 30,
             proficiency: 3,
             encumbrance: 3,
             damage_type: 3,
@@ -1120,7 +1120,7 @@ export const ITEMS: {
         },
         '54': {
             name: 'Axe, orc double',
-            cost: 60e18,
+            cost: 60,
             proficiency: 3,
             encumbrance: 4,
             damage_type: 3,
@@ -1134,7 +1134,7 @@ export const ITEMS: {
         },
         '55': {
             name: 'Chain, spiked',
-            cost: 25e18,
+            cost: 25,
             proficiency: 3,
             encumbrance: 4,
             damage_type: 2,
@@ -1148,7 +1148,7 @@ export const ITEMS: {
         },
         '56': {
             name: 'Flail, dire',
-            cost: 90e18,
+            cost: 90,
             proficiency: 3,
             encumbrance: 4,
             damage_type: 1,
@@ -1162,7 +1162,7 @@ export const ITEMS: {
         },
         '57': {
             name: 'Crossbow, hand',
-            cost: 100e18,
+            cost: 100,
             proficiency: 3,
             encumbrance: 5,
             damage_type: 2,
@@ -1176,7 +1176,7 @@ export const ITEMS: {
         },
         '58': {
             name: 'Crossbow, repeating heavy',
-            cost: 400e18,
+            cost: 400,
             proficiency: 3,
             encumbrance: 5,
             damage_type: 2,
@@ -1190,7 +1190,7 @@ export const ITEMS: {
         },
         '59': {
             name: 'Crossbow, repeating light',
-            cost: 250e18,
+            cost: 250,
             proficiency: 3,
             encumbrance: 5,
             damage_type: 2,
