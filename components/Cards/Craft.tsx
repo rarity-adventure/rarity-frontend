@@ -97,10 +97,20 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
             .then(() => setGlobalApproval(true))
     }
 
+    function getTypeFromView(): ITEM_TYPE {
+        switch (view) {
+            case View.ARMORS:
+                return ITEM_TYPE.ARMOR
+            case View.WEAPONS:
+                return ITEM_TYPE.WEAPON
+            case View.GOODS:
+                return ITEM_TYPE.GOOD
+        }
+    }
     const [view, setView] = useState<View>(0)
     return (
         <div className="max-w-screen-md mx-auto">
-            <ItemModal open={modal} closeFunction={craftModal} item={item} />
+            <ItemModal open={modal} closeFunction={craftModal} item={item} itemType={getTypeFromView()} />
             <>
                 {' '}
                 <div className="flex flex-row w-full items-center">
@@ -306,7 +316,19 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                     <h2>Amount of material to use</h2>
                                     <input type="number" onChange={(v) => materialUsageSetter(v.target.value)} />
                                     <span>Chance of success: </span>
-                                    <button>Craft!</button>
+                                    <div className="flex flex-row justify-center p-2">
+                                        <button
+                                            onClick={() => {
+                                                setItem(undefined)
+                                            }}
+                                            className="bg-red px-4 mx-2 border-2 border-white p-2 uppercase rounded-lg"
+                                        >
+                                            {i18n._(t`cancel`)}
+                                        </button>
+                                        <button className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg">
+                                            {i18n._(t`craft`)}
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                         </>

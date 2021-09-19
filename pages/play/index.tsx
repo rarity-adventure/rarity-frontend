@@ -192,7 +192,6 @@ export default function Profile(): JSX.Element {
                         </>
                     )}
                 </Popover>
-                <div className="flex flex-row justify-end"></div>
                 {selectedSummoner ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto  mt-2">

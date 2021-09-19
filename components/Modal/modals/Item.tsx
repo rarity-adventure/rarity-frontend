@@ -4,15 +4,23 @@ import React from 'react'
 import { useLingui } from '@lingui/react'
 import { utils } from 'ethers'
 import Modal from '../index'
-import { Item, WEAPON_DAMAGE_TYPE, WEAPON_ENCUMBRANCE, WEAPON_PROFICIENCY } from '../../../constants/codex/items'
+import {
+    ARMOR_PROFICIENCY,
+    Item,
+    ITEM_TYPE,
+    WEAPON_DAMAGE_TYPE,
+    WEAPON_ENCUMBRANCE,
+    WEAPON_PROFICIENCY,
+} from '../../../constants/codex/items'
 
 interface DonateModalProps {
     open: boolean
     closeFunction: (craft: boolean) => void
     item: Item
+    itemType: ITEM_TYPE
 }
 
-export default function ItemModal({ open, closeFunction, item }: DonateModalProps): JSX.Element {
+export default function ItemModal({ open, closeFunction, item, itemType }: DonateModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     return (
@@ -34,21 +42,31 @@ export default function ItemModal({ open, closeFunction, item }: DonateModalProp
                         item.max_dex_bonus ||
                         item.penalty ? (
                             <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
-                                <div className="pt-2 px-2">
-                                    {item.proficiency && <p>Proficiency: {WEAPON_PROFICIENCY[item.proficiency]}</p>}
-                                    {item.damage_type && <p>Damage: {WEAPON_DAMAGE_TYPE[item.damage_type]}</p>}
-                                    {item.encumbrance && <p>Encumbrance: {WEAPON_ENCUMBRANCE[item.encumbrance]}</p>}
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 pb-2 px-2">
+                                <div className="py-2 px-2">
                                     <p>Weight: {item.weight}</p>
-                                    {item.spell_failure && <p>Spell Failure: {item.spell_failure}</p>}
-                                    {item.damage && <p>Damage: {item.damage}</p>}
-                                    {item.critical && <p>Critical: {item.critical}</p>}
-                                    {item.armor_bonus && <p>Armor Bonus: {item.armor_bonus}</p>}
-                                    {item.max_dex_bonus && <p>Max DEX Bonus: {item.max_dex_bonus}</p>}
-                                    {item.penalty && <p>Penalty: {item.penalty}</p>}
-                                    <p>Critical Mod: {item.critical_modifier}</p>
-                                    <p>Range Increment: {item.range_increment}</p>
+                                    {item.proficiency ? (
+                                        itemType === ITEM_TYPE.WEAPON ? (
+                                            <p>Proficiency: {WEAPON_PROFICIENCY[item.proficiency]}</p>
+                                        ) : (
+                                            <p>Proficiency: {ARMOR_PROFICIENCY[item.proficiency]}</p>
+                                        )
+                                    ) : (
+                                        <div />
+                                    )}
+                                    {item.damage_type ? <p>Damage: {WEAPON_DAMAGE_TYPE[item.damage_type]}</p> : <div />}
+                                    {item.encumbrance ? (
+                                        <p>Encumbrance: {WEAPON_ENCUMBRANCE[item.encumbrance]}</p>
+                                    ) : (
+                                        <div />
+                                    )}
+                                    {item.spell_failure ? <p>Spell Failure: {item.spell_failure}</p> : <div />}
+                                    {item.damage ? <p>Damage: {item.damage}</p> : <div />}
+                                    {item.critical ? <p>Critical: {item.critical}</p> : <div />}
+                                    {item.armor_bonus ? <p>Armor Bonus: {item.armor_bonus}</p> : <div />}
+                                    {item.max_dex_bonus ? <p>Max DEX Bonus: {item.max_dex_bonus}</p> : <div />}
+                                    {item.penalty ? <p>Penalty: {item.penalty}</p> : <div />}
+                                    {item.critical_modifier ? <p>Critical Mod: {item.critical_modifier}</p> : <div />}
+                                    {item.range_increment ? <p>Range Increment: {item.range_increment}</p> : <div />}
                                 </div>
                             </div>
                         ) : (

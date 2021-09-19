@@ -1211,6 +1211,13 @@ export const WEAPON_PROFICIENCY = {
     '3': 'Exotic',
 }
 
+export const ARMOR_PROFICIENCY = {
+    '1': 'Light',
+    '2': 'Medium',
+    '3': 'Heavy',
+    '4': 'Shields',
+}
+
 export const WEAPON_ENCUMBRANCE = {
     '1': 'Unarmed',
     '2': 'Light Melee Weapon',
