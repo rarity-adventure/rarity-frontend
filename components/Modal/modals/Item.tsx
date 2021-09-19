@@ -4,7 +4,7 @@ import React from 'react'
 import { useLingui } from '@lingui/react'
 import { utils } from 'ethers'
 import Modal from '../index'
-import { Item } from '../../../constants/codex/items'
+import { Item, WEAPON_DAMAGE_TYPE, WEAPON_ENCUMBRANCE, WEAPON_PROFICIENCY } from '../../../constants/codex/items'
 
 interface DonateModalProps {
     open: boolean
@@ -34,14 +34,16 @@ export default function ItemModal({ open, closeFunction, item }: DonateModalProp
                         item.max_dex_bonus ||
                         item.penalty ? (
                             <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 py-2 px-2 gap-2 ">
+                                <div className="pt-2 px-2">
+                                    {item.proficiency && <p>Proficiency: {WEAPON_PROFICIENCY[item.proficiency]}</p>}
+                                    {item.damage_type && <p>Damage: {WEAPON_DAMAGE_TYPE[item.damage_type]}</p>}
+                                    {item.encumbrance && <p>Encumbrance: {WEAPON_ENCUMBRANCE[item.encumbrance]}</p>}
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 pb-2 px-2">
                                     <p>Weight: {item.weight}</p>
-                                    {item.proficiency && <p>Proficiency: {item.proficiency}</p>}
                                     {item.spell_failure && <p>Spell Failure: {item.spell_failure}</p>}
-                                    {item.damage_type && <p>Damage Type: {item.damage_type}</p>}
-                                    {item.critical && <p>Critical: {item.critical}</p>}
                                     {item.damage && <p>Damage: {item.damage}</p>}
-                                    {item.encumbrance && <p>Encumbrance: {item.encumbrance}</p>}
+                                    {item.critical && <p>Critical: {item.critical}</p>}
                                     {item.armor_bonus && <p>Armor Bonus: {item.armor_bonus}</p>}
                                     {item.max_dex_bonus && <p>Max DEX Bonus: {item.max_dex_bonus}</p>}
                                     {item.penalty && <p>Penalty: {item.penalty}</p>}
@@ -62,7 +64,7 @@ export default function ItemModal({ open, closeFunction, item }: DonateModalProp
                             onClick={() => closeFunction(true)}
                             className="bg-green text-center w-full rounded-2xl border-white border-2 mt-4 uppercase p-2"
                         >
-                            Confirm Craft
+                            {i18n._(t`Start Craft`)}
                         </button>
                     </div>
                 )}

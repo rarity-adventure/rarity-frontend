@@ -1204,3 +1204,23 @@ export const ITEMS: {
         },
     },
 }
+
+export const WEAPON_PROFICIENCY = {
+    '1': 'Simple',
+    '2': 'Martial',
+    '3': 'Exotic',
+}
+
+export const WEAPON_ENCUMBRANCE = {
+    '1': 'Unarmed',
+    '2': 'Light Melee Weapon',
+    '3': 'One-Handed Melee Weapon',
+    '4': 'Two-Handed Melee Weapon',
+    '5': 'Ranged Weapon',
+}
+
+export const WEAPON_DAMAGE_TYPE = {
+    '1': 'Bludgeoning',
+    '2': 'Piercing',
+    '3': 'Slashing',
+}

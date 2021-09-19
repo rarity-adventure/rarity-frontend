@@ -251,19 +251,21 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                         )}
                                     </div>
                                     <div className="text-center max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 p-5 gap-y-1">
+                                        <div className="grid grid-cols-1 lg:grid-cols-3 py-3 px-2 gap-y-1 text-xs">
                                             <p className="p-1">
-                                                GOLD: {utils.formatUnits(item.cost.toString(), 'ether')}{' '}
+                                                GOLD:{' '}
                                                 {summoner.gold.balance >=
                                                 parseInt(utils.formatUnits(item.cost.toString(), 'ether')) ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {i18n._(t`VALID`)}
+                                                        {summoner.gold.balance}/
+                                                        {utils.formatUnits(item.cost.toString())} {i18n._(t`VALID`)}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {i18n._(t`INVALID`)}
+                                                        {summoner.gold.balance}/
+                                                        {utils.formatUnits(item.cost.toString())} {i18n._(t`INVALID`)}
                                                     </span>
                                                 )}
                                             </p>
@@ -272,27 +274,29 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 {summoner.base._xp >= 250 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {i18n._(t`VALID`)}
+                                                        250/{summoner.base._xp} {i18n._(t`VALID`)}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {i18n._(t`INVALID`)}
+                                                        {summoner.base._xp}/250 {i18n._(t`INVALID`)}
                                                     </span>
                                                 )}
                                             </p>
                                             <p className="p-1">
-                                                SKILL REQ:{' '}
+                                                SKILL CHECK:{' '}
                                                 {summoner.skills.skills[5] > 0 &&
                                                 summoner.skills.skills[5] + summoner.ability_scores.modifiers._int >
                                                     0 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
-                                                        {' '}
+                                                        {summoner.skills.skills[5] +
+                                                            summoner.ability_scores.modifiers._int}{' '}
                                                         {i18n._(t`VALID`)}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
-                                                        {' '}
+                                                        {summoner.skills.skills[5] +
+                                                            summoner.ability_scores.modifiers._int}{' '}
                                                         {i18n._(t`INVALID`)}
                                                     </span>
                                                 )}
