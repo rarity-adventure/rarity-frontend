@@ -7,11 +7,7 @@ import ItemModal from '../Modal/modals/Item'
 import Image from 'next/image'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityCellar from '../../hooks/useRarityCellar'
-import {
-    CRAFTING_ALLOWANCE,
-    RARITY_CRAFTING_ADDRESS,
-    RARITY_CRAFTING_SUMMONER,
-} from '../../constants'
+import { CRAFTING_ALLOWANCE, RARITY_CRAFTING_ADDRESS, RARITY_CRAFTING_SUMMONER } from '../../constants'
 import toast from 'react-hot-toast'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
@@ -41,6 +37,8 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     const [globalApproval, setGlobalApproval] = useState(false)
     const [approval, setApproval] = useState({ gold: false, material: false })
 
+    const [materialUse, setMaterialUse] = useState(0)
+
     function openModal(item: Item) {
         setItem(item)
         setModal(true)
@@ -51,6 +49,10 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         if (!craft) {
             setItem(undefined)
         }
+    }
+
+    function materialUsageSetter(amount: string) {
+        setMaterialUse(parseInt(amount))
     }
 
     const fetch_allowance = useCallback(async () => {
@@ -250,30 +252,57 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                     </div>
                                     <div className="text-center max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                         <div className="grid grid-cols-1 sm:grid-cols-3 p-5 gap-y-1">
-                                            <p className="p-1">GOLD: {utils.formatUnits(item.cost.toString(), 'ether')}</p>
+                                            <p className="p-1">
+                                                GOLD: {utils.formatUnits(item.cost.toString(), 'ether')}{' '}
+                                                {summoner.gold.balance >=
+                                                parseInt(utils.formatUnits(item.cost.toString(), 'ether')) ? (
+                                                    <span className="bg-green border-white border-2 rounded-lg p-1">
+                                                        {' '}
+                                                        {i18n._(t`VALID`)}
+                                                    </span>
+                                                ) : (
+                                                    <span className="bg-red border-white border-2 rounded-lg p-1">
+                                                        {' '}
+                                                        {i18n._(t`INVALID`)}
+                                                    </span>
+                                                )}
+                                            </p>
                                             <p className="p-1">
                                                 XP:{' '}
                                                 {summoner.base._xp >= 250 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
-                                                    {' '}
+                                                        {' '}
                                                         {i18n._(t`VALID`)}
-                                                </span>
+                                                    </span>
                                                 ) : (
-                                                    <span className="bg-red border-white border-2 rounded-lg p-1"> {i18n._(t`INVALID`)}</span>
+                                                    <span className="bg-red border-white border-2 rounded-lg p-1">
+                                                        {' '}
+                                                        {i18n._(t`INVALID`)}
+                                                    </span>
                                                 )}
                                             </p>
-                                            <p className="p-1">SKILL REQ:{' '}
-                                                {summoner.base._xp >= 250 ? (
+                                            <p className="p-1">
+                                                SKILL REQ:{' '}
+                                                {summoner.skills.skills[5] > 0 &&
+                                                summoner.skills.skills[5] + summoner.ability_scores.modifiers._int >
+                                                    0 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
-                                                    {' '}
+                                                        {' '}
                                                         {i18n._(t`VALID`)}
-                                                </span>
+                                                    </span>
                                                 ) : (
-                                                    <span className="bg-red border-white border-2 rounded-lg p-1"> {i18n._(t`INVALID`)}</span>
+                                                    <span className="bg-red border-white border-2 rounded-lg p-1">
+                                                        {' '}
+                                                        {i18n._(t`INVALID`)}
+                                                    </span>
                                                 )}
                                             </p>
                                         </div>
                                     </div>
+                                    <h2>Amount of material to use</h2>
+                                    <input type="number" onChange={(v) => materialUsageSetter(v.target.value)} />
+                                    <span>Chance of success: </span>
+                                    <button>Craft!</button>
                                 </div>
                             )}
                         </>
