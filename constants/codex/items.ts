@@ -1,4 +1,4 @@
-enum ITEM_TYPE {
+export enum ITEM_TYPE {
     GOOD = 1,
     ARMOR,
     WEAPON,
@@ -37,7 +37,7 @@ interface ItemGood {
     description: string
 }
 
-export const ITEM_INFO: {
+export const ITEMS: {
     [ITEM_TYPE.GOOD]: { [k: string]: ItemGood }
     [ITEM_TYPE.ARMOR]: { [k: string]: ItemArmor }
     [ITEM_TYPE.WEAPON]: { [k: string]: ItemWeapon }
