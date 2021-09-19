@@ -102,7 +102,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         const DC = getDC()
         let p = (20 - DC + check_base + Math.floor(materialUse / 10)) / 20
         p = Math.min(1, Math.max(p, 0))
-        return (p * 100).toString() + '%'
+        return (p * 100).toFixed(0) + '%'
     }
 
     function getDC(): number {
@@ -128,10 +128,8 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }
     const [view, setView] = useState<View>(0)
 
-    function craft() {
+    function craft() {}
 
-    }
-    
     return (
         <div className="max-w-screen-md mx-auto">
             <ItemModal open={modal} closeFunction={craftModal} item={item} itemType={getTypeFromView()} />
@@ -346,9 +344,9 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             onChange={(v) => materialUsageSetter(v.target.value)}
                                         />
                                         <p className="my-2">
-                                        {' '}
+                                            {' '}
                                             {i18n._(t`Success rate`)}: {calcSuccessRate()}
-                                    </p>
+                                        </p>
                                     </div>
 
                                     <div className="flex flex-row justify-center p-2">
