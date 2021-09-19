@@ -83,14 +83,14 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                             </div>
                         )}
                         {checkOnly ? (
+                            <div />
+                        ) : (
                             <button
                                 onClick={() => closeFunction(true)}
                                 className="bg-green text-center w-full rounded-2xl border-white border-2 mt-4 uppercase p-2"
                             >
                                 {i18n._(t`Start Craft`)}
                             </button>
-                        ) : (
-                            <div />
                         )}
                     </div>
                 )}

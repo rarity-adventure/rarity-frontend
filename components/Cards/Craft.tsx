@@ -39,7 +39,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     const [globalApproval, setGlobalApproval] = useState(false)
     const [approval, setApproval] = useState({ gold: false, material: false })
 
-    const [materialUse, setMaterialUse] = useState(10)
+    const [materialUse, setMaterialUse] = useState(0)
 
     const [modal, setModal] = useState(false)
     const [checkOnly, setCheckOnly] = useState(false)
@@ -57,10 +57,6 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
             setItem(undefined)
             setItemID(undefined)
         }
-    }
-
-    function materialUsageSetter(amount: string) {
-        setMaterialUse(parseInt(amount))
     }
 
     const fetch_allowance = useCallback(async () => {
@@ -413,7 +409,6 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 <PlusIcon width={18} />
                                             </button>
                                         </div>
-
                                         <p className="my-2">
                                             {' '}
                                             {i18n._(t`Success chance`)}: {calcSuccessRate()}
