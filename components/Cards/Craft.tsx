@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { utils } from 'ethers'
+import useRarityCrafting from '../../hooks/useRarityCrafting'
 
 enum View {
     GOODS,
@@ -26,7 +27,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     const [item, setItem] = useState<Item | undefined>(undefined)
 
-    const [modal, setModal] = useState(false)
+    const [itemID, setItemID] = useState<string | undefined>(undefined)
 
     const { isApprovedForAll, setApprovalForAll } = useRarity()
 
@@ -37,17 +38,23 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     const [globalApproval, setGlobalApproval] = useState(false)
     const [approval, setApproval] = useState({ gold: false, material: false })
 
-    const [materialUse, setMaterialUse] = useState(0)
+    const [materialUse, setMaterialUse] = useState(10)
 
-    function openModal(item: Item) {
+    const [modal, setModal] = useState(false)
+    const [checkOnly, setCheckOnly] = useState(false)
+
+    function openModal(item: Item, id: string, checkOnly: boolean) {
         setItem(item)
+        setItemID(id)
         setModal(true)
+        setCheckOnly(checkOnly)
     }
 
     function craftModal(craft: boolean) {
         setModal(false)
         if (!craft) {
             setItem(undefined)
+            setItemID(undefined)
         }
     }
 
@@ -128,7 +135,25 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }
     const [view, setView] = useState<View>(0)
 
-    function craft() {}
+    const { craft, balanceOf } = useRarityCrafting()
+
+    const [resultModal, setResultModal] = useState(false)
+
+    const [craftResult, setCraftResult] = useState(false)
+    async function craftButton() {
+        const currBalance = await balanceOf(account)
+        toast
+            .promise(craft(summoner.id, getTypeFromView(), itemID, materialUse), {
+                loading: <b>{i18n._(t`Crafting`)}</b>,
+                success: <b>{i18n._(t`Success`)}</b>,
+                error: <b>{i18n._(t`Failed`)}</b>,
+            })
+            .then(async () => {
+                const newBalance = await balanceOf(account)
+                setCraftResult(currBalance > newBalance)
+                setResultModal(true)
+            })
+    }
 
     return (
         <div className="max-w-screen-md mx-auto">
@@ -189,7 +214,9 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                         return (
                                                             <div key={k}>
                                                                 <button
-                                                                    onClick={() => openModal(ITEMS[ITEM_TYPE.GOOD][k])}
+                                                                    onClick={() =>
+                                                                        openModal(ITEMS[ITEM_TYPE.GOOD][k], k)
+                                                                    }
                                                                     className="uppercase p-2 text-left hover:bg-background-contrast w-full"
                                                                 >
                                                                     {ITEMS[ITEM_TYPE.GOOD][k].name}
@@ -208,7 +235,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                             <div key={k}>
                                                                 <button
                                                                     onClick={() =>
-                                                                        openModal(ITEMS[ITEM_TYPE.WEAPON][k])
+                                                                        openModal(ITEMS[ITEM_TYPE.WEAPON][k], k)
                                                                     }
                                                                     className="uppercase p-2 text-left hover:bg-background-contrast w-full"
                                                                 >
@@ -227,7 +254,9 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                         return (
                                                             <div key={k}>
                                                                 <button
-                                                                    onClick={() => openModal(ITEMS[ITEM_TYPE.ARMOR][k])}
+                                                                    onClick={() =>
+                                                                        openModal(ITEMS[ITEM_TYPE.ARMOR][k], k)
+                                                                    }
                                                                     className="uppercase p-2 text-left hover:bg-background-contrast w-full"
                                                                 >
                                                                     {ITEMS[ITEM_TYPE.ARMOR][k].name}
@@ -244,7 +273,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                             {item && (
                                 <div className="p-5">
                                     <div className="flex flex-row justify-between uppercase">
-                                        <span className="border-b-2 border-white">{item.name}</span>
+                                        <button
+                                            className="border-b-2 border-white"
+                                            onClick={() => openModal(item, itemID)}
+                                        >
+                                            <span>{item.name}</span>
+                                        </button>
                                         <div className="flex text-center flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 text-center w-2/3">
                                                 <p>{summoner.materials.balance}</p>
@@ -291,13 +325,13 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {' '}
                                                         {summoner.gold.balance}/
-                                                        {utils.formatUnits(item.cost.toString())} {i18n._(t`VALID`)}
+                                                        {utils.formatUnits(item.cost.toString())}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
                                                         {summoner.gold.balance}/
-                                                        {utils.formatUnits(item.cost.toString())} {i18n._(t`INVALID`)}
+                                                        {utils.formatUnits(item.cost.toString())}
                                                     </span>
                                                 )}
                                             </p>
@@ -306,12 +340,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 {summoner.base._xp >= 250 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        250/{summoner.base._xp} {i18n._(t`VALID`)}
+                                                        250/{summoner.base._xp}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {summoner.base._xp}/250 {i18n._(t`INVALID`)}
+                                                        {summoner.base._xp}/250
                                                     </span>
                                                 )}
                                             </p>
@@ -322,14 +356,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                     0 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {summoner.skills.skills[5] +
-                                                            summoner.ability_scores.modifiers._int}{' '}
-                                                        {i18n._(t`VALID`)}
+                                                            summoner.ability_scores.modifiers._int}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {summoner.skills.skills[5] +
-                                                            summoner.ability_scores.modifiers._int}{' '}
-                                                        {i18n._(t`INVALID`)}
+                                                            summoner.ability_scores.modifiers._int}
                                                     </span>
                                                 )}
                                             </p>
@@ -341,11 +373,13 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             className="text-center border-white border-2 py-1 rounded-lg bg-background-contrast w-40 ml-5"
                                             type="number"
                                             min="0"
+                                            placeholder="10"
+                                            max={summoner.materials.balance}
                                             onChange={(v) => materialUsageSetter(v.target.value)}
                                         />
                                         <p className="my-2">
                                             {' '}
-                                            {i18n._(t`Success rate`)}: {calcSuccessRate()}
+                                            {i18n._(t`Success chance`)}: {calcSuccessRate()}
                                         </p>
                                     </div>
 
@@ -353,12 +387,16 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                         <button
                                             onClick={() => {
                                                 setItem(undefined)
+                                                setItemID(undefined)
                                             }}
                                             className="bg-red px-4 mx-2 border-2 border-white p-2 uppercase rounded-lg"
                                         >
                                             {i18n._(t`cancel`)}
                                         </button>
-                                        <button className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg">
+                                        <button
+                                            onClick={async () => await craftButton()}
+                                            className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg"
+                                        >
                                             {i18n._(t`craft`)}
                                         </button>
                                     </div>

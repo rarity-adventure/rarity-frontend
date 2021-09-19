@@ -13,20 +13,24 @@ import {
     WEAPON_PROFICIENCY,
 } from '../../../constants/codex/items'
 
-interface DonateModalProps {
+interface ItemModalProps {
     open: boolean
     closeFunction: (craft: boolean) => void
     item: Item
     itemType: ITEM_TYPE
+    checkOnly: boolean
 }
 
-export default function ItemModal({ open, closeFunction, item, itemType }: DonateModalProps): JSX.Element {
+export default function ItemModal({ open, closeFunction, item, itemType, checkOnly }: ItemModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     return (
-        <Modal isOpen={open} onDismiss={() => closeFunction(false)}>
+        <Modal isOpen={open} onDismiss={() => (checkOnly ? closeFunction(false) : closeFunction(true))}>
             <div className="bg-card-bottom rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`Equipment Info`)} onClose={() => closeFunction(false)} />
+                <ModalHeader
+                    title={i18n._(t`Equipment Info`)}
+                    onClose={() => (checkOnly ? closeFunction(false) : closeFunction(true))}
+                />
                 {item && (
                     <div className="px-3 text-white pb-5 ">
                         <p>{item.name}</p>
@@ -78,12 +82,16 @@ export default function ItemModal({ open, closeFunction, item, itemType }: Donat
                                 <p className="p-1">{item.description}</p>
                             </div>
                         )}
-                        <button
-                            onClick={() => closeFunction(true)}
-                            className="bg-green text-center w-full rounded-2xl border-white border-2 mt-4 uppercase p-2"
-                        >
-                            {i18n._(t`Start Craft`)}
-                        </button>
+                        {checkOnly ? (
+                            <button
+                                onClick={() => closeFunction(true)}
+                                className="bg-green text-center w-full rounded-2xl border-white border-2 mt-4 uppercase p-2"
+                            >
+                                {i18n._(t`Start Craft`)}
+                            </button>
+                        ) : (
+                            <div />
+                        )}
                     </div>
                 )}
             </div>
