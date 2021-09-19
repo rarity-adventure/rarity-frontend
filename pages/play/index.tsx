@@ -35,10 +35,11 @@ export default function Profile(): JSX.Element {
     const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
 
     useEffect(() => {
+        console.log('useEffect')
         if (summoners.length > 0 && !selectedSummoner) {
             setSelectedSummoner(summoners[0])
         }
-    }, [summoners])
+    }, [summoners, selectedSummoner])
 
     const [view, setView] = useState<View>(View.stats)
 

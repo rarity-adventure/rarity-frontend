@@ -61,11 +61,11 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         const global = await isApprovedForAll(account, RARITY_CRAFTING_ADDRESS)
         setGlobalApproval(global)
         setApproval({ gold: goldAllowance >= CRAFTING_ALLOWANCE, material: matAllowance >= CRAFTING_ALLOWANCE })
-    }, [gold_allowance, material_allowance, summoner])
+    }, [gold_allowance, material_allowance, summoner, account, isApprovedForAll])
 
     useEffect(() => {
         fetch_allowance()
-    }, [summoner])
+    }, [summoner, fetch_allowance])
 
     async function approveGold() {
         toast
@@ -227,7 +227,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             <div className="py-1 text-center w-2/3">
                                                 <p>{summoner.materials.balance}</p>
                                             </div>
-                                            <Image src="/img/material.png" width={30} height={30} />
+                                            <Image src="/img/material.png" width={30} height={30} alt="material" />
                                         </div>
                                     </div>
                                     <div className="uppercase mt-2">
@@ -235,7 +235,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             {i18n._(t`approval`)} {i18n._(t`gold`)}
                                         </span>{' '}
                                         {approval.gold ? (
-                                            <Image src="/img/approved.png" width={15} height={15} />
+                                            <Image src="/img/approved.png" width={15} height={15} alt="approved" />
                                         ) : (
                                             <button
                                                 className="uppercase border-white border-2 rounded-lg px-2 py-1"
@@ -250,7 +250,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             {i18n._(t`approval`)} {i18n._(t`material`)}
                                         </span>{' '}
                                         {approval.material ? (
-                                            <Image src="/img/approved.png" width={15} height={15} />
+                                            <Image src="/img/approved.png" width={15} height={15} alt="approved" />
                                         ) : (
                                             <button
                                                 className="uppercase border-white border-2 rounded-lg px-2 py-1"
