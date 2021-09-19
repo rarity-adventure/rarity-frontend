@@ -13,6 +13,7 @@ import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { utils } from 'ethers'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
+import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 
 enum View {
     GOODS,
@@ -155,9 +156,29 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
             })
     }
 
+    function increaseMaterial() {
+        const totalMat = materialUse + 10
+        if (totalMat <= summoner.materials.balance) {
+            setMaterialUse(totalMat)
+        }
+    }
+
+    function decreaseMaterial() {
+        const totalMat = materialUse - 10
+        if (totalMat >= 10) {
+            setMaterialUse(totalMat)
+        }
+    }
+
     return (
         <div className="max-w-screen-md mx-auto">
-            <ItemModal open={modal} closeFunction={craftModal} item={item} itemType={getTypeFromView()} />
+            <ItemModal
+                open={modal}
+                closeFunction={craftModal}
+                item={item}
+                itemType={getTypeFromView()}
+                checkOnly={checkOnly}
+            />
             <>
                 {' '}
                 <div className="flex flex-row w-full items-center">
@@ -215,7 +236,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                             <div key={k}>
                                                                 <button
                                                                     onClick={() =>
-                                                                        openModal(ITEMS[ITEM_TYPE.GOOD][k], k)
+                                                                        openModal(ITEMS[ITEM_TYPE.GOOD][k], k, false)
                                                                     }
                                                                     className="uppercase p-2 text-left hover:bg-background-contrast w-full"
                                                                 >
@@ -235,7 +256,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                             <div key={k}>
                                                                 <button
                                                                     onClick={() =>
-                                                                        openModal(ITEMS[ITEM_TYPE.WEAPON][k], k)
+                                                                        openModal(ITEMS[ITEM_TYPE.WEAPON][k], k, false)
                                                                     }
                                                                     className="uppercase p-2 text-left hover:bg-background-contrast w-full"
                                                                 >
@@ -255,7 +276,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                             <div key={k}>
                                                                 <button
                                                                     onClick={() =>
-                                                                        openModal(ITEMS[ITEM_TYPE.ARMOR][k], k)
+                                                                        openModal(ITEMS[ITEM_TYPE.ARMOR][k], k, false)
                                                                     }
                                                                     className="uppercase p-2 text-left hover:bg-background-contrast w-full"
                                                                 >
@@ -275,7 +296,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                     <div className="flex flex-row justify-between uppercase">
                                         <button
                                             className="border-b-2 border-white"
-                                            onClick={() => openModal(item, itemID)}
+                                            onClick={() => openModal(item, itemID, true)}
                                         >
                                             <span>{item.name}</span>
                                         </button>
@@ -297,25 +318,30 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 className="uppercase border-white border-2 rounded-lg px-2 py-1"
                                                 onClick={async () => approveGold()}
                                             >
-                                                Approve
+                                                {i18n._(t`Approve`)}
                                             </button>
                                         )}
                                     </div>
-                                    <div className="uppercase mt-2">
-                                        <span>
-                                            {i18n._(t`approval`)} {i18n._(t`material`)}
-                                        </span>{' '}
-                                        {approval.material ? (
-                                            <Image src="/img/approved.png" width={15} height={15} alt="approved" />
-                                        ) : (
-                                            <button
-                                                className="uppercase border-white border-2 rounded-lg px-2 py-1"
-                                                onClick={async () => approveMaterial()}
-                                            >
-                                                Approve
-                                            </button>
-                                        )}
-                                    </div>
+                                    {summoner.materials.balance > 0 ? (
+                                        <div className="uppercase mt-2">
+                                            <span>
+                                                {i18n._(t`approval`)} {i18n._(t`material`)}
+                                            </span>{' '}
+                                            {approval.material ? (
+                                                <Image src="/img/approved.png" width={15} height={15} alt="approved" />
+                                            ) : (
+                                                <button
+                                                    className="uppercase border-white border-2 rounded-lg px-2 py-1"
+                                                    onClick={async () => approveMaterial()}
+                                                >
+                                                    {i18n._(t`Approve`)}
+                                                </button>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div />
+                                    )}
+
                                     <div className="text-center max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                         <div className="grid grid-cols-1 lg:grid-cols-3 py-3 px-2 gap-y-1 text-xs">
                                             <p className="p-1">
@@ -355,11 +381,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 summoner.skills.skills[5] + summoner.ability_scores.modifiers._int >
                                                     0 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
+                                                        +{' '}
                                                         {summoner.skills.skills[5] +
                                                             summoner.ability_scores.modifiers._int}
                                                     </span>
                                                 ) : (
-                                                    <span className="bg-red border-white border-2 rounded-lg p-1">
+                                                    <span className="bg-red border-white border-2 rounded-lg p-1 px-2">
                                                         {summoner.skills.skills[5] +
                                                             summoner.ability_scores.modifiers._int}
                                                     </span>
@@ -369,14 +396,24 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                     </div>
                                     <div className="mt-2 justify-center text-center">
                                         <span> {i18n._(t`Material to use`)}</span>
-                                        <input
-                                            className="text-center border-white border-2 py-1 rounded-lg bg-background-contrast w-40 ml-5"
-                                            type="number"
-                                            min="0"
-                                            placeholder="10"
-                                            max={summoner.materials.balance}
-                                            onChange={(v) => materialUsageSetter(v.target.value)}
-                                        />
+                                        <div className="flex flex-row mt-2 justify-center">
+                                            <button
+                                                className="text-white rounded-full hover:bg-white hover:bg-opacity-5 mr-2"
+                                                onClick={() => decreaseMaterial()}
+                                            >
+                                                <MinusIcon width={18} />
+                                            </button>
+                                            <p className="text-center border-white border-2 py-1 rounded-lg bg-background-contrast w-40">
+                                                {materialUse}
+                                            </p>
+                                            <button
+                                                className="text-white rounded-full hover:bg-white hover:bg-opacity-5 ml-2"
+                                                onClick={() => increaseMaterial()}
+                                            >
+                                                <PlusIcon width={18} />
+                                            </button>
+                                        </div>
+
                                         <p className="my-2">
                                             {' '}
                                             {i18n._(t`Success chance`)}: {calcSuccessRate()}
