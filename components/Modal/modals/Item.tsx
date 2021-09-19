@@ -25,11 +25,11 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
     const { i18n } = useLingui()
 
     return (
-        <Modal isOpen={open} onDismiss={() => (checkOnly ? closeFunction(false) : closeFunction(true))}>
+        <Modal isOpen={open} onDismiss={() => (checkOnly ? closeFunction(true) : closeFunction(false))}>
             <div className="bg-card-bottom rounded-lg border-2 border-white">
                 <ModalHeader
                     title={i18n._(t`Equipment Info`)}
-                    onClose={() => (checkOnly ? closeFunction(false) : closeFunction(true))}
+                    onClose={() => (checkOnly ? closeFunction(true) : closeFunction(false))}
                 />
                 {item && (
                     <div className="px-3 text-white pb-5 ">
@@ -64,7 +64,7 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                                         <div />
                                     )}
                                     {item.spell_failure ? <p>Spell Failure: {item.spell_failure}</p> : <div />}
-                                    {item.damage ? <p>Damage: {item.damage}</p> : <div />}
+                                    {item.damage ? <p>Damage: 1d{item.damage}</p> : <div />}
                                     {item.critical ? <p>Critical: {item.critical}</p> : <div />}
                                     {item.armor_bonus ? <p>Armor Bonus: {item.armor_bonus}</p> : <div />}
                                     {item.max_dex_bonus ? <p>Max DEX Bonus: {item.max_dex_bonus}</p> : <div />}

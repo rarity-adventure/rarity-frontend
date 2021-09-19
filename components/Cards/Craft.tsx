@@ -41,6 +41,10 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     const [materialUse, setMaterialUse] = useState(0)
 
+    useEffect(() => {
+        setMaterialUse(0)
+    }, [summoner])
+
     const [modal, setModal] = useState(false)
     const [checkOnly, setCheckOnly] = useState(false)
 
@@ -137,6 +141,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     const [resultModal, setResultModal] = useState(false)
 
     const [craftResult, setCraftResult] = useState(false)
+
     async function craftButton() {
         const currBalance = await balanceOf(account)
         toast
@@ -161,7 +166,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     function decreaseMaterial() {
         const totalMat = materialUse - 10
-        if (totalMat >= 10) {
+        if (totalMat >= 0) {
             setMaterialUse(totalMat)
         }
     }
@@ -374,7 +379,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 summoner.skills.skills[5] + summoner.ability_scores.modifiers._int >
                                                     0 ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
-                                                        +{' '}
+                                                        +
                                                         {summoner.skills.skills[5] +
                                                             summoner.ability_scores.modifiers._int}
                                                     </span>
@@ -390,21 +395,40 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                     <div className="mt-2 justify-center text-center">
                                         <span> {i18n._(t`Material to use`)}</span>
                                         <div className="flex flex-row mt-2 justify-center">
-                                            <button
-                                                className="text-white rounded-full hover:bg-white hover:bg-opacity-5 mr-2"
-                                                onClick={() => decreaseMaterial()}
-                                            >
-                                                <MinusIcon width={18} />
-                                            </button>
+                                            {materialUse === 0 ? (
+                                                <button
+                                                    className="text-white cursor-not-allowed opacity-50 rounded-full hover:bg-white hover:bg-opacity-5 mr-2"
+                                                    onClick={() => decreaseMaterial()}
+                                                >
+                                                    <MinusIcon width={18} />
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="text-white rounded-full hover:bg-white hover:bg-opacity-5 mr-2"
+                                                    onClick={() => decreaseMaterial()}
+                                                >
+                                                    <MinusIcon width={18} />
+                                                </button>
+                                            )}
+
                                             <p className="text-center border-white border-2 py-1 rounded-lg bg-background-contrast w-40">
                                                 {materialUse}
                                             </p>
-                                            <button
-                                                className="text-white rounded-full hover:bg-white hover:bg-opacity-5 ml-2"
-                                                onClick={() => increaseMaterial()}
-                                            >
-                                                <PlusIcon width={18} />
-                                            </button>
+                                            {materialUse + 10 > summoner.materials.balance ? (
+                                                <button
+                                                    className="text-white opacity-50 cursor-not-allowed rounded-full hover:bg-white hover:bg-opacity-5 ml-2"
+                                                    onClick={() => increaseMaterial()}
+                                                >
+                                                    <PlusIcon width={18} />
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    className="text-white rounded-full hover:bg-white hover:bg-opacity-5 ml-2"
+                                                    onClick={() => increaseMaterial()}
+                                                >
+                                                    <PlusIcon width={18} />
+                                                </button>
+                                            )}
                                         </div>
                                         <p className="my-2">
                                             {' '}
