@@ -14,6 +14,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'
+import { utils, BigNumber } from 'ethers'
 
 enum View {
     GOODS,
@@ -68,7 +69,10 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         const matAllowance = await material_allowance(summoner.id, RARITY_CRAFTING_SUMMONER)
         const global = await isApprovedForAll(account, RARITY_CRAFTING_ADDRESS)
         setGlobalApproval(global)
-        setApproval({ gold: goldAllowance >= CRAFTING_ALLOWANCE, material: matAllowance >= CRAFTING_ALLOWANCE })
+        setApproval({
+            gold: BigNumber.from(goldAllowance).gte(utils.parseEther(CRAFTING_ALLOWANCE.toFixed())),
+            material: matAllowance >= CRAFTING_ALLOWANCE,
+        })
     }, [gold_allowance, material_allowance, summoner, account, isApprovedForAll])
 
     useEffect(() => {

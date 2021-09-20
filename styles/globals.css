@@ -6,8 +6,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'pixelmix';
-    src: url('/fonts/pixelmix.ttf');
+    font-family: 'Lana Pixel';
+    src: url('/fonts/lanapixel.ttf');
 }
 
 html {
@@ -22,6 +22,7 @@ html {
 
 html,
 body {
+    font-family: 'Lana Pixel', serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
