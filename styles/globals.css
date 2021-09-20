@@ -1,12 +1,11 @@
 @import '@fontsource/work-sans/index.css';
-@import '@fontsource/dm-mono/index.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Pixelmix';
+    font-family: 'en';
     src: url('/fonts/pixelmix.ttf');
 }
 
@@ -22,7 +21,7 @@ html {
 
 html,
 body {
-    font-family: 'Pixelmix', 'Work Sans', sans-serif;
+    font-family: 'en', serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

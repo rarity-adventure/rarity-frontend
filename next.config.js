@@ -30,12 +30,12 @@ const nextConfig = {
         return [
             {
                 source: '/adventures',
-                destination: '/play',
+                destination: '/summoners',
                 permanent: true,
             },
             {
                 source: '/daily',
-                destination: '/play',
+                destination: '/summoners',
                 permanent: true,
             },
             {
