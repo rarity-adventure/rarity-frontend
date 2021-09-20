@@ -157,7 +157,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
             .then(async () => {
                 setResultModal(true)
                 setCraftLoading(true)
-                await delay(2000)
+                await delay(30000)
                 const newBalance = await balanceOf(account)
                 setCraftResult(newBalance > currBalance)
                 setCraftLoading(false)
