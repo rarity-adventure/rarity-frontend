@@ -153,7 +153,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
             })
             .then(async () => {
                 const newBalance = await balanceOf(account)
-                setCraftResult(currBalance > newBalance)
+                setCraftResult(newBalance > currBalance)
                 setResultModal(true)
             })
     }
@@ -453,12 +453,29 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                         >
                                             {i18n._(t`cancel`)}
                                         </button>
-                                        {summoner.base._xp >= 250 &&
-                                        summoner.gold.balance >= item.cost &&
-                                        summoner.skills.skills[5] > 0 &&
-                                        summoner.skills.skills[5] + summoner.ability_scores.modifiers._int > 0 &&
-                                        approval.gold &&
-                                        approval.material ? (
+                                        {materialUse === 0 ? (
+                                            summoner.base._xp >= 250 &&
+                                            summoner.gold.balance >= item.cost &&
+                                            summoner.skills.skills[5] > 0 &&
+                                            summoner.skills.skills[5] + summoner.ability_scores.modifiers._int > 0 &&
+                                            approval.gold ? (
+                                                <button
+                                                    onClick={async () => await craftButton()}
+                                                    className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg"
+                                                >
+                                                    {i18n._(t`craft`)}
+                                                </button>
+                                            ) : (
+                                                <button className="bg-green opacity-50 cursor-not-allowed px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg">
+                                                    {i18n._(t`craft`)}
+                                                </button>
+                                            )
+                                        ) : summoner.base._xp >= 250 &&
+                                          summoner.gold.balance >= item.cost &&
+                                          summoner.skills.skills[5] > 0 &&
+                                          summoner.skills.skills[5] + summoner.ability_scores.modifiers._int > 0 &&
+                                          approval.gold &&
+                                          approval.material ? (
                                             <button
                                                 onClick={async () => await craftButton()}
                                                 className="bg-green px-4 mx-2 border-2 border-white p-2  uppercase rounded-lg"
