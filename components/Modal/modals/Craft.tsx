@@ -1,18 +1,11 @@
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import { utils } from 'ethers'
 import Modal from '../index'
-import {
-    ARMOR_PROFICIENCY,
-    Item,
-    ITEM_TYPE,
-    WEAPON_DAMAGE_TYPE,
-    WEAPON_ENCUMBRANCE,
-    WEAPON_PROFICIENCY,
-} from '../../../constants/codex/items'
+import { Item } from '../../../constants/codex/items'
 import Loader from '../../Loader'
+import { set } from 'immer/dist/utils/common'
 
 interface CraftModalProps {
     open: boolean
@@ -31,28 +24,47 @@ export default function CraftResultModal({
 }: CraftModalProps): JSX.Element {
     const { i18n } = useLingui()
 
+    const phrases = [
+        'Adding goblin hair... ',
+        'Looking for a griffin liver...',
+        'Removing the goblin hair...',
+        'Applying squid polish...',
+        'Performing olfactory analysis...',
+        'Adding Owlbear claws...',
+        'Almost done...',
+        "Oops, that doesn't go there...",
+        'Improving durability...',
+        'Feeding unicorns...',
+    ]
+
+    const [phrase, setPhrase] = useState<string>()
+
+    function rand() {
+        return Math.floor(Math.random() * 3)
+    }
+
+    useEffect(() => {
+        setPhrase(phrases[rand()])
+        const timer = setInterval(() => {
+            setPhrase(phrases[rand()])
+        }, 10000)
+
+        return () => clearInterval(timer)
+    }, [setPhrase])
+
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-card-bottom rounded-lg border-2 border-white">
                 {loading ? (
                     <>
                         <ModalHeader title={i18n._(t`CRAFTING!`)} onClose={closeFunction} />
-                        <div className="text-center flex flex-row justify-center animate-spin mb-5">
-                            <svg
-                                className="animate-spin-slow"
-                                style={{ height: 50, width: 50 }}
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 9.27455 20.9097 6.80375 19.1414 5"
-                                    strokeWidth="2.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    stroke={'#ffffff'}
-                                />
-                            </svg>
+                        <div className="text-center flex flex-row justify-center mb-5">
+                            <div className="flex flex-row">
+                                <p className="text-white text-center">{phrase}</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-row justify-center mb-5">
+                            <Loader size={'50'} />
                         </div>
                     </>
                 ) : success ? (
