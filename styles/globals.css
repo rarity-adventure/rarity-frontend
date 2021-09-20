@@ -6,6 +6,12 @@
 @tailwind utilities;
 
 @font-face {
+    font-family: 'Pixelmix';
+    src: url('/fonts/pixelmix.ttf');
+}
+
+
+@font-face {
     font-family: 'Lana Pixel';
     src: url('/fonts/lanapixel.ttf');
 }
