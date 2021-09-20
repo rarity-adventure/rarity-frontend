@@ -5,6 +5,7 @@ import { useLingui } from '@lingui/react'
 import Modal from '../index'
 import Image from 'next/image'
 import useRarityCrafting from '../../../hooks/useRarityCrafting'
+import Loader from '../../Loader'
 
 interface TokenURIModalProps {
     open: boolean
@@ -34,9 +35,13 @@ export default function TokenURIModal({ open, closeFunction, id }: TokenURIModal
 
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
-            <div className="bg-card-bottom rounded-lg border-2 border-white w-full text-center pb-4 border-white border-2 ">
+            <div className="bg-card-bottom rounded-lg text-white border-2 border-white w-full text-center pb-4 border-white border-2 ">
                 <ModalHeader title={i18n._(t`ID`) + ':' + id} onClose={closeFunction} />
-                {uri && <Image className={'mx-auto rounded-lg'} src={uri} height={300} width={300} />}
+                {uri ? (
+                    <Image className={'mx-auto rounded-lg break-normal'} src={uri} height={300} width={300} />
+                ) : (
+                    <Loader size={'50'} />
+                )}
             </div>
         </Modal>
     )

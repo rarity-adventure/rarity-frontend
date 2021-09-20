@@ -24,14 +24,31 @@ export default function Inventory(): JSX.Element {
                     <>
                         <div className="flex flex-row items-center justify-between">
                             <div>
-                                <h1 className="text-2xl xl:text-3xl">{i18n._(t`inventory`)}</h1>
+                                <h1 className="text-2xl xl:text-3xl uppercase">{i18n._(t`inventory`)}</h1>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
-                            {items.map((i) => {
-                                return <ItemCard key={i.token_id} userItem={i} />
-                            })}
+
+                        <div className="p-2 ">
+                            <div className="flex flex-row items-center justify-center">
+                                <h1 className="text-2xl xl:text-2xl uppercase text-center">{i18n._(t`items`)}</h1>
+                            </div>
+                            <div className="grid grid-cols-1 rounded-lg sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center bg-background-start border-2 border-white gap-2 p-5 xl:gap-5 max-h-screen overflow-scroll">
+                                {items.map((i) => {
+                                    return <ItemCard key={i.token_id} userItem={i} />
+                                })}
+                            </div>
                         </div>
+
+                        {/*<div className="p-2 ">
+                            <div className="flex flex-row items-center justify-center">
+                                <h1 className="text-2xl xl:text-2xl uppercase text-center">{i18n._(t`names`)}</h1>
+                            </div>
+                            <div className="grid grid-cols-1 rounded-lg sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center bg-background-start border-2 border-white gap-2 p-5 xl:gap-5 max-h-screen overflow-scroll">
+                                {items.map((i) => {
+                                    return <ItemCard key={i.token_id} userItem={i} />
+                                })}
+                            </div>
+                        </div>*/}
                     </>
                 ) : (
                     <div className="flex my-10 justify-center">

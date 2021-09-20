@@ -162,11 +162,11 @@ export default function useRarityLibrary(): LibraryInterface {
                     resolve(
                         items.map((value, i) => {
                             return {
-                                token_id: parseInt(value.token_id.toString(), 16),
+                                token_id: parseInt(value.token_id.toString(), 10),
                                 base_type: value.base_type,
                                 item_type: value.item_type,
                                 crafted: value.crafted,
-                                crafter: parseInt(value.crafter.toString(), 16),
+                                crafter: parseInt(value.crafter.toString(), 10),
                             }
                         })
                     )

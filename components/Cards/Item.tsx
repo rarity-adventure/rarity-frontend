@@ -46,7 +46,7 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
                     </p>
                 </div>
                 {item && (
-                    <div className="px-3 text-white pb-5 h-98">
+                    <div className="px-3 text-white pb-5 h-96">
                         <div className="text-center">
                             <button onClick={() => setUriModal(true)} className="border-white border-b-2 ">
                                 <p className="mt-3 text-center">{item.name}</p>
@@ -62,7 +62,7 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
                         item.armor_bonus ||
                         item.max_dex_bonus ||
                         item.penalty ? (
-                            <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll h-32 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <div className="py-2 px-2">
                                     <p>Weight: {item.weight}</p>
                                     {item.proficiency ? (
