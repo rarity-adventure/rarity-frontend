@@ -172,6 +172,11 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         }
     }
 
+    function craftResultClose() {
+        setResultModal(false)
+        setMaterialUse(0)
+    }
+
     return (
         <div className="max-w-screen-md mx-auto">
             <ItemModal
@@ -181,7 +186,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 itemType={getTypeFromView()}
                 checkOnly={checkOnly}
             />
-            <CraftResultModal open={resultModal} closeFunction={setResultModal} success={craftResult} item={item} />
+            <CraftResultModal open={resultModal} closeFunction={craftResultClose} success={craftResult} item={item} />
             <>
                 {' '}
                 <div className="flex flex-row w-full items-center">
