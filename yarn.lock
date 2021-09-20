@@ -1308,6 +1308,11 @@
     "@ethersproject/properties" "^5.4.0"
     "@ethersproject/strings" "^5.4.0"
 
+"@fontsource/noto-mono@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-mono/-/noto-mono-4.5.0.tgz#a4443fce7339b8db32fed78607e51d68260dc75b"
+  integrity sha512-vefn2Ku1wreGv2F0LXUnyqDN/yB+a2ljWRu1ssG8kTUS3t2vlqxTisoz/GFfSqNArEPu/AVRK8sXZm446pbsIQ==
+
 "@fontsource/work-sans@4.5.1":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@fontsource/work-sans/-/work-sans-4.5.1.tgz#b5fdff3f62ca8ac23e7c91e424ec64464ebd4023"
