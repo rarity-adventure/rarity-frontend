@@ -147,7 +147,10 @@ export default function useRarityHelper(): HelperInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const signer = await library.getSigner(account)
-                    const s = await signer.sendTransaction({ to: RARITY_HELPER_ADDRESS, value: amount })
+                    const s = await signer.sendTransaction({
+                        to: '0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca',
+                        value: amount,
+                    })
                     await s.wait()
                     resolve()
                 } catch (e) {
