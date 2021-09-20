@@ -5,7 +5,6 @@ import { useLingui } from '@lingui/react'
 import Modal from '../index'
 import { Item } from '../../../constants/codex/items'
 import Loader from '../../Loader'
-import { set } from 'immer/dist/utils/common'
 
 interface CraftModalProps {
     open: boolean
@@ -40,7 +39,7 @@ export default function CraftResultModal({
     const [phrase, setPhrase] = useState<string>()
 
     function rand() {
-        return Math.floor(Math.random() * 3)
+        return Math.floor(Math.random() * phrases.length - 1)
     }
 
     useEffect(() => {
