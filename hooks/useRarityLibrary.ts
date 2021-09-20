@@ -53,7 +53,7 @@ export interface SummonerFullData {
     }
 }
 
-export interface Item {
+export interface ItemData {
     token_id: number
     base_type: number
     item_type: number
@@ -63,7 +63,7 @@ export interface Item {
 
 interface LibraryInterface {
     summoners_full: (ids: string[]) => Promise<SummonerFullData[]>
-    items: (owner: string) => Promise<Item[]>
+    items: (owner: string) => Promise<ItemData[]>
 }
 
 export default function useRarityLibrary(): LibraryInterface {
@@ -155,7 +155,7 @@ export default function useRarityLibrary(): LibraryInterface {
     )
 
     const items = useCallback(
-        async (owner: string): Promise<Item[]> => {
+        async (owner: string): Promise<ItemData[]> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const items = await lib?.items1(owner)

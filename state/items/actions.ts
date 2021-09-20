@@ -1,4 +1,4 @@
 import { createAction } from '@reduxjs/toolkit'
-import { Item, SummonerFullData } from '../../hooks/useRarityLibrary'
+import { ItemData } from '../../hooks/useRarityLibrary'
 
-export const updateItems = createAction<Item[]>('items/updateItems')
+export const updateItems = createAction<ItemData[]>('items/updateItems')

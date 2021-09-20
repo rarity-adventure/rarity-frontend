@@ -1,9 +1,9 @@
-import { Item } from '../../hooks/useRarityLibrary'
+import { ItemData } from '../../hooks/useRarityLibrary'
 import { createReducer } from '@reduxjs/toolkit'
 import { updateItems } from './actions'
 
 export interface ItemsState {
-    readonly data: Item[]
+    readonly data: ItemData[]
 }
 
 const initialState: ItemsState = {

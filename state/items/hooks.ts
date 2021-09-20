@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { AppState } from '../index'
-import { Item } from '../../hooks/useRarityLibrary'
+import { ItemData } from '../../hooks/useRarityLibrary'
 
-export function useItems(): Item[] {
+export function useItems(): ItemData[] {
     return useSelector((state: AppState) => state.items.data)
 }
