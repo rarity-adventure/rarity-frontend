@@ -193,7 +193,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 checkOnly={checkOnly}
             />
             <CraftResultModal
-                open={craftResult}
+                open={resultModal}
                 closeFunction={craftResultClose}
                 success={craftResult}
                 item={item}
