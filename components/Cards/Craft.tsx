@@ -142,6 +142,10 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     const [craftResult, setCraftResult] = useState(false)
 
+    const [craftLoading, setCraftLoading] = useState(false)
+
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+
     async function craftButton() {
         const currBalance = await balanceOf(account)
         toast
@@ -151,9 +155,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 error: <b>{i18n._(t`Failed`)}</b>,
             })
             .then(async () => {
+                setResultModal(true)
+                setCraftLoading(true)
+                await delay(5000)
                 const newBalance = await balanceOf(account)
                 setCraftResult(newBalance > currBalance)
-                setResultModal(true)
+                setCraftLoading(false)
             })
     }
 
@@ -185,7 +192,13 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 itemType={getTypeFromView()}
                 checkOnly={checkOnly}
             />
-            <CraftResultModal open={resultModal} closeFunction={craftResultClose} success={craftResult} item={item} />
+            <CraftResultModal
+                open={resultModal}
+                closeFunction={craftResultClose}
+                success={craftResult}
+                item={item}
+                loading={craftLoading}
+            />
             <>
                 {' '}
                 <div className="flex flex-row w-full items-center">

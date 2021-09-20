@@ -151,7 +151,6 @@ export default function useRarityHelper(): HelperInterface {
                     await s.wait()
                     resolve()
                 } catch (e) {
-                    console.log(e)
                     reject()
                 }
             })
