@@ -11,7 +11,6 @@ import { CRAFTING_ALLOWANCE, RARITY_CRAFTING_ADDRESS, RARITY_CRAFTING_SUMMONER }
 import toast from 'react-hot-toast'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { utils } from 'ethers'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'

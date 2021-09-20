@@ -31,7 +31,7 @@ export default function CraftResultModal({ open, closeFunction, success, item }:
                         <ModalHeader title={i18n._(t`CONGRATULATIONS!`)} onClose={closeFunction} />
                         <div className="text-center p-2 mb-3 -mt-1 text-white">
                             <p className="text-center">{i18n._(t`You have successfully crafted`)}</p>
-                            <p className="text-center">{item.name}</p>
+                            <p className="text-center uppercase mt-2">{item.name}</p>
                         </div>
                     </>
                 ) : (
