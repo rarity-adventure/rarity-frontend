@@ -27,7 +27,7 @@ export default function useRarityCrafting(): CraftingInterface {
         async (id: number, base_type: number, item_type: string, materials: number): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const tx = await crafting?.craft(id, base_type, item_type, materials)
+                    const tx = await crafting?.craft(id, base_type, item_type, materials, { gas: '500000' })
                     await tx.wait()
                     resolve()
                 } catch (e) {
