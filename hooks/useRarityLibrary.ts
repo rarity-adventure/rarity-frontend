@@ -161,7 +161,6 @@ export default function useRarityLibrary(): LibraryInterface {
                     const items = await lib?.items1(owner)
                     resolve(
                         items.map((value, i) => {
-                            console.log(value, i)
                             return {
                                 token_id: parseInt(value.token_id.toString(), 16),
                                 base_type: value.base_type,
@@ -172,7 +171,6 @@ export default function useRarityLibrary(): LibraryInterface {
                         })
                     )
                 } catch (e) {
-                    console.log(e)
                     reject()
                 }
             })

@@ -30,7 +30,6 @@ export default function Inventory(): JSX.Element {
         setItems(itms)
     }, [itms])
 
-    console.log(items)
     return (
         <div className="w-full z-25">
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10 uppercase">
