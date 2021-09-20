@@ -3,33 +3,55 @@ import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { ItemData } from '../../hooks/useRarityLibrary'
 import {
-    ARMOR_PROFICIENCY, Item,
+    ARMOR_PROFICIENCY,
+    Item,
     ITEM_TYPE,
     ITEMS,
-    WEAPON_DAMAGE_TYPE, WEAPON_ENCUMBRANCE,
-    WEAPON_PROFICIENCY
+    WEAPON_DAMAGE_TYPE,
+    WEAPON_ENCUMBRANCE,
+    WEAPON_PROFICIENCY,
 } from '../../constants/codex/items'
+import TokenURIModal from '../Modal/modals/TokenURIModal'
+import TransferItemModal from '../Modal/modals/TransferItem'
 
 function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
     const { i18n } = useLingui()
 
-        const [item, setItem] = useState<Item>()
+    const [item, setItem] = useState<Item>()
 
-    useEffect( () => {
+    useEffect(() => {
         setItem(ITEMS[userItem.base_type][userItem.item_type])
     }, [userItem])
 
+    const [uriModal, setUriModal] = useState(false)
+
+    function close() {
+        setUriModal(false)
+    }
+
+    const [transferModal, setTransferModal] = useState(false)
+
+    function closeTransfer() {
+        setTransferModal(false)
+    }
+
     return (
-        <div className="mx-auto w-56">
+        <div className="mx-auto w-64 lg:w-56 xl:w-72">
+            <TokenURIModal open={uriModal} closeFunction={close} id={userItem.token_id} />
+            <TransferItemModal open={transferModal} closeFunction={closeTransfer} item={userItem} />
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
                 <div className="p-2 text-xs">
                     <p className="uppercase">
                         {i18n._(t`id`)}: {userItem.token_id}
                     </p>
                 </div>
-                { item && (
+                {item && (
                     <div className="px-3 text-white pb-5 h-98">
-                        <p className="mt-3">{item.name}</p>
+                        <div className="text-center">
+                            <button onClick={() => setUriModal(true)} className="border-white border-b-2 ">
+                                <p className="mt-3 text-center">{item.name}</p>
+                            </button>
+                        </div>
                         {item.proficiency ||
                         item.weight ||
                         item.spell_failure ||
@@ -79,6 +101,14 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
                         )}
                     </div>
                 )}
+                <div className="p-2 text-xs justify-center text-center">
+                    <button
+                        className="uppercase bg-red p-2 border-2 border-white rounded-lg"
+                        onClick={() => setTransferModal(true)}
+                    >
+                        {i18n._(t`transfer`)}
+                    </button>
+                </div>
             </div>
         </div>
     )
