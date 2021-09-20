@@ -369,12 +369,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 {summoner.gold.balance >= item.cost ? (
                                                     <span className="bg-green border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {summoner.gold.balance}/{item.cost}
+                                                        {item.cost}/{summoner.gold.balance}
                                                     </span>
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {summoner.gold.balance}/{item.cost}
+                                                        {item.cost}/{summoner.gold.balance}
                                                     </span>
                                                 )}
                                             </p>
@@ -388,7 +388,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                                 ) : (
                                                     <span className="bg-red border-white border-2 rounded-lg p-1">
                                                         {' '}
-                                                        {summoner.base._xp}/250
+                                                        250/{summoner.base._xp}
                                                     </span>
                                                 )}
                                             </p>
