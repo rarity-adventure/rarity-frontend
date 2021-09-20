@@ -100,6 +100,14 @@ export default function Profile(): JSX.Element {
                                     <div>
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
                                             {selectedSummoner && (
+                                                <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                    <div className="py-1 w-2/3 text-center">
+                                                        <p>{selectedSummoner.materials.balance}</p>
+                                                    </div>
+                                                    <Image src="/img/material.png" width={40} height={40} />
+                                                </div>
+                                            )}
+                                            {selectedSummoner && (
                                                 <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                     <div className="py-1 w-2/3 text-center">
                                                         <p>{selectedSummoner.gold.balance}</p>
@@ -149,6 +157,14 @@ export default function Profile(): JSX.Element {
                                     </div>
                                 </div>
                                 <div className="sm:hidden mt-2 flex flex-row justify-between">
+                                    {selectedSummoner && (
+                                        <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                            <div className="py-1 w-2/3 text-center">
+                                                <p>{selectedSummoner.materials.balance}</p>
+                                            </div>
+                                            <Image src="/img/material.png" width={40} height={40} />
+                                        </div>
+                                    )}
                                     {selectedSummoner && (
                                         <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 w-2/3 text-center">
