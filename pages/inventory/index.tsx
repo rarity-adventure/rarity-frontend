@@ -32,7 +32,7 @@ export default function Inventory(): JSX.Element {
                             <div className="flex flex-row items-center justify-center">
                                 <h1 className="text-2xl xl:text-2xl uppercase text-center">{i18n._(t`items`)}</h1>
                             </div>
-                            <div className="grid grid-cols-1 rounded-lg sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center bg-background-start border-2 border-white gap-2 p-5 xl:gap-5 max-h-screen overflow-scroll">
+                            <div className="grid grid-cols-1 rounded-lg sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 border-white gap-2 p-5 xl:gap-5 max-h-screen overflow-scroll">
                                 {items.map((i) => {
                                     return <ItemCard key={i.token_id} userItem={i} />
                                 })}
