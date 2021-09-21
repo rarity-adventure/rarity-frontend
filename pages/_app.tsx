@@ -1,7 +1,6 @@
 import '../styles/globals.css'
 
 import * as plurals from 'make-plural/plurals'
-
 import type { AppProps } from 'next/app'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import ReactGA from 'react-ga4'
@@ -27,10 +26,9 @@ import { useRouter } from 'next/router'
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
 const client = new ApolloClient({
-    uri: 'https://api.rarity.game/subgraphs/name/rarity-adventure/rarity',
+    uri: 'https://api.thegraph.com/subgraphs/name/ytumanov/scarcity',
     cache: new InMemoryCache(),
 })
-
 if (typeof window !== 'undefined' && !!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
 }

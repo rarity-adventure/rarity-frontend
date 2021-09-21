@@ -55,7 +55,6 @@ export default function Profile(): JSX.Element {
             setSelectedSummoner(summoners[currIndex + 1])
         }
     }
-
     return (
         <div className="w-full z-25">
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">

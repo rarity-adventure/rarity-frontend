@@ -18,7 +18,6 @@ export default function Updater(): null {
     const { data, loading, error } = useQuery(SUMMONERS, {
         variables: { owner: account ? account.toString().toLowerCase() : '' },
     })
-
     const [summoners, setSummoners] = useState([])
 
     useEffect(() => {
@@ -26,6 +25,7 @@ export default function Updater(): null {
         const summoners = data.summoners.map((s) => {
             return s.id
         })
+
         setSummoners(summoners)
     }, [library, chainId, account, loading, error, windowVisible])
 
@@ -40,12 +40,10 @@ export default function Updater(): null {
         } else {
             const chunks = chunkArrayByNumber(summoners, 50)
             let full_data = []
-
             for (let chunk of chunks) {
                 const chunk_data = await summoners_full(chunk)
                 full_data = full_data.concat(chunk_data)
             }
-
             dispatch(updateSummoners(full_data))
             return
         }

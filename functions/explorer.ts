@@ -2,8 +2,8 @@
 import { ChainId } from '../constants'
 
 const builders = {
-    fantom: (chainName: string, data: string, type: 'transaction' | 'token' | 'address' | 'block') => {
-        const prefix = 'https://ftmscan.com'
+    matic: (chainName: string, data: string, type: 'transaction' | 'token' | 'address' | 'block') => {
+        const prefix = 'https://polygonscan.com/'
         switch (type) {
             case 'transaction':
                 return `${prefix}/tx/${data}`
@@ -23,7 +23,7 @@ interface ChainObject {
 const chains: ChainObject = {
     [ChainId.MAINNET]: {
         chainName: '',
-        builder: builders.fantom,
+        builder: builders.matic,
     },
 }
 

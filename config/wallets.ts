@@ -5,7 +5,7 @@ import RPC from './rpc'
 import { ChainId } from '../constants'
 
 export const network = new NetworkConnector({
-    defaultChainId: 250,
+    defaultChainId: 137,
     urls: RPC,
 })
 
@@ -44,7 +44,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
                 bridge: 'https://bridge.walletconnect.org',
                 qrcode: true,
                 supportedChainIds: [
-                    250, // Fantom
+                    137, // Matic
                 ],
             })
         },

@@ -26,7 +26,9 @@ async function fetchChunk(
     blockNumber: number
 ): Promise<{ success: boolean; returnData: string }[]> {
     console.debug('Fetching chunk', chunk, blockNumber)
+    console.log('33333333')
     try {
+        console.log('22222222222')
         const { returnData } = await multicall.callStatic.tryBlockAndAggregate(
             false,
             chunk.map((obj) => ({
@@ -36,7 +38,7 @@ async function fetchChunk(
             })),
             { blockTag: blockNumber }
         )
-
+        console.log('111111111111111')
         if (process.env.NODE_ENV === 'development') {
             returnData.forEach(({ gasUsed, returnData, success }, i) => {
                 if (
