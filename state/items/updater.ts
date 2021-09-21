@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect } from 'react'
 import useRarityLibrary from '../../hooks/useRarityLibrary'
-import { updateItems } from './actions'
+import { setLoading, updateItems } from './actions'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()
@@ -15,8 +15,10 @@ export default function Updater(): null {
     const { items } = useRarityLibrary()
 
     const fetch_items = useCallback(async () => {
+        dispatch(setLoading(true))
         const i = await items(account)
         dispatch(updateItems(i))
+        dispatch(setLoading(false))
     }, [items])
 
     useEffect(() => {

@@ -1,26 +1,28 @@
 import { useLingui } from '@lingui/react'
 import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
-import Loader from '../../components/Loader'
 import { ItemData, SummonerFullData } from '../../hooks/useRarityLibrary'
-import { useItems } from '../../state/items/hooks'
+import { useItems, useItemsLoading } from '../../state/items/hooks'
 import ItemCard from '../../components/Cards/Item'
 import Image from 'next/image'
 import { useSummoners } from '../../state/summoners/hooks'
+import Loader from '../../components/Loader'
 
 export default function Inventory(): JSX.Element {
     const { i18n } = useLingui()
 
-    const itms = useItems()
+    const it = useItems()
+
+    const loading = useItemsLoading()
 
     const s = useSummoners()
 
-    const [items, setItems] = useState<ItemData[]>(itms)
+    const [items, setItems] = useState<ItemData[]>(it)
     const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
 
     useEffect(() => {
-        setItems(itms)
-    }, [itms])
+        setItems(it)
+    }, [it])
 
     useEffect(() => {
         setSummoners(s)
@@ -29,13 +31,17 @@ export default function Inventory(): JSX.Element {
     return (
         <div className="w-full z-25">
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
-                {items.length > 0 ? (
+                {loading ? (
+                    <div className="flex my-10 justify-center">
+                        <Loader size={'50'} />
+                    </div>
+                ) : items.length > 0 ? (
                     <>
                         <div className="flex flex-row items-center justify-between">
                             <div>
                                 <h1 className="text-2xl xl:text-3xl uppercase font-bold">{i18n._(t`inventory`)}</h1>
                             </div>
-                            <div className="hidden lg:inline-flex flex flex-row justify-start items-center">
+                            {/*<div className="hidden lg:inline-flex flex flex-row justify-start items-center">
                                 <h2 className="uppercase font-bold text-xl">{i18n._(t`bulk transfer`)}:</h2>
                                 <button className="border-b-2 p-1 uppercase ml-2">
                                     <span>{i18n._(t`gold`)}</span>
@@ -43,7 +49,7 @@ export default function Inventory(): JSX.Element {
                                 <button className="border-b-2 p-1 uppercase ml-2">
                                     <span>{i18n._(t`material`)}</span>
                                 </button>
-                            </div>
+                            </div>*/}
                             <div className="hidden sm:inline-flex">
                                 {summoners.length > 0 && (
                                     <div className={'flex flex-row gap-4'}>
@@ -135,7 +141,9 @@ export default function Inventory(): JSX.Element {
                     </>
                 ) : (
                     <div className="flex my-10 justify-center">
-                        <Loader size={'50px'} />
+                        <div className="text-2xl uppercase">
+                            <h1>{i18n._(t`no items`)}</h1>
+                        </div>
                     </div>
                 )}
             </div>

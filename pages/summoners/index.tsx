@@ -1,7 +1,7 @@
 import { useLingui } from '@lingui/react'
 import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
-import { useSummoners } from '../../state/summoners/hooks'
+import { useSummoners, useSummonersLoading } from '../../state/summoners/hooks'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import SummonerSummaryCard from '../../components/Cards/Summary'
 import Loader from '../../components/Loader'
@@ -28,6 +28,8 @@ export default function Summoners(): JSX.Element {
     const { library, account } = useActiveWeb3React()
 
     const s = useSummoners()
+
+    const loading = useSummonersLoading()
 
     const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
 
@@ -71,7 +73,12 @@ export default function Summoners(): JSX.Element {
             <DungeonModal open={modal === Modal.DUNGEON} closeFunction={closeModal} summoners={dungeon} />
             <DaycareMultiModal open={modal === Modal.DAYCARE} closeFunction={closeModal} summoners={summoners} />
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10 uppercase">
-                {summoners.length > 0 ? (
+                {loading ? (
+                    <div className="flex my-10 justify-center">
+                        {' '}
+                        <Loader size={'50px'} />
+                    </div>
+                ) : summoners.length > 0 ? (
                     <>
                         <div className="flex flex-row items-center justify-between">
                             <div>
@@ -147,7 +154,9 @@ export default function Summoners(): JSX.Element {
                     </>
                 ) : (
                     <div className="flex my-10 justify-center">
-                        <Loader size={'50px'} />
+                        <div className="text-2xl uppercase">
+                            <h1>{i18n._(t`no summoners`)}</h1>
+                        </div>
                     </div>
                 )}
             </div>
