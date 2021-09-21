@@ -53,8 +53,17 @@ export interface SummonerFullData {
     }
 }
 
+export interface ItemData {
+    token_id: number
+    base_type: number
+    item_type: number
+    crafted: number
+    crafter: number
+}
+
 interface LibraryInterface {
     summoners_full: (ids: string[]) => Promise<SummonerFullData[]>
+    items: (owner: string) => Promise<ItemData[]>
 }
 
 export default function useRarityLibrary(): LibraryInterface {
@@ -145,5 +154,29 @@ export default function useRarityLibrary(): LibraryInterface {
         [lib]
     )
 
-    return { summoners_full }
+    const items = useCallback(
+        async (owner: string): Promise<ItemData[]> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const items = await lib?.items1(owner)
+                    resolve(
+                        items.map((value, i) => {
+                            return {
+                                token_id: parseInt(value.token_id.toString(), 10),
+                                base_type: value.base_type,
+                                item_type: value.item_type,
+                                crafted: value.crafted,
+                                crafter: parseInt(value.crafter.toString(), 10),
+                            }
+                        })
+                    )
+                } catch (e) {
+                    reject()
+                }
+            })
+        },
+        [lib]
+    )
+
+    return { summoners_full, items }
 }

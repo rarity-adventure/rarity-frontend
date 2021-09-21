@@ -70,7 +70,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         const global = await isApprovedForAll(account, RARITY_CRAFTING_ADDRESS)
         setGlobalApproval(global)
         setApproval({
-            gold: BigNumber.from(goldAllowance).gte(utils.parseEther(CRAFTING_ALLOWANCE.toFixed())),
+            gold: goldAllowance >= CRAFTING_ALLOWANCE,
             material: matAllowance >= CRAFTING_ALLOWANCE,
         })
     }, [gold_allowance, material_allowance, summoner, account, isApprovedForAll])
@@ -251,18 +251,18 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-1 w-full px-4 py-2 divide-white divide-y-2 overflow-scroll overflow-hidden h-60 mb-2">
+                                    <div className="grid grid-cols-1 w-full px-4 py-2 overflow-scroll overflow-hidden h-60 mb-2">
                                         {view === View.GOODS && (
-                                            <div className="divide-white divide-y-2">
+                                            <div>
                                                 {Object.keys(ITEMS[ITEM_TYPE.GOOD]).map((k) => {
                                                     {
                                                         return (
-                                                            <div key={k}>
+                                                            <div key={k} className="my-2">
                                                                 <button
                                                                     onClick={() =>
                                                                         openModal(ITEMS[ITEM_TYPE.GOOD][k], k, false)
                                                                     }
-                                                                    className="uppercase p-2 text-left hover:bg-background-contrast w-full"
+                                                                    className="uppercase p-1 px-3 text-left w-full border-black border-opacity-30 border shadow"
                                                                 >
                                                                     {ITEMS[ITEM_TYPE.GOOD][k].name}
                                                                 </button>
@@ -273,16 +273,16 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             </div>
                                         )}
                                         {view === View.WEAPONS && (
-                                            <div className="divide-white divide-y-2">
+                                            <div>
                                                 {Object.keys(ITEMS[ITEM_TYPE.WEAPON]).map((k) => {
                                                     {
                                                         return (
-                                                            <div key={k}>
+                                                            <div key={k} className="my-2">
                                                                 <button
                                                                     onClick={() =>
                                                                         openModal(ITEMS[ITEM_TYPE.WEAPON][k], k, false)
                                                                     }
-                                                                    className="uppercase p-2 text-left hover:bg-background-contrast w-full"
+                                                                    className="uppercase p-1 px-3 text-left w-full border-black border-opacity-30 border shadow"
                                                                 >
                                                                     {ITEMS[ITEM_TYPE.WEAPON][k].name}
                                                                 </button>
@@ -293,16 +293,16 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             </div>
                                         )}
                                         {view === View.ARMORS && (
-                                            <div className="divide-white divide-y-2">
+                                            <div>
                                                 {Object.keys(ITEMS[ITEM_TYPE.ARMOR]).map((k) => {
                                                     {
                                                         return (
-                                                            <div key={k}>
+                                                            <div key={k} className="my-2">
                                                                 <button
                                                                     onClick={() =>
                                                                         openModal(ITEMS[ITEM_TYPE.ARMOR][k], k, false)
                                                                     }
-                                                                    className="uppercase p-2 text-left hover:bg-background-contrast w-full"
+                                                                    className="uppercase p-1 px-3 text-left w-full border-black border-opacity-30 border shadow"
                                                                 >
                                                                     {ITEMS[ITEM_TYPE.ARMOR][k].name}
                                                                 </button>

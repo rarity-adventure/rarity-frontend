@@ -6,6 +6,7 @@ interface GoldInterface {
     claim: (id: number) => Promise<void>
     gold_allowance: (from: number, spender: number) => Promise<number>
     gold_approve: (from: number, spender: number, amount: number) => Promise<void>
+    transferFrom: (executor: number, from: number, to: number, amount: string) => Promise<void>
 }
 
 export default function useRarityGold(): GoldInterface {
@@ -55,5 +56,20 @@ export default function useRarityGold(): GoldInterface {
         [gold]
     )
 
-    return { claim, gold_allowance, gold_approve }
+    const transferFrom = useCallback(
+        async (executor: number, from: number, to: number, amount: string): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await gold?.transferFrom(executor, from, to, amount)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
+        },
+        [gold]
+    )
+
+    return { claim, gold_allowance, gold_approve, transferFrom }
 }

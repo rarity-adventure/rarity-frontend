@@ -56,14 +56,11 @@ function AppBar(): JSX.Element {
         )
     }
 
-    function market(): JSX.Element {
+    function inventory(): JSX.Element {
         return (
-            <Link
-                href="https://paintswap.finance/nfts/collections/0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19"
-                passHref={true}
-            >
+            <Link href="/inventory" passHref={true}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
-                    <h2>{i18n._(t`market`)}</h2>
+                    <h2>{i18n._(t`inventory`)}</h2>
                 </div>
             </Link>
         )
@@ -91,11 +88,11 @@ function AppBar(): JSX.Element {
                                     </Link>
                                     <div className="hidden md:block sm:ml-2">
                                         <div className="flex uppercase">
-                                            {summoners()}
                                             {play()}
-                                            {analytics()}
+                                            {summoners()}
+                                            {inventory()}
                                             {names()}
-                                            {market()}
+                                            {analytics()}
                                             {account && (
                                                 <button
                                                     onClick={() => setModal(true)}
@@ -166,11 +163,11 @@ function AppBar(): JSX.Element {
 
                         <Popover.Panel className="sm:hidden uppercase">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
-                                {summoners()}
                                 {play()}
-                                {analytics()}
+                                {summoners()}
+                                {inventory()}
                                 {names()}
-                                {market()}
+                                {analytics()}
                                 {account && (
                                     <button
                                         onClick={() => setModal(true)}

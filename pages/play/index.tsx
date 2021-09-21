@@ -9,16 +9,18 @@ import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import Selector from '../../components/Selector'
 import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
-import SummonerInventoryCard from '../../components/Cards/Inventory'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
 import Image from 'next/image'
+import TransferGoldModal from '../../components/Modal/modals/TransferGold'
+import TransferMaterialModal from '../../components/Modal/modals/TransferMaterial'
+import SummonerTransferCard from '../../components/Cards/Transfer'
 
 enum View {
     stats,
     skills,
-    inventory,
     crafting,
+    transfer,
 }
 
 export default function Profile(): JSX.Element {
@@ -56,6 +58,18 @@ export default function Profile(): JSX.Element {
         }
     }
 
+    const [transferGoldModal, setTransferGoldModal] = useState(false)
+
+    function closeGoldModal() {
+        setTransferGoldModal(false)
+    }
+
+    const [transferMaterialModal, setTransferMaterialModal] = useState(false)
+
+    function closeMaterialModal() {
+        setTransferMaterialModal(false)
+    }
+
     return (
         <div className="w-full z-25">
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
@@ -82,16 +96,16 @@ export default function Profile(): JSX.Element {
                                                         <span>{i18n._(t`skills`)}</span>
                                                     </button>
                                                     <button
-                                                        onClick={() => setView(View.inventory)}
-                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                    >
-                                                        <span>{i18n._(t`inventory`)}</span>
-                                                    </button>
-                                                    <button
                                                         onClick={() => setView(View.crafting)}
                                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                                     >
                                                         <span>{i18n._(t`craft`)}</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setView(View.transfer)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`transfer`)}</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -100,12 +114,36 @@ export default function Profile(): JSX.Element {
                                     <div>
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
                                             {selectedSummoner && (
-                                                <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
-                                                    <div className="py-1 w-2/3 text-center">
-                                                        <p>{selectedSummoner.gold.balance}</p>
+                                                <button onClick={() => setTransferMaterialModal(true)}>
+                                                    <TransferMaterialModal
+                                                        open={transferMaterialModal}
+                                                        closeFunction={closeMaterialModal}
+                                                        id={selectedSummoner.id}
+                                                        summoners={summoners}
+                                                    />
+                                                    <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                        <div className="py-1 w-2/3 text-center">
+                                                            <p>{selectedSummoner.materials.balance}</p>
+                                                        </div>
+                                                        <Image src="/img/material.png" width={40} height={40} />
                                                     </div>
-                                                    <Image src="/img/gold.png" width={50} height={40} />
-                                                </div>
+                                                </button>
+                                            )}
+                                            {selectedSummoner && (
+                                                <button onClick={() => setTransferGoldModal(true)}>
+                                                    <TransferGoldModal
+                                                        open={transferGoldModal}
+                                                        closeFunction={closeGoldModal}
+                                                        summoners={summoners}
+                                                        id={selectedSummoner.id}
+                                                    />
+                                                    <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                        <div className="py-1 w-2/3 text-center">
+                                                            <p>{selectedSummoner.gold.balance}</p>
+                                                        </div>
+                                                        <Image src="/img/gold.png" width={50} height={40} />
+                                                    </div>
+                                                </button>
                                             )}
                                             <Selector summoners={summoners} select={setSelectedSummoner} />
                                         </div>
@@ -150,12 +188,24 @@ export default function Profile(): JSX.Element {
                                 </div>
                                 <div className="sm:hidden mt-2 flex flex-row justify-between">
                                     {selectedSummoner && (
-                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
-                                            <div className="py-1 w-2/3 text-center">
-                                                <p>{selectedSummoner.gold.balance}</p>
+                                        <button onClick={() => setTransferMaterialModal(true)}>
+                                            <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                <div className="py-1 w-2/3 text-center">
+                                                    <p>{selectedSummoner.materials.balance}</p>
+                                                </div>
+                                                <Image src="/img/material.png" width={40} height={40} />
                                             </div>
-                                            <Image src="/img/gold.png" width={50} height={40} />
-                                        </div>
+                                        </button>
+                                    )}
+                                    {selectedSummoner && (
+                                        <button onClick={() => setTransferGoldModal(true)}>
+                                            <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                <div className="py-1 w-2/3 text-center">
+                                                    <p>{selectedSummoner.gold.balance}</p>
+                                                </div>
+                                                <Image src="/img/gold.png" width={50} height={40} />
+                                            </div>
+                                        </button>
                                     )}
                                     <Selector summoners={summoners} select={setSelectedSummoner} />
                                 </div>
@@ -176,16 +226,16 @@ export default function Profile(): JSX.Element {
                                         <span>{i18n._(t`skills`)}</span>
                                     </button>
                                     <button
-                                        onClick={() => setView(View.inventory)}
-                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                    >
-                                        <span>{i18n._(t`inventory`)}</span>
-                                    </button>
-                                    <button
                                         onClick={() => setView(View.crafting)}
                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                     >
                                         <span>{i18n._(t`craft`)}</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setView(View.transfer)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
+                                        <span>{i18n._(t`transfer`)}</span>
                                     </button>
                                 </div>
                             </Popover.Panel>
@@ -219,7 +269,9 @@ export default function Profile(): JSX.Element {
                         <div className="col-span-2">
                             {view === View.stats && <SummonerStatsCard summoner={selectedSummoner} />}
                             {view === View.skills && <SummonerSkillsCard summoner={selectedSummoner} />}
-                            {view === View.inventory && <SummonerInventoryCard summoner={selectedSummoner} />}
+                            {view === View.transfer && (
+                                <SummonerTransferCard summoner={selectedSummoner} summoners={summoners} />
+                            )}
                             {view === View.crafting && <SummonerCraftCard summoner={selectedSummoner} />}
                         </div>
                     </div>

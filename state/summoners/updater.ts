@@ -52,8 +52,8 @@ export default function Updater(): null {
     }, [summoners_full, summoners])
 
     useEffect(() => {
-        if (!library || !chainId || !account || !windowVisible) return
+        if (!library || !chainId || !account || !windowVisible || loading) return
         fetch_summoners_data()
-    }, [summoners, windowVisible, fetch_summoners_data, library, chainId, account])
+    }, [summoners, windowVisible, fetch_summoners_data, library, chainId, account, loading])
     return null
 }

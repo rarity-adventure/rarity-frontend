@@ -16,17 +16,17 @@ export const CLASSES_NAMES: { [k: string]: string } = {
     '11': 'wizard',
 }
 export const CLASSES_IMAGES: { [k: string]: JSX.Element } = {
-    '1': <Image src="/img/classes/barbarian.png" width={106} height={176} alt={'barbarian'} />,
-    '2': <Image src="/img/classes/bard.png" width={105} height={176} alt={'bard'} />,
-    '3': <Image src="/img/classes/cleric.png" width={97} height={176} alt={'cleric'} />,
-    '4': <Image src="/img/classes/druid.png" width={110} height={176} alt={'druid'} />,
-    '5': <Image src="/img/classes/fighter.png" width={107} height={176} alt={'fighter'} />,
-    '6': <Image src="/img/classes/monk.png" width={113} height={176} alt={'monk'} />,
-    '7': <Image src="/img/classes/paladin.png" width={107} height={176} alt={'paladin'} />,
-    '8': <Image src="/img/classes/ranger.png" width={107} height={176} alt={'ranger'} />,
-    '9': <Image src="/img/classes/rogue.png" width={103} height={176} alt={'rogue'} />,
-    '10': <Image src="/img/classes/sorcerer.png" width={110} height={176} alt={'sorcerer'} />,
-    '11': <Image src="/img/classes/wizard.png" width={103} height={176} alt={'wizard'} />,
+    '1': <Image src="/img/classes/barbarian.png" width={85} height={175} alt={'barbarian'} />,
+    '2': <Image src="/img/classes/bard.png" width={80} height={175} alt={'bard'} />,
+    '3': <Image src="/img/classes/cleric.png" width={115} height={175} alt={'cleric'} />,
+    '4': <Image src="/img/classes/druid.png" width={70} height={175} alt={'druid'} />,
+    '5': <Image src="/img/classes/fighter.png" width={65} height={175} alt={'fighter'} />,
+    '6': <Image src="/img/classes/monk.png" width={85} height={175} alt={'monk'} />,
+    '7': <Image src="/img/classes/paladin.png" width={75} height={175} alt={'paladin'} />,
+    '8': <Image src="/img/classes/ranger.png" width={87} height={175} alt={'ranger'} />,
+    '9': <Image src="/img/classes/rogue.png" width={90} height={175} alt={'rogue'} />,
+    '10': <Image src="/img/classes/sorcerer.png" width={100} height={175} alt={'sorcerer'} />,
+    '11': <Image src="/img/classes/wizard.png" width={75} height={175} alt={'wizard'} />,
 }
 
 export const CLASS_SKILLS: { [k: string]: boolean[] } = {

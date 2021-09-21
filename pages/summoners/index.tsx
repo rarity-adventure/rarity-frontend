@@ -147,7 +147,9 @@ export default function Summoners(): JSX.Element {
                     </>
                 ) : (
                     <div className="flex my-10 justify-center">
-                        <Loader size={'50px'} />
+                        <div className="text-2xl uppercase">
+                            <h1>{i18n._(t`no summoners`)}</h1>
+                        </div>
                     </div>
                 )}
             </div>
