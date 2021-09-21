@@ -7,7 +7,7 @@ import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 export default function Pack(): JSX.Element {
     const { i18n } = useLingui()
 
-    const { buy_pack, packs_available } = useRarityStarterPack()
+    const { buy_pack, packs_available, packs_opened } = useRarityStarterPack()
 
     const [packsAvailable, setPacksAvailable] = useState<number>(0)
 
@@ -19,6 +19,17 @@ export default function Pack(): JSX.Element {
     useEffect(() => {
         fetch_packs_available()
     }, [fetch_packs_available])
+
+    const [packsOpened, setPacksOpened] = useState<number>(0)
+
+    const fetch_packs_opened = useCallback(async () => {
+        const opened = await packs_opened()
+        setPacksOpened(opened)
+    }, [packs_opened, setPacksOpened])
+
+    useEffect(() => {
+        fetch_packs_opened()
+    }, [fetch_packs_opened])
 
     return (
         <div className="w-full z-25">
@@ -51,6 +62,9 @@ export default function Pack(): JSX.Element {
                                 <li>* {i18n._(t`GREATSWORD + BREASTPLATE`)}</li>
                                 <li>* {i18n._(t`LONGBOW + STUDDED LEATHER`)}</li>
                                 <li>* {i18n._(t`LONGSWORD + LIGHT STEEL SHIELD`)}</li>
+                                <li>
+                                    * {i18n._(t`A RARITY GAME SUPPORTER NFT BADGE (LIMITED TO THE FIRST 1000 PACKS)`)}
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -65,7 +79,7 @@ export default function Pack(): JSX.Element {
                         </div>
                     </div>
                     <div className="mx-auto text-center">
-                        <p >{i18n._(t`GET YOUR SUPPORTER NFT BADGE`)}</p>
+                        <p>{i18n._(t`GET YOUR SUPPORTER NFT BADGE`)}</p>
                         <Image
                             src="/img/badge.png"
                             width={200}
@@ -73,7 +87,7 @@ export default function Pack(): JSX.Element {
                             alt="rarity supporter badge"
                             className="mt-4"
                         />
-                        <p >{i18n._(t`LIMITED TO THE FIRST 1,000 PACKS`)}</p>
+                        <p>{i18n._(t`LIMITED TO THE FIRST 1,000 PACKS`)}</p>
                     </div>
                     {/*<div className="col-span-1 text-center">
                         <div className="flex flex-row justify-center">
@@ -107,6 +121,11 @@ export default function Pack(): JSX.Element {
                         <div className="flex flex-row justify-center">
                             <div className="text-lg font-bold rounded-2xl border-white border-2 p-3">
                                 {i18n._(t`PACKS AVAILABLE`)}: {packsAvailable}
+                            </div>
+                        </div>
+                        <div className="flex flex-row justify-center mt-5">
+                            <div className="text-lg font-bold rounded-2xl border-white border-2 p-3">
+                                {i18n._(t`PACKS OPENED`)}: {packsOpened}
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import { utils } from 'ethers'
 interface StarterPackInterface {
     buy_pack: () => Promise<void>
     packs_available: () => Promise<number>
+    packs_opened: () => Promise<number>
 }
 
 export default function useRarityStarterPack(): StarterPackInterface {
@@ -33,5 +34,17 @@ export default function useRarityStarterPack(): StarterPackInterface {
         })
     }, [pack])
 
-    return { buy_pack, packs_available }
+    const packs_opened = useCallback(async (): Promise<number> => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const supply = await pack?.packs_opened()
+                resolve(parseInt(supply.toString()))
+            } catch (e) {
+                console.log(e)
+                reject()
+            }
+        })
+    }, [pack])
+
+    return { buy_pack, packs_available, packs_opened }
 }
