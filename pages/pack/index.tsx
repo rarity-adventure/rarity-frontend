@@ -11,12 +11,12 @@ export default function Pack(): JSX.Element {
 
     const [packsAvailable, setPacksAvailable] = useState<number>(0)
 
-    const fetch_packs_available = useCallback( async () => {
+    const fetch_packs_available = useCallback(async () => {
         const packs = await packs_available()
         setPacksAvailable(packs)
     }, [packs_available, setPacksAvailable])
 
-    useEffect( () => {
+    useEffect(() => {
         fetch_packs_available()
     }, [fetch_packs_available])
 
@@ -64,7 +64,8 @@ export default function Pack(): JSX.Element {
                             <p>{i18n._(t`* IMMEDIATELY BUY A NAME FOR ALL OF YOUR SUMMONER WITH GOLD.`)}</p>
                         </div>
                     </div>
-                    <div className="mx-auto">
+                    <div className="mx-auto text-center">
+                        <p >{i18n._(t`GET YOUR SUPPORTER NFT BADGE`)}</p>
                         <Image
                             src="/img/badge.png"
                             width={200}
@@ -72,6 +73,7 @@ export default function Pack(): JSX.Element {
                             alt="rarity supporter badge"
                             className="mt-4"
                         />
+                        <p >{i18n._(t`LIMITED TO THE FIRST 1,000 PACKS`)}</p>
                     </div>
                     {/*<div className="col-span-1 text-center">
                         <div className="flex flex-row justify-center">
@@ -80,30 +82,30 @@ export default function Pack(): JSX.Element {
                             </div>
                         </div>
                     </div>*/}
-                    { packsAvailable > 0 ? (<div className="col-span-1 md:col-span-3 text-center">
-                        <div className="flex flex-row justify-center">
-                            <button
-                                onClick={async () => await buy_pack()}
-                                className="text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5"
-                            >
-                                {i18n._(t`BUY FOR 35 FTM`)}
-                            </button>
+                    {packsAvailable > 0 ? (
+                        <div className="col-span-1 md:col-span-3 text-center">
+                            <div className="flex flex-row justify-center">
+                                <button
+                                    onClick={async () => await buy_pack()}
+                                    className="text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5"
+                                >
+                                    {i18n._(t`BUY FOR 35 FTM`)}
+                                </button>
+                            </div>
                         </div>
-                    </div>) : (<div className="col-span-1 md:col-span-3 text-center">
-                        <div className="flex flex-row justify-center">
-                            <button
-                                className="opacity-50 cursor-not-allowed text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5"
-                            >
-                                {i18n._(t`BUY FOR 35 FTM`)}
-                            </button>
+                    ) : (
+                        <div className="col-span-1 md:col-span-3 text-center">
+                            <div className="flex flex-row justify-center">
+                                <button className="opacity-50 cursor-not-allowed text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5">
+                                    {i18n._(t`BUY FOR 35 FTM`)}
+                                </button>
+                            </div>
                         </div>
-                    </div>)}
+                    )}
 
                     <div className="col-span-1 md:col-span-3 text-center mb-20">
                         <div className="flex flex-row justify-center">
-                            <div
-                                className="text-lg font-bold rounded-2xl border-white border-2 p-3"
-                            >
+                            <div className="text-lg font-bold rounded-2xl border-white border-2 p-3">
                                 {i18n._(t`PACKS AVAILABLE`)}: {packsAvailable}
                             </div>
                         </div>

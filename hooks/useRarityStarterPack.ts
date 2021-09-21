@@ -4,7 +4,7 @@ import { utils } from 'ethers'
 
 interface StarterPackInterface {
     buy_pack: () => Promise<void>
-    packs_available: () =>Promise<number>
+    packs_available: () => Promise<number>
 }
 
 export default function useRarityStarterPack(): StarterPackInterface {
