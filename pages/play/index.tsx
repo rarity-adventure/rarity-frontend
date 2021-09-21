@@ -119,6 +119,7 @@ export default function Profile(): JSX.Element {
                                                         open={transferMaterialModal}
                                                         closeFunction={closeMaterialModal}
                                                         id={selectedSummoner.id}
+                                                        summoners={summoners}
                                                     />
                                                     <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                         <div className="py-1 w-2/3 text-center">
