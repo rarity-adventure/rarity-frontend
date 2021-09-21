@@ -35,6 +35,15 @@ export default function Inventory(): JSX.Element {
                             <div>
                                 <h1 className="text-2xl xl:text-3xl uppercase font-bold">{i18n._(t`inventory`)}</h1>
                             </div>
+                            <div className="hidden lg:inline-flex flex flex-row justify-start items-center">
+                                <h2 className="uppercase font-bold text-xl">{i18n._(t`bulk transfer`)}:</h2>
+                                <button className="border-b-2 p-1 uppercase ml-2">
+                                    <span>{i18n._(t`gold`)}</span>
+                                </button>
+                                <button className="border-b-2 p-1 uppercase ml-2">
+                                    <span>{i18n._(t`material`)}</span>
+                                </button>
+                            </div>
                             <div className="hidden sm:inline-flex">
                                 {summoners.length > 0 && (
                                     <div className={'flex flex-row gap-4'}>
@@ -96,7 +105,15 @@ export default function Inventory(): JSX.Element {
                                 </div>
                             )}
                         </div>
-
+                        <div className="lg:hidden flex flex-row justify-start items-center mt-2">
+                            <h2 className="uppercase font-bold text-xl">{i18n._(t`bulk transfer`)}:</h2>
+                            <button className="border-b-2 p-1 uppercase ml-2">
+                                <span>{i18n._(t`gold`)}</span>
+                            </button>
+                            <button className="border-b-2 p-1 uppercase ml-2">
+                                <span>{i18n._(t`material`)}</span>
+                            </button>
+                        </div>
                         <div className="md:p-14">
                             <div className="grid grid-cols-1 rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
                                 {items.map((i) => {
