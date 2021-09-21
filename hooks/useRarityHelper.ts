@@ -2,7 +2,6 @@ import { useRarityHelperContract } from './useContract'
 import { useCallback } from 'react'
 import { utils } from 'ethers'
 import useActiveWeb3React from './useActiveWeb3React'
-import { RARITY_HELPER_ADDRESS } from '../constants'
 
 interface HelperInterface {
     adventure: (ids: number[]) => Promise<void>

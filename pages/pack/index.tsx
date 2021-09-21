@@ -1,10 +1,24 @@
 import { useLingui } from '@lingui/react'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { t } from '@lingui/macro'
+import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 
 export default function Pack(): JSX.Element {
     const { i18n } = useLingui()
+
+    const { buy_pack, packs_available } = useRarityStarterPack()
+
+    const [packsAvailable, setPacksAvailable] = useState<number>(0)
+
+    const fetch_packs_available = useCallback( async () => {
+        const packs = await packs_available()
+        setPacksAvailable(packs)
+    }, [packs_available, setPacksAvailable])
+
+    useEffect( () => {
+        fetch_packs_available()
+    }, [fetch_packs_available])
 
     return (
         <div className="w-full z-25">
@@ -59,24 +73,38 @@ export default function Pack(): JSX.Element {
                             className="mt-4"
                         />
                     </div>
-                    <div className="col-span-1 text-center">
+                    {/*<div className="col-span-1 text-center">
                         <div className="flex flex-row justify-center">
                             <div className="text-2xl w-56 font-bold bg-card-bottom rounded-2xl border-white border-2 p-5">
                                 {i18n._(t`PACKS SOLD`)}
                             </div>
                         </div>
-                    </div>
-                    <div className="col-span-1 text-center">
+                    </div>*/}
+                    { packsAvailable > 0 ? (<div className="col-span-1 md:col-span-3 text-center">
                         <div className="flex flex-row justify-center">
-                            <div className="text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5">
+                            <button
+                                onClick={async () => await buy_pack()}
+                                className="text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5"
+                            >
                                 {i18n._(t`BUY FOR 35 FTM`)}
-                            </div>
+                            </button>
                         </div>
-                    </div>
-                    <div className="col-span-1 text-center">
+                    </div>) : (<div className="col-span-1 md:col-span-3 text-center">
                         <div className="flex flex-row justify-center">
-                            <div className="text-2xl w-56 font-bold bg-card-bottom rounded-2xl border-white border-2 p-5">
-                                {i18n._(t`PACKS AVAILABLE`)}
+                            <button
+                                className="opacity-50 cursor-not-allowed text-2xl w-56 font-bold bg-green rounded-2xl border-white border-2 p-5"
+                            >
+                                {i18n._(t`BUY FOR 35 FTM`)}
+                            </button>
+                        </div>
+                    </div>)}
+
+                    <div className="col-span-1 md:col-span-3 text-center mb-20">
+                        <div className="flex flex-row justify-center">
+                            <div
+                                className="text-lg font-bold rounded-2xl border-white border-2 p-3"
+                            >
+                                {i18n._(t`PACKS AVAILABLE`)}: {packsAvailable}
                             </div>
                         </div>
                     </div>

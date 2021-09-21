@@ -27,7 +27,7 @@ import RARITY_DAYCARE_ABI from '../constants/abis/daycare.json'
 import RARITY_CELLAR_ABI from '../constants/abis/cellar.json'
 import RARITY_CRAFTING_ABI from '../constants/abis/crafting.json'
 import RARITY_NAMES_ABI from '../constants/abis/names.json'
-import RARITY_PACK_ABI from '../constants/abis/names.json'
+import RARITY_PACK_ABI from '../constants/abis/pack.json'
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
     const { library, account } = useActiveWeb3React()
