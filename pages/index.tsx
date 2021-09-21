@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { CLASSES_IMAGES } from '../constants/classes'
 
 export default function Home(): JSX.Element {
@@ -45,11 +46,21 @@ export default function Home(): JSX.Element {
             <div id="mint" />
             <div className="w-full mt-48 rounded-b-3xl text-center">
                 <h1 className="uppercase text-3xl md:text-3xl xl:text-6xl">{i18n._(t`MINT A CLASS`)}</h1>
-                <p className="pt-2">{i18n._(t`Get your Rarity Starter Pack!`)}</p>
-                <Image src="/img/pack.png" width={386} height={386} alt="rarity starter pack" className="mt-4"/>
+                <Link href={'/pack'}>
+                    <div className="cursor-pointer">
+                        <p className="pt-2">{i18n._(t`Get your Rarity Starter Pack!`)}</p>
+                        <Image
+                            src="/img/pack.png"
+                            width={386}
+                            height={386}
+                            alt="rarity starter pack"
+                            className="mt-4"
+                        />
+                        <p className="pt-2">{i18n._(t`Only for 35 FTM`)}</p>
+                        <p className="pt-2">{i18n._(t`Supporter NFT Badges included!`)}</p>
+                    </div>
+                </Link>
 
-                <p className="pt-2">{i18n._(t`Only for 35 FTM`)}</p>
-                <p className="pt-2">{i18n._(t`Supporter NFT Badges included!`)}</p>
                 <p className="pt-2 uppercase">{i18n._(t`or`)}</p>
                 <button className="animate-bounce h-6" onClick={async () => await summonClass()}>
                     <div className="flex flex-row w-full mx-auto text-center justify-center my-3">
