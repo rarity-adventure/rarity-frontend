@@ -36,7 +36,7 @@ export default function TransferGoldModal({ open, closeFunction, id }: TransferG
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`transfer gold`)} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-4 gap-5">
-                    <h2>{i18n._(t`Write amount to transfer`)}</h2>
+                    <h2>{i18n._(t`Amount to transfer`)}</h2>
                 </div>
                 <div className="text-center text-white p-4 pb-8 gap-5">
                     <input

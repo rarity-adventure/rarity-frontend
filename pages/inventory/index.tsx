@@ -107,10 +107,10 @@ export default function Inventory(): JSX.Element {
                         </div>
                         <div className="lg:hidden flex flex-row justify-start items-center mt-2">
                             <h2 className="uppercase font-bold text-xl">{i18n._(t`bulk transfer`)}:</h2>
-                            <button className="border-b-2 p-1 uppercase ml-2">
+                            <button className="p-1 uppercase ml-2">
                                 <span>{i18n._(t`gold`)}</span>
                             </button>
-                            <button className="border-b-2 p-1 uppercase ml-2">
+                            <button className="p-1 uppercase ml-2">
                                 <span>{i18n._(t`material`)}</span>
                             </button>
                         </div>

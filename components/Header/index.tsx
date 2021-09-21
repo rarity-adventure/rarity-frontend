@@ -48,7 +48,7 @@ function AppBar(): JSX.Element {
 
     function names(): JSX.Element {
         return (
-            <Link href="/names" passHref={true}>
+            <Link href="https://names.rarity.game" passHref={true}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
                     <h2>{i18n._(t`names`)}</h2>
                 </div>
