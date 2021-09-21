@@ -79,3 +79,8 @@ body {
 .bg {
     background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
 }
+
+.shadow {
+    box-sizing: border-box;
+    box-shadow: inset 2px 3px 4px rgba(0, 0, 0, 0.25);
+}
