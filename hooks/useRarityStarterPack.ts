@@ -47,17 +47,20 @@ export default function useRarityStarterPack(): StarterPackInterface {
         })
     }, [pack])
 
-    const balanceOf = useCallback(async (owner: string): Promise<number> => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const b = await pack?.balanceOf(owner)
-                resolve(parseInt(b.toString()))
-            } catch (e) {
-                console.log(e)
-                reject()
-            }
-        })
-    }, [pack])
+    const balanceOf = useCallback(
+        async (owner: string): Promise<number> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const b = await pack?.balanceOf(owner)
+                    resolve(parseInt(b.toString()))
+                } catch (e) {
+                    console.log(e)
+                    reject()
+                }
+            })
+        },
+        [pack]
+    )
 
     return { buy_pack, packs_available, packs_opened, balanceOf }
 }
