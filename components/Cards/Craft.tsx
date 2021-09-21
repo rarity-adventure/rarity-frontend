@@ -70,7 +70,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         const global = await isApprovedForAll(account, RARITY_CRAFTING_ADDRESS)
         setGlobalApproval(global)
         setApproval({
-            gold: BigNumber.from(goldAllowance).gte(utils.parseEther(CRAFTING_ALLOWANCE.toFixed())),
+            gold: goldAllowance >= CRAFTING_ALLOWANCE,
             material: matAllowance >= CRAFTING_ALLOWANCE,
         })
     }, [gold_allowance, material_allowance, summoner, account, isApprovedForAll])
