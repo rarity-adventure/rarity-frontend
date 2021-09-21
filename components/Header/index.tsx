@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
@@ -8,8 +8,9 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Link from 'next/link'
 import DonateModal from '../Modal/modals/Donate'
+import Image from 'next/image'
 
-function AppBar(): JSX.Element {
+function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     const { i18n } = useLingui()
 
     const { account, chainId } = useActiveWeb3React()
@@ -66,6 +67,20 @@ function AppBar(): JSX.Element {
         )
     }
 
+    function supporterBadge(): JSX.Element {
+        return (
+            <div>
+                <Image src="/img/badge.png" width="80" height="80" />
+            </div>
+        )
+    }
+
+    const [showBadge, setShowBadge] = useState(false)
+
+    useEffect(() => {
+        setShowBadge(supporter)
+    }, [supporter])
+
     const [modal, setModal] = useState(false)
 
     function close() {
@@ -79,12 +94,16 @@ function AppBar(): JSX.Element {
                     <>
                         <div className="px-4 py-4">
                             <div className="flex items-center justify-between">
-                                <div className="flex items-center z-10">
+                                <div className="flex items-center z-10 cursor-pointer">
                                     <Link href="/" passHref={true}>
-                                        <div className="uppercase cursor-pointer text-center tracking-widest text-xl">
-                                            <h1>RARITY</h1>
-                                            <h1>Adventure</h1>
-                                        </div>
+                                        {showBadge ? (
+                                            supporterBadge()
+                                        ) : (
+                                            <div className="uppercase cursor-pointer text-center tracking-widest text-xl">
+                                                <h1>RARITY</h1>
+                                                <h1>Adventure</h1>
+                                            </div>
+                                        )}
                                     </Link>
                                     <div className="hidden md:block sm:ml-2">
                                         <div className="flex uppercase">
