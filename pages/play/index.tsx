@@ -7,7 +7,7 @@ import { Popover } from '@headlessui/react'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import Selector from '../../components/Selector'
-import { useSummoners, useSummonersLoading } from '../../state/summoners/hooks'
+import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
@@ -133,6 +133,7 @@ export default function Profile(): JSX.Element {
                                                     <TransferGoldModal
                                                         open={transferGoldModal}
                                                         closeFunction={closeGoldModal}
+                                                        summoners={summoners}
                                                         id={selectedSummoner.id}
                                                     />
                                                     <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
@@ -267,7 +268,9 @@ export default function Profile(): JSX.Element {
                         <div className="col-span-2">
                             {view === View.stats && <SummonerStatsCard summoner={selectedSummoner} />}
                             {view === View.skills && <SummonerSkillsCard summoner={selectedSummoner} />}
-                            {view === View.transfer && <SummonerTransferCard summoner={selectedSummoner} />}
+                            {view === View.transfer && (
+                                <SummonerTransferCard summoner={selectedSummoner} summoners={summoners} />
+                            )}
                             {view === View.crafting && <SummonerCraftCard summoner={selectedSummoner} />}
                         </div>
                     </div>

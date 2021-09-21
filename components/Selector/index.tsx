@@ -40,7 +40,7 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="absolute max-h-96 z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
+                            <Menu.Items className="absolute max-h-32 z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
                                 <div>
                                     {summoners.map((s: SummonerFullData) => {
                                         return (

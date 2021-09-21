@@ -6,7 +6,13 @@ import TransferMaterialModal from '../Modal/modals/TransferMaterial'
 import Image from 'next/image'
 import TransferGoldModal from '../Modal/modals/TransferGold'
 
-function SummonerTransferCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
+function SummonerTransferCard({
+    summoner,
+    summoners,
+}: {
+    summoner: SummonerFullData
+    summoners: SummonerFullData[]
+}): JSX.Element {
     const { i18n } = useLingui()
 
     const [transferGoldModal, setTransferGoldModal] = useState(false)
@@ -24,7 +30,12 @@ function SummonerTransferCard({ summoner }: { summoner: SummonerFullData }): JSX
     return (
         <div className="max-w-screen-md mx-auto">
             <TransferMaterialModal open={transferMaterialModal} closeFunction={closeMaterialModal} id={summoner.id} />
-            <TransferGoldModal open={transferGoldModal} closeFunction={closeGoldModal} id={summoner.id} />
+            <TransferGoldModal
+                open={transferGoldModal}
+                closeFunction={closeGoldModal}
+                id={summoner.id}
+                summoners={summoners}
+            />
             <div className="flex flex-row w-full items-center">
                 <div className="grid grid-cols-1 md:grid-cols-5 md:gap-2 w-full">
                     <div className="bg-card-top col-span-3 md:p-2 p-1 bg-background-cards border-white border-2 rounded-t-2xl md:rounded-tl-2xl md:rounded-tr-none text-left">
