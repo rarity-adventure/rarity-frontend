@@ -29,7 +29,12 @@ function SummonerTransferCard({
 
     return (
         <div className="max-w-screen-md mx-auto">
-            <TransferMaterialModal open={transferMaterialModal} closeFunction={closeMaterialModal} id={summoner.id} summoners={summoners} />
+            <TransferMaterialModal
+                open={transferMaterialModal}
+                closeFunction={closeMaterialModal}
+                id={summoner.id}
+                summoners={summoners}
+            />
             <TransferGoldModal
                 open={transferGoldModal}
                 closeFunction={closeGoldModal}

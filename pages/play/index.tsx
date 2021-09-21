@@ -12,8 +12,8 @@ import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
 import Image from 'next/image'
-import TransferGoldModal from '../../components/Modal/modals/TransferGold'
 import TransferMaterialModal from '../../components/Modal/modals/TransferMaterial'
+import TransferGoldModal from '../../components/Modal/modals/TransferGold'
 import SummonerTransferCard from '../../components/Cards/Transfer'
 
 enum View {

@@ -15,7 +15,12 @@ interface TransferMaterialModalProps {
     summoners: SummonerFullData[]
 }
 
-export default function TransferMaterialModal({ open, closeFunction, id, summoners }: TransferMaterialModalProps): JSX.Element {
+export default function TransferMaterialModal({
+    open,
+    closeFunction,
+    id,
+    summoners,
+}: TransferMaterialModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { transferFrom } = useRarityCellar()
