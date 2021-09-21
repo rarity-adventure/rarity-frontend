@@ -6,6 +6,7 @@ interface StarterPackInterface {
     buy_pack: () => Promise<void>
     packs_available: () => Promise<number>
     packs_opened: () => Promise<number>
+    balanceOf: (owner: string) => Promise<number>
 }
 
 export default function useRarityStarterPack(): StarterPackInterface {
@@ -46,5 +47,17 @@ export default function useRarityStarterPack(): StarterPackInterface {
         })
     }, [pack])
 
-    return { buy_pack, packs_available, packs_opened }
+    const balanceOf = useCallback(async (owner: string): Promise<number> => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const b = await pack?.balanceOf(owner)
+                resolve(parseInt(b.toString()))
+            } catch (e) {
+                console.log(e)
+                reject()
+            }
+        })
+    }, [pack])
+
+    return { buy_pack, packs_available, packs_opened, balanceOf }
 }
