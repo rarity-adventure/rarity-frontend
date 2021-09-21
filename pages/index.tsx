@@ -86,7 +86,7 @@ export default function Home(): JSX.Element {
                         </div>
                     </button>
                     <button className="hover:animate-pulse" onClick={async () => await summonClass('6')}>
-                        <div className="mx-auto">{CLASSES_IMAGES['6']}</div>
+                        <div className="mx-auto text-center">{CLASSES_IMAGES['6']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
                             <span className="py-2 px-4 uppercase">{i18n._(t`monk`)}</span>{' '}
                         </div>

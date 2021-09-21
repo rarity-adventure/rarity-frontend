@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
@@ -60,7 +60,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
             <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
             <TransferModal open={modalOpen === Modals.TRANSFER} closeFunction={closeModals} summoner={summoner} />
             <DaycareSingleModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoner={summoner} />
-            <div className="p-5 w-32 mx-auto">{CLASSES_IMAGES[summoner.base._class]}</div>
+            <div className="p-5 w-full text-center">{CLASSES_IMAGES[summoner.base._class]}</div>
 
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
                 <div className="mx-auto p-2">
