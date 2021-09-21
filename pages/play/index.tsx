@@ -13,6 +13,8 @@ import SummonerInventoryCard from '../../components/Cards/Inventory'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
 import Image from 'next/image'
+import TransferGoldModal from '../../components/Modal/modals/TransferGold'
+import TransferMaterialModal from '../../components/Modal/modals/TransferMaterial'
 
 enum View {
     stats,
@@ -54,6 +56,18 @@ export default function Profile(): JSX.Element {
         if (currIndex < summoners.length - 1) {
             setSelectedSummoner(summoners[currIndex + 1])
         }
+    }
+
+    const [transferGoldModal, setTransferGoldModal] = useState(false)
+
+    function closeGoldModal() {
+        setTransferGoldModal(false)
+    }
+
+    const [transferMaterialModal, setTransferMaterialModal] = useState(false)
+
+    function closeMaterialModal() {
+        setTransferMaterialModal(false)
     }
 
     return (
@@ -100,20 +114,34 @@ export default function Profile(): JSX.Element {
                                     <div>
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
                                             {selectedSummoner && (
-                                                <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
-                                                    <div className="py-1 w-2/3 text-center">
-                                                        <p>{selectedSummoner.materials.balance}</p>
+                                                <button onClick={() => setTransferMaterialModal(true)}>
+                                                    <TransferMaterialModal
+                                                        open={transferMaterialModal}
+                                                        closeFunction={closeMaterialModal}
+                                                        id={selectedSummoner.id}
+                                                    />
+                                                    <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                        <div className="py-1 w-2/3 text-center">
+                                                            <p>{selectedSummoner.materials.balance}</p>
+                                                        </div>
+                                                        <Image src="/img/material.png" width={40} height={40} />
                                                     </div>
-                                                    <Image src="/img/material.png" width={40} height={40} />
-                                                </div>
+                                                </button>
                                             )}
                                             {selectedSummoner && (
-                                                <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
-                                                    <div className="py-1 w-2/3 text-center">
-                                                        <p>{selectedSummoner.gold.balance}</p>
+                                                <button onClick={() => setTransferGoldModal(true)}>
+                                                    <TransferGoldModal
+                                                        open={transferGoldModal}
+                                                        closeFunction={closeGoldModal}
+                                                        id={selectedSummoner.id}
+                                                    />
+                                                    <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                        <div className="py-1 w-2/3 text-center">
+                                                            <p>{selectedSummoner.gold.balance}</p>
+                                                        </div>
+                                                        <Image src="/img/gold.png" width={50} height={40} />
                                                     </div>
-                                                    <Image src="/img/gold.png" width={50} height={40} />
-                                                </div>
+                                                </button>
                                             )}
                                             <Selector summoners={summoners} select={setSelectedSummoner} />
                                         </div>
@@ -158,20 +186,24 @@ export default function Profile(): JSX.Element {
                                 </div>
                                 <div className="sm:hidden mt-2 flex flex-row justify-between">
                                     {selectedSummoner && (
-                                        <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
-                                            <div className="py-1 w-2/3 text-center">
-                                                <p>{selectedSummoner.materials.balance}</p>
+                                        <button onClick={() => setTransferMaterialModal(true)}>
+                                            <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                <div className="py-1 w-2/3 text-center">
+                                                    <p>{selectedSummoner.materials.balance}</p>
+                                                </div>
+                                                <Image src="/img/material.png" width={40} height={40} />
                                             </div>
-                                            <Image src="/img/material.png" width={40} height={40} />
-                                        </div>
+                                        </button>
                                     )}
                                     {selectedSummoner && (
-                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
-                                            <div className="py-1 w-2/3 text-center">
-                                                <p>{selectedSummoner.gold.balance}</p>
+                                        <button onClick={() => setTransferGoldModal(true)}>
+                                            <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                                <div className="py-1 w-2/3 text-center">
+                                                    <p>{selectedSummoner.gold.balance}</p>
+                                                </div>
+                                                <Image src="/img/gold.png" width={50} height={40} />
                                             </div>
-                                            <Image src="/img/gold.png" width={50} height={40} />
-                                        </div>
+                                        </button>
                                     )}
                                     <Selector summoners={summoners} select={setSelectedSummoner} />
                                 </div>
