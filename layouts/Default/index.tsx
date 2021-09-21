@@ -9,10 +9,9 @@ const pixelmix_fonts = ['en']
 
 const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
     const { locale } = useRouter()
-
     return (
         <div
-            style={{ fontFamily: pixelmix_fonts.indexOf(locale) !== -1 ? 'Pixelmix' : 'Lana Pixel' }}
+            style={{ fontFamily: pixelmix_fonts.indexOf(locale) === -1 ? 'Lana Pixel' : '' }}
             className="bg z-0 flex flex-col items-center w-full h-screen pb-16 lg:pb-0 text-white"
         >
             <Header />
