@@ -36,7 +36,7 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
     }
 
     return (
-        <div className="mx-auto w-64 lg:w-56 xl:w-72">
+        <div className="mx-auto w-44">
             <TokenURIModal open={uriModal} closeFunction={close} id={userItem.token_id} />
             <TransferItemModal open={transferModal} closeFunction={closeTransfer} item={userItem} />
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">

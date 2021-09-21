@@ -9,18 +9,18 @@ import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import Selector from '../../components/Selector'
 import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
-import SummonerInventoryCard from '../../components/Cards/Inventory'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
 import Image from 'next/image'
 import TransferGoldModal from '../../components/Modal/modals/TransferGold'
 import TransferMaterialModal from '../../components/Modal/modals/TransferMaterial'
+import SummonerTransferCard from '../../components/Cards/Transfer'
 
 enum View {
     stats,
     skills,
-    inventory,
     crafting,
+    transfer,
 }
 
 export default function Profile(): JSX.Element {
@@ -96,16 +96,16 @@ export default function Profile(): JSX.Element {
                                                         <span>{i18n._(t`skills`)}</span>
                                                     </button>
                                                     <button
-                                                        onClick={() => setView(View.inventory)}
-                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                                    >
-                                                        <span>{i18n._(t`inventory`)}</span>
-                                                    </button>
-                                                    <button
                                                         onClick={() => setView(View.crafting)}
                                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                                     >
                                                         <span>{i18n._(t`craft`)}</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setView(View.transfer)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`transfer`)}</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -224,16 +224,16 @@ export default function Profile(): JSX.Element {
                                         <span>{i18n._(t`skills`)}</span>
                                     </button>
                                     <button
-                                        onClick={() => setView(View.inventory)}
-                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
-                                    >
-                                        <span>{i18n._(t`inventory`)}</span>
-                                    </button>
-                                    <button
                                         onClick={() => setView(View.crafting)}
                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                     >
                                         <span>{i18n._(t`craft`)}</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setView(View.transfer)}
+                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                    >
+                                        <span>{i18n._(t`transfer`)}</span>
                                     </button>
                                 </div>
                             </Popover.Panel>
@@ -267,7 +267,7 @@ export default function Profile(): JSX.Element {
                         <div className="col-span-2">
                             {view === View.stats && <SummonerStatsCard summoner={selectedSummoner} />}
                             {view === View.skills && <SummonerSkillsCard summoner={selectedSummoner} />}
-                            {view === View.inventory && <SummonerInventoryCard summoner={selectedSummoner} />}
+                            {view === View.transfer && <SummonerTransferCard summoner={selectedSummoner} />}
                             {view === View.crafting && <SummonerCraftCard summoner={selectedSummoner} />}
                         </div>
                     </div>
