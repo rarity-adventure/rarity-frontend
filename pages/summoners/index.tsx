@@ -41,7 +41,7 @@ export default function Summoners(): JSX.Element {
 
     const fetch_sellable = useCallback(async () => {
         const sellable = await filter_needed_summoners(
-            summoners.map((s) => {
+            s.map((s) => {
                 return s.id
             })
         )
@@ -50,7 +50,7 @@ export default function Summoners(): JSX.Element {
                 return parseInt(id.toString())
             })
         )
-    }, [filter_needed_summoners, sellable])
+    }, [filter_needed_summoners, sellable, s])
 
     const [modal, setModal] = useState(0)
 

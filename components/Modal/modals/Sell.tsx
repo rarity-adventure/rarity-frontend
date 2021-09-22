@@ -85,12 +85,15 @@ export default function SellModal({ open, closeFunction, summoner }: BurnModalPr
                         </div>
                     </>
                 ) : (
-                    <button
-                        className="uppercase border-white border-2 rounded-lg px-2 py-1"
-                        onClick={async () => approvePack()}
-                    >
-                        {i18n._(t`Approve`)}
-                    </button>
+                    <div className="flex flex-row justify-center mb-20 mt-20">
+                        <button
+                            className="uppercase bg-green text-white text-center border-white border-2 rounded-lg px-2 py-1 text-2xl"
+                            onClick={async () => approvePack()}
+                        >
+                            {i18n._(t`Approve`)}
+                        </button>
+                    </div>
+
                 )}
             </div>
         </HeadlessUIModal>
