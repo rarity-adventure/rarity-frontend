@@ -18,7 +18,15 @@ enum Modals {
     DAYCARE,
 }
 
-function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; time: number }): JSX.Element {
+function SummonerSummaryCard({
+    summoner,
+    time,
+    sellable,
+}: {
+    summoner: SummonerFullData
+    time: number
+    sellable: boolean
+}): JSX.Element {
     const { i18n } = useLingui()
 
     const [modalOpen, setModalOpen] = useState<Modals>(0)
@@ -178,6 +186,13 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                         <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
                             <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
                                 {i18n._(t`delete`)}
+                            </div>
+                        </button>
+                    </p>
+                    <p>
+                        <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
+                            <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
+                                {i18n._(t`sell for 0.6 FTM`)}
                             </div>
                         </button>
                     </p>
