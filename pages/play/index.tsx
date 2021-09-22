@@ -6,7 +6,7 @@ import Loader from '../../components/Loader'
 import { Popover } from '@headlessui/react'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import Selector from '../../components/Selector'
+import SummonerSelector from '../../components/SummonerSelector'
 import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerSkillsCard from '../../components/Cards/Skills'
@@ -125,7 +125,7 @@ export default function Profile(): JSX.Element {
                                                         <div className="py-1 w-2/3 text-center">
                                                             <p>{selectedSummoner.materials.balance}</p>
                                                         </div>
-                                                        <Image src="/img/material.png" width={40} height={40} />
+                                                        <Image src="/img/coins/material.png" width={40} height={40} />
                                                     </div>
                                                 </button>
                                             )}
@@ -141,11 +141,11 @@ export default function Profile(): JSX.Element {
                                                         <div className="py-1 w-2/3 text-center">
                                                             <p>{selectedSummoner.gold.balance}</p>
                                                         </div>
-                                                        <Image src="/img/gold.png" width={50} height={40} />
+                                                        <Image src="/img/coins/gold.png" width={50} height={40} />
                                                     </div>
                                                 </button>
                                             )}
-                                            <Selector summoners={summoners} select={setSelectedSummoner} />
+                                            <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                                         </div>
                                     </div>
                                     <div className="flex -mr-2 md:hidden">
@@ -193,7 +193,7 @@ export default function Profile(): JSX.Element {
                                                 <div className="py-1 w-2/3 text-center">
                                                     <p>{selectedSummoner.materials.balance}</p>
                                                 </div>
-                                                <Image src="/img/material.png" width={40} height={40} />
+                                                <Image src="/img/coins/material.png" width={40} height={40} />
                                             </div>
                                         </button>
                                     )}
@@ -203,11 +203,11 @@ export default function Profile(): JSX.Element {
                                                 <div className="py-1 w-2/3 text-center">
                                                     <p>{selectedSummoner.gold.balance}</p>
                                                 </div>
-                                                <Image src="/img/gold.png" width={50} height={40} />
+                                                <Image src="/img/coins/gold.png" width={50} height={40} />
                                             </div>
                                         </button>
                                     )}
-                                    <Selector summoners={summoners} select={setSelectedSummoner} />
+                                    <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                                 </div>
                             </div>
 

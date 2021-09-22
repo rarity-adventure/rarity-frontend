@@ -6,7 +6,7 @@ import { useLingui } from '@lingui/react'
 import toast from 'react-hot-toast'
 import useRarityCellar from '../../../hooks/useRarityCellar'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
-import Selector from '../../Selector'
+import SummonerSelector from '../../SummonerSelector'
 
 interface TransferMaterialModalProps {
     open: boolean
@@ -54,7 +54,7 @@ export default function TransferMaterialModal({
                     <h2>{i18n._(t`ID of the receiver summoner`)}</h2>
                 </div>
                 <div className="mx-auto text-center text-white w-48 text-center">
-                    <Selector summoners={summoners} select={(s) => setTransferTo(s.id)} />
+                    <SummonerSelector summoners={summoners} select={(s) => setTransferTo(s.id)} />
                 </div>
                 <div className="text-center text-white p-4 pb-8 gap-5">
                     <input
