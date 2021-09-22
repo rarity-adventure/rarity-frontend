@@ -4,13 +4,13 @@ import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { CoinData, GAME_COINS } from '../../constants'
-import Image from 'next/image'
 
 interface CoinSelectorProps {
     select: (c: CoinData) => void
+    selected: CoinData | undefined
 }
 
-export default function CoinSelector({ select }: CoinSelectorProps): JSX.Element {
+export default function CoinSelector({ select, selected }: CoinSelectorProps): JSX.Element {
     const { i18n } = useLingui()
 
     return (
@@ -18,13 +18,18 @@ export default function CoinSelector({ select }: CoinSelectorProps): JSX.Element
             {({ open }) => (
                 <>
                     <div>
-                        <Menu.Button className="flex flex-row justify-center item-center w-full p-2 text-xs font-bold text-white ">
+                        <Menu.Button className="flex flex-row justify-center items-center w-full p-2 text-xs font-bold text-white ">
                             <div className="h-full mr-1.5">
                                 <span className="uppercase">{i18n._(t`select a coin`)}</span>
                             </div>
                             <div>
                                 <ChevronDownIcon width={16} aria-hidden="true" />
                             </div>
+                            {selected && (
+                                <div className="ml-2 rounded-lg border-2 border-white bg-green text-white uppercase p-1">
+                                    {selected.name}
+                                </div>
+                            )}
                         </Menu.Button>
                     </div>
 

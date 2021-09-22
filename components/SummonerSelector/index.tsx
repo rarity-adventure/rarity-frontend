@@ -6,12 +6,12 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { CLASSES_NAMES } from '../../constants/classes'
 
-interface SelectorProps {
+interface SummonerSelectorProps {
     summoners: SummonerFullData[]
     select: (s: SummonerFullData) => void
 }
 
-export default function Selector({ summoners, select }: SelectorProps): JSX.Element {
+export default function SummonerSelector({ summoners, select }: SummonerSelectorProps): JSX.Element {
     const { i18n } = useLingui()
 
     return (
@@ -20,7 +20,7 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
                 {({ open }) => (
                     <>
                         <div>
-                            <Menu.Button className="flex flex-row justify-end item-center w-full p-2 text-xs border-b-2 border-white font-bold text-white ">
+                            <Menu.Button className="flex flex-row justify-center item-center w-full p-2 text-xs border-white font-bold text-white ">
                                 <div className="h-full mr-1.5">
                                     <span className="uppercase">{i18n._(t`select summoner`)}</span>
                                 </div>
@@ -40,7 +40,7 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="absolute max-h-32 z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
+                            <Menu.Items className="absolute max-h-32 w-96 mx-auto z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
                                 <div>
                                     {summoners.map((s: SummonerFullData) => {
                                         return (
@@ -49,10 +49,10 @@ export default function Selector({ summoners, select }: SelectorProps): JSX.Elem
                                                     <button
                                                         onClick={() => select(s)}
                                                         className={
-                                                            'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
+                                                            'group w-full text-left hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                         }
                                                     >
-                                                        <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis w-72">
+                                                        <span className="ml-2 uppercase whitespace-nowrap overflow-hidden overflow-ellipsis w-72 text-white">
                                                             {' '}
                                                             {s.base._name !== ''
                                                                 ? s.base._name

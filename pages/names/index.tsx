@@ -7,7 +7,7 @@ import { useItems } from '../../state/items/hooks'
 import ItemCard from '../../components/Cards/Item'
 import Image from 'next/image'
 import { useSummoners } from '../../state/summoners/hooks'
-import Selector from '../../components/Selector'
+import SummonerSelector from '../../components/SummonerSelector'
 import useRarityNames from '../../hooks/useRarityNames'
 import { CLASSES_NAMES } from '../../constants/classes'
 import useRarityGold from '../../hooks/useRarityGold'
@@ -98,7 +98,7 @@ export default function Names(): JSX.Element {
                                             </div>
                                             <Image src="/img/coins/gold.png" width={50} height={40} />
                                         </div>
-                                        <Selector summoners={summoners} select={setSelectedSummoner} />
+                                        <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                                     </div>
                                 )}
                             </div>
@@ -116,7 +116,7 @@ export default function Names(): JSX.Element {
                             )}
                         </div>
                         <div className="sm:hidden">
-                            <Selector summoners={summoners} select={setSelectedSummoner} />
+                            <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                         </div>
                         {approve ? (
                             <div className="mt-20 text-center border-white border-4 w-1/2 mx-auto mb-20">

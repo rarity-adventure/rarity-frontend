@@ -6,7 +6,7 @@ import Loader from '../../components/Loader'
 import { Popover } from '@headlessui/react'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import Selector from '../../components/Selector'
+import SummonerSelector from '../../components/SummonerSelector'
 import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerSkillsCard from '../../components/Cards/Skills'
@@ -145,7 +145,7 @@ export default function Profile(): JSX.Element {
                                                     </div>
                                                 </button>
                                             )}
-                                            <Selector summoners={summoners} select={setSelectedSummoner} />
+                                            <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                                         </div>
                                     </div>
                                     <div className="flex -mr-2 md:hidden">
@@ -207,7 +207,7 @@ export default function Profile(): JSX.Element {
                                             </div>
                                         </button>
                                     )}
-                                    <Selector summoners={summoners} select={setSelectedSummoner} />
+                                    <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                                 </div>
                             </div>
 
