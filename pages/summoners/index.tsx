@@ -45,7 +45,11 @@ export default function Summoners(): JSX.Element {
                 return s.id
             })
         )
-        setSellable(sellable.map( (id) => { return parseInt(id.toString())}))
+        setSellable(
+            sellable.map((id) => {
+                return parseInt(id.toString())
+            })
+        )
     }, [filter_needed_summoners, sellable])
 
     const [modal, setModal] = useState(0)

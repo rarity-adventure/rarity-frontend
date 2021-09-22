@@ -69,7 +69,6 @@ export default function useRarityStarterPack(): StarterPackInterface {
                 try {
                     resolve(await pack?.filter_needed_summoners(ids))
                 } catch (e) {
-                    console.log(e)
                     reject()
                 }
             })
