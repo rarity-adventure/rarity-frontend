@@ -96,7 +96,7 @@ export default function Names(): JSX.Element {
                                             <div className="py-1 w-2/3 text-center">
                                                 <p>{selectedSummoner.gold.balance}</p>
                                             </div>
-                                            <Image src="/img/gold.png" width={50} height={40} />
+                                            <Image src="/img/coins/gold.png" width={50} height={40} />
                                         </div>
                                         <Selector summoners={summoners} select={setSelectedSummoner} />
                                     </div>
@@ -110,7 +110,7 @@ export default function Names(): JSX.Element {
                                         <div className="py-1 w-2/3 text-center">
                                             <p>{selectedSummoner.gold.balance}</p>
                                         </div>
-                                        <Image src="/img/gold.png" width={50} height={40} />
+                                        <Image src="/img/coins/gold.png" width={50} height={40} />
                                     </div>
                                 </div>
                             )}

@@ -328,7 +328,12 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             <div className="py-1 text-center w-2/3">
                                                 <p>{summoner.materials.balance}</p>
                                             </div>
-                                            <Image src="/img/material.png" width={30} height={30} alt="material" />
+                                            <Image
+                                                src="/img/coins/material.png"
+                                                width={30}
+                                                height={30}
+                                                alt="material"
+                                            />
                                         </div>
                                     </div>
                                     <div className="uppercase mt-2">

@@ -59,7 +59,7 @@ function SummonerTransferCard({
                     <div className="mt-8">
                         <button onClick={() => setTransferMaterialModal(true)}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
-                                <Image src="/img/material.png" width={40} height={40} />
+                                <Image src="/img/coins/material.png" width={40} height={40} />
                                 <div className="px-5 py-2 text-center">
                                     <p className="uppercase text-2xl">{i18n._(t`material`)}</p>
                                 </div>
@@ -69,7 +69,7 @@ function SummonerTransferCard({
                     <div className="mt-8 mb-8">
                         <button onClick={() => setTransferGoldModal(true)}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
-                                <Image src="/img/gold.png" width={50} height={40} />
+                                <Image src="/img/coins/gold.png" width={50} height={40} />
                                 <div className="pr-16 py-2 text-center">
                                     <p className="uppercase text-2xl">{i18n._(t`gold`)}</p>
                                 </div>

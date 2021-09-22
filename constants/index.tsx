@@ -1,3 +1,6 @@
+import Image from 'next/image'
+import React from 'react'
+
 export const NetworkContextName = 'NETWORK'
 
 export enum ChainId {
@@ -35,3 +38,22 @@ export const CRAFTING_ALLOWANCE = 4294967295
 export const RARITY_NAMES_SUMMONER = 1672965
 
 export const BURN_ADDRESS = '0x000000000000000000000000000000000000dEaD'
+
+export interface CoinData {
+    name: string
+    image: JSX.Element
+    unit: 'ether' | 'wei'
+}
+
+export const GAME_COINS: { [k: string]: CoinData } = {
+    gold: {
+        name: 'GOLD',
+        image: <Image src="/img/coins/gold.png" width={50} height={40} />,
+        unit: 'ether',
+    },
+    material: {
+        name: 'MATERIAL',
+        image: <Image src="/img/coins/material.png" width={40} height={40} />,
+        unit: 'wei',
+    },
+}

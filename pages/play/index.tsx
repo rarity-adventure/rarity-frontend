@@ -125,7 +125,7 @@ export default function Profile(): JSX.Element {
                                                         <div className="py-1 w-2/3 text-center">
                                                             <p>{selectedSummoner.materials.balance}</p>
                                                         </div>
-                                                        <Image src="/img/material.png" width={40} height={40} />
+                                                        <Image src="/img/coins/material.png" width={40} height={40} />
                                                     </div>
                                                 </button>
                                             )}
@@ -141,7 +141,7 @@ export default function Profile(): JSX.Element {
                                                         <div className="py-1 w-2/3 text-center">
                                                             <p>{selectedSummoner.gold.balance}</p>
                                                         </div>
-                                                        <Image src="/img/gold.png" width={50} height={40} />
+                                                        <Image src="/img/coins/gold.png" width={50} height={40} />
                                                     </div>
                                                 </button>
                                             )}
@@ -193,7 +193,7 @@ export default function Profile(): JSX.Element {
                                                 <div className="py-1 w-2/3 text-center">
                                                     <p>{selectedSummoner.materials.balance}</p>
                                                 </div>
-                                                <Image src="/img/material.png" width={40} height={40} />
+                                                <Image src="/img/coins/material.png" width={40} height={40} />
                                             </div>
                                         </button>
                                     )}
@@ -203,7 +203,7 @@ export default function Profile(): JSX.Element {
                                                 <div className="py-1 w-2/3 text-center">
                                                     <p>{selectedSummoner.gold.balance}</p>
                                                 </div>
-                                                <Image src="/img/gold.png" width={50} height={40} />
+                                                <Image src="/img/coins/gold.png" width={50} height={40} />
                                             </div>
                                         </button>
                                     )}
