@@ -93,7 +93,6 @@ export default function SellModal({ open, closeFunction, summoner }: BurnModalPr
                             {i18n._(t`Approve`)}
                         </button>
                     </div>
-
                 )}
             </div>
         </HeadlessUIModal>
