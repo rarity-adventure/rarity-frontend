@@ -51,8 +51,8 @@ export const GAME_COINS: { [k: string]: CoinData } = {
         image: <Image src="/img/coins/gold.png" width={50} height={40} />,
         unit: 'ether',
     },
-    material: {
-        name: 'MATERIAL',
+    materials: {
+        name: 'MATERIALS',
         image: <Image src="/img/coins/material.png" width={40} height={40} />,
         unit: 'wei',
     },

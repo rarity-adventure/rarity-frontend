@@ -21,7 +21,7 @@ export default function BulkTransfer({ s }: BulkTransferProps): JSX.Element {
 
     useEffect(() => {
         setSummoners(s)
-    }, [summoners])
+    }, [s])
 
     return (
         <div>
