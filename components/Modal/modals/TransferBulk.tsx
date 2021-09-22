@@ -40,11 +40,14 @@ function SummonerTransferRow({
         setSending(true)
         const func = transfers[coin.name.toLowerCase()]
         toast
-            .promise(func(summoner.id, summoner.id, receiver.id, summoner[coin.name.toLowerCase()].balance.toString()), {
-                loading: <b>{i18n._(t`Transferring ` + ' ' + coin.name.toUpperCase())}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
+            .promise(
+                func(summoner.id, summoner.id, receiver.id, summoner[coin.name.toLowerCase()].balance.toString()),
+                {
+                    loading: <b>{i18n._(t`Transferring ` + ' ' + coin.name.toUpperCase())}</b>,
+                    success: <b>{i18n._(t`Success`)}</b>,
+                    error: <b>{i18n._(t`Failed`)}</b>,
+                }
+            )
             .then(() => {
                 setSending(false)
                 setBalance(0)

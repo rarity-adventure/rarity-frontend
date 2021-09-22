@@ -39,8 +39,12 @@ export default function Summoners(): JSX.Element {
 
     const { filter_needed_summoners } = useRarityStarterPack()
 
-    const fetch_sellable = useCallback( async () => {
-        const sellable = await filter_needed_summoners(summoners.map( s => { return s.id }))
+    const fetch_sellable = useCallback(async () => {
+        const sellable = await filter_needed_summoners(
+            summoners.map((s) => {
+                return s.id
+            })
+        )
         console.log(sellable)
         setSellable(sellable)
     }, [filter_needed_summoners, sellable])
@@ -60,7 +64,6 @@ export default function Summoners(): JSX.Element {
         setDungeon(s.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0))
         fetch_sellable()
     }, [s, modal])
-
 
     const [time, setCurrentTime] = useState(Date.now())
 
@@ -150,10 +153,24 @@ export default function Summoners(): JSX.Element {
                             {}
                             {parsedSummoners.length === 0
                                 ? summoners.map((s) => {
-                                      return <SummonerSummaryCard key={s.id} summoner={s} time={time} sellable={sellable.indexOf(s.id) !== -1} />
+                                      return (
+                                          <SummonerSummaryCard
+                                              key={s.id}
+                                              summoner={s}
+                                              time={time}
+                                              sellable={sellable.indexOf(s.id) !== -1}
+                                          />
+                                      )
                                   })
                                 : parsedSummoners.map((s) => {
-                                      return <SummonerSummaryCard key={s.id} summoner={s} time={time} sellable={sellable.indexOf(s.id) !== -1} />
+                                      return (
+                                          <SummonerSummaryCard
+                                              key={s.id}
+                                              summoner={s}
+                                              time={time}
+                                              sellable={sellable.indexOf(s.id) !== -1}
+                                          />
+                                      )
                                   })}
                         </div>
                     </>
