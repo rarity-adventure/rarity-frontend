@@ -43,7 +43,7 @@ export default function TransferGoldModal({ open, closeFunction, id, summoners }
                 <div className="text-center text-white p-2 pb-2 gap-5">
                     <input
                         className="p-2 text-background-end rounded-lg text-center"
-                        onChange={(v) => setTransferAmount(utils.parseEther(v.target.value).toString())}
+                        onChange={(v) => setTransferAmount(v.target.value)}
                     />
                 </div>
                 <div className="text-center text-white p-2 pb-2 gap-5">
