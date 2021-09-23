@@ -14,7 +14,6 @@ import Filter from '../../components/Filter'
 import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarityStarterPack from '../../hooks/useRarityStarterPack'
-import { useSummonerIDs } from '../../services/graph'
 
 enum Modal {
     ADVENTURE = 1,
@@ -27,8 +26,6 @@ export default function Summoners(): JSX.Element {
     const { i18n } = useLingui()
 
     const { library, account } = useActiveWeb3React()
-
-    const ids = useSummonerIDs()
 
     const s = useSummoners()
 

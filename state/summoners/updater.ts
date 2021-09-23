@@ -12,19 +12,18 @@ import { getSummoners } from '../../constants/queries'
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()
 
-    const getSummonersIDs = async (account: string): Promise<number[]> => {
-        const data = await graph(getSummoners, { owner: account.toLowerCase() })
-        return data.summoners.map((s) => {
-            return parseInt(s.id)
-        })
-    }
-
     const dispatch = useDispatch()
 
     const windowVisible = useIsWindowVisible()
 
-    const { data } = useSWR(chainId && account ? 'summoners' : null, () => getSummonersIDs(account), undefined)
+    const { data, isValidating } = useSWR(!library || !chainId || !account ? null : 'summoners', async () => {
+        const ids = await graph(getSummoners, { owner: account.toLowerCase() })
+        return ids.summoners.map((s) => {
+            return parseInt(s.id)
+        })
+    })
 
+    console.log(data, isValidating)
     const { summoners_full } = useRarityLibrary()
 
     const fetch_summoners_data = useCallback(

@@ -11,15 +11,17 @@ import { getGlobalData } from '../../constants/queries'
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const getAnalyticsData = async (): Promise<{
-        globals: { summoners: number; owners: number }[]
-        classes: { id: number; count: number }[]
-        levels: { id: number; count: number }[]
-    }> => {
-        return await graph(getGlobalData, {})
-    }
-
-    const { data } = useSWR('analytics', () => getAnalyticsData(), { refreshInterval: 1000 })
+    const { data } = useSWR(
+        'analytics',
+        async (): Promise<{
+            globals: { summoners: number; owners: number }[]
+            classes: { id: number; count: number }[]
+            levels: { id: number; count: number }[]
+        }> => {
+            return await graph(getGlobalData, {})
+        },
+        { refreshInterval: 1000 }
+    )
 
     const [view, setView] = useState('level')
 
