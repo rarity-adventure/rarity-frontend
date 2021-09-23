@@ -1,16 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { updateAnalytics } from './actions'
+import { updateStats } from './actions'
 
-export interface SummonersState {
+export interface StatsState {
     readonly data: { globals: []; classes: []; levels: [] }
 }
 
-const initialState: SummonersState = {
+const initialState: StatsState = {
     data: { globals: [], classes: [], levels: [] },
 }
 
 export default createReducer(initialState, (builder) =>
-    builder.addCase(updateAnalytics, (state, action) => {
+    builder.addCase(updateStats, (state, action) => {
         state.data = action.payload
     })
 )

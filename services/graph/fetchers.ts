@@ -4,6 +4,6 @@ import { getGlobalData } from '../../constants/queries'
 export const graph = async (query, variables = {}) =>
     request('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
 
-export const getAnalytics = async () => {
+export const getStats = async () => {
     return await graph(getGlobalData, {})
 }

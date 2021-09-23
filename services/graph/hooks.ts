@@ -1,7 +1,7 @@
 import useSWR, { SWRConfiguration } from 'swr'
-import { getAnalytics } from './fetchers'
+import { getStats } from './fetchers'
 
-export function useGraphAnalytics(swrConfig: SWRConfiguration = undefined) {
-    const { data } = useSWR('analytics', () => getAnalytics(), swrConfig)
+export function useGraphStats(swrConfig: SWRConfiguration = undefined) {
+    const { data } = useSWR('stats', () => getStats(), swrConfig)
     return data
 }

@@ -44,12 +44,12 @@ const nextConfig = {
             },
             {
                 source: '/global',
-                destination: '/analytics',
+                destination: '/stats',
                 permanent: true,
             },
             {
                 source: '/stats',
-                destination: '/analytics',
+                destination: '/stats',
                 permanent: true,
             },
         ]

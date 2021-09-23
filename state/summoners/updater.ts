@@ -50,7 +50,6 @@ export default function Updater(): null {
 
     useEffect(() => {
         if (!data || !library || !chainId || !account || !windowVisible) return
-        console.log(data)
         fetch_summoners_data(data)
     }, [data, windowVisible, fetch_summoners_data, library, chainId, account])
     return null
