@@ -34,11 +34,11 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
         )
     }
 
-    function analytics(): JSX.Element {
+    function stats(): JSX.Element {
         return (
-            <Link href="analytics" passHref>
+            <Link href="/stats" passHref>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
-                    <h2>{i18n._(t`analytics`)}</h2>
+                    <h2>{i18n._(t`stats`)}</h2>
                 </div>
             </Link>
         )
@@ -108,7 +108,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                             {summoners()}
                                             {inventory()}
                                             {names()}
-                                            {analytics()}
+                                            {stats()}
                                             {account && (
                                                 <button
                                                     onClick={() => setModal(true)}
@@ -176,7 +176,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                 {summoners()}
                                 {inventory()}
                                 {names()}
-                                {analytics()}
+                                {stats()}
                                 {account && (
                                     <button
                                         onClick={() => setModal(true)}

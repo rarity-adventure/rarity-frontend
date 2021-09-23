@@ -48,7 +48,7 @@ const nextConfig = {
                 permanent: true,
             },
             {
-                source: '/stats',
+                source: '/analytics',
                 destination: '/stats',
                 permanent: true,
             },
