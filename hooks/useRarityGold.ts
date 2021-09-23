@@ -79,7 +79,6 @@ export default function useRarityGold(): GoldInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    console.log(e)
                     reject()
                 }
             })

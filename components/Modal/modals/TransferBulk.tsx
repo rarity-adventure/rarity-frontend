@@ -12,6 +12,8 @@ import Loader from '../../Loader'
 import useRarityGold from '../../../hooks/useRarityGold'
 import useRarityCellar from '../../../hooks/useRarityCellar'
 import toast from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import { syncSummoners } from '../../../state/summoners/actions'
 
 function SummonerTransferRow({
     summoner,
@@ -23,6 +25,8 @@ function SummonerTransferRow({
     receiver: SummonerFullData
 }): JSX.Element {
     const { i18n } = useLingui()
+
+    const dispatch = useDispatch()
 
     const [sending, setSending] = useState(false)
 
@@ -51,6 +55,7 @@ function SummonerTransferRow({
             .then(() => {
                 setSending(false)
                 setBalance(0)
+                dispatch(syncSummoners)
             })
     }
 

@@ -3,7 +3,6 @@ import '../styles/globals.css'
 import * as plurals from 'make-plural/plurals'
 
 import type { AppProps } from 'next/app'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import ReactGA from 'react-ga4'
 import { Component, useEffect } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
@@ -18,19 +17,14 @@ import dynamic from 'next/dynamic'
 import getLibrary from '../functions/getLibrary'
 import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
-import MulticallUpdater from '../state/multicall/updater'
 import SummonersUpdater from '../state/summoners/updater'
 import ItemsUpdater from '../state/items/updater'
+import StatsUpdater from '../state/stats/updater'
 import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
 import { useRouter } from 'next/router'
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
-
-const client = new ApolloClient({
-    uri: 'https://api.rarity.game/subgraphs/name/rarity-adventure/rarity',
-    cache: new InMemoryCache(),
-})
 
 if (typeof window !== 'undefined' && !!window.ethereum) {
     window.ethereum.autoRefreshOnNetworkChange = false
@@ -130,31 +124,29 @@ export default function MyApp({
                 <meta key="og:description" property="og:description" content="Free to mint D&D blockchain based game" />
             </Head>
             <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
-                <ApolloProvider client={client}>
-                    <Web3ReactProvider getLibrary={getLibrary}>
-                        <Web3ProviderNetwork getLibrary={getLibrary}>
-                            <Web3ReactManager>
-                                <ReduxProvider store={store}>
-                                    <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
-                                        <>
-                                            <ApplicationUpdater />
-                                            <MulticallUpdater />
-                                            <SummonersUpdater />
-                                            <ItemsUpdater />
-                                        </>
-                                        <Provider>
-                                            <Layout>
-                                                <Guard>
-                                                    <Component {...pageProps} />
-                                                </Guard>
-                                            </Layout>
-                                        </Provider>
-                                    </PersistGate>
-                                </ReduxProvider>
-                            </Web3ReactManager>
-                        </Web3ProviderNetwork>
-                    </Web3ReactProvider>
-                </ApolloProvider>
+                <Web3ReactProvider getLibrary={getLibrary}>
+                    <Web3ProviderNetwork getLibrary={getLibrary}>
+                        <Web3ReactManager>
+                            <ReduxProvider store={store}>
+                                <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
+                                    <>
+                                        <ApplicationUpdater />
+                                        <SummonersUpdater />
+                                        <ItemsUpdater />
+                                        <StatsUpdater />
+                                    </>
+                                    <Provider>
+                                        <Layout>
+                                            <Guard>
+                                                <Component {...pageProps} />
+                                            </Guard>
+                                        </Layout>
+                                    </Provider>
+                                </PersistGate>
+                            </ReduxProvider>
+                        </Web3ReactManager>
+                    </Web3ProviderNetwork>
+                </Web3ReactProvider>
             </I18nProvider>
         </Fragment>
     )

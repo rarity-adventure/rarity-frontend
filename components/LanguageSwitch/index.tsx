@@ -22,7 +22,7 @@ export default function LangSwitcher() {
             {({ open }) => (
                 <>
                     <div>
-                        <Menu.Button className="inline-flex justify-center w-full p-1.5 text-xs font-bold border rounded shadow-sm text-primary border-white">
+                        <Menu.Button className="inline-flex justify-center w-full p-2 text-sm font-bold border-2 rounded-lg shadow-sm text-primary border-white">
                             <h2>{LANG_TO_COUNTRY[locale]}</h2>
                         </Menu.Button>
                     </div>

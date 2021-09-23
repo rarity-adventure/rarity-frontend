@@ -62,7 +62,7 @@ export interface ItemData {
 }
 
 interface LibraryInterface {
-    summoners_full: (ids: string[]) => Promise<SummonerFullData[]>
+    summoners_full: (ids: number[]) => Promise<SummonerFullData[]>
     items: (owner: string) => Promise<ItemData[]>
 }
 
@@ -70,14 +70,14 @@ export default function useRarityLibrary(): LibraryInterface {
     const lib = useRarityLibContract()
 
     const summoners_full = useCallback(
-        async (ids: string[]): Promise<SummonerFullData[]> => {
+        async (ids: number[]): Promise<SummonerFullData[]> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const summoners = await lib?.summoners_full(ids)
                     resolve(
                         summoners.map((value, i) => {
                             return {
-                                id: parseInt(ids[i], 16),
+                                id: ids[i],
                                 ability_scores: {
                                     attributes: {
                                         _cha:
@@ -160,7 +160,7 @@ export default function useRarityLibrary(): LibraryInterface {
                 try {
                     const items = await lib?.items1(owner)
                     resolve(
-                        items.map((value, i) => {
+                        items.map((value) => {
                             return {
                                 token_id: parseInt(value.token_id.toString(), 10),
                                 base_type: value.base_type,

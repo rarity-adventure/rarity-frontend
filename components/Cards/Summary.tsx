@@ -20,6 +20,54 @@ enum Modals {
     SELL,
 }
 
+export function SummonerSummaryCardLoader(): JSX.Element {
+    return (
+        <div className="mx-auto w-56">
+            <div className="p-5 w-full h-6 text-center" />
+            <div className="grid grid-cols-1 rounded-2xl border-white border-2 divide-white divide-y-2">
+                <div className={'m-3 mx-auto bg-white opacity-70 rounded-lg uppercase h-7 w-40'} />
+                <div>
+                    <div className={'ml-2 m-2 bg-white opacity-70 rounded-lg mx-1 uppercase h-5 w-40'} />
+                </div>
+                <div>
+                    <div className="flex flex-row justify-between mx-1 my-2">
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-28'} />
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-14'} />
+                    </div>
+                    <div className="flex flex-row justify-between mx-1 my-2">
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-32'} />
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-8'} />
+                    </div>
+                    <div className="flex flex-row justify-between mx-1 my-2">
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-24'} />
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-12'} />
+                    </div>
+                    <div className="flex flex-row justify-between mx-1 my-2">
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-36'} />
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-10'} />
+                    </div>
+                </div>
+                <div>
+                    <div className="flex flex-row justify-between mx-1 my-2">
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-10'} />
+                        <div className={'bg-white opacity-70 rounded-lg mx-1 uppercase h-3 w-10'} />
+                    </div>
+                    <div className="flex flex-row justify-center mx-1 my-2">
+                        <div className={'border-white border-2 opacity-70 rounded-lg mx-1 uppercase h-12 w-full'} />
+                    </div>
+                    <div className="flex flex-row justify-center mx-1 my-2">
+                        <div className={'border-white border-2 opacity-70 rounded-lg mx-1 uppercase h-12 w-full'} />
+                    </div>
+                </div>
+                <div className="p-2 text-xs w-full">
+                    <div className="my-1.5 opacity-20 px-2 py-2 h-8 items-center border-white border-2 rounded-lg" />
+                    <div className="my-1.5  opacity-20 px-2 py-2 h-8 items-center border-white border-2 rounded-lg" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
 function SummonerSummaryCard({
     summoner,
     time,

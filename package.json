@@ -12,7 +12,6 @@
         "format": "prettier --write ."
     },
     "dependencies": {
-        "@apollo/client": "3.4.12",
         "@babel/core": "7.15.5",
         "@ethersproject/providers": "5.4.5",
         "@fontsource/noto-mono": "^4.5.0",
@@ -38,6 +37,8 @@
         "cookie-cutter": "0.2.0",
         "ethers": "5.4.7",
         "graphql": "15.5.3",
+        "graphql-request": "^3.5.0",
+        "graphql-tag": "2.12.5",
         "next": "11.1.2",
         "next-pwa": "5.3.1",
         "numeral": "2.0.6",
@@ -52,6 +53,7 @@
         "react-redux": "7.2.5",
         "redux": "4.1.1",
         "redux-persist": "6.0.0",
+        "swr": "1.0.1",
         "tailwindcss": "2.2.15"
     },
     "devDependencies": {

@@ -12,7 +12,6 @@ const nextConfig = {
                 type: 'javascript/auto',
             },
         ]
-
         return config
     },
     pwa: {
@@ -45,12 +44,12 @@ const nextConfig = {
             },
             {
                 source: '/global',
-                destination: '/analytics',
+                destination: '/stats',
                 permanent: true,
             },
             {
-                source: '/stats',
-                destination: '/analytics',
+                source: '/analytics',
+                destination: '/stats',
                 permanent: true,
             },
         ]

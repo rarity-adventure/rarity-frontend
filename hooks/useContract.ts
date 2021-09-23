@@ -16,7 +16,6 @@ import {
     RARITY_PACK_ADDRESS,
     RARITY_SKILLS_ADDRESS,
 } from '../constants'
-import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import RARITY_ABI from '../constants/abis/rarity.json'
 import RARITY_LIB_ABI from '../constants/abis/rarity_library.json'
 import RARITY_GOLD_ABI from '../constants/abis/gold.json'
@@ -28,6 +27,7 @@ import RARITY_CELLAR_ABI from '../constants/abis/cellar.json'
 import RARITY_CRAFTING_ABI from '../constants/abis/crafting.json'
 import RARITY_NAMES_ABI from '../constants/abis/names.json'
 import RARITY_PACK_ABI from '../constants/abis/pack.json'
+import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
     const { library, account } = useActiveWeb3React()
@@ -41,11 +41,6 @@ export function useContract(address: string | undefined, ABI: any, withSignerIfP
             return null
         }
     }, [address, ABI, library, withSignerIfPossible, account])
-}
-
-export function useMulticall2Contract() {
-    const { chainId } = useActiveWeb3React()
-    return useContract(chainId && MULTICALL2_ADDRESS, MULTICALL2_ABI, false)
 }
 
 export function useRarityContract(): Contract | null {
@@ -101,4 +96,9 @@ export function useRarityNamesContract(): Contract | null {
 export function useRarityStarterPackContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? RARITY_PACK_ADDRESS : undefined, RARITY_PACK_ABI)
+}
+
+export function useMulticall2Contract() {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId && MULTICALL2_ADDRESS, MULTICALL2_ABI, false)
 }

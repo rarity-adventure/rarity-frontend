@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
 import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
-import { useETHBalances } from '../../state/wallet/hooks'
 import LangSwitcher from '../LanguageSwitch'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
@@ -13,9 +12,7 @@ import Image from 'next/image'
 function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     const { i18n } = useLingui()
 
-    const { account, chainId } = useActiveWeb3React()
-
-    const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+    const { account } = useActiveWeb3React()
 
     function play(): JSX.Element {
         return (
@@ -37,11 +34,11 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
         )
     }
 
-    function analytics(): JSX.Element {
+    function stats(): JSX.Element {
         return (
-            <Link href="/analytics" passHref={true}>
+            <Link href="/stats" passHref>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
-                    <h2>{i18n._(t`Analytics`)}</h2>
+                    <h2>{i18n._(t`stats`)}</h2>
                 </div>
             </Link>
         )
@@ -111,7 +108,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                             {summoners()}
                                             {inventory()}
                                             {names()}
-                                            {analytics()}
+                                            {stats()}
                                             {account && (
                                                 <button
                                                     onClick={() => setModal(true)}
@@ -129,13 +126,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                             <div className="hidden md:inline-block mx-2">
                                                 <LangSwitcher />
                                             </div>
-                                            {account && chainId && userEthBalance && (
-                                                <>
-                                                    <div className="px-3 mx-3 py-2 text-primary text-bold border-white border-2 rounded-lg">
-                                                        <h2>{userEthBalance} FTM</h2>
-                                                    </div>
-                                                </>
-                                            )}
                                             <Web3Status />
                                         </div>
                                     </div>
@@ -186,7 +176,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                 {summoners()}
                                 {inventory()}
                                 {names()}
-                                {analytics()}
+                                {stats()}
                                 {account && (
                                     <button
                                         onClick={() => setModal(true)}

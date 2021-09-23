@@ -1,14 +1,14 @@
-import { gql } from '@apollo/client'
+import gql from 'graphql-tag'
 
-export const SUMMONERS = gql`
-    query getSummoners($owner: String!) {
-        summoners(first: 1000, where: { owner: $owner }) {
+export const getSummoners = gql`
+    query getSummoners($first: Int! = 1000, $owner: String!) {
+        summoners(first: $first, where: { owner: $owner }) {
             id
         }
     }
 `
 
-export const GLOBAL_DATA = gql`
+export const getGlobalData = gql`
     query data {
         globals {
             summoners
