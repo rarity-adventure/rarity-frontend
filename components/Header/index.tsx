@@ -36,7 +36,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
 
     function analytics(): JSX.Element {
         return (
-            <Link href="analytics" passHref prefetch>
+            <Link href="analytics" passHref>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
                     <h2>{i18n._(t`analytics`)}</h2>
                 </div>

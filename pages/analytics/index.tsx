@@ -232,7 +232,7 @@ function AnalyticsData(): JSX.Element {
     }
 }
 
-export default function Analytics() {
+export default function Analytics(): JSX.Element {
     const { i18n } = useLingui()
 
     return (

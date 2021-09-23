@@ -12,7 +12,6 @@ const nextConfig = {
                 type: 'javascript/auto',
             },
         ]
-
         return config
     },
     pwa: {
