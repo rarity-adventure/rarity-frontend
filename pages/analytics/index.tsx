@@ -9,8 +9,6 @@ import { useGlobalAnalytics } from '../../services/graph'
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const [loading, setLoading] = useState(false)
-
     const globalData = useGlobalAnalytics()
 
     const [view, setView] = useState('level')
