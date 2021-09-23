@@ -151,10 +151,9 @@ export default function Summoners(): JSX.Element {
             <DungeonModal open={modal === Modal.DUNGEON} closeFunction={closeModal} summoners={dungeon} />
             <DaycareMultiModal open={modal === Modal.DAYCARE} closeFunction={closeModal} summoners={summoners} />
 
-            { loading ? (
-
-            <SummonersLoader />
-             ) : (
+            {loading ? (
+                <SummonersLoader />
+            ) : (
                 <div className="md:border-white md:border-4 p-4 md:m-10 z-10 uppercase">
                     {summoners.length > 0 ? (
                         <>
@@ -223,25 +222,25 @@ export default function Summoners(): JSX.Element {
                                 {}
                                 {parsedSummoners.length === 0
                                     ? summoners.map((s) => {
-                                        return (
-                                            <SummonerSummaryCard
-                                                key={s.id}
-                                                summoner={s}
-                                                time={time}
-                                                sellable={sellable.indexOf(s.id) !== -1}
-                                            />
-                                        )
-                                    })
+                                          return (
+                                              <SummonerSummaryCard
+                                                  key={s.id}
+                                                  summoner={s}
+                                                  time={time}
+                                                  sellable={sellable.indexOf(s.id) !== -1}
+                                              />
+                                          )
+                                      })
                                     : parsedSummoners.map((s) => {
-                                        return (
-                                            <SummonerSummaryCard
-                                                key={s.id}
-                                                summoner={s}
-                                                time={time}
-                                                sellable={sellable.indexOf(s.id) !== -1}
-                                            />
-                                        )
-                                    })}
+                                          return (
+                                              <SummonerSummaryCard
+                                                  key={s.id}
+                                                  summoner={s}
+                                                  time={time}
+                                                  sellable={sellable.indexOf(s.id) !== -1}
+                                              />
+                                          )
+                                      })}
                             </div>
                         </>
                     ) : (

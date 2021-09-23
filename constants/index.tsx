@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
-import { request } from 'graphql-request'
+
+export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
 
 export const NetworkContextName = 'NETWORK'
 
