@@ -1,5 +1,9 @@
 import Image from 'next/image'
 import React from 'react'
+import { request } from 'graphql-request'
+
+export const graph = async (query, variables = {}) =>
+    request('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
 
 export const NetworkContextName = 'NETWORK'
 

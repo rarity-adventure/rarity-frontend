@@ -4,21 +4,32 @@ import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import Loader from '../../components/Loader'
-import { useGlobalAnalytics } from '../../services/graph'
+import useSWR from 'swr'
+import { graph } from '../../constants'
+import { getGlobalData } from '../../constants/queries'
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const globalData = useGlobalAnalytics()
+    const getAnalyticsData = async (): Promise<{
+        globals: { summoners: number; owners: number }[]
+        classes: { id: number; count: number }[]
+        levels: { id: number; count: number }[]
+    }> => {
+        return await graph(getGlobalData, {})
+    }
+
+    const { data } = useSWR('analytics', () => getAnalyticsData(), { refreshInterval: 1000 })
 
     const [view, setView] = useState('level')
+
     return (
         <div className="w-full z-10">
             <div className="text-center mt-10">
                 <h1 className="text-4xl uppercase">{i18n._(t`global analytics`)}</h1>
                 <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity`)}</h2>
             </div>
-            {globalData ? (
+            {data ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-10 mx-10">
                     <div>
                         <div className="border-white border-2 text-center text-sm lg:text-xl rounded-t-xl p-2">
@@ -29,13 +40,13 @@ export default function Profile(): JSX.Element {
                                 <span>{i18n._(t`total summoners`)}:</span>
                             </div>
                             <div className="flex flex-row-reverse py-2 w-full text-xl lg:text-3xl">
-                                <span>{globalData.globals[0].summoners}</span>
+                                <span>{data.globals[0].summoners}</span>
                             </div>
                             <div className="flex flex-row py-2 w-full text-sm lg:text-xl  uppercase">
                                 <span>{i18n._(t`unique owners`)}:</span>
                             </div>
                             <div className="flex flex-row-reverse py-4 w-full text-xl lg:text-3xl">
-                                <span>{globalData.globals[0].owners}</span>
+                                <span>{data.globals[0].owners}</span>
                             </div>
                         </div>
                     </div>
@@ -99,7 +110,7 @@ export default function Profile(): JSX.Element {
                             </Menu>
                             {view === 'level' && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-4 gap-5 pb-4">
-                                    {globalData.levels.map((level) => {
+                                    {data.levels.map((level) => {
                                         return (
                                             <div key={level.id}>
                                                 <div className="border-white text-xs w-32  bg-card-bottom px-2 py-1 text-center border-2 rounded-2xl">
@@ -116,11 +127,7 @@ export default function Profile(): JSX.Element {
                                                     <span className="uppercase">{i18n._(t`percentage`)}</span>
                                                     <span className="ml-3">: </span>
                                                     <span>
-                                                        {(
-                                                            (level.count * 100) /
-                                                            parseInt(globalData.globals[0].summoners)
-                                                        ).toFixed(2)}
-                                                        %
+                                                        {((level.count * 100) / data.globals[0].summoners).toFixed(2)}%
                                                     </span>
                                                 </div>
                                             </div>
@@ -130,7 +137,7 @@ export default function Profile(): JSX.Element {
                             )}
                             {view === 'class' && (
                                 <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 mt-4 gap-5 pb-4">
-                                    {globalData.classes.map((_class) => {
+                                    {data.classes.map((_class) => {
                                         return (
                                             <div key={_class.id}>
                                                 <div className="border-white text-xs w-32  bg-card-bottom px-2 py-1 text-center border-2 rounded-2xl">
@@ -145,11 +152,7 @@ export default function Profile(): JSX.Element {
                                                     <span className="uppercase">{i18n._(t`percentage`)}</span>
                                                     <span className="ml-3">: </span>
                                                     <span>
-                                                        {(
-                                                            (_class.count * 100) /
-                                                            parseInt(globalData.globals[0].summoners)
-                                                        ).toFixed(2)}
-                                                        %
+                                                        {((_class.count * 100) / data.globals[0].summoners).toFixed(2)}%
                                                     </span>
                                                 </div>
                                             </div>

@@ -5,16 +5,25 @@ import { useCallback, useEffect } from 'react'
 import { chunkArrayByNumber } from '../../functions/array'
 import useRarityLibrary from '../../hooks/useRarityLibrary'
 import { updateSummoners } from './actions'
-import { useSummonerIDs } from '../../services/graph'
+import useSWR from 'swr'
+import { graph } from '../../constants'
+import { getSummoners } from '../../constants/queries'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()
+
+    const getSummonersIDs = async (account: string): Promise<number[]> => {
+        const data = await graph(getSummoners, { owner: account.toLowerCase() })
+        return data.summoners.map((s) => {
+            return parseInt(s.id)
+        })
+    }
 
     const dispatch = useDispatch()
 
     const windowVisible = useIsWindowVisible()
 
-    const ids = useSummonerIDs()
+    const { data } = useSWR(chainId && account ? 'summoners' : null, () => getSummonersIDs(account), undefined)
 
     const { summoners_full } = useRarityLibrary()
 
@@ -42,8 +51,8 @@ export default function Updater(): null {
     )
 
     useEffect(() => {
-        if (!ids || !library || !chainId || !account || !windowVisible) return
-        fetch_summoners_data(ids)
-    }, [ids, windowVisible, fetch_summoners_data, library, chainId, account])
+        if (!data || !library || !chainId || !account || !windowVisible) return
+        fetch_summoners_data(data)
+    }, [data, windowVisible, fetch_summoners_data, library, chainId, account])
     return null
 }
