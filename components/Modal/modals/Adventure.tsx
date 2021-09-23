@@ -10,6 +10,8 @@ import { BURN_ADDRESS, RARITY_HELPER_ADDRESS } from '../../../constants'
 import useRarityLibrary, { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import { chunkArrayByNumber } from '../../../functions/array'
 import useRarityHelper from '../../../hooks/useRarityHelper'
+import { syncSummoners } from '../../../state/summoners/actions'
+import { useDispatch } from 'react-redux'
 
 interface AdventureModalProps {
     open: boolean
@@ -21,6 +23,8 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     const { i18n } = useLingui()
 
     const { account } = useActiveWeb3React()
+
+    const dispatch = useDispatch()
 
     const { isApprovedForAll, setApprovalForAll } = useRarity()
     const { adventure, adventure_donate } = useRarityHelper()
@@ -39,7 +43,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     async function submit() {
         const chunks = chunkArrayByNumber(summoners, 100)
         for (let i = 0; i < chunks.length; i++) {
-            await toast.promise(
+            toast.promise(
                 adventure(
                     chunks[i].map((s) => {
                         return s.id
@@ -56,13 +60,15 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
                 }
             )
         }
+        dispatch(syncSummoners)
+        closeFunction()
     }
 
     async function submitTIP() {
         const chunks = chunkArrayByNumber(summoners, 100)
         for (let i = 0; i < chunks.length; i++) {
             if (i === 0) {
-                await toast.promise(
+                toast.promise(
                     adventure_donate(
                         chunks[i].map((s) => {
                             return s.id
@@ -79,7 +85,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
                     }
                 )
             } else {
-                await toast.promise(
+                toast.promise(
                     adventure(
                         chunks[i].map((s) => {
                             return s.id
@@ -97,6 +103,8 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
                 )
             }
         }
+        dispatch(syncSummoners)
+        closeFunction()
     }
 
     async function approveHelper() {
