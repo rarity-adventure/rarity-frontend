@@ -23,7 +23,6 @@ export default function Updater(): null {
         })
     })
 
-    console.log(data, isValidating)
     const { summoners_full } = useRarityLibrary()
 
     const fetch_summoners_data = useCallback(
