@@ -118,9 +118,9 @@ function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: a
                                 <div>
                                     <Menu.Button className="flex flex-row justify-start item-center p-2 text-xs font-bold border-b-2 text-white border-white">
                                         <div className="h-full mr-1.5">
-                                                <span className="uppercase">
-                                                    {view === 'class' ? i18n._(t`by class`) : i18n._(t`by level`)}
-                                                </span>
+                                            <span className="uppercase">
+                                                {view === 'class' ? i18n._(t`by class`) : i18n._(t`by level`)}
+                                            </span>
                                         </div>
                                         <div>
                                             <ChevronDownIcon width={16} aria-hidden="true" />
@@ -146,9 +146,9 @@ function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: a
                                                     'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                 }
                                             >
-                                                    <span className="ml-2 uppercase overflow-x-hidden">
-                                                        {i18n._(t`by class`)}
-                                                    </span>
+                                                <span className="ml-2 uppercase overflow-x-hidden">
+                                                    {i18n._(t`by class`)}
+                                                </span>
                                             </button>
                                         </Menu.Item>
                                         <Menu.Item>
@@ -158,9 +158,9 @@ function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: a
                                                     'group w-full hover:bg-background-start flex items-center border-white p-2 text-xs font-bold'
                                                 }
                                             >
-                                                    <span className="ml-2 uppercase overflow-x-hidden">
-                                                        {i18n._(t`by level`)}
-                                                    </span>
+                                                <span className="ml-2 uppercase overflow-x-hidden">
+                                                    {i18n._(t`by level`)}
+                                                </span>
                                             </button>
                                         </Menu.Item>
                                     </Menu.Items>
@@ -174,9 +174,9 @@ function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: a
                                 return (
                                     <div key={i}>
                                         <div className="border-white text-xs w-32  bg-card-bottom px-2 py-1 text-center border-2 rounded-2xl">
-                                                <span className="uppercase">
-                                                    {i18n._(t`level`)} {level.id}
-                                                </span>
+                                            <span className="uppercase">
+                                                {i18n._(t`level`)} {level.id}
+                                            </span>
                                         </div>
                                         <div className="mt-2 text-xs">
                                             <span className="uppercase">{i18n._(t`summoners`)} </span>
@@ -186,9 +186,7 @@ function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: a
                                         <div className="mt-1 text-xs">
                                             <span className="uppercase">{i18n._(t`percentage`)}</span>
                                             <span className="ml-3">: </span>
-                                            <span>
-                                                    {((level.count * 100) / data.globals[0].summoners).toFixed(2)}%
-                                                </span>
+                                            <span>{((level.count * 100) / data.globals[0].summoners).toFixed(2)}%</span>
                                         </div>
                                     </div>
                                 )
@@ -212,8 +210,8 @@ function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: a
                                             <span className="uppercase">{i18n._(t`percentage`)}</span>
                                             <span className="ml-3">: </span>
                                             <span>
-                                                    {((_class.count * 100) / data.globals[0].summoners).toFixed(2)}%
-                                                </span>
+                                                {((_class.count * 100) / data.globals[0].summoners).toFixed(2)}%
+                                            </span>
                                         </div>
                                     </div>
                                 )

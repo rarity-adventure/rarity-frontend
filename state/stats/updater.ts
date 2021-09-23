@@ -9,7 +9,7 @@ export default function Updater(): null {
 
     const windowVisible = useIsWindowVisible()
 
-    const data = useGraphStats()
+    const data = useGraphStats({ refreshInterval: 5000 })
 
     useEffect(() => {
         if (!windowVisible || !data) return
