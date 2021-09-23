@@ -6,6 +6,8 @@ interface CraftingInterface {
     balanceOf: (account: string) => Promise<number>
     tokenURI: (id: number) => Promise<string>
     transferFrom: (from: string | null | undefined, to: string, id: number) => Promise<void>
+    isApprovedForAll: (owner: string | null | undefined, operator: string) => Promise<boolean>
+    setApprovalForAll: (operator: string) => Promise<void>
 }
 
 export default function useRarityCrafting(): CraftingInterface {
@@ -68,5 +70,33 @@ export default function useRarityCrafting(): CraftingInterface {
         [crafting]
     )
 
-    return { craft, balanceOf, tokenURI, transferFrom }
+    const isApprovedForAll = useCallback(
+        async (owner: string | null | undefined, operator: string): Promise<boolean> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    resolve(await crafting?.isApprovedForAll(owner, operator))
+                } catch (e) {
+                    reject(false)
+                }
+            })
+        },
+        [crafting]
+    )
+
+    const setApprovalForAll = useCallback(
+        async (from: string): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await crafting?.setApprovalForAll(from, true)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
+        },
+        [crafting]
+    )
+
+    return { craft, balanceOf, tokenURI, transferFrom, isApprovedForAll, setApprovalForAll }
 }

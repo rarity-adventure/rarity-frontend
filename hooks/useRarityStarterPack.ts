@@ -9,6 +9,8 @@ interface StarterPackInterface {
     balanceOf: (owner: string) => Promise<number>
     filter_needed_summoners: (ids: number[]) => Promise<number[]>
     sell_summoners: (ids: number[]) => Promise<void>
+    sell_items: (ids: number[]) => Promise<void>
+    get_sellable_items_between_ids: (account: string, min_id: number, max_id: number) => Promise<number[]>
 }
 
 export default function useRarityStarterPack(): StarterPackInterface {
@@ -90,5 +92,44 @@ export default function useRarityStarterPack(): StarterPackInterface {
         [pack]
     )
 
-    return { buy_pack, packs_available, packs_opened, balanceOf, filter_needed_summoners, sell_summoners }
+    const sell_items = useCallback(
+        async (ids: number[]): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await pack?.sell_items(ids)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject()
+                }
+            })
+        },
+        [pack]
+    )
+
+    const get_sellable_items_between_ids = useCallback(
+        async (account: string, min_id: number, max_id: number): Promise<number[]> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const sellable = await pack?.get_sellable_items_between_ids(account, min_id, max_id)
+                    resolve(sellable.map((s) => parseInt(s.toString())))
+                } catch (e) {
+                    console.log(e)
+                    reject()
+                }
+            })
+        },
+        [pack]
+    )
+
+    return {
+        buy_pack,
+        packs_available,
+        packs_opened,
+        balanceOf,
+        filter_needed_summoners,
+        sell_summoners,
+        sell_items,
+        get_sellable_items_between_ids,
+    }
 }
