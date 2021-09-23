@@ -3,10 +3,7 @@ import React, { Fragment, useState } from 'react'
 import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import useSWR, { SWRConfig } from 'swr'
-import { graph } from '../../constants'
-import { getGlobalData } from '../../constants/queries'
-import { InferGetStaticPropsType } from 'next'
+import { useAnalytics } from '../../services/graph/hooks'
 
 function AnalyticsLoader() {
     const { i18n } = useLingui()
@@ -90,21 +87,11 @@ function AnalyticsLoader() {
 function AnalyticsData(): JSX.Element {
     const { i18n } = useLingui()
 
-    const { data } = useSWR(
-        'analytics',
-        async (): Promise<{
-            globals: { summoners: number; owners: number }[]
-            classes: { id: number; count: number }[]
-            levels: { id: number; count: number }[]
-        }> => {
-            return await graph(getGlobalData, {})
-        },
-        { refreshInterval: 1000 }
-    )
+    const data = useAnalytics({ refreshInterval: 1000 })
 
     const [view, setView] = useState('class')
 
-    if (data.globals[0]) {
+    if (data) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-10 mx-10">
                 <div>
@@ -245,34 +232,16 @@ function AnalyticsData(): JSX.Element {
     }
 }
 
-export function Analytics({ fallback }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Analytics() {
     const { i18n } = useLingui()
 
     return (
-        <SWRConfig value={{ fallback }}>
-            <div className="w-full z-10">
-                <div className="text-center mt-10">
-                    <h1 className="text-4xl uppercase">{i18n._(t`global analytics`)}</h1>
-                    <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity`)}</h2>
-                </div>
-                <AnalyticsData />
+        <div className="w-full z-10">
+            <div className="text-center mt-10">
+                <h1 className="text-4xl uppercase">{i18n._(t`global analytics`)}</h1>
+                <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity`)}</h2>
             </div>
-        </SWRConfig>
+            <AnalyticsData />
+        </div>
     )
-}
-
-export default Analytics
-
-export async function getStaticProps() {
-    return {
-        props: {
-            fallback: {
-                analytics: {
-                    globals: [],
-                    classes: [],
-                    levels: [],
-                },
-            },
-        },
-    }
 }

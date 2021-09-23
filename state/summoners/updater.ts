@@ -6,8 +6,8 @@ import { chunkArrayByNumber } from '../../functions/array'
 import useRarityLibrary from '../../hooks/useRarityLibrary'
 import { updateSummoners } from './actions'
 import useSWR from 'swr'
-import { graph } from '../../constants'
 import { getSummoners } from '../../constants/queries'
+import { graph } from '../../services/graph/fetchers'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()
@@ -16,7 +16,7 @@ export default function Updater(): null {
 
     const windowVisible = useIsWindowVisible()
 
-    const { data, isValidating } = useSWR(!library || !chainId || !account ? null : 'summoners', async () => {
+    const { data } = useSWR(!library || !chainId || !account ? null : 'summoners', async () => {
         const ids = await graph(getSummoners, { owner: account.toLowerCase() })
         return ids.summoners.map((s) => {
             return parseInt(s.id)
