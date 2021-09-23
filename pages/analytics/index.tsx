@@ -1,27 +1,17 @@
 import { useLingui } from '@lingui/react'
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { useQuery } from '@apollo/client'
-import { GLOBAL_DATA } from '../../apollo'
 import Loader from '../../components/Loader'
+import { useGlobalAnalytics } from '../../services/graph'
 
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
-    const { data, loading, error } = useQuery(GLOBAL_DATA)
+    const [loading, setLoading] = useState(false)
 
-    const [globalData, setGlobalData] = useState<{
-        classes: { id: string; count: number }[]
-        levels: { id: string; count: number }[]
-        globals: { owners: string; summoners: string }[]
-    }>({ classes: [], levels: [], globals: [] })
-
-    useEffect(() => {
-        if (loading || error) return
-        setGlobalData(data)
-    }, [data, loading, error])
+    const globalData = useGlobalAnalytics()
 
     const [view, setView] = useState('level')
     return (
@@ -30,7 +20,7 @@ export default function Profile(): JSX.Element {
                 <h1 className="text-4xl uppercase">{i18n._(t`global analytics`)}</h1>
                 <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity`)}</h2>
             </div>
-            {globalData.globals[0] ? (
+            {globalData ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-10 mx-10">
                     <div>
                         <div className="border-white border-2 text-center text-sm lg:text-xl rounded-t-xl p-2">

@@ -55,7 +55,6 @@ export default function useRarityStarterPack(): StarterPackInterface {
                     const b = await pack?.balanceOf(owner)
                     resolve(parseInt(b.toString()))
                 } catch (e) {
-                    console.log(e)
                     reject()
                 }
             })

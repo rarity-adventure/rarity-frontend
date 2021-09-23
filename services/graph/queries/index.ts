@@ -8,7 +8,7 @@ export const getSummoners = gql`
     }
 `
 
-export const global_data = gql`
+export const getGlobalData = gql`
     query data {
         globals {
             summoners

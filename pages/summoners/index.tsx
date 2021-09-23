@@ -29,7 +29,7 @@ export default function Summoners(): JSX.Element {
     const { library, account } = useActiveWeb3React()
 
     const ids = useSummonerIDs()
-    console.log(ids)
+
     const s = useSummoners()
 
     const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
