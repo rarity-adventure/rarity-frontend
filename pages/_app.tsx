@@ -19,6 +19,7 @@ import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
 import SummonersUpdater from '../state/summoners/updater'
 import ItemsUpdater from '../state/items/updater'
+import AnalyticsUpdater from '../state/analytics/updater'
 import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
@@ -132,6 +133,7 @@ export default function MyApp({
                                         <ApplicationUpdater />
                                         <SummonersUpdater />
                                         <ItemsUpdater />
+                                        <AnalyticsUpdater />
                                     </>
                                     <Provider>
                                         <Layout>

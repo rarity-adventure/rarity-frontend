@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { useAnalytics } from '../../services/graph/hooks'
+import { useAnalytics } from '../../state/analytics/hooks'
 
 function AnalyticsLoader() {
     const { i18n } = useLingui()
@@ -87,11 +87,11 @@ function AnalyticsLoader() {
 function AnalyticsData(): JSX.Element {
     const { i18n } = useLingui()
 
-    const data = useAnalytics({ refreshInterval: 1000 })
+    const data = useAnalytics()
 
     const [view, setView] = useState('class')
 
-    if (data) {
+    if (data.globals[0]) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-10 mx-10">
                 <div>
