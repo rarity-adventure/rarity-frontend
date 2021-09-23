@@ -3,7 +3,7 @@ import React, { Fragment, useState } from 'react'
 import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import useSWR, {SWRConfig} from 'swr'
+import useSWR, { SWRConfig } from 'swr'
 import { graph } from '../../constants'
 import { getGlobalData } from '../../constants/queries'
 import { InferGetStaticPropsType } from 'next'
@@ -102,7 +102,7 @@ function AnalyticsData(): JSX.Element {
         { refreshInterval: 1000 }
     )
 
-    const [view, setView] = useState('level')
+    const [view, setView] = useState('class')
 
     if (data.globals[0]) {
         return (

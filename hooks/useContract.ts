@@ -3,7 +3,6 @@ import { Contract } from '@ethersproject/contracts'
 import { getContract } from '../functions/getContract'
 import useActiveWeb3React from './useActiveWeb3React'
 import {
-    MULTICALL2_ADDRESS,
     RARITY_ADDRESS,
     RARITY_ATTRIBUTES_ADDRESS,
     RARITY_CELLAR_ADDRESS,
@@ -16,7 +15,6 @@ import {
     RARITY_PACK_ADDRESS,
     RARITY_SKILLS_ADDRESS,
 } from '../constants'
-import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 import RARITY_ABI from '../constants/abis/rarity.json'
 import RARITY_LIB_ABI from '../constants/abis/rarity_library.json'
 import RARITY_GOLD_ABI from '../constants/abis/gold.json'
@@ -41,11 +39,6 @@ export function useContract(address: string | undefined, ABI: any, withSignerIfP
             return null
         }
     }, [address, ABI, library, withSignerIfPossible, account])
-}
-
-export function useMulticall2Contract() {
-    const { chainId } = useActiveWeb3React()
-    return useContract(chainId && MULTICALL2_ADDRESS, MULTICALL2_ABI, false)
 }
 
 export function useRarityContract(): Contract | null {

@@ -26,7 +26,7 @@ function Web3StatusInner() {
                 className="flex items-center px-3 py-2 border-white border-2 rounded-lg text-sm rounded-lg text-secondary"
                 onClick={toggleWalletModal}
             >
-                <div className="mr-2 ">
+                <div className="mr-2">
                     <h2>{shortenAddress(account)}</h2>
                 </div>
             </div>

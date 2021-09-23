@@ -17,7 +17,6 @@ import dynamic from 'next/dynamic'
 import getLibrary from '../functions/getLibrary'
 import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
-import MulticallUpdater from '../state/multicall/updater'
 import SummonersUpdater from '../state/summoners/updater'
 import ItemsUpdater from '../state/items/updater'
 import Head from 'next/head'
@@ -131,7 +130,6 @@ export default function MyApp({
                                 <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
                                     <>
                                         <ApplicationUpdater />
-                                        <MulticallUpdater />
                                         <SummonersUpdater />
                                         <ItemsUpdater />
                                     </>
