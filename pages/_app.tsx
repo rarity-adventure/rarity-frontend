@@ -122,7 +122,6 @@ export default function MyApp({
                 <meta key="og:url" property="og:url" content="https://rarity.game" />
                 <meta key="og:image" property="og:image" content="https://rarity.game/apple-icon-180.png" />
                 <meta key="og:description" property="og:description" content="Free to mint D&D blockchain based game" />
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
             </Head>
             <I18nProvider i18n={i18n} forceRenderOnLocaleChange={false}>
                 <Web3ReactProvider getLibrary={getLibrary}>

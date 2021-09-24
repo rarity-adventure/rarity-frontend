@@ -1,8 +1,7 @@
 import { useLingui } from '@lingui/react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { t } from '@lingui/macro'
 import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
-import MaterialTable from 'material-table'
 
 export default function Market(): JSX.Element {
     const { i18n } = useLingui()
@@ -48,7 +47,8 @@ export default function Market(): JSX.Element {
                     </div>
                 </div>
                 <div className="p-10">
-                    <MaterialTable title={''} columns={[{ title: 'ID', field: 'summoner' }]} data={summoners} />
+                    <div className="bg-market-table-top w-full h-20 border-l-2 border-r-2 border-t-2 border-white rounded-t-3xl"></div>
+                    <div className="bg-item-background w-full h-screen border-l-2 border-r-2 border-b-2 border-white rounded-b-3xl"></div>
                 </div>
             </div>
         </div>
