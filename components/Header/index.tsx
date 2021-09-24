@@ -8,6 +8,8 @@ import { useLingui } from '@lingui/react'
 import Link from 'next/link'
 import DonateModal from '../Modal/modals/Donate'
 import Image from 'next/image'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons'
 
 function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     const { i18n } = useLingui()
@@ -83,6 +85,17 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     function close() {
         setModal(false)
     }
+
+    function socials() {
+        return (
+            <div className="text-white text-3xl gap-x-3 flex flex-row mr-10">
+                <Link href="https://discord.com/invite/NUrfGsUkmd"><FontAwesomeIcon icon={faDiscord} /></Link>
+                <Link href="https://twitter.com/RarityGame" passHref><FontAwesomeIcon icon={faTwitter} /></Link>
+            </div>
+
+        )
+    }
+
     return (
         <header className="flex-shrink-0 w-full z-30">
             <DonateModal open={modal} closeFunction={close} />
@@ -123,6 +136,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                 <div className="fixed bottom-0 right-0 z-40 flex flex-row items-center justify-center w-full p-4 lg:w-auto bg-black lg:relative lg:p-0 lg:bg-transparent">
                                     <div className="flex items-center justify-between w-full space-x-2 sm:justify-end z-20">
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
+                                            {socials()}
                                             <div className="hidden md:inline-block mx-2">
                                                 <LangSwitcher />
                                             </div>
