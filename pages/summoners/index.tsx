@@ -112,7 +112,7 @@ export default function Summoners(): JSX.Element {
                 return parseInt(id.toString())
             })
         )
-    }, [filter_needed_summoners, sellable, s])
+    }, [filter_needed_summoners, s])
 
     const [modal, setModal] = useState(0)
 
@@ -128,7 +128,7 @@ export default function Summoners(): JSX.Element {
         setGold(s.filter((s) => s.gold.claimable > 0))
         setDungeon(s.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0))
         fetch_sellable()
-    }, [s, modal, account])
+    }, [s, modal, account, fetch_sellable])
 
     const [time, setCurrentTime] = useState(Date.now())
 

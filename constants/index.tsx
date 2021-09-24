@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
+import { MaterialImage } from '../components/Coins/material'
+import { GoldImage } from '../components/Coins/gold'
 
 export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
 
@@ -48,12 +50,12 @@ export interface CoinData {
 export const GAME_COINS: { [k: string]: CoinData } = {
     gold: {
         name: 'GOLD',
-        image: <Image src="/img/coins/gold.png" width={50} height={40} />,
+        image: <GoldImage />,
         unit: 'ether',
     },
     materials: {
         name: 'MATERIALS',
-        image: <Image src="/img/coins/material.png" width={40} height={40} />,
+        image: <MaterialImage />,
         unit: 'wei',
     },
 }

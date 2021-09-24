@@ -67,7 +67,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     function supporterBadge(): JSX.Element {
         return (
             <div>
-                <Image src="/img/badge.png" width="80" height="80" />
+                <Image src="/img/badge.png" width="80" height="80" alt="Rarity Game Supporter Badge" />
             </div>
         )
     }

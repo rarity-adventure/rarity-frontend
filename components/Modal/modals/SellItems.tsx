@@ -29,7 +29,7 @@ export default function SellItemsModal({ open, closeFunction, items }: SellItems
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_PACK_ADDRESS)
         setApproved(approved)
-    }, [isApprovedForAll])
+    }, [isApprovedForAll, account])
 
     useEffect(() => {
         if (!account) return

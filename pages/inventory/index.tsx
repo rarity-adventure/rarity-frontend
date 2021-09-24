@@ -11,6 +11,8 @@ import BulkTransfer from '../../components/Transfer'
 import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import SellItemsModal from '../../components/Modal/modals/SellItems'
+import { GoldImage } from '../../components/Coins/gold'
+import { MaterialImage } from '../../components/Coins/material'
 
 export default function Inventory(): JSX.Element {
     const { i18n } = useLingui()
@@ -52,7 +54,7 @@ export default function Inventory(): JSX.Element {
             .sort()
             .reverse()
         fetch_sellable(check)
-    }, [items])
+    }, [items, fetch_sellable])
 
     const [modal, setModal] = useState(false)
 
@@ -88,7 +90,6 @@ export default function Inventory(): JSX.Element {
                                                         .reduce((a, b) => a + b)}
                                                 </p>
                                             </div>
-                                            <Image src="/img/coins/material.png" width={40} height={40} />
                                         </div>
                                         <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 w-2/3 text-center">
@@ -100,7 +101,7 @@ export default function Inventory(): JSX.Element {
                                                         .reduce((a, b) => a + b)}
                                                 </p>
                                             </div>
-                                            <Image src="/img/coins/gold.png" width={50} height={40} />
+                                            <GoldImage />
                                         </div>
                                     </div>
                                 )}
@@ -120,7 +121,7 @@ export default function Inventory(): JSX.Element {
                                                     .reduce((a, b) => a + b)}
                                             </p>
                                         </div>
-                                        <Image src="/img/coins/material.png" width={40} height={40} />
+                                        <MaterialImage />
                                     </div>
                                     <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                         <div className="py-1 w-2/3 text-center">
@@ -132,7 +133,7 @@ export default function Inventory(): JSX.Element {
                                                     .reduce((a, b) => a + b)}
                                             </p>
                                         </div>
-                                        <Image src="/img/coins/gold.png" width={50} height={40} />
+                                        <GoldImage />
                                     </div>
                                 </div>
                             )}

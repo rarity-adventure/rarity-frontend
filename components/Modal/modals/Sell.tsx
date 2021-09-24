@@ -30,7 +30,7 @@ export default function SellModal({ open, closeFunction, summoner }: BurnModalPr
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_PACK_ADDRESS)
         setApproved(approved)
-    }, [isApprovedForAll])
+    }, [isApprovedForAll, account])
 
     useEffect(() => {
         if (!account) return

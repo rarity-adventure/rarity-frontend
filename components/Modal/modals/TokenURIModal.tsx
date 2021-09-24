@@ -27,7 +27,7 @@ export default function TokenURIModal({ open, closeFunction, id }: TokenURIModal
             const json = JSON.parse(atob(encoded[1]))
             setUri(json.image)
         }
-    }, [tokenURI, setUri])
+    }, [tokenURI, setUri, id])
 
     useEffect(() => {
         fetch_uri()
@@ -38,7 +38,13 @@ export default function TokenURIModal({ open, closeFunction, id }: TokenURIModal
             <div className="bg-card-bottom rounded-lg text-white border-2 border-white w-full text-center pb-4 border-white border-2 ">
                 <ModalHeader title={i18n._(t`ID`) + ':' + id} onClose={closeFunction} />
                 {uri ? (
-                    <Image className={'mx-auto rounded-lg break-normal'} src={uri} height={300} width={300} />
+                    <Image
+                        className={'mx-auto rounded-lg break-normal'}
+                        src={uri}
+                        height={300}
+                        width={300}
+                        alt={'tokenURI'}
+                    />
                 ) : (
                     <Loader size={'50'} />
                 )}

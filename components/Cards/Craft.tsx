@@ -15,6 +15,7 @@ import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'
 import { utils, BigNumber } from 'ethers'
+import { MaterialImage } from '../Coins/material'
 
 enum View {
     GOODS,
@@ -328,12 +329,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             <div className="py-1 text-center w-2/3">
                                                 <p>{summoner.materials.balance}</p>
                                             </div>
-                                            <Image
-                                                src="/img/coins/material.png"
-                                                width={30}
-                                                height={30}
-                                                alt="material"
-                                            />
+                                            <MaterialImage />
                                         </div>
                                     </div>
                                     <div className="uppercase mt-2">

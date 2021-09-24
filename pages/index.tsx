@@ -45,7 +45,7 @@ export default function Home(): JSX.Element {
             </div>
             <div id="mint" />
             <div className="w-full mt-48 rounded-b-3xl text-center">
-                <Link href={'/pack'}>
+                <Link href={'/pack'} passHref>
                     <div className="cursor-pointer">
                         <p className="pt-2">{i18n._(t`Get your Rarity Starter Pack!`)}</p>
                         <Image

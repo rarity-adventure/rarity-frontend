@@ -1,6 +1,6 @@
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import Modal from '../index'
 import { Item } from '../../../constants/codex/items'
@@ -23,24 +23,27 @@ export default function CraftResultModal({
 }: CraftModalProps): JSX.Element {
     const { i18n } = useLingui()
 
-    const phrases = [
-        'Adding goblin hair... ',
-        'Looking for a griffin liver...',
-        'Removing the goblin hair...',
-        'Applying squid polish...',
-        'Performing olfactory analysis...',
-        'Adding Owlbear claws...',
-        'Almost done...',
-        "Oops, that doesn't go there...",
-        'Improving durability...',
-        'Feeding unicorns...',
-    ]
+    const phrases = useMemo(
+        () => [
+            'Adding goblin hair... ',
+            'Looking for a griffin liver...',
+            'Removing the goblin hair...',
+            'Applying squid polish...',
+            'Performing olfactory analysis...',
+            'Adding Owlbear claws...',
+            'Almost done...',
+            "Oops, that doesn't go there...",
+            'Improving durability...',
+            'Feeding unicorns...',
+        ],
+        []
+    )
 
     const [phrase, setPhrase] = useState<string>()
 
-    function rand() {
+    const rand = useCallback(() => {
         return Math.floor(Math.random() * phrases.length - 1)
-    }
+    }, [phrases.length])
 
     useEffect(() => {
         setPhrase(phrases[rand()])
@@ -49,7 +52,7 @@ export default function CraftResultModal({
         }, 10000)
 
         return () => clearInterval(timer)
-    }, [setPhrase])
+    }, [setPhrase, phrases, rand])
 
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>

@@ -117,7 +117,7 @@ export default function TransferBulkModal({ open, closeFunction, summoners }: Tr
                 summoners.filter((s) => s[coin.name.toLowerCase()].balance !== 0 && s.id !== receiver.id)
             )
         }
-    }, [coin, receiver])
+    }, [coin, receiver, summoners])
 
     return (
         <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
