@@ -13,8 +13,9 @@ import {
 } from '../../constants/codex/items'
 import TokenURIModal from '../Modal/modals/TokenURIModal'
 import TransferItemModal from '../Modal/modals/TransferItem'
+import SellItemsModal from '../Modal/modals/SellItems'
 
-function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
+function ItemCard({ userItem, sellable }: { userItem: ItemData; sellable: boolean }): JSX.Element {
     const { i18n } = useLingui()
 
     const [item, setItem] = useState<Item>()
@@ -35,8 +36,15 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
         setTransferModal(false)
     }
 
+    const [sellModal, setSellModal] = useState(false)
+
+    function closeSell() {
+        setSellModal(false)
+    }
+
     return (
         <div className="mx-auto w-64 md:w-64 lg:w-48 xl:w-64">
+            <SellItemsModal open={sellModal} closeFunction={closeSell} items={[userItem.token_id]} />
             <TokenURIModal open={uriModal} closeFunction={close} id={userItem.token_id} />
             <TransferItemModal open={transferModal} closeFunction={closeTransfer} item={userItem} />
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
@@ -108,6 +116,14 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
                     >
                         {i18n._(t`transfer`)}
                     </button>
+                    {sellable && (
+                        <button
+                            className="uppercase mt-1 bg-red p-2 border-2 border-white rounded-lg"
+                            onClick={() => setSellModal(true)}
+                        >
+                            {i18n._(t`sell for 2.5 FTM`)}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

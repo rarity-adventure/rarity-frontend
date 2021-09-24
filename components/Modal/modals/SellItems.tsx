@@ -63,8 +63,13 @@ export default function SellItemsModal({ open, closeFunction, items }: SellItems
                     <>
                         <div className="text-center text-white p-4 pb-8 gap-5">
                             <h2>
-                                {i18n._(t`You have`)} {' ' + items.length + ' '} {i18n._(t`for sale`)}{' '}
+                                {i18n._(t`You have`)} {' ' + items.length + ' '} {i18n._(t`items for sale`)}{' '}
                             </h2>
+                            <div className="mx-auto my-5 h-20 overflow-scroll w-28 p-1 rounded-lg bg-item-background">
+                                {items.map((i) => {
+                                    return <p>{i}</p>
+                                })}
+                            </div>
                             <h2>
                                 <b>{i18n._(t`This action is IRREVERSIBLE.`)}</b>
                             </h2>

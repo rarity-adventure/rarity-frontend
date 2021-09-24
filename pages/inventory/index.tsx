@@ -50,6 +50,7 @@ export default function Inventory(): JSX.Element {
             .map((i) => i.token_id)
             .filter((i) => i > 1000)
             .sort()
+            .reverse()
         fetch_sellable(check)
     }, [items])
 
@@ -105,12 +106,6 @@ export default function Inventory(): JSX.Element {
                                 )}
                             </div>
                         </div>
-                        { sellable.length > 0 && (<div className="flex flex-row items-center justify-center">
-                            <button onClick={() => setModal(true)}>
-                                {'>>'} You have {sellable.length} items available for sale {'<<'}
-                            </button>
-                        </div>)}
-
 
                         <div className="flex flex-row mt-4 justify-center sm:hidden">
                             {summoners.length > 0 && (
@@ -145,10 +140,30 @@ export default function Inventory(): JSX.Element {
                         <div className="md:p-14">
                             <div className="grid grid-cols-1 rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
                                 {items.map((i) => {
-                                    return <ItemCard key={i.token_id} userItem={i} />
+                                    return (
+                                        <ItemCard
+                                            key={i.token_id}
+                                            userItem={i}
+                                            sellable={sellable.indexOf(i.token_id) !== -1}
+                                        />
+                                    )
                                 })}
                             </div>
                         </div>
+
+                        {/*
+                        { sellable.length > 0 && (
+*/}
+
+                        <div className="flex flex-row items-center justify-center mb-10">
+                            <button onClick={() => setModal(true)}>
+                                {'>>'} {i18n._(t`You have`)} {sellable.length} {i18n._(t`items available for sale `)}{' '}
+                                {'<<'}
+                            </button>
+                        </div>
+                        {/*
+                )}
+*/}
                     </>
                 ) : (
                     <div className="flex my-10 justify-center">
