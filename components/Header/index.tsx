@@ -89,10 +89,13 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     function socials() {
         return (
             <div className="text-white text-3xl gap-x-3 flex flex-row mr-10">
-                <Link href="https://discord.com/invite/NUrfGsUkmd" passHref><FontAwesomeIcon icon={faDiscord} /></Link>
-                <Link href="https://twitter.com/RarityGame" passHref><FontAwesomeIcon icon={faTwitter} /></Link>
+                <Link href="https://discord.com/invite/NUrfGsUkmd" passHref>
+                    <FontAwesomeIcon icon={faDiscord} />
+                </Link>
+                <Link href="https://twitter.com/RarityGame" passHref>
+                    <FontAwesomeIcon icon={faTwitter} />
+                </Link>
             </div>
-
         )
     }
 

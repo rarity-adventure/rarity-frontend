@@ -1,7 +1,5 @@
 import Image from 'next/image'
 
-const img_path = (name: string) => '/img/classes/' + name + '.png'
-
 export const CLASSES_NAMES: { [k: string]: string } = {
     '1': 'barbarian',
     '2': 'bard',
@@ -15,18 +13,33 @@ export const CLASSES_NAMES: { [k: string]: string } = {
     '10': 'sorcerer',
     '11': 'wizard',
 }
+
 export const CLASSES_IMAGES: { [k: string]: JSX.Element } = {
-    '1': <Image src="/img/classes/barbarian.png" width={85} height={175} alt={'barbarian'} />,
-    '2': <Image src="/img/classes/bard.png" width={80} height={175} alt={'bard'} />,
-    '3': <Image src="/img/classes/cleric.png" width={115} height={175} alt={'cleric'} />,
-    '4': <Image src="/img/classes/druid.png" width={70} height={175} alt={'druid'} />,
-    '5': <Image src="/img/classes/fighter.png" width={65} height={175} alt={'fighter'} />,
-    '6': <Image src="/img/classes/monk.png" width={85} height={175} alt={'monk'} />,
-    '7': <Image src="/img/classes/paladin.png" width={75} height={175} alt={'paladin'} />,
-    '8': <Image src="/img/classes/ranger.png" width={87} height={175} alt={'ranger'} />,
-    '9': <Image src="/img/classes/rogue.png" width={90} height={175} alt={'rogue'} />,
-    '10': <Image src="/img/classes/sorcerer.png" width={100} height={175} alt={'sorcerer'} />,
-    '11': <Image src="/img/classes/wizard.png" width={75} height={175} alt={'wizard'} />,
+    '1': <Image src="/img/classes/full/barbarian.png" width={85} height={175} alt={'barbarian'} />,
+    '2': <Image src="/img/classes/full/bard.png" width={80} height={175} alt={'bard'} />,
+    '3': <Image src="/img/classes/full/cleric.png" width={115} height={175} alt={'cleric'} />,
+    '4': <Image src="/img/classes/full/druid.png" width={70} height={175} alt={'druid'} />,
+    '5': <Image src="/img/classes/full/fighter.png" width={65} height={175} alt={'fighter'} />,
+    '6': <Image src="/img/classes/full/monk.png" width={85} height={175} alt={'monk'} />,
+    '7': <Image src="/img/classes/full/paladin.png" width={75} height={175} alt={'paladin'} />,
+    '8': <Image src="/img/classes/full/ranger.png" width={87} height={175} alt={'ranger'} />,
+    '9': <Image src="/img/classes/full/rogue.png" width={90} height={175} alt={'rogue'} />,
+    '10': <Image src="/img/classes/full/sorcerer.png" width={100} height={175} alt={'sorcerer'} />,
+    '11': <Image src="/img/classes/full/wizard.png" width={75} height={175} alt={'wizard'} />,
+}
+
+export const CLASSES_HEADS: { [k: string]: JSX.Element } = {
+    '1': <Image src="/img/classes/head/barbarian.png" width={85} height={175} alt={'barbarian'} />,
+    '2': <Image src="/img/classes/head/bard.png" width={80} height={175} alt={'bard'} />,
+    '3': <Image src="/img/classes/head/cleric.png" width={115} height={175} alt={'cleric'} />,
+    '4': <Image src="/img/classes/head/druid.png" width={70} height={175} alt={'druid'} />,
+    '5': <Image src="/img/classes/head/fighter.png" width={65} height={175} alt={'fighter'} />,
+    '6': <Image src="/img/classes/head/monk.png" width={85} height={175} alt={'monk'} />,
+    '7': <Image src="/img/classes/head/paladin.png" width={75} height={175} alt={'paladin'} />,
+    '8': <Image src="/img/classes/head/ranger.png" width={87} height={175} alt={'ranger'} />,
+    '9': <Image src="/img/classes/head/rogue.png" width={90} height={175} alt={'rogue'} />,
+    '10': <Image src="/img/classes/head/sorcerer.png" width={100} height={175} alt={'sorcerer'} />,
+    '11': <Image src="/img/classes/head/wizard.png" width={75} height={175} alt={'wizard'} />,
 }
 
 export const CLASS_SKILLS: { [k: string]: boolean[] } = {

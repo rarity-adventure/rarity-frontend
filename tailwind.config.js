@@ -20,6 +20,7 @@ module.exports = {
             'card-content': '#2F3C4F',
             'card-button': '#334756',
             'card-bottom': '#3C415C',
+            'market-button': '#1DFFE4',
         },
     },
     variants: {
