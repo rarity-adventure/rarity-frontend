@@ -67,7 +67,7 @@ export default function SellItemsModal({ open, closeFunction, items }: SellItems
                             </h2>
                             <div className="mx-auto my-5 h-20 overflow-scroll w-28 p-1 rounded-lg bg-item-background">
                                 {items.map((i) => {
-                                    return <p>{i}</p>
+                                    return <p key={i}>{i}</p>
                                 })}
                             </div>
                             <h2>
