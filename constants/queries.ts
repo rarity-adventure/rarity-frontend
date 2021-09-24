@@ -26,16 +26,8 @@ export const getGlobalData = gql`
 `
 
 export const getMarketSummoners = gql`
-    query getMarketSummoners {
-        summoners(where: { price_exact: { _gt: "0" } }) {
-            summoner
-        }
-    }
-`
-
-export const getMarketSummonersFullData = gql`
-    query getMarketSummoners {
-        summoners(where: { price_exact: { _gt: "0" } }) {
+    query getMarketSummoners($limit: Int! = 10, $offset: Int!) {
+        summoners(limit: $limit, offset: $offset, where: { price_exact: { _gt: "0" } }) {
             summoner
             class
             xp

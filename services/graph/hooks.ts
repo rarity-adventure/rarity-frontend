@@ -12,7 +12,7 @@ export function useGraphSummonerIDs(account: string, swrConfig: SWRConfiguration
     return data
 }
 
-export function useListedSummoners(swrConfig: SWRConfiguration = undefined) {
+export function useListedSummoners(variables, swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('listed', () => getListedSummoners(), swrConfig)
     return data
 }
