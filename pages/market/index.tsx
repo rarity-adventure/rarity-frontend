@@ -3,11 +3,20 @@ import React, { useState } from 'react'
 import { t } from '@lingui/macro'
 import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
 import { CLASSES_HEADS, CLASSES_NAMES } from '../../constants/classes'
+import MarketFeatsModal from '../../components/Modal/modals/MarketFeats'
+import MarketSkillsModal from '../../components/Modal/modals/MarketSkills'
 
-function SummonerRow({ summoner }): JSX.Element {
+function SummonerRow({
+    summoner,
+    skillsModalFunc,
+    featsModalFunc,
+}: {
+    summoner
+    skillsModalFunc: (summoner: number) => void
+    featsModalFunc: (summoner: number) => void
+}): JSX.Element {
     const { i18n } = useLingui()
 
-    console.log(summoner)
     return (
         <div style={{ width: '1478px' }} className="flex justify-left flex-nowrap items-center p-5">
             <div style={{ width: '125px' }} className="text-center">
@@ -60,12 +69,18 @@ function SummonerRow({ summoner }): JSX.Element {
                 <span>{summoner.cellar}</span>
             </div>
             <div style={{ width: '150px' }} className="text-center">
-                <button className="uppercase border-2 border-white px-1 py-1.5 rounded-lg text-xs bg-card-top">
+                <button
+                    onClick={() => skillsModalFunc(summoner)}
+                    className="uppercase border-2 border-white px-1 py-1.5 rounded-lg text-xs bg-card-top"
+                >
                     {i18n._(t`view more`)}
                 </button>
             </div>
             <div style={{ width: '150px' }} className="text-center">
-                <button className="uppercase border-2 border-white px-1 py-1.5 rounded-lg text-xs bg-card-top">
+                <button
+                    onClick={() => featsModalFunc(summoner)}
+                    className="uppercase border-2 border-white px-1 py-1.5 rounded-lg text-xs bg-card-top"
+                >
                     {i18n._(t`view more`)}
                 </button>
             </div>
@@ -83,9 +98,35 @@ export default function Market(): JSX.Element {
 
     const listed = useListedCount({ refreshInterval: 5_000 })
 
-    const [offset, setOffset] = useState(0)
+    const [limit, setLimit] = useState(50)
 
-    const s = useListedSummoners({ offset }, { refreshInterval: 5_000 })
+    const s = useListedSummoners( { refreshInterval: 5_000 })
+
+    const [skillsModal, setSkillsModal] = useState({ open: false, summoner: 0 })
+    const [featsModal, setFeatsModal] = useState({ open: false, summoner: 0 })
+
+    function openSkillsModal(summoner: number) {
+        setSkillsModal({ open: true, summoner })
+    }
+
+    function openFeatsModal(summoner: number) {
+        setFeatsModal({ open: true, summoner })
+    }
+
+    function closeSkills() {
+        setSkillsModal({ open: false, summoner: 0 })
+    }
+
+    function closeFeats() {
+        setFeatsModal({ open: false, summoner: 0 })
+    }
+
+    const handleScroll = (e) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        if (bottom) {
+            setLimit(limit+50)
+        }
+    }
 
     function buttons(): JSX.Element {
         return (
@@ -124,7 +165,17 @@ export default function Market(): JSX.Element {
                         </span>
                     </div>
                 </div>
-                <div className="m-10 bg-item-background border-2 rounded-3xl overflow-scroll">
+                <div className="m-10 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen" onScroll={handleScroll}>
+                    <MarketFeatsModal
+                        open={featsModal.open}
+                        closeFunction={closeFeats}
+                        summoner={featsModal.summoner}
+                    />
+                    <MarketSkillsModal
+                        open={skillsModal.open}
+                        closeFunction={closeSkills}
+                        summoner={skillsModal.summoner}
+                    />
                     <div>
                         <div
                             style={{ width: '1478px' }}
@@ -169,7 +220,14 @@ export default function Market(): JSX.Element {
                         </div>
                         {s &&
                             s.map((s) => {
-                                return <SummonerRow summoner={s} key={s.id} />
+                                return (
+                                    <SummonerRow
+                                        summoner={s}
+                                        key={s.id}
+                                        featsModalFunc={openFeatsModal}
+                                        skillsModalFunc={openSkillsModal}
+                                    />
+                                )
                             })}
                     </div>
                 </div>

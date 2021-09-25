@@ -20,7 +20,5 @@ export default createReducer(initialState, (builder) =>
         .addCase(setLoading, (state, action) => {
             state.loading = action.payload
         })
-        .addCase(syncSummoners, (state, action) => {
-            console.log('syncSummoners')
-        })
+        .addCase(syncSummoners, (state, action) => {})
 )

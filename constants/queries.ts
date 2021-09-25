@@ -26,7 +26,7 @@ export const getGlobalData = gql`
 `
 
 export const getMarketSummoners = gql`
-    query getMarketSummoners($limit: Int! = 10, $offset: Int!) {
+    query getMarketSummoners($limit: Int!, $offset: Int! = 0) {
         summoners(limit: $limit, offset: $offset, where: { price_exact: { _gt: "0" } }) {
             summoner
             class
@@ -56,8 +56,8 @@ export const getMarketSummoners = gql`
 `
 
 export const getMarketSummonerSkills = gql`
-    query getMarketSummoners($id: String!) {
-        summoners(id: $id) {
+    query getMarketSummoners($summoner: Int!) {
+        summoners(where: { summoner: $summoner }) {
             skill0
             skill1
             skill2
@@ -99,8 +99,8 @@ export const getMarketSummonerSkills = gql`
 `
 
 export const getMarketSummonerFeats = gql`
-    query getMarketSummoners($id: String!) {
-        summoners(id: $id) {
+    query getMarketSummoners($summoner: Int!) {
+        summoners(where: { summoner: $summoner }) {
             feat1
             feat2
             feat3
