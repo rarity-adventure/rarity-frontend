@@ -109,7 +109,7 @@ export default function Market(): JSX.Element {
     const [skillsModal, setSkillsModal] = useState({ open: false, summoner: 0 })
     const [featsModal, setFeatsModal] = useState({ open: false, summoner: 0 })
 
-    const count = useListedCount()
+    const count = useListedCount({refreshInterval: 5_000})
     const s = useListedSummoners({ offset })
 
     const [summoners, setSummoners] = useState([])
@@ -198,7 +198,7 @@ export default function Market(): JSX.Element {
                     <div>
                         <div
                             style={{ width: '1478px' }}
-                            className="bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                            className="sticky top-0 z-30 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
                         >
                             <div style={{ width: '125px' }} className="text-center">
                                 <h2>{i18n._(t`ID No.`)}</h2>
@@ -228,7 +228,7 @@ export default function Market(): JSX.Element {
                                 <h2>{i18n._(t`SKILLS`)}</h2>
                             </div>
                             <div style={{ width: '150px' }} className="text-center">
-                                <h2>{i18n._(t`FEAT`)}</h2>
+                                <h2>{i18n._(t`FEATS`)}</h2>
                             </div>
                             <div style={{ width: '150px' }} className="text-center">
                                 <h2>{i18n._(t`ACTION`)}</h2>
