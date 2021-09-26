@@ -14,6 +14,20 @@ export const CLASSES_NAMES: { [k: string]: string } = {
     '11': 'wizard',
 }
 
+export const CLASSES_IDS: { [k: string]: number } = {
+    'barbarian': 1,
+    'bard': 2,
+    'cleric': 3,
+    'druid': 4,
+    'fighter': 5,
+    'monk': 6,
+    'paladin': 7,
+    'ranger': 8,
+    'rogue': 9,
+    'sorcerer': 10,
+    'wizard': 11,
+}
+
 export const CLASSES_IMAGES: { [k: string]: JSX.Element } = {
     '1': <Image src="/img/classes/full/barbarian.png" width={85} height={175} alt={'barbarian'} />,
     '2': <Image src="/img/classes/full/bard.png" width={80} height={175} alt={'bard'} />,

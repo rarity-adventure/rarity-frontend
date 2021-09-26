@@ -1,10 +1,18 @@
 import { useLingui } from '@lingui/react'
 import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
-import { CLASSES_HEADS, CLASSES_NAMES } from '../../constants/classes'
+import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/classes'
 import MarketFeatsModal from '../../components/Modal/modals/MarketFeats'
 import MarketSkillsModal from '../../components/Modal/modals/MarketSkills'
+// import ReactTags from '../../components/Tags/ReactTag'
+import { WithContext as ReactTags } from 'react-tag-input';
 import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
+import {
+    TAG_SUGGESTIONS,
+    TAG_VALUE_COMPARISONS,
+    TAGS_WITH_VALUE,
+    TAGS_CLASSES, tag_to_variable
+} from '../../constants/tags/tag_parsing'
 
 function SummonerRow({
     summoner,
@@ -114,6 +122,23 @@ export default function Market(): JSX.Element {
 
     const [summoners, setSummoners] = useState([])
 
+    const LOWER_TAGS_WITH_VALUE = TAGS_WITH_VALUE.map((s) => s.toLowerCase())
+    const LOWER_TAGS_CLASSES = TAGS_CLASSES.map((s) => s.toLowerCase())
+
+    const suggestions = TAG_SUGGESTIONS.map((suggestion) => {
+        return {
+            id: suggestion,
+            text: suggestion,
+        };
+    });
+
+    const KeyCodes = {
+        comma: 188,
+        enter: [10, 13],
+    };
+
+    const delimiters = [...KeyCodes.enter, KeyCodes.comma];
+
     useEffect(() => {
         if (!s || !summoners) return
         setSummoners(summoners.concat(s))
@@ -141,6 +166,95 @@ export default function Market(): JSX.Element {
             setOffset(offset + 20)
         }
     }
+
+    const [tags, setTags] = React.useState([]);
+
+    const [query, setQuery] = React.useState({
+            'where': [],
+            'order_by': [],
+    });
+
+    const parseTags = (tags) => {
+        console.log("parse tags")
+        const validTags = []
+        const newTags = []
+        const classes = []
+        let query = {
+                'classes': '',
+                'where': [],
+                'order_by': [],
+        }
+        for (const tag of tags) {
+            let text = tag["text"].toLowerCase()
+
+            // Only works for single word properties and must use spaces. This can be improved.
+            const words = text.split(' ')
+
+            if (LOWER_TAGS_CLASSES.includes(text) && !validTags.includes(text)) {
+                validTags.push(text)
+                newTags.push(tag)
+                classes.push(CLASSES_IDS[text])
+                if (classes.length === 1) {
+                    query["order_by"].push("class")
+                }
+            } else if (LOWER_TAGS_WITH_VALUE.includes(words[0]) && !validTags.includes(words[0])) {
+                validTags.push(words[0])
+                newTags.push(tag)
+                let varName = tag_to_variable(words[0])
+                if (words.length === 3 && TAG_VALUE_COMPARISONS.includes(words[1])) {
+                    if (words[1] === ">") {
+                        query["where"].push(`${varName}: {_gt: "${words[2]}"}`)
+                    } else if(words[1] === "<") {
+                        query["where"].push(`${varName}: {_lt: "${words[2]}"}`)
+                    } else if (words[1] === ">=" || words[1] === "=>") {
+                        query["where"].push(`${varName}: {_gte: "${words[2]}"}`)
+                    } else if (words[1] === "<=" || words[1] === "=<") {
+                        query["where"].push(`${varName}: {_lte: "${words[2]}"}`)
+                    } else if (words[1] === "=" || words[1] === "==") {
+                        query["where"].push(`${varName}: "${words[2]}"`)
+                    }
+                }
+                query["order_by"].push(varName)
+            }
+        }
+        if (classes.length === 1) {
+            query["where"].push(`class: "${CLASSES_IDS[classes[0]]}"`)
+        } else {
+            const class_wrapped = classes.map((c) => {
+                return `{ class: "${c}" }`
+            })
+            let class_str = '{_or: ['
+            class_str += class_wrapped.join(", ")
+            class_str += ']}'
+
+            query["classes"] = class_str
+        }
+        console.log(query)
+        setTags(newTags)
+        setQuery(query)
+    }
+
+    const handleDelete = (i) => {
+        parseTags(tags.filter((tag, index) => index !== i));
+    };
+
+    const handleAddition = (tag) => {
+        parseTags([...tags, tag]);
+    };
+
+    const handleDrag = (tag, currPos, newPos) => {
+        const newTags = tags.slice();
+
+        newTags.splice(currPos, 1);
+        newTags.splice(newPos, 0, tag);
+
+        // re-render
+        parseTags(newTags);
+    };
+
+    const onClearAll = () => {
+        setTags([]);
+    };
 
     function buttons(): JSX.Element {
         return (
@@ -180,6 +294,37 @@ export default function Market(): JSX.Element {
                             </span>
                         </span>
                     </div>
+                </div>
+                <div className="flex flex-row items-center justify-between mt-2 text">
+                    <ReactTags
+                        tags={tags}
+                        suggestions={suggestions}
+                        delimiters={delimiters}
+                        handleDelete={handleDelete}
+                        handleAddition={handleAddition}
+                        handleDrag={handleDrag}
+                        inputFieldPosition="bottom"
+                        autocomplete
+                        clearAll
+                        onClearAll={onClearAll}
+                        classNames={{
+                            tags: 'relative',
+                            tagInput: 'inline-block h-16 border-solid m-0',
+                            tagInputField: 'p-2 text-background-end rounded-lg text-center',
+                            selected: 'inline-block',
+                            tag: 'border-solid bg-black inline-block mr-2 ml-2 p-3 rounded-2xl',
+                            remove: 'ml-3 cursor-pointer text-grey',
+                            suggestions: '',
+                            activeSuggestion: 'bg-red',
+                            clearAll: 'cursor-pointer p-2 m-3 bg-black border-none rounded'
+                        }}
+                    />
+                </div>
+                {/*<div>*/}
+                {/*    {JSON.stringify(tags)}*/}
+                {/*</div>*/}
+                <div>
+                    {JSON.stringify(query)}
                 </div>
                 <div
                     className="m-10 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen"
