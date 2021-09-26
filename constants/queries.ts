@@ -26,7 +26,7 @@ export const getGlobalData = gql`
 `
 
 export const getMarketSummoners = gql`
-    query getMarketSummoners($limit: Int!, $offset: Int! = 0) {
+    query getMarketSummoners($limit: Int! = 20, $offset: Int!) {
         summoners(limit: $limit, offset: $offset, where: { price_exact: { _gt: "0" } }) {
             summoner
             class

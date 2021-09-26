@@ -90,6 +90,7 @@ export default function Inventory(): JSX.Element {
                                                         .reduce((a, b) => a + b)}
                                                 </p>
                                             </div>
+                                            <MaterialImage />
                                         </div>
                                         <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 w-2/3 text-center">

@@ -27,8 +27,8 @@ export const getSummonersIDs = async (account: string) => {
     })
 }
 
-export const getListedSummoners = async () => {
-    const data = await market_graph(getMarketSummoners, {})
+export const getListedSummoners = async (variables) => {
+    const data = await market_graph(getMarketSummoners, variables)
     return data.summoners
 }
 

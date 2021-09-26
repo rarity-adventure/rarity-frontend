@@ -7,7 +7,6 @@ import {
     getStats,
     getSummonersIDs,
 } from './fetchers'
-import { getMarketSummoners } from '../../constants/queries'
 
 export function useGraphStats(swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('stats', () => getStats(), swrConfig)
@@ -19,8 +18,9 @@ export function useGraphSummonerIDs(account: string, swrConfig: SWRConfiguration
     return data
 }
 
-export function useListedSummoners(swrConfig: SWRConfiguration = undefined) {
-    const { data } = useSWR('listed', () => getListedSummoners(), swrConfig)
+export function useListedSummoners(variables, swrConfig: SWRConfiguration = undefined) {
+    console.log(variables)
+    const { data } = useSWR('listed_' + variables.offset, () => getListedSummoners(variables), swrConfig)
     return data
 }
 

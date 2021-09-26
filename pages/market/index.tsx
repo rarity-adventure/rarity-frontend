@@ -1,10 +1,10 @@
 import { useLingui } from '@lingui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
-import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
 import { CLASSES_HEADS, CLASSES_NAMES } from '../../constants/classes'
 import MarketFeatsModal from '../../components/Modal/modals/MarketFeats'
 import MarketSkillsModal from '../../components/Modal/modals/MarketSkills'
+import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
 
 function SummonerRow({
     summoner,
@@ -59,11 +59,19 @@ function SummonerRow({
                     </div>
                 </div>
             </div>
-            <div style={{ width: '130px' }} className="text-center">
-                <span>{summoner.gold_approx}</span>
-            </div>
-            <div style={{ width: '130px' }} className="text-center">
-                <span>{summoner.unclaimed_gold_approx}</span>
+            <div style={{ width: '300px' }} className="text-center">
+                <div className="py-1 px-2 bg-card-top rounded-3xl border-2 border-white mx-6">
+                    <div className="relative py-1 px-2">
+                        <div className="flex flex-row justify-between h-7 items-center">
+                            <h1 className="absolute left-1">CLAIMED: </h1>
+                            <h1 className="absolute right-1">{summoner.gold_approx}</h1>
+                        </div>
+                        <div className="flex flex-row justify-between h-7 py-1">
+                            <h1 className="absolute left-1">UNCLAIMED: </h1>
+                            <h1 className="absolute right-1">{summoner.unclaimed_gold_approx}</h1>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div style={{ width: '100px' }} className="text-center">
                 <span>{summoner.cellar}</span>
@@ -96,14 +104,20 @@ function SummonerRow({
 export default function Market(): JSX.Element {
     const { i18n } = useLingui()
 
-    const listed = useListedCount({ refreshInterval: 5_000 })
-
-    const [limit, setLimit] = useState(50)
-
-    const s = useListedSummoners( { refreshInterval: 5_000 })
+    const [offset, setOffset] = useState(0)
 
     const [skillsModal, setSkillsModal] = useState({ open: false, summoner: 0 })
     const [featsModal, setFeatsModal] = useState({ open: false, summoner: 0 })
+
+    const count = useListedCount()
+    const s = useListedSummoners({ offset })
+
+    const [summoners, setSummoners] = useState([])
+
+    useEffect(() => {
+        if (!s || !summoners) return
+        setSummoners(summoners.concat(s))
+    }, [s, offset])
 
     function openSkillsModal(summoner: number) {
         setSkillsModal({ open: true, summoner })
@@ -122,9 +136,9 @@ export default function Market(): JSX.Element {
     }
 
     const handleScroll = (e) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
         if (bottom) {
-            setLimit(limit+50)
+            setOffset(offset + 20)
         }
     }
 
@@ -161,11 +175,16 @@ export default function Market(): JSX.Element {
                     </div>
                     <div>
                         <span className="uppercase">
-                            {i18n._(t`listed summoners:`)} {listed}
+                            <span>
+                                {i18n._(t`listed summoners:`)} {count}
+                            </span>
                         </span>
                     </div>
                 </div>
-                <div className="m-10 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen" onScroll={handleScroll}>
+                <div
+                    className="m-10 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen"
+                    onScroll={handleScroll}
+                >
                     <MarketFeatsModal
                         open={featsModal.open}
                         closeFunction={closeFeats}
@@ -199,11 +218,8 @@ export default function Market(): JSX.Element {
                             <div style={{ width: '250px' }} className="text-center">
                                 <h2>{i18n._(t`ATTRIBUTES`)}</h2>
                             </div>
-                            <div style={{ width: '130px' }} className="text-center">
-                                <h2>{i18n._(t`CLAIMED GOLD`)}</h2>
-                            </div>
-                            <div style={{ width: '130px' }} className="text-center">
-                                <h2>{i18n._(t`UNCLAIMED GOLD`)}</h2>
+                            <div style={{ width: '300px' }} className="text-center">
+                                <h2>{i18n._(t`GOLD`)}</h2>
                             </div>
                             <div style={{ width: '100px' }} className="text-center">
                                 <h2>{i18n._(t`MATERIAL`)}</h2>
@@ -218,8 +234,8 @@ export default function Market(): JSX.Element {
                                 <h2>{i18n._(t`ACTION`)}</h2>
                             </div>
                         </div>
-                        {s &&
-                            s.map((s) => {
+                        {summoners &&
+                            summoners.map((s) => {
                                 return (
                                     <SummonerRow
                                         summoner={s}

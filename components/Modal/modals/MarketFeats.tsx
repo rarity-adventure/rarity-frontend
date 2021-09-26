@@ -1,8 +1,8 @@
 import HeadlessUIModal from '../HeadlessUIModal'
 import { t } from '@lingui/macro'
-import React, { useState } from 'react'
+import React from 'react'
 import { useLingui } from '@lingui/react'
-import { useListedSummonerFeats, useListedSummonerSkills } from '../../../services/graph/hooks'
+import { useListedSummonerFeats } from '../../../services/graph/hooks'
 
 interface MarketFeatsModalProps {
     open: boolean
