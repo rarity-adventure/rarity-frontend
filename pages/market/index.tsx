@@ -109,7 +109,7 @@ export default function Market(): JSX.Element {
     const [skillsModal, setSkillsModal] = useState({ open: false, summoner: 0 })
     const [featsModal, setFeatsModal] = useState({ open: false, summoner: 0 })
 
-    const count = useListedCount({refreshInterval: 5_000})
+    const count = useListedCount({ refreshInterval: 5_000 })
     const s = useListedSummoners({ offset })
 
     const [summoners, setSummoners] = useState([])
@@ -157,7 +157,7 @@ export default function Market(): JSX.Element {
 
     return (
         <div className="w-full z-25">
-            <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
+            <div className="md:m-10 z-10">
                 <div className="flex flex-row items-center justify-between">
                     <div>
                         <h1 className="text-2xl xl:text-3xl uppercase font-bold">
