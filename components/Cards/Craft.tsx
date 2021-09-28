@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { Item, ITEM_TYPE, ITEMS } from '../../constants/codex/items'
@@ -14,7 +14,6 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'
-import { utils, BigNumber } from 'ethers'
 import { MaterialImage } from '../Coins/material'
 
 enum View {
@@ -110,25 +109,6 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
             .then(() => setGlobalApproval(true))
     }
 
-    function calcSuccessRate(): string {
-        const check_base = summoner.skills.skills[5] + summoner.ability_scores.modifiers._int
-        const DC = getDC()
-        let p = (20 - DC + check_base + Math.floor(materialUse / 10)) / 20
-        p = Math.min(1, Math.max(p, 0))
-        return (p * 100).toFixed(0) + '%'
-    }
-
-    function getDC(): number {
-        switch (view) {
-            case View.ARMORS:
-                return 20 + item.armor_bonus
-            case View.WEAPONS:
-                return 15 + item.proficiency * 5
-            case View.GOODS:
-                return 20
-        }
-    }
-
     function getTypeFromView(): ITEM_TYPE {
         switch (view) {
             case View.ARMORS:
@@ -151,6 +131,24 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     const delay = (ms) => new Promise((res) => setTimeout(res, ms))
 
+    const DC = useMemo(() => {
+        switch (view) {
+            case View.ARMORS:
+                return 20 + item.armor_bonus
+            case View.WEAPONS:
+                return 15 + item.proficiency * 5
+            case View.GOODS:
+                return 20
+        }
+    }, [view, item])
+
+    const successRate = useMemo(() => {
+        const check_base = summoner.skills.skills[5] + summoner.ability_scores.modifiers._int
+        let p = (20 - DC + check_base + Math.floor(materialUse / 10)) / 20
+        p = Math.min(1, Math.max(p, 0))
+        return p * 100
+    }, [summoner, materialUse, DC])
+
     async function craftButton() {
         const currBalance = await balanceOf(account)
         toast
@@ -164,7 +162,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 setCraftLoading(true)
                 await delay(30000)
                 const newBalance = await balanceOf(account)
-                setCraftResult(newBalance > currBalance)
+                setCraftResult(successRate === 100 || newBalance > currBalance)
                 setCraftLoading(false)
             })
     }
@@ -456,7 +454,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                         </div>
                                         <p className="my-2">
                                             {' '}
-                                            {i18n._(t`Success chance`)}: {calcSuccessRate()}
+                                            {i18n._(t`Success chance`)}: {successRate.toFixed(0) + '%'}
                                         </p>
                                     </div>
 
