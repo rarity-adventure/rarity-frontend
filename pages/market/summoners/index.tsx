@@ -8,11 +8,12 @@ import { WithContext as ReactTags } from 'react-tag-input'
 import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../../constants/queries'
 import { useListedCount, useListedSummoners } from '../../../services/graph/hooks'
 import {
+    COMP_TO_POSTGRES,
     TAG_SUGGESTIONS,
     tag_to_variable,
     TAG_VALUE_COMPARISONS,
     TAGS_CLASSES,
-    TAGS_WITH_VALUE,
+    TAGS_WITH_VALUE
 } from '../../../constants/tags/tag_parsing'
 import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../../constants/classes'
 import { utils } from 'ethers'
@@ -28,7 +29,12 @@ function SummonerRow({
     const { i18n } = useLingui()
 
     const format_ether = (value) => {
-        return parseFloat(utils.formatEther(value)).toLocaleString()
+        const ftmValue =  parseFloat(utils.formatEther(value))
+        if (ftmValue > 100_000_000) {
+            return "Too much"
+        } else {
+            return ftmValue.toLocaleString()
+        }
     }
 
     const format_number = (value: number) => {
@@ -56,11 +62,7 @@ function SummonerRow({
         const skillVar = `feat${i}`
         if (summoner[skillVar]) {
             nFeats += 1
-            // skills.push({'name': SKILLS[i + 1].name, 'value': summoner[skillVar]})
         }
-    }
-    if (nFeats > 0) {
-        console.log("Feats:", nFeats)
     }
 
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
@@ -142,15 +144,21 @@ export default function SummonersMarket(): JSX.Element {
 
     const [summoners, setSummoners] = useState([])
 
-    const LOWER_TAGS_WITH_VALUE = TAGS_WITH_VALUE.map((s) => s.toLowerCase())
-    const LOWER_TAGS_CLASSES = TAGS_CLASSES.map((s) => s.toLowerCase())
 
-    const suggestions = TAG_SUGGESTIONS.map((suggestion) => {
+    const SKILL_NAMES = Object.keys(SKILLS).map((id) => {
+        return SKILLS[id].name.trim()
+    })
+
+    const suggestions = TAG_SUGGESTIONS.concat(SKILL_NAMES).map((suggestion) => {
         return {
             id: suggestion,
             text: suggestion,
         }
     })
+
+    const LOWER_TAGS_WITH_VALUE = TAGS_WITH_VALUE.map((s) => s.toLowerCase())
+    const LOWER_TAGS_CLASSES = TAGS_CLASSES.map((s) => s.toLowerCase())
+    const LOWER_SKILL_NAMES = SKILL_NAMES.map((s) => s.toLowerCase())
 
     const KeyCodes = {
         comma: 188,
@@ -191,16 +199,35 @@ export default function SummonersMarket(): JSX.Element {
         }
         let has_price = false
 
-        const last_tag_word = tags.length > 0 ? tags[tags.length - 1]['id'].split(' ')[0].toLowerCase() : ""
+        const newest_tag_id = tags.length > 0 ? tags[tags.length - 1]['id'] : ''
+        let newest_varName_regex = /([^=><]+)/.exec(newest_tag_id)
+        let newest_varName = ""
+        if (newest_varName_regex?.length > 0) {
+            newest_varName = newest_varName_regex[1].toLowerCase().trim()
+        }
 
         for (let i = 0; i < tags.length; i++) {
             const tag = tags[i]
             let text = tag['id'].toLowerCase()
             const order = tag['text'][0] === '↑' ? 'asc' : 'desc'
 
-            // Only works for single word properties and must use spaces. This can be improved.
-            const words = text.split(' ')
+            const parts = /([^=><]+)\s*([=<>]{1,2})\s*(\d+)/.exec(text)
 
+            let varName = text.trim()
+            let comp = ""
+            let value = 0
+            if (parts?.length >= 4) {
+                varName = parts[1].trim()
+                try {
+                    value = parseFloat(parts[3].trim())
+                } catch (e) {
+                }
+                comp = parts[2].trim()
+            }
+            if (varName === newest_varName && i < tags.length - 1) {
+                // Allow overwriting tags
+                continue
+            }
             if (LOWER_TAGS_CLASSES.includes(text) && !validTags.includes(text)) {
                 classes.push(CLASSES_IDS[text])
                 if (classes.length === 1) {
@@ -214,63 +241,61 @@ export default function SummonersMarket(): JSX.Element {
                 validTags.push(text)
                 newTags.push(tag)
 
-            } else if (LOWER_TAGS_WITH_VALUE.includes(words[0]) && !validTags.includes(words[0])) {
-                let value
-                try {
-                    value = parseFloat(words[2])
-                } catch (e) {
-                    // Invalid value
+            } else if (LOWER_TAGS_WITH_VALUE.includes(varName) && !validTags.includes(varName)) {
+                if (value < 0 || (!TAG_VALUE_COMPARISONS.includes(comp) && value > 0)) {
                     continue
                 }
-                if (value < 0) {
-                    continue
-                }
-
-                let varName = tag_to_variable(words[0])
-                if (words.length === 3 && TAG_VALUE_COMPARISONS.includes(words[1])) {
-                    // Handle price seperately
-                    if (words[0] === 'price') {
-                        if (['<', '<=', '=<'].includes(words[1])) {
-                            if (value == 0) {
-                                continue
-                            }
-                            const min_price = Math.max(0.0001, value)
-                            const comp = words[1] === '<' ? '_lt' : '_lte'
-                            query['where'].push(`_and: [{price_approx: {${comp}: "${min_price}"}}, {price_approx: {_gt: "0"}}]`
-                            )
-                        } else if (['>', '>=', '=>'].includes(words[1])) {
-                            const min_price = Math.max(0.00001, value)
-                            const comp = words[1] === '>' ? '_gt' : '_gte'
-                            query['where'].push(`price_approx: {${comp}: "${min_price}"}`)
-                        } else if (['==', '='].includes(words[1])) {
-                            if (value == 0) {
-                                continue
-                            }
-                            const min_price = Math.max(0.0001, value).toString()
-                            query['where'].push(`price_approx: {_eq: "${min_price}"}`)
-                        }
+                const varNameDB = tag_to_variable(varName)
+                // Handle price seperately
+                if (varNameDB === 'price_approx') {
+                    if (value > 0) {
                         has_price = true
-                    } else {
-                        if (words[0] === last_tag_word && i < tags.length - 1) {
-                            // Allow overwriting tags
+                    }
+                    if (['<', '<=', '=<'].includes(comp)) {
+                        if (value == 0) {
                             continue
                         }
-                        if (words[1] === '>') {
-                            query['where'].push(`${varName}: {_gt: "${words[2]}"}`)
-                        } else if (words[1] === '<') {
-                            query['where'].push(`${varName}: {_lt: "${words[2]}"}`)
-                        } else if (words[1] === '>=' || words[1] === '=>') {
-                            query['where'].push(`${varName}: {_gte: "${words[2]}"}`)
-                        } else if (words[1] === '<=' || words[1] === '=<') {
-                            query['where'].push(`${varName}: {_lte: "${words[2]}"}`)
-                        } else if (words[1] === '=' || words[1] === '==') {
-                            query['where'].push(`${varName}: {_eq: "${words[2]}"}`)
+                        const min_price = Math.max(0.0001, value)
+                        const comp_str = comp === '<' ? '_lt' : '_lte'
+                        query['where'].push(`_and: [{price_approx: {${comp_str}: "${min_price}"}}, {price_approx: {_gt: "0"}}]`
+                        )
+                    } else if (['>', '>=', '=>'].includes(comp)) {
+                        const min_price = Math.max(0.00001, value)
+                        const comp_str = comp === '>' ? '_gt' : '_gte'
+                        query['where'].push(`price_approx: {${comp_str}: "${min_price}"}`)
+                    } else if (['==', '='].includes(comp)) {
+                        if (value == 0) {
+                            continue
                         }
+                        const min_price = Math.max(0.0001, value).toString()
+                        query['where'].push(`price_approx: {_eq: "${min_price}"}`)
+                    }
+                } else {
+                    if (comp === '>') {
+                        query['where'].push(`${varNameDB}: {_gt: "${value}"}`)
+                    } else if (comp === '<') {
+                        query['where'].push(`${varNameDB}: {_lt: "${value}"}`)
+                    } else if (comp === '>=' || comp === '=>') {
+                        query['where'].push(`${varNameDB}: {_gte: "${value}"}`)
+                    } else if (comp === '<=' || comp === '=<') {
+                        query['where'].push(`${varNameDB}: {_lte: "${value}"}`)
+                    } else if (comp === '=' || comp === '==') {
+                        query['where'].push(`${varNameDB}: {_eq: "${value}"}`)
                     }
                 }
-                validTags.push(words[0])
+                validTags.push(varName)
                 newTags.push(tag)
-                query['order_by'].push(`{ ${varName}: ${order} }`)
+                query['order_by'].push(`{ ${varNameDB}: ${order} }`)
+            } else if (LOWER_SKILL_NAMES.includes(varName) && !validTags.includes(varName)) {
+                let compDB = '_gt'
+                if (TAG_VALUE_COMPARISONS.includes(comp)) {
+                    compDB = COMP_TO_POSTGRES[comp]
+                }
+                const index = LOWER_SKILL_NAMES.indexOf(varName)
+                query['where'].push(`skill${index}: {${compDB}: "${value}"}`)
+                query['order_by'].push(`{ skill${index}: ${order} }`)
+                validTags.push(varName)
+                newTags.push(tag)
             }
         }
         if (!has_price) {
@@ -290,7 +315,7 @@ export default function SummonersMarket(): JSX.Element {
         }
         setTags(newTags)
         const query_str = buildQuery(query)
-        console.log(query_str)
+        // console.log(query_str)
         const finalQuery = getMarketSummonersQuery(query_str)
         const format = gql(finalQuery)
         setQuery(format)
@@ -375,7 +400,19 @@ export default function SummonersMarket(): JSX.Element {
                 </div>
                 <div className="flex flex-row items-center justify-between mt-10">
                     <div>
-                        <h1 className="text-xl font-bold">{i18n._(t`Filter With Tags:`)}</h1>
+                        <h1 className="text-xl font-bold">{i18n._(t`Filter and Sort with Tags`)} <span data-tip data-for="filter-info">(i)</span>:</h1>
+                        <ReactTooltip id="filter-info" aria-haspopup='true' className='opaque'>
+                            <h1 className="text-md">Filtering and sorting with tags</h1>
+                            <br />
+                            <h2 className="text-md">Type the name of a property to sort by this property.</h2>
+                            <h2 className="text-md">Examples: Price, ID, Druid or Craft</h2>
+                            <br />
+                            <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
+                            <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
+                            <br />
+                            <h2 className="text-md">Type the name of property followed by a comparison operator to filter.</h2>
+                            <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
+                        </ReactTooltip>
                     </div>
                     <div>
                         <span className="uppercase">
@@ -422,28 +459,28 @@ export default function SummonersMarket(): JSX.Element {
                         >
                             <div style={{ width: '80px' }} className="text-center">
                             </div>
-                            <div style={{ width: '125px' }} className="text-center">
+                            <div style={{ width: '125px' }} className="text-center" onClick={() => handleAddition({'id': 'ID', 'text': 'ID'})}>
                                 <h2>{i18n._(t`ID No.`)}</h2>
                             </div>
                             <div style={{ width: '125px' }} className="text-center">
                                 <h2>{i18n._(t`CLASS`)}</h2>
                             </div>
-                            <div style={{ width: '150px' }} className="text-center">
+                            <div style={{ width: '150px' }} className="text-center" onClick={() => handleAddition({'id': 'Price', 'text': 'Price'})}>
                                 <h2>{i18n._(t`PRICE`)}</h2>
                             </div>
-                            <div style={{ width: '80px' }} className="text-center">
+                            <div style={{ width: '80px' }} className="text-center" onClick={() => handleAddition({'id': 'Level', 'text': 'Level'})}>
                                 <h2>{i18n._(t`LEVEL`)}</h2>
                             </div>
-                            <div style={{ width: '80px' }} className="text-center">
+                            <div style={{ width: '80px' }} className="text-center" onClick={() => handleAddition({'id': 'XP', 'text': 'XP'})}>
                                 <h2>{i18n._(t`XP`)}</h2>
                             </div>
                             <div style={{ width: '250px' }} className="text-center">
                                 <h2>{i18n._(t`ATTRIBUTES`)}</h2>
                             </div>
-                            <div style={{ width: '150px' }} className="text-center">
+                            <div style={{ width: '150px' }} className="text-center" onClick={() => handleAddition({'id': 'Gold', 'text': 'Gold'})}>
                                 <h2>{i18n._(t`GOLD`)}</h2>
                             </div>
-                            <div style={{ width: '100px' }} className="text-center">
+                            <div style={{ width: '100px' }} className="text-center" onClick={() => handleAddition({'id': 'Materials', 'text': 'Materials'})}>
                                 <h2>{i18n._(t`MATERIAL`)}</h2>
                             </div>
                             <div style={{ width: '100px' }} className="text-center">

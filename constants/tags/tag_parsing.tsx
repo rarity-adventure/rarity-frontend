@@ -1,3 +1,5 @@
+import { Skill } from '../codex/skills'
+
 export const TAGS_WITH_VALUE: string[] = [
     'ID',
     'Price',
@@ -43,4 +45,15 @@ export function tag_to_variable(tag) {
     }
 }
 
-export const TAG_VALUE_COMPARISONS: string[] = ['>', '<', '>=', '=>', '<=', '=<', '=']
+export const TAG_VALUE_COMPARISONS: string[] = ['>', '<', '>=', '=>', '<=', '=<', '=', '==']
+
+export const COMP_TO_POSTGRES: { [k: string]: string } = {
+    '>': '_gt',
+    '>=': '_gte',
+    '=>': '_gte',
+    '<': '_lt',
+    '<=': '_lte',
+    '=<': '_lte',
+    '=': '_eq',
+    '==': '_eq'
+}
