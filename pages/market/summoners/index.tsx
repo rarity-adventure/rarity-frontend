@@ -1,5 +1,6 @@
 import { useLingui } from '@lingui/react'
 import React, { useEffect, useState } from 'react'
+import ReactTooltip from 'react-tooltip'
 import { t } from '@lingui/macro'
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
@@ -17,15 +18,14 @@ import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../../constants/cl
 import MarketSkillsModal from '../../../components/Modal/modals/MarketSkills'
 import MarketFeatsModal from '../../../components/Modal/modals/MarketFeats'
 import { utils } from 'ethers'
+import { SKILLS } from '../../../constants/codex/skills'
 
 function SummonerRow({
     summoner,
-    skillsModalFunc,
-    featsModalFunc,
+    row_i,
 }: {
-    summoner
-    skillsModalFunc: (summoner: number) => void
-    featsModalFunc: (summoner: number) => void
+    summoner,
+    row_i
 }): JSX.Element {
     const { i18n } = useLingui()
 
@@ -37,13 +37,46 @@ function SummonerRow({
         return value.toLocaleString()
     }
 
+    let attributes = "Not set"
+    if (summoner.str > 0) {
+        attributes = `${summoner.str}-${summoner.dex}-${summoner.con}-${summoner.int}-${summoner.wis}-${summoner.cha}`
+    }
+
+    let nSkills = 0
+    const skills = []
+    for (let i = 0; i < 36; i++) {
+        const skillVar = `skill${i}`
+        if (summoner[skillVar] > 0) {
+            nSkills += 1
+            skills.push({'name': SKILLS[i + 1].name, 'value': summoner[skillVar]})
+        }
+    }
+
+    let nFeats = 0
+    const feats = []
+    for (let i = 1; i < 100; i++) {
+        const skillVar = `feat${i}`
+        if (summoner[skillVar]) {
+            nFeats += 1
+            // skills.push({'name': SKILLS[i + 1].name, 'value': summoner[skillVar]})
+        }
+    }
+    if (nFeats > 0) {
+        console.log("Feats:", nFeats)
+    }
+
+    const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
+
     return (
-        <div style={{ width: '1478px' }} className="flex justify-left flex-nowrap items-center p-5">
+        <div style={{ width: '1478px' }} className={`flex justify-left flex-nowrap items-center p-0 ${colorClass}`}>
+            <div style={{ width: '80px' }} className="text-center">
+                <div>{CLASSES_HEADS[summoner.class]}</div>
+            </div>
             <div style={{ width: '125px' }} className="text-center">
                 <span>{format_number(summoner.summoner)}</span>
             </div>
             <div style={{ width: '125px' }} className="text-center">
-                <div>{CLASSES_HEADS[summoner.class]}</div>
+
                 <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>
             </div>
             <div style={{ width: '150px' }} className="text-center">
@@ -56,28 +89,7 @@ function SummonerRow({
                 <span>{format_number(summoner.xp)}</span>
             </div>
             <div style={{ width: '250px' }} className="text-center">
-                <div className="py-1 px-2 bg-card-top rounded-3xl border-2 border-white mx-6">
-                    <div className="relative py-1 px-2">
-                        <div className="flex flex-row justify-between h-7 items-center">
-                            <h1 className="absolute left-3">STR: </h1>
-                            <h1 className="absolute left-14">{summoner.str}</h1>
-                            <h1 className="absolute right-8">INT: </h1>
-                            <h1 className="absolute right-3">{summoner.int}</h1>
-                        </div>
-                        <div className="flex flex-row justify-between h-7 py-1">
-                            <h1 className="absolute left-3">DEX: </h1>
-                            <h1 className="absolute left-14">{summoner.dex}</h1>
-                            <h1 className="absolute right-8">WIS: </h1>
-                            <h1 className="absolute right-3">{summoner.wis}</h1>
-                        </div>
-                        <div className="flex flex-row justify-between h-7 py-1">
-                            <h1 className="absolute left-3">CON: </h1>
-                            <h1 className="absolute left-14">{summoner.con}</h1>
-                            <h1 className="absolute right-8">CHA: </h1>
-                            <h1 className="absolute right-3">{summoner.cha}</h1>
-                        </div>
-                    </div>
-                </div>
+                <span>{attributes}</span>
             </div>
             <div style={{ width: '150px' }} className="text-center">
                 <span>{format_ether(summoner.gold_exact)}</span>
@@ -85,21 +97,31 @@ function SummonerRow({
             <div style={{ width: '100px' }} className="text-center">
                 <span>{format_number(summoner.cellar)}</span>
             </div>
-            <div style={{ width: '150px' }} className="text-center">
-                <button
-                    onClick={() => skillsModalFunc(summoner)}
-                    className="uppercase border-2 border-white px-1 py-1.5 rounded-lg text-xs bg-card-top"
-                >
-                    {i18n._(t`view more`)}
-                </button>
+            <div style={{ width: '100px' }} className="text-center">
+                { nSkills == 0 ?
+                    <span>0</span>
+                    :
+                    <>
+                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">{nSkills}</span>
+                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup='true' className='opaque'>
+                            {skills.map(skill => {
+                                return <p key={skill.name} className="text-left">{skill.name}: {skill.value}</p>
+                            })}
+                        </ReactTooltip>
+                    </>
+                }
             </div>
-            <div style={{ width: '150px' }} className="text-center">
-                <button
-                    onClick={() => featsModalFunc(summoner)}
-                    className="uppercase border-2 border-white px-1 py-1.5 rounded-lg text-xs bg-card-top"
-                >
-                    {i18n._(t`view more`)}
-                </button>
+            <div style={{ width: '100px' }} className="text-center">
+                { nFeats == 0 ?
+                    <span>0</span>
+                    :
+                    <>
+                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">{nFeats}</span>
+                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup='true' className='opaque'>
+                            <p>Feats coming soon.</p>
+                        </ReactTooltip>
+                    </>
+                }
             </div>
             <div style={{ width: '150px' }} className="text-center">
                 <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
@@ -249,6 +271,10 @@ export default function SummonersMarket(): JSX.Element {
                         }
                         has_price = true
                     } else {
+                        if (words[0] === last_tag_word && i < tags.length - 1) {
+                            // Allow overwriting tags
+                            continue
+                        }
                         if (words[1] === '>') {
                             query['where'].push(`${varName}: {_gt: "${words[2]}"}`)
                         } else if (words[1] === '<') {
@@ -261,10 +287,6 @@ export default function SummonersMarket(): JSX.Element {
                             query['where'].push(`${varName}: {_eq: "${words[2]}"}`)
                         }
                     }
-                }
-                if (words[0] === last_tag_word && i < tags.length - 1) {
-                    // Allow overwriting tags
-                    continue
                 }
                 validTags.push(words[0])
                 newTags.push(tag)
@@ -288,7 +310,7 @@ export default function SummonersMarket(): JSX.Element {
         }
         setTags(newTags)
         const query_str = buildQuery(query)
-        // console.log(query_str)
+        console.log(query_str)
         const finalQuery = getMarketSummonersQuery(query_str)
         const format = gql(finalQuery)
         setQuery(format)
@@ -428,6 +450,8 @@ export default function SummonersMarket(): JSX.Element {
                             style={{ width: '1478px' }}
                             className="sticky top-0 z-30 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
                         >
+                            <div style={{ width: '80px' }} className="text-center">
+                            </div>
                             <div style={{ width: '125px' }} className="text-center">
                                 <h2>{i18n._(t`ID No.`)}</h2>
                             </div>
@@ -452,10 +476,10 @@ export default function SummonersMarket(): JSX.Element {
                             <div style={{ width: '100px' }} className="text-center">
                                 <h2>{i18n._(t`MATERIAL`)}</h2>
                             </div>
-                            <div style={{ width: '150px' }} className="text-center">
+                            <div style={{ width: '100px' }} className="text-center">
                                 <h2>{i18n._(t`SKILLS`)}</h2>
                             </div>
-                            <div style={{ width: '150px' }} className="text-center">
+                            <div style={{ width: '100px' }} className="text-center">
                                 <h2>{i18n._(t`FEATS`)}</h2>
                             </div>
                             <div style={{ width: '150px' }} className="text-center">
@@ -463,13 +487,12 @@ export default function SummonersMarket(): JSX.Element {
                             </div>
                         </div>
                         {summoners &&
-                            summoners.map((s) => {
+                            summoners.map((s, i) => {
                                 return (
                                     <SummonerRow
                                         summoner={s}
-                                        key={s.id}
-                                        featsModalFunc={openFeatsModal}
-                                        skillsModalFunc={openSkillsModal}
+                                        row_i={i}
+                                        key={i}
                                     />
                                 )
                             })}

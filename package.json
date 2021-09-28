@@ -54,6 +54,7 @@
         "react-hot-toast": "2.1.1",
         "react-redux": "7.2.5",
         "react-tag-input": "^6.7.3",
+        "react-tooltip": "^4.2.21",
         "redux": "4.1.1",
         "redux-persist": "6.0.0",
         "swr": "1.0.1",
