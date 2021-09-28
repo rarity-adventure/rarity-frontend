@@ -12,7 +12,11 @@ export function useGraphSummonerIDs(account: string, swrConfig: SWRConfiguration
 }
 
 export function useListedSummoners(offset, query, swrConfig: SWRConfiguration = undefined) {
-    const { data } = useSWR('listed_' + offset, () => getListedSummoners(offset, query), swrConfig)
+    const { data } = useSWR(
+        'listed_' + offset + JSON.stringify(query),
+        () => getListedSummoners(offset, query),
+        swrConfig
+    )
     return data
 }
 
