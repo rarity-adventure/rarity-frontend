@@ -178,6 +178,7 @@ export default function SummonersMarket(): JSX.Element {
     const [tags, setTags] = React.useState([])
 
     const parseTags = (tags) => {
+
         const validTags = []
         const newTags = []
         const classes = []
@@ -187,7 +188,11 @@ export default function SummonersMarket(): JSX.Element {
             order_by: [],
         }
         let has_price = false
-        for (const tag of tags) {
+
+        const last_tag_word = tags.length > 0 ? tags[tags.length - 1]['id'].split(' ')[0].toLowerCase() : ""
+
+        for (let i = 0; i < tags.length; i++) {
+            const tag = tags[i]
             let text = tag['id'].toLowerCase()
             const order = tag['text'][0] === '↑' ? 'asc' : 'desc'
 
@@ -206,6 +211,7 @@ export default function SummonersMarket(): JSX.Element {
                 }
                 validTags.push(text)
                 newTags.push(tag)
+
             } else if (LOWER_TAGS_WITH_VALUE.includes(words[0]) && !validTags.includes(words[0])) {
                 let value
                 try {
@@ -256,16 +262,20 @@ export default function SummonersMarket(): JSX.Element {
                         }
                     }
                 }
+                if (words[0] === last_tag_word && i < tags.length - 1) {
+                    // Allow overwriting tags
+                    continue
+                }
                 validTags.push(words[0])
                 newTags.push(tag)
                 query['order_by'].push(`{ ${varName}: ${order} }`)
             }
         }
         if (!has_price) {
-            query['where'].push('price_approx: { _gte: "0"}')
+            query['where'].push('price_approx: { _gt: "0"}')
         }
         if (classes.length === 1) {
-            query['where'].push(`class: { _eq: ${classes[0]} }`)
+            query['where'].push(`class: { _eq: "${classes[0]}" }`)
         } else if (classes.length > 1) {
             const class_wrapped = classes.map((c) => {
                 return `{ class: {_eq: ${c}} }`
