@@ -197,7 +197,7 @@ export default function SummonersMarket(): JSX.Element {
             if (LOWER_TAGS_CLASSES.includes(text) && !validTags.includes(text)) {
                 classes.push(CLASSES_IDS[text])
                 if (classes.length === 1) {
-                    query['order_by'].push(`class: ${order}`)
+                    query['order_by'].push(`{ class: ${order} }`)
                     if (!['↑', '↓'].includes(tag['text'][0])) {
                         tag['text'] = "↓ " + tag['text']
                     }
@@ -226,7 +226,7 @@ export default function SummonersMarket(): JSX.Element {
                             if (value == 0) {
                                 continue
                             }
-                            const min_price =Math.max(0.0001, value)
+                            const min_price = Math.max(0.0001, value)
                             const comp = words[1] === '<' ? '_lt' : '_lte'
                             query['where'].push(`_and: [{price_approx: {${comp}: "${min_price}"}}, {price_approx: {_gt: "0"}}]`
                             )
@@ -258,7 +258,7 @@ export default function SummonersMarket(): JSX.Element {
                 }
                 validTags.push(words[0])
                 newTags.push(tag)
-                query['order_by'].push(`${varName}: ${order}`)
+                query['order_by'].push(`{ ${varName}: ${order} }`)
             }
         }
         if (!has_price) {
@@ -294,7 +294,7 @@ export default function SummonersMarket(): JSX.Element {
         }
         where += query['where'].join(', ')
         let orderBy = query['order_by'].join(', ')
-        return `where: { ${where} }, order_by: { ${orderBy} }`
+        return `where: { ${where} }, order_by: [ ${orderBy}  ]`
     }
 
     const handleDelete = (i) => {
