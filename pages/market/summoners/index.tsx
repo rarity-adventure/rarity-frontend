@@ -16,6 +16,7 @@ import {
 import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../../constants/classes'
 import MarketSkillsModal from '../../../components/Modal/modals/MarketSkills'
 import MarketFeatsModal from '../../../components/Modal/modals/MarketFeats'
+import { utils } from 'ethers'
 
 function SummonerRow({
     summoner,
@@ -28,23 +29,31 @@ function SummonerRow({
 }): JSX.Element {
     const { i18n } = useLingui()
 
+    const format_ether = (value: string) => {
+        return parseFloat(utils.formatUnits(value, 'ether')).toLocaleString()
+    }
+
+    const format_number = (value: number) => {
+        return value.toLocaleString()
+    }
+
     return (
         <div style={{ width: '1478px' }} className="flex justify-left flex-nowrap items-center p-5">
             <div style={{ width: '125px' }} className="text-center">
-                <span>{summoner.summoner}</span>
+                <span>{format_number(summoner.summoner)}</span>
             </div>
             <div style={{ width: '125px' }} className="text-center">
                 <div>{CLASSES_HEADS[summoner.class]}</div>
                 <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>
             </div>
-            <div style={{ width: '80px' }} className="text-center">
-                <span>{summoner.price_approx}</span> FTM
+            <div style={{ width: '150px' }} className="text-center">
+                <span>{format_ether(summoner.price)}</span> FTM
             </div>
             <div style={{ width: '80px' }} className="text-center">
                 <span>{summoner.level}</span>
             </div>
             <div style={{ width: '80px' }} className="text-center">
-                <span>{summoner.xp}</span>
+                <span>{format_number(summoner.xp)}</span>
             </div>
             <div style={{ width: '250px' }} className="text-center">
                 <div className="py-1 px-2 bg-card-top rounded-3xl border-2 border-white mx-6">
@@ -70,22 +79,11 @@ function SummonerRow({
                     </div>
                 </div>
             </div>
-            <div style={{ width: '300px' }} className="text-center">
-                <div className="py-1 px-2 bg-card-top rounded-3xl border-2 border-white mx-6">
-                    <div className="relative py-1 px-2">
-                        <div className="flex flex-row justify-between h-7 items-center">
-                            <h1 className="absolute left-1">CLAIMED: </h1>
-                            <h1 className="absolute right-1">{summoner.gold_approx}</h1>
-                        </div>
-                        <div className="flex flex-row justify-between h-7 py-1">
-                            <h1 className="absolute left-1">UNCLAIMED: </h1>
-                            <h1 className="absolute right-1">{summoner.unclaimed_gold_approx}</h1>
-                        </div>
-                    </div>
-                </div>
+            <div style={{ width: '150px' }} className="text-center">
+                <span>{format_ether(summoner.gold)}</span>
             </div>
             <div style={{ width: '100px' }} className="text-center">
-                <span>{summoner.cellar}</span>
+                <span>{format_number(summoner.cellar)}</span>
             </div>
             <div style={{ width: '150px' }} className="text-center">
                 <button
@@ -200,6 +198,9 @@ export default function SummonersMarket(): JSX.Element {
                 classes.push(CLASSES_IDS[text])
                 if (classes.length === 1) {
                     query['order_by'].push(`class: ${order}`)
+                    if (!['↑', '↓'].includes(tag['text'][0])) {
+                        tag['text'] = "↓ " + tag['text']
+                    }
                 } else if (tag['text'][0] == '↑' || tag['text'][0] == '↓') {
                     tag['text'] = tag['text'].slice(2)
                 }
@@ -225,21 +226,21 @@ export default function SummonersMarket(): JSX.Element {
                             if (value == 0) {
                                 continue
                             }
-                            const min_price = Math.max(0.0001, value)
+                            const min_price = utils.parseEther(Math.max(0.00001, value).toString())
                             const comp = words[1] === '<' ? '_lt' : '_lte'
                             query['where'].push(
-                                `{_and: [price_approx: {${comp}: "${min_price}"}, price_approx: {_gt: "0"}]}`
+                                `_and: [{price: {${comp}: "${min_price}"}}, {price: {_gt: "0"}}]`
                             )
                         } else if (['>', '>=', '=>'].includes(words[1])) {
-                            const min_price = Math.max(0.0001, value)
+                            const min_price = utils.parseEther(Math.max(0.00001, value).toString())
                             const comp = words[1] === '>' ? '_gt' : '_gte'
-                            query['where'].push(`price_approx: {${comp}: "${min_price}"}`)
-                        } else if (words[1] === '=') {
+                            query['where'].push(`price: {${comp}: "${min_price}"}`)
+                        } else if (['==', '='].includes(words[1])) {
                             if (value == 0) {
                                 continue
                             }
-                            const min_price = Math.max(0.0001, value)
-                            query['where'].push(`price_approx: "${min_price}"`)
+                            const min_price = utils.parseEther(Math.max(0.00001, value).toString())
+                            query['where'].push(`price: {_eq: "${min_price}"}`)
                         }
                         has_price = true
                     } else {
@@ -252,7 +253,7 @@ export default function SummonersMarket(): JSX.Element {
                         } else if (words[1] === '<=' || words[1] === '=<') {
                             query['where'].push(`${varName}: {_lte: "${words[2]}"}`)
                         } else if (words[1] === '=' || words[1] === '==') {
-                            query['where'].push(`${varName}: "${words[2]}"`)
+                            query['where'].push(`${varName}: {_eq: "${words[2]}"}`)
                         }
                     }
                 }
@@ -262,25 +263,27 @@ export default function SummonersMarket(): JSX.Element {
             }
         }
         if (!has_price) {
-            query['where'].push('price_approx: { _gte: "0"}')
+            query['where'].push('price: { _gte: "0"}')
         }
         if (classes.length === 1) {
             query['where'].push(`class: { _eq: ${classes[0]} }`)
         } else if (classes.length > 1) {
             const class_wrapped = classes.map((c) => {
-                return `{ class: "${c}" }`
+                return `{ class: {_eq: ${c}} }`
             })
-            let class_str = '{_or: ['
+            let class_str = '_or: ['
             class_str += class_wrapped.join(', ')
-            class_str += ']}'
+            class_str += ']'
 
             query['classes'] = class_str
         }
         setTags(newTags)
         const query_str = buildQuery(query)
         const finalQuery = getMarketSummonersQuery(query_str)
+        console.log(finalQuery)
         const format = gql(finalQuery)
         setQuery(format)
+        console.log(format)
     }
 
     const buildQuery = (query) => {
@@ -423,8 +426,8 @@ export default function SummonersMarket(): JSX.Element {
                             <div style={{ width: '125px' }} className="text-center">
                                 <h2>{i18n._(t`CLASS`)}</h2>
                             </div>
-                            <div style={{ width: '80px' }} className="text-center">
-                                <h2>{i18n._(t`PRICE.`)}</h2>
+                            <div style={{ width: '150px' }} className="text-center">
+                                <h2>{i18n._(t`PRICE`)}</h2>
                             </div>
                             <div style={{ width: '80px' }} className="text-center">
                                 <h2>{i18n._(t`LEVEL`)}</h2>
@@ -435,7 +438,7 @@ export default function SummonersMarket(): JSX.Element {
                             <div style={{ width: '250px' }} className="text-center">
                                 <h2>{i18n._(t`ATTRIBUTES`)}</h2>
                             </div>
-                            <div style={{ width: '300px' }} className="text-center">
+                            <div style={{ width: '150px' }} className="text-center">
                                 <h2>{i18n._(t`GOLD`)}</h2>
                             </div>
                             <div style={{ width: '100px' }} className="text-center">
