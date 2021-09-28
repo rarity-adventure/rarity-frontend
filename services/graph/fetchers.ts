@@ -1,12 +1,5 @@
 import { request } from 'graphql-request'
-import {
-    getGlobalData,
-    getMarketSummonerFeats,
-    getMarketSummoners,
-    getMarketSummonersCount,
-    getMarketSummonerSkills,
-    getSummoners,
-} from '../../constants/queries'
+import { getGlobalData, getMarketSummonersCount, getSummoners } from '../../constants/queries'
 
 export const market_graph = async (query, variables = {}) =>
     request('https://rarity-market.hasura.app/v1/graphql', query, variables, {
@@ -27,22 +20,12 @@ export const getSummonersIDs = async (account: string) => {
     })
 }
 
-export const getListedSummoners = async (variables) => {
-    const data = await market_graph(getMarketSummoners, variables)
+export const getListedSummoners = async (offset, query) => {
+    const data = await market_graph(query, { offset })
     return data.summoners
 }
 
 export const getListedCount = async () => {
     const count = await market_graph(getMarketSummonersCount, {})
-    return count.summoners_aggregate.aggregate.count
-}
-
-export const getListedSummonerSkills = async (summoner: number) => {
-    const count = await market_graph(getMarketSummonerSkills, { summoner })
-    return count.summoners_aggregate.aggregate.count
-}
-
-export const getListedSummonerFeats = async (summoner: number) => {
-    const count = await market_graph(getMarketSummonerFeats, { summoner })
     return count.summoners_aggregate.aggregate.count
 }

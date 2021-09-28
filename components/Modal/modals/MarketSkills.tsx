@@ -2,7 +2,6 @@ import HeadlessUIModal from '../HeadlessUIModal'
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
-import { useListedSummonerSkills } from '../../../services/graph/hooks'
 
 interface MarketSkillsModalProps {
     open: boolean
@@ -12,8 +11,6 @@ interface MarketSkillsModalProps {
 
 export default function MarketSkillsModal({ open, closeFunction, summoner }: MarketSkillsModalProps): JSX.Element {
     const { i18n } = useLingui()
-
-    const skills = useListedSummonerSkills(summoner)
 
     return (
         <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>

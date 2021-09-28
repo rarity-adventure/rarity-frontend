@@ -15,17 +15,17 @@ export const CLASSES_NAMES: { [k: string]: string } = {
 }
 
 export const CLASSES_IDS: { [k: string]: number } = {
-    'barbarian': 1,
-    'bard': 2,
-    'cleric': 3,
-    'druid': 4,
-    'fighter': 5,
-    'monk': 6,
-    'paladin': 7,
-    'ranger': 8,
-    'rogue': 9,
-    'sorcerer': 10,
-    'wizard': 11,
+    barbarian: 1,
+    bard: 2,
+    cleric: 3,
+    druid: 4,
+    fighter: 5,
+    monk: 6,
+    paladin: 7,
+    ranger: 8,
+    rogue: 9,
+    sorcerer: 10,
+    wizard: 11,
 }
 
 export const CLASSES_IMAGES: { [k: string]: JSX.Element } = {

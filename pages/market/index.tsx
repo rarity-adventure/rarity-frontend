@@ -4,15 +4,18 @@ import { t } from '@lingui/macro'
 import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/classes'
 import MarketFeatsModal from '../../components/Modal/modals/MarketFeats'
 import MarketSkillsModal from '../../components/Modal/modals/MarketSkills'
-// import ReactTags from '../../components/Tags/ReactTag'
-import { WithContext as ReactTags } from 'react-tag-input';
+import { WithContext as ReactTags } from 'react-tag-input'
 import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
 import {
     TAG_SUGGESTIONS,
     TAG_VALUE_COMPARISONS,
     TAGS_WITH_VALUE,
-    TAGS_CLASSES, tag_to_variable
+    TAGS_CLASSES,
+    tag_to_variable,
 } from '../../constants/tags/tag_parsing'
+import gql from 'graphql-tag'
+import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../constants/queries'
+import { DocumentNode } from 'graphql'
 
 function SummonerRow({
     summoner,
@@ -112,13 +115,15 @@ function SummonerRow({
 export default function Market(): JSX.Element {
     const { i18n } = useLingui()
 
-    const [offset, setOffset] = useState(0)
-
     const [skillsModal, setSkillsModal] = useState({ open: false, summoner: 0 })
     const [featsModal, setFeatsModal] = useState({ open: false, summoner: 0 })
 
+    const [offset, setOffset] = useState(0)
+
+    const [query, setQuery] = useState<DocumentNode>(getMarketSummonersDefault)
+
     const count = useListedCount({ refreshInterval: 5_000 })
-    const s = useListedSummoners({ offset })
+    const s = useListedSummoners(offset, query)
 
     const [summoners, setSummoners] = useState([])
 
@@ -129,20 +134,25 @@ export default function Market(): JSX.Element {
         return {
             id: suggestion,
             text: suggestion,
-        };
-    });
+        }
+    })
 
     const KeyCodes = {
         comma: 188,
         enter: [10, 13],
-    };
+    }
 
-    const delimiters = [...KeyCodes.enter, KeyCodes.comma];
+    const delimiters = [...KeyCodes.enter, KeyCodes.comma]
 
     useEffect(() => {
         if (!s || !summoners) return
         setSummoners(summoners.concat(s))
     }, [s, offset])
+
+    useEffect(() => {
+        if (!s || !summoners) return
+        setSummoners(s)
+    }, [s, query])
 
     function openSkillsModal(summoner: number) {
         setSkillsModal({ open: true, summoner })
@@ -167,26 +177,21 @@ export default function Market(): JSX.Element {
         }
     }
 
-    const [tags, setTags] = React.useState([]);
-
-    // const [query, setQuery] = React.useState({
-    //         'where': [],
-    //         'order_by': [],
-    // });
+    const [tags, setTags] = React.useState([])
 
     const parseTags = (tags) => {
         const validTags = []
         const newTags = []
         const classes = []
         let query = {
-                'classes': '',
-                'where': [],
-                'order_by': [],
+            classes: '',
+            where: [],
+            order_by: [],
         }
         let has_price = false
         for (const tag of tags) {
-            let text = tag["id"].toLowerCase()
-            const order = tag["text"][0] === "↑" ? "asc" : "desc"
+            let text = tag['id'].toLowerCase()
+            const order = tag['text'][0] === '↑' ? 'asc' : 'desc'
 
             // Only works for single word properties and must use spaces. This can be improved.
             const words = text.split(' ')
@@ -194,13 +199,12 @@ export default function Market(): JSX.Element {
             if (LOWER_TAGS_CLASSES.includes(text) && !validTags.includes(text)) {
                 classes.push(CLASSES_IDS[text])
                 if (classes.length === 1) {
-                    query["order_by"].push(`{class: ${order}}`)
-                } else if (tag["text"][0] == "↑" || tag["text"][0] == "↓") {
-                    tag["text"] = tag["text"].slice(2)
+                    query['order_by'].push(`class: ${order}`)
+                } else if (tag['text'][0] == '↑' || tag['text'][0] == '↓') {
+                    tag['text'] = tag['text'].slice(2)
                 }
                 validTags.push(text)
                 newTags.push(tag)
-
             } else if (LOWER_TAGS_WITH_VALUE.includes(words[0]) && !validTags.includes(words[0])) {
                 let value
                 try {
@@ -216,116 +220,118 @@ export default function Market(): JSX.Element {
                 let varName = tag_to_variable(words[0])
                 if (words.length === 3 && TAG_VALUE_COMPARISONS.includes(words[1])) {
                     // Handle price seperately
-                    if (words[0] === "price") {
-                        if (["<", "<=", "=<"].includes(words[1])) {
+                    if (words[0] === 'price') {
+                        if (['<', '<=', '=<'].includes(words[1])) {
                             if (value == 0) {
                                 continue
                             }
                             const min_price = Math.max(0.0001, value)
-                            const comp = words[1] === "<" ? "_lt" : "_lte"
-                            query["where"].push(`{_and: [price_approx: {${comp}: "${min_price}"}, price_approx: {_gt: "0"}]}`)
-                        } else if ([">", ">=", "=>"].includes(words[1])) {
+                            const comp = words[1] === '<' ? '_lt' : '_lte'
+                            query['where'].push(
+                                `{_and: [price_approx: {${comp}: "${min_price}"}, price_approx: {_gt: "0"}]}`
+                            )
+                        } else if (['>', '>=', '=>'].includes(words[1])) {
                             const min_price = Math.max(0.0001, value)
-                            const comp = words[1] === ">" ? "_gt" : "_gte"
-                            query["where"].push(`price_approx: {${comp}: "${min_price}"}`)
-                        } else if (words[1] === "=") {
+                            const comp = words[1] === '>' ? '_gt' : '_gte'
+                            query['where'].push(`price_approx: {${comp}: "${min_price}"}`)
+                        } else if (words[1] === '=') {
                             if (value == 0) {
                                 continue
                             }
                             const min_price = Math.max(0.0001, value)
-                            query["where"].push(`price_approx: "${min_price}"`)
+                            query['where'].push(`price_approx: "${min_price}"`)
                         }
                         has_price = true
                     } else {
-                        if (words[1] === ">") {
-                            query["where"].push(`${varName}: {_gt: "${words[2]}"}`)
-                        } else if(words[1] === "<") {
-                            query["where"].push(`${varName}: {_lt: "${words[2]}"}`)
-                        } else if (words[1] === ">=" || words[1] === "=>") {
-                            query["where"].push(`${varName}: {_gte: "${words[2]}"}`)
-                        } else if (words[1] === "<=" || words[1] === "=<") {
-                            query["where"].push(`${varName}: {_lte: "${words[2]}"}`)
-                        } else if (words[1] === "=" || words[1] === "==") {
-                            query["where"].push(`${varName}: "${words[2]}"`)
+                        if (words[1] === '>') {
+                            query['where'].push(`${varName}: {_gt: "${words[2]}"}`)
+                        } else if (words[1] === '<') {
+                            query['where'].push(`${varName}: {_lt: "${words[2]}"}`)
+                        } else if (words[1] === '>=' || words[1] === '=>') {
+                            query['where'].push(`${varName}: {_gte: "${words[2]}"}`)
+                        } else if (words[1] === '<=' || words[1] === '=<') {
+                            query['where'].push(`${varName}: {_lte: "${words[2]}"}`)
+                        } else if (words[1] === '=' || words[1] === '==') {
+                            query['where'].push(`${varName}: "${words[2]}"`)
                         }
                     }
-
                 }
                 validTags.push(words[0])
                 newTags.push(tag)
-                query["order_by"].push(`{${varName}: ${order}}`)
+                query['order_by'].push(`${varName}: ${order}`)
             }
         }
         if (!has_price) {
-            query["where"].push('price_approx: {_gte: "0"}')
+            query['where'].push('price_approx: { _gte: "0"}')
         }
         if (classes.length === 1) {
-            query["where"].push(`class: "${classes[0]}"`)
-        } else if(classes.length > 1) {
+            query['where'].push(`class: { _eq: ${classes[0]} }`)
+        } else if (classes.length > 1) {
             const class_wrapped = classes.map((c) => {
                 return `{ class: "${c}" }`
             })
             let class_str = '{_or: ['
-            class_str += class_wrapped.join(", ")
+            class_str += class_wrapped.join(', ')
             class_str += ']}'
 
-            query["classes"] = class_str
+            query['classes'] = class_str
         }
         setTags(newTags)
         const query_str = buildQuery(query)
-        console.log(query_str)
-        // Run query
+        const finalQuery = getMarketSummonersQuery(query_str)
+        const format = gql(finalQuery)
+        setQuery(format)
     }
 
     const buildQuery = (query) => {
-        let where = ""
-        if (query["classes"].length > 0) {
-            where += `${query["classes"]}`
-            if (query["where"].length > 0){
-                where += ", "
+        let where = ''
+        if (query['classes'].length > 0) {
+            where += `${query['classes']}`
+            if (query['where'].length > 0) {
+                where += ', '
             }
         }
-        where += query["where"].join(", ")
-        let orderBy = query["order_by"].join(", ")
+        where += query['where'].join(', ')
+        let orderBy = query['order_by'].join(', ')
         return `where: { ${where} }, order_by: { ${orderBy} }`
     }
 
     const handleDelete = (i) => {
-        parseTags(tags.filter((tag, index) => index !== i));
-    };
+        parseTags(tags.filter((tag, index) => index !== i))
+    }
 
     const handleAddition = (tag) => {
-        tag["text"] = "↑ " + tag["text"]
-        parseTags([...tags, tag]);
-    };
+        tag['text'] = '↑ ' + tag['text']
+        parseTags([...tags, tag])
+    }
 
     const handleDrag = (tag, currPos, newPos) => {
-        const newTags = tags.slice();
+        const newTags = tags.slice()
 
-        newTags.splice(currPos, 1);
-        newTags.splice(newPos, 0, tag);
+        newTags.splice(currPos, 1)
+        newTags.splice(newPos, 0, tag)
 
         // re-render
-        parseTags(newTags);
-    };
+        parseTags(newTags)
+    }
 
     const handleTagClick = (index) => {
-        const order = tags[index]["text"][0]
+        const order = tags[index]['text'][0]
         let newOrder
-        if (order === "↑") {
-            newOrder = "↓"
-        } else if (order === "↓") {
-            newOrder = "↑"
+        if (order === '↑') {
+            newOrder = '↓'
+        } else if (order === '↓') {
+            newOrder = '↑'
         } else {
             return
         }
-        tags[index]["text"] = newOrder + tags[index]["text"].slice(1)
-        parseTags(tags);
-    };
+        tags[index]['text'] = newOrder + tags[index]['text'].slice(1)
+        parseTags(tags)
+    }
 
     const onClearAll = () => {
-        setTags([]);
-    };
+        setTags([])
+    }
 
     function buttons(): JSX.Element {
         return (
@@ -388,7 +394,7 @@ export default function Market(): JSX.Element {
                             remove: 'ml-3 cursor-pointer text-grey',
                             suggestions: '',
                             activeSuggestion: 'bg-red',
-                            clearAll: 'cursor-pointer p-2 m-3 bg-black border-none rounded'
+                            clearAll: 'cursor-pointer p-2 m-3 bg-black border-none rounded',
                         }}
                     />
                 </div>
