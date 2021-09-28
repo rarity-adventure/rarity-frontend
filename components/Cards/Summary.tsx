@@ -12,6 +12,7 @@ import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import SellModal from '../Modal/modals/Sell'
+import { useRouter } from 'next/router'
 
 enum Modals {
     TRANSFER = 1,
@@ -81,6 +82,8 @@ function SummonerSummaryCard({
 
     const [modalOpen, setModalOpen] = useState<Modals>(0)
 
+    const router = useRouter()
+
     const { adventure, level_up } = useRarity()
 
     function closeModals() {
@@ -119,10 +122,14 @@ function SummonerSummaryCard({
             <SellModal open={modalOpen === Modals.SELL} closeFunction={closeModals} summoner={summoner} />
             <TransferModal open={modalOpen === Modals.TRANSFER} closeFunction={closeModals} summoner={summoner} />
             <DaycareSingleModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoner={summoner} />
-            <div className="p-5 w-full text-center">{CLASSES_IMAGES[summoner.base._class]}</div>
-
+            <div
+                onClick={async () => router.push('/play/' + summoner.id)}
+                className="p-5 w-full text-center cursor-pointer"
+            >
+                {CLASSES_IMAGES[summoner.base._class]}
+            </div>
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
-                <div className="mx-auto p-2">
+                <div onClick={async () => router.push('/play/' + summoner.id)} className="mx-auto p-2 cursor-pointer">
                     {summoner.base._name !== '' ? (
                         <p>{summoner.base._name}</p>
                     ) : (

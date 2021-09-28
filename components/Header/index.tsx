@@ -16,16 +16,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
 
     const { account } = useActiveWeb3React()
 
-    function play(): JSX.Element {
-        return (
-            <Link href="/play" passHref={true}>
-                <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2">
-                    <h2>{i18n._(t`Play`)}</h2>
-                </div>
-            </Link>
-        )
-    }
-
     function summoners(): JSX.Element {
         return (
             <Link href="/summoners" passHref={true}>
@@ -89,10 +79,13 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     function socials() {
         return (
             <div className="text-white text-3xl gap-x-3 flex flex-row mr-10">
-                <Link href="https://discord.com/invite/NUrfGsUkmd" passHref><FontAwesomeIcon icon={faDiscord} /></Link>
-                <Link href="https://twitter.com/RarityGame" passHref><FontAwesomeIcon icon={faTwitter} /></Link>
+                <Link href="https://discord.com/invite/NUrfGsUkmd" passHref>
+                    <FontAwesomeIcon icon={faDiscord} />
+                </Link>
+                <Link href="https://twitter.com/RarityGame" passHref>
+                    <FontAwesomeIcon icon={faTwitter} />
+                </Link>
             </div>
-
         )
     }
 
@@ -117,7 +110,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                     </Link>
                                     <div className="hidden md:block sm:ml-2">
                                         <div className="flex uppercase">
-                                            {play()}
                                             {summoners()}
                                             {inventory()}
                                             {names()}
@@ -186,7 +178,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
 
                         <Popover.Panel className="sm:hidden uppercase">
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
-                                {play()}
                                 {summoners()}
                                 {inventory()}
                                 {names()}

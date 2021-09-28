@@ -41,7 +41,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     }, [summoners, fetch_approval])
 
     async function submit() {
-        const chunks = chunkArrayByNumber(summoners, 100)
+        const chunks = chunkArrayByNumber(summoners, 300)
         for (let i = 0; i < chunks.length; i++) {
             await toast.promise(
                 adventure(
@@ -63,7 +63,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     }
 
     async function submitTIP() {
-        const chunks = chunkArrayByNumber(summoners, 100)
+        const chunks = chunkArrayByNumber(summoners, 300)
         for (let i = 0; i < chunks.length; i++) {
             if (i === 0) {
                 await toast.promise(
