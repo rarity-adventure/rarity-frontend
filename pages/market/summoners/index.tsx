@@ -15,8 +15,6 @@ import {
     TAGS_WITH_VALUE,
 } from '../../../constants/tags/tag_parsing'
 import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../../constants/classes'
-import MarketSkillsModal from '../../../components/Modal/modals/MarketSkills'
-import MarketFeatsModal from '../../../components/Modal/modals/MarketFeats'
 import { utils } from 'ethers'
 import { SKILLS } from '../../../constants/codex/skills'
 
@@ -135,9 +133,6 @@ function SummonerRow({
 export default function SummonersMarket(): JSX.Element {
     const { i18n } = useLingui()
 
-    const [skillsModal, setSkillsModal] = useState({ open: false, summoner: 0 })
-    const [featsModal, setFeatsModal] = useState({ open: false, summoner: 0 })
-
     const [offset, setOffset] = useState(0)
 
     const [query, setQuery] = useState<DocumentNode>(getMarketSummonersDefault)
@@ -174,21 +169,6 @@ export default function SummonersMarket(): JSX.Element {
         setSummoners(s)
     }, [s, query])
 
-    function openSkillsModal(summoner: number) {
-        setSkillsModal({ open: true, summoner })
-    }
-
-    function openFeatsModal(summoner: number) {
-        setFeatsModal({ open: true, summoner })
-    }
-
-    function closeSkills() {
-        setSkillsModal({ open: false, summoner: 0 })
-    }
-
-    function closeFeats() {
-        setFeatsModal({ open: false, summoner: 0 })
-    }
 
     const handleScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
@@ -435,16 +415,6 @@ export default function SummonersMarket(): JSX.Element {
                     className="m-10 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen"
                     onScroll={handleScroll}
                 >
-                    <MarketFeatsModal
-                        open={featsModal.open}
-                        closeFunction={closeFeats}
-                        summoner={featsModal.summoner}
-                    />
-                    <MarketSkillsModal
-                        open={skillsModal.open}
-                        closeFunction={closeSkills}
-                        summoner={skillsModal.summoner}
-                    />
                     <div>
                         <div
                             style={{ width: '1478px' }}
