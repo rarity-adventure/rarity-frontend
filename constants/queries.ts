@@ -27,13 +27,12 @@ export const getGlobalData = gql`
 
 export const getMarketSummonersDefault = gql`
     query getMarketSummoners($limit: Int! = 20, $offset: Int!) {
-        summoners(limit: $limit, offset: $offset, where: { price_exact: { _gt: "0" } }) {
+        summoners(limit: $limit, offset: $offset, where: { price_approx: { _gt: "0" } }) {
             summoner
             class
             xp
             level
             id
-            name
             lister
             price_approx
             price_exact
@@ -46,9 +45,7 @@ export const getMarketSummonersDefault = gql`
             int
 
             cellar
-
-            unclaimed_gold_exact
-            unclaimed_gold_approx
+            
             gold_approx
             gold_exact
 
@@ -201,7 +198,6 @@ export function getMarketSummonersQuery(data: string): string {
                     xp
                     level
                     id
-                    name
                     lister
                     price_approx
                     price_exact
@@ -214,9 +210,7 @@ export function getMarketSummonersQuery(data: string): string {
                     int
         
                     cellar
-        
-                    unclaimed_gold_exact
-                    unclaimed_gold_approx
+                    
                     gold_approx
                     gold_exact
                     

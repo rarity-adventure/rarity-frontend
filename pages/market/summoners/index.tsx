@@ -29,8 +29,8 @@ function SummonerRow({
 }): JSX.Element {
     const { i18n } = useLingui()
 
-    const format_ether = (value: string) => {
-        return parseFloat(utils.formatUnits(value, 'ether')).toLocaleString()
+    const format_ether = (value) => {
+        return parseFloat(utils.formatEther(value)).toLocaleString()
     }
 
     const format_number = (value: number) => {
@@ -47,7 +47,7 @@ function SummonerRow({
                 <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>
             </div>
             <div style={{ width: '150px' }} className="text-center">
-                <span>{format_ether(summoner.price)}</span> FTM
+                <span>{format_ether(summoner.price_exact)}</span> FTM
             </div>
             <div style={{ width: '80px' }} className="text-center">
                 <span>{summoner.level}</span>
@@ -80,7 +80,7 @@ function SummonerRow({
                 </div>
             </div>
             <div style={{ width: '150px' }} className="text-center">
-                <span>{format_ether(summoner.gold)}</span>
+                <span>{format_ether(summoner.gold_exact)}</span>
             </div>
             <div style={{ width: '100px' }} className="text-center">
                 <span>{format_number(summoner.cellar)}</span>
@@ -226,21 +226,20 @@ export default function SummonersMarket(): JSX.Element {
                             if (value == 0) {
                                 continue
                             }
-                            const min_price = utils.parseEther(Math.max(0.00001, value).toString())
+                            const min_price =Math.max(0.0001, value)
                             const comp = words[1] === '<' ? '_lt' : '_lte'
-                            query['where'].push(
-                                `_and: [{price: {${comp}: "${min_price}"}}, {price: {_gt: "0"}}]`
+                            query['where'].push(`_and: [{price_approx: {${comp}: "${min_price}"}}, {price_approx: {_gt: "0"}}]`
                             )
                         } else if (['>', '>=', '=>'].includes(words[1])) {
-                            const min_price = utils.parseEther(Math.max(0.00001, value).toString())
+                            const min_price = Math.max(0.00001, value)
                             const comp = words[1] === '>' ? '_gt' : '_gte'
-                            query['where'].push(`price: {${comp}: "${min_price}"}`)
+                            query['where'].push(`price_approx: {${comp}: "${min_price}"}`)
                         } else if (['==', '='].includes(words[1])) {
                             if (value == 0) {
                                 continue
                             }
-                            const min_price = utils.parseEther(Math.max(0.00001, value).toString())
-                            query['where'].push(`price: {_eq: "${min_price}"}`)
+                            const min_price = Math.max(0.0001, value).toString()
+                            query['where'].push(`price_approx: {_eq: "${min_price}"}`)
                         }
                         has_price = true
                     } else {
@@ -263,7 +262,7 @@ export default function SummonersMarket(): JSX.Element {
             }
         }
         if (!has_price) {
-            query['where'].push('price: { _gte: "0"}')
+            query['where'].push('price_approx: { _gte: "0"}')
         }
         if (classes.length === 1) {
             query['where'].push(`class: { _eq: ${classes[0]} }`)
@@ -279,11 +278,10 @@ export default function SummonersMarket(): JSX.Element {
         }
         setTags(newTags)
         const query_str = buildQuery(query)
+        // console.log(query_str)
         const finalQuery = getMarketSummonersQuery(query_str)
-        console.log(finalQuery)
         const format = gql(finalQuery)
         setQuery(format)
-        console.log(format)
     }
 
     const buildQuery = (query) => {
