@@ -114,7 +114,6 @@ export default function useRarityStarterPack(): StarterPackInterface {
                     const sellable = await pack?.get_sellable_items_between_ids(account, min_id, max_id)
                     resolve(sellable.map((s) => parseInt(s.toString())))
                 } catch (e) {
-                    console.log(e)
                     reject()
                 }
             })
