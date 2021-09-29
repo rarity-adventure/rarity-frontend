@@ -13,7 +13,6 @@ import useRarityGold from '../../../hooks/useRarityGold'
 import useRarityCellar from '../../../hooks/useRarityCellar'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
-import { syncSummoners } from '../../../state/summoners/actions'
 
 function SummonerTransferRow({
     summoner,
@@ -55,7 +54,6 @@ function SummonerTransferRow({
             .then(() => {
                 setSending(false)
                 setBalance(0)
-                dispatch(syncSummoners)
             })
     }
 

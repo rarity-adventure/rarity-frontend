@@ -10,7 +10,6 @@ import { RARITY_HELPER_ADDRESS } from '../../../constants'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import { chunkArrayByNumber } from '../../../functions/array'
 import useRarityHelper from '../../../hooks/useRarityHelper'
-import { syncSummoners } from '../../../state/summoners/actions'
 import { useDispatch } from 'react-redux'
 
 interface AdventureModalProps {
