@@ -70,8 +70,8 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         const global = await isApprovedForAll(account, RARITY_CRAFTING_ADDRESS)
         setGlobalApproval(global)
         setApproval({
-            gold: goldAllowance >= CRAFTING_ALLOWANCE,
-            material: matAllowance >= CRAFTING_ALLOWANCE,
+            gold: goldAllowance >= item.cost,
+            material: matAllowance >= materialUse,
         })
     }, [gold_allowance, material_allowance, summoner, account, isApprovedForAll])
 
@@ -132,6 +132,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     const delay = (ms) => new Promise((res) => setTimeout(res, ms))
 
     const DC = useMemo(() => {
+        if (!item) return 0
         switch (view) {
             case View.ARMORS:
                 return 20 + item.armor_bonus
