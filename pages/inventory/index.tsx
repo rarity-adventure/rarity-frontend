@@ -35,7 +35,7 @@ export default function Inventory(): JSX.Element {
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
                 {loading ? (
                     <div className="flex my-10 justify-center">
-                        <Loader size={'50'} />
+                        <Loader size={'20'} />
                     </div>
                 ) : items.length > 0 ? (
                     <>

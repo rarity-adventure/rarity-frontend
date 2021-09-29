@@ -127,7 +127,7 @@ export default function MyApp({
                     <Web3ProviderNetwork getLibrary={getLibrary}>
                         <Web3ReactManager>
                             <ReduxProvider store={store}>
-                                <PersistGate loading={"loading"} persistor={persistor}>
+                                <PersistGate loading={'loading'} persistor={persistor}>
                                     <>
                                         <ApplicationUpdater />
                                         <SummonersUpdater />

@@ -64,20 +64,28 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
         }
     }
 
-    const fetch_allowance = useCallback(async () => {
-        const goldAllowance = await gold_allowance(summoner.id, RARITY_CRAFTING_SUMMONER)
-        const matAllowance = await material_allowance(summoner.id, RARITY_CRAFTING_SUMMONER)
+    const fetch_global_allowance = useCallback(async () => {
         const global = await isApprovedForAll(account, RARITY_CRAFTING_ADDRESS)
         setGlobalApproval(global)
-        setApproval({
-            gold: goldAllowance >= item.cost,
-            material: matAllowance >= materialUse,
-        })
-    }, [gold_allowance, material_allowance, summoner, account, isApprovedForAll])
+    }, [account, isApprovedForAll])
+
+    const fetch_item_allowance = useCallback(
+        async (item) => {
+            const goldAllowance = await gold_allowance(summoner.id, RARITY_CRAFTING_SUMMONER)
+            const matAllowance = await material_allowance(summoner.id, RARITY_CRAFTING_SUMMONER)
+            setApproval({
+                gold: goldAllowance >= item.cost,
+                material: matAllowance >= materialUse,
+            })
+        },
+        [gold_allowance, material_allowance, summoner, account, isApprovedForAll, item, materialUse]
+    )
 
     useEffect(() => {
-        fetch_allowance()
-    }, [summoner, fetch_allowance])
+        fetch_global_allowance()
+        if (!item) return
+        fetch_item_allowance(item)
+    }, [summoner, fetch_global_allowance, fetch_item_allowance, item])
 
     async function approveGold() {
         toast
@@ -251,7 +259,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-1 w-full px-4 py-2 overflow-scroll overflow-hidden h-60 mb-2">
+                                    <div className="grid grid-cols-1 w-full px-4 py-2 scrollbar-hide overflow-scroll overflow-hidden h-60 mb-2">
                                         {view === View.GOODS && (
                                             <div>
                                                 {Object.keys(ITEMS[ITEM_TYPE.GOOD]).map((k) => {

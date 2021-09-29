@@ -55,7 +55,6 @@ export default function Profile(): JSX.Element {
 
     function selectNextSummoner() {
         const currIndex = s.map((s) => s.id).indexOf(selected.id)
-        console.log(currIndex)
         if (currIndex < s.length - 1) {
             router.push('/play/' + s[currIndex + 1].id)
         }
@@ -213,6 +212,8 @@ export default function Profile(): JSX.Element {
                                             </div>
                                         </button>
                                     )}
+                                </div>
+                                <div className="sm:hidden">
                                     <SummonerSelector
                                         summoners={s}
                                         select={async (s) => await router.push('/play/' + s.id)}

@@ -40,7 +40,7 @@ export default function SummonerSelector({ summoners, select }: SummonerSelector
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="absolute max-h-72 scrollbar-hide w-96 mx-auto z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
+                            <Menu.Items className="absolute scrollbar-hide w-full max-h-48 md:max-h-72 md:w-96 mx-auto z-30 overflow-scroll right-0 mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
                                 <div>
                                     {summoners.map((s: SummonerFullData) => {
                                         return (

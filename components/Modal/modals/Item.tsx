@@ -44,7 +44,7 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                         item.armor_bonus ||
                         item.max_dex_bonus ||
                         item.penalty ? (
-                            <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll scrollbar-hide max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <div className="py-2 px-2">
                                     <p>Weight: {item.weight}</p>
                                     {item.proficiency ? (
@@ -77,7 +77,7 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                         )}
 
                         {item.description && (
-                            <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll scrollbar-hide max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <p className="p-1">{item.description}</p>
                             </div>
                         )}
