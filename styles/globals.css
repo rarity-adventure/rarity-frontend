@@ -54,10 +54,6 @@ body {
     overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-    display: none;
-}
-
 .hero-bg {
     position: absolute;
     z-index: -100;
