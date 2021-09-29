@@ -78,7 +78,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                 material: matAllowance >= materialUse,
             })
         },
-        [gold_allowance, material_allowance, summoner, account, isApprovedForAll, item, materialUse]
+        [gold_allowance, material_allowance, summoner, materialUse]
     )
 
     useEffect(() => {
