@@ -2,8 +2,6 @@ import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
-import { utils } from 'ethers'
-import Modal from '../index'
 import {
     ARMOR_PROFICIENCY,
     Item,
@@ -12,6 +10,7 @@ import {
     WEAPON_ENCUMBRANCE,
     WEAPON_PROFICIENCY,
 } from '../../../constants/codex/items'
+import Modal from '../Modal'
 
 interface ItemModalProps {
     open: boolean

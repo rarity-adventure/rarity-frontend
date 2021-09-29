@@ -27,4 +27,5 @@ module.exports = {
             animation: ['hover, focus'],
         },
     },
+    plugins: [require('tailwind-scrollbar-hide')],
 }

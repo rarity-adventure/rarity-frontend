@@ -1,4 +1,4 @@
-import HeadlessUIModal from '../HeadlessUIModal'
+import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -56,7 +56,7 @@ export default function SellItemsModal({ open, closeFunction, items }: SellItems
     }
 
     return (
-        <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
+        <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`sell items`)} onClose={closeFunction} />
                 {approved ? (
@@ -103,6 +103,6 @@ export default function SellItemsModal({ open, closeFunction, items }: SellItems
                     </div>
                 )}
             </div>
-        </HeadlessUIModal>
+        </Modal>
     )
 }

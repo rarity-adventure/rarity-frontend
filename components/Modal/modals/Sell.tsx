@@ -1,4 +1,4 @@
-import HeadlessUIModal from '../HeadlessUIModal'
+import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -57,7 +57,7 @@ export default function SellModal({ open, closeFunction, summoner }: BurnModalPr
     }
 
     return (
-        <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
+        <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`sell summoner`)} onClose={closeFunction} />
                 {approved ? (
@@ -95,6 +95,6 @@ export default function SellModal({ open, closeFunction, summoner }: BurnModalPr
                     </div>
                 )}
             </div>
-        </HeadlessUIModal>
+        </Modal>
     )
 }

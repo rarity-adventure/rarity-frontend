@@ -54,6 +54,7 @@
         "redux": "4.1.1",
         "redux-persist": "6.0.0",
         "swr": "1.0.1",
+        "tailwind-scrollbar-hide": "^1.0.3",
         "tailwindcss": "2.2.15"
     },
     "devDependencies": {

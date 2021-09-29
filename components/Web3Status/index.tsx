@@ -5,7 +5,7 @@ import { shortenAddress } from '../../functions/format'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { ApplicationModal } from '../../state/application/actions'
-import HeadlessUIModal from '../Modal/HeadlessUIModal'
+import Modal from '../Modal/Modal'
 import ModalHeader from '../Modal/ModalHeader'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
@@ -81,7 +81,7 @@ export default function Web3Status() {
             <Web3StatusInner />
             {account && <div />}
             {!account && !error && (
-                <HeadlessUIModal isOpen={open} onDismiss={toggleModal}>
+                <Modal isOpen={open} onDismiss={toggleModal}>
                     <div className="bg-background-end rounded-lg border-2 border-white">
                         <ModalHeader title={i18n._(t`choose a wallet`)} onClose={toggleModal} />
                         <div className="grid grid-cols-1 text-white p-4 pb-8 gap-5">
@@ -114,7 +114,7 @@ export default function Web3Status() {
                             })}
                         </div>
                     </div>
-                </HeadlessUIModal>
+                </Modal>
             )}
         </>
     )
