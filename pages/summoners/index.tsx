@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { useSummoners, useSummonersLoading } from '../../state/summoners/hooks'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
@@ -13,7 +13,6 @@ import DungeonModal from '../../components/Modal/modals/Dungeon'
 import Filter from '../../components/Filter'
 import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 
 enum Modal {
     ADVENTURE = 1,
@@ -97,22 +96,6 @@ export default function Summoners(): JSX.Element {
     const [level, setLevel] = useState<SummonerFullData[]>([])
     const [gold, setGold] = useState<SummonerFullData[]>([])
     const [dungeon, setDungeon] = useState<SummonerFullData[]>([])
-    const [sellable, setSellable] = useState<number[]>([])
-
-    const { filter_needed_summoners } = useRarityStarterPack()
-
-    const fetch_sellable = useCallback(async () => {
-        const sellable = await filter_needed_summoners(
-            s.map((s) => {
-                return s.id
-            })
-        )
-        setSellable(
-            sellable.map((id) => {
-                return parseInt(id.toString())
-            })
-        )
-    }, [filter_needed_summoners, s])
 
     const [modal, setModal] = useState(0)
 
@@ -127,8 +110,7 @@ export default function Summoners(): JSX.Element {
         setLevel(s.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level)))
         setGold(s.filter((s) => s.gold.claimable > 0))
         setDungeon(s.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0))
-        fetch_sellable()
-    }, [s, modal, account, fetch_sellable])
+    }, [s, modal, account])
 
     const [time, setCurrentTime] = useState(Date.now())
 
@@ -222,24 +204,10 @@ export default function Summoners(): JSX.Element {
                                 {}
                                 {parsedSummoners.length === 0
                                     ? summoners.map((s) => {
-                                          return (
-                                              <SummonerSummaryCard
-                                                  key={s.id}
-                                                  summoner={s}
-                                                  time={time}
-                                                  sellable={sellable.indexOf(s.id) !== -1}
-                                              />
-                                          )
+                                          return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
                                       })
                                     : parsedSummoners.map((s) => {
-                                          return (
-                                              <SummonerSummaryCard
-                                                  key={s.id}
-                                                  summoner={s}
-                                                  time={time}
-                                                  sellable={sellable.indexOf(s.id) !== -1}
-                                              />
-                                          )
+                                          return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
                                       })}
                             </div>
                         </>

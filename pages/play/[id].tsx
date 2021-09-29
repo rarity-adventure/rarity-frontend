@@ -148,7 +148,10 @@ export default function Profile(): JSX.Element {
                                                     </button>
                                                 </>
                                             )}
-                                            <SummonerSelector summoners={s} select={ async (s) => await router.push("/play/" + s.id )} />
+                                            <SummonerSelector
+                                                summoners={s}
+                                                select={async (s) => await router.push('/play/' + s.id)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="flex -mr-2 md:hidden">
@@ -210,7 +213,10 @@ export default function Profile(): JSX.Element {
                                             </div>
                                         </button>
                                     )}
-                                    <SummonerSelector summoners={s} select={ async (s) => await router.push("/play/" + s.id )} />
+                                    <SummonerSelector
+                                        summoners={s}
+                                        select={async (s) => await router.push('/play/' + s.id)}
+                                    />
                                 </div>
                             </div>
 
