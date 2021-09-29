@@ -57,6 +57,7 @@ export default function Inventory(): JSX.Element {
                                                         .reduce((a, b) => a + b)}
                                                 </p>
                                             </div>
+                                            <MaterialImage />
                                         </div>
                                         <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 w-2/3 text-center">
@@ -106,7 +107,7 @@ export default function Inventory(): JSX.Element {
                             )}
                         </div>
                         <div className="md:p-14">
-                            <div className="grid grid-cols-1 rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
+                            <div className="grid grid-cols-1 scrollbar-hide rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
                                 {items.map((i) => {
                                     return <ItemCard key={i.token_id} userItem={i} />
                                 })}
