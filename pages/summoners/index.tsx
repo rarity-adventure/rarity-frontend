@@ -153,11 +153,11 @@ export default function Summoners(): JSX.Element {
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_ADVENTURE_TIME)
         setAdventureTimeApproval(approved)
-    }, [])
+    }, [account, isApprovedForAll])
 
     useEffect(() => {
         fetch_approval()
-    }, [summoners])
+    }, [summoners, fetch_approval])
 
     function approveDaycare() {
         toast
