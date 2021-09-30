@@ -23,8 +23,6 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
 
     const { account } = useActiveWeb3React()
 
-    const dispatch = useDispatch()
-
     const { isApprovedForAll, setApprovalForAll } = useRarity()
     const { adventure, adventure_donate } = useRarityHelper()
 
@@ -40,7 +38,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     }, [summoners, fetch_approval])
 
     async function submit() {
-        const chunks = chunkArrayByNumber(summoners, 300)
+        const chunks = chunkArrayByNumber(summoners, 200)
         for (let i = 0; i < chunks.length; i++) {
             await toast.promise(
                 adventure(
@@ -62,7 +60,7 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
     }
 
     async function submitTIP() {
-        const chunks = chunkArrayByNumber(summoners, 300)
+        const chunks = chunkArrayByNumber(summoners, 200)
         for (let i = 0; i < chunks.length; i++) {
             if (i === 0) {
                 await toast.promise(
@@ -123,8 +121,8 @@ export default function AdventureModal({ open, closeFunction, summoners }: Adven
                                 {i18n._(t`You have`)} {summoners.length}{' '}
                                 {i18n._(t`summoners available to send for adventure.`)}{' '}
                             </h2>
-                            {summoners.length >= 100 && (
-                                <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
+                            {summoners.length >= 200 && (
+                                <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 200 summoners`)}</h2>
                             )}
                             {approved ? (
                                 <>
