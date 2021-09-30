@@ -74,7 +74,7 @@ body {
 
 .bg {
     position: absolute;
-    background: linear-gradient(180deg, #0f2f5c 0.85%, #0f1f39 7.88%, #0b1526 19.44%);
+    background: linear-gradient(180deg, rgba(15,47,92,1) 0px, rgba(15,31,57,1) 200px, rgba(11,21,38,1) 400px);
 }
 
 .shadow {
