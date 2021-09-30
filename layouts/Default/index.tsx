@@ -61,7 +61,7 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
             <Header supporter={supporter} />
             {showBanner ? (
                 <div className="w-full">
-                    <div className="p-2 text-center text-xs cursor-pointer hover:animate-bounce">
+                    <div className="p-2 text-center text-xs cursor-pointer">
                         <Link href="/pack">
                             <span>
                                 {'>>'} {i18n._(t`Check out the Rarity Game Starter Pack`)} {'<<'}

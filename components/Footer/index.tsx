@@ -1,36 +1,51 @@
 import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
-
+import { shortenAddress } from '../../functions/format'
 const Footer = () => {
     const { i18n } = useLingui()
 
     return (
-        <footer className="flex-shrink-0 w-full text-xs pb-14 -my-1 mt-5 md:pb-1">
-            <div className="w-full p-5">
-                <div className="grid grid-cols-1 md:grid-cols-4 w-full lg:w-6/12 xl:w-5/12 p-1 md:divide-x-2 md:divide-white gap-1">
-                    <div>
-                        <h2>{i18n._(t`CREATED BY`)}:</h2>
-                        <a target="_blank" rel="noreferrer" href="https://twitter.com/AndreCronjeTech">
-                            <span>@ANDRECRONJE</span>
-                        </a>
-                    </div>
-                    <div className="col-span-2">
-                        <h2 className="md:ml-4">{i18n._(t`BUILT BY`)}:</h2>
-                        <a className="md:ml-4" target="_blank" rel="noreferrer" href="https://twitter.com/0xchronos">
-                            <span>@0xCHRONOS </span>
-                        </a>
-                        <span className="md:mx-2">and</span>
-                        <a target="_blank" rel="noreferrer" href="https://twitter.com/mat_nadler">
-                            <span> @MAT_NADLER</span>
-                        </a>
-                    </div>
-                    <div>
-                        <h2 className="md:ml-4">{i18n._(t`DESIGNED BY`)}:</h2>
-                        <a className="md:ml-4" target="_blank" rel="noreferrer" href="https://twitter.com/0xlucid">
-                            <span>@0xLUCID</span>
-                        </a>
-                    </div>
-                </div>
+        <footer className="opacity-80 mt-16 pb-20">
+            <div className="flex flex-row justify-center text-center" style={{ fontFamily: 'Work Sans' }}>
+                <span>
+                    {i18n._(t`Created by`)}:{' '}
+                    <a target="_blank" rel="noreferrer" href="https://twitter.com/AndreCronjeTech">
+                        <b>
+                            <a target="_blank">@AndreCronjeTech</a>
+                        </b>
+                    </a>{' '}
+                    {i18n._(t`and built by`)}:{' '}
+                    <a target="_blank" rel="noreferrer" href="https://twitter.com/0xchronos">
+                        <b>
+                            <span>@0xChronos</span>
+                        </b>
+                    </a>{' '}
+                    <a target="_blank" rel="noreferrer" href="https://twitter.com/mat_nadler">
+                        <b>
+                            <span>@mat_nadler</span>
+                        </b>
+                    </a>{' '}
+                    {i18n._(t`and`)}{' '}
+                    <a target="_blank" rel="noreferrer" href="https://twitter.com/0xlucid">
+                        <b>
+                            <span>@0xlucid</span>
+                        </b>
+                    </a>
+                </span>
+            </div>
+            <div className="flex flex-row justify-center" style={{ fontFamily: 'Work Sans' }}>
+                <span>
+                    {i18n._(t`Donations`)}:{' '}
+                    <a
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://ftmscan.com/address/0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca"
+                    >
+                        <b>
+                            <span>{shortenAddress('0x5eC86d4d826bF3e12Ee2486B9dF01d7CFa99B6Ca')}</span>
+                        </b>
+                    </a>{' '}
+                </span>
             </div>
         </footer>
     )
