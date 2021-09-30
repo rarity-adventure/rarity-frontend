@@ -13,7 +13,6 @@ import DungeonModal from '../../components/Modal/modals/Dungeon'
 import Filter from '../../components/Filter'
 import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 import useRarity from '../../hooks/useRarity'
 import { RARITY_ADVENTURE_TIME } from '../../constants'
 import toast from 'react-hot-toast'
@@ -100,22 +99,6 @@ export default function Summoners(): JSX.Element {
     const [level, setLevel] = useState<SummonerFullData[]>([])
     const [gold, setGold] = useState<SummonerFullData[]>([])
     const [dungeon, setDungeon] = useState<SummonerFullData[]>([])
-    const [sellable, setSellable] = useState<number[]>([])
-
-    const { filter_needed_summoners } = useRarityStarterPack()
-
-    const fetch_sellable = useCallback(async () => {
-        const sellable = await filter_needed_summoners(
-            s.map((s) => {
-                return s.id
-            })
-        )
-        setSellable(
-            sellable.map((id) => {
-                return parseInt(id.toString())
-            })
-        )
-    }, [filter_needed_summoners, s])
 
     const [modal, setModal] = useState(0)
 
@@ -130,8 +113,7 @@ export default function Summoners(): JSX.Element {
         setLevel(s.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level)))
         setGold(s.filter((s) => s.gold.claimable > 0))
         setDungeon(s.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0))
-        fetch_sellable()
-    }, [s, modal, account, fetch_sellable])
+    }, [s, modal, account])
 
     const [time, setCurrentTime] = useState(Date.now())
 
@@ -185,7 +167,9 @@ export default function Summoners(): JSX.Element {
                         <>
                             <div className="flex flex-row items-center justify-between">
                                 <div>
-                                    <h1 className="text-2xl xl:text-3xl">{i18n._(t`summoners`)}</h1>
+                                    <h1 className="text-2xl xl:text-3xl">
+                                        {i18n._(t`summoners`)} ({summoners.length >= 1000 ? '1000+' : summoners.length})
+                                    </h1>
                                 </div>
                                 <div className="uppercase">
                                     <h1 className="text-lg">{i18n._(t`one-click`)}</h1>
@@ -251,33 +235,21 @@ export default function Summoners(): JSX.Element {
                                         onClick={() => approveDaycare()}
                                     >
                                         <p className="text-xs animate-bounce">
-                                            {
-                                                '>> Some of your summoners are in Daycare but it is not approved click here to approve <<'
-                                            }
+                                            {'>>'}{' '}
+                                            {i18n._(
+                                                t`Some of your summoners are in Daycare but it is not approved click here to approve`
+                                            )}{' '}
+                                            {'<<'}
                                         </p>
                                     </div>
                                 )}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
                                 {parsedSummoners.length === 0
                                     ? summoners.map((s) => {
-                                          return (
-                                              <SummonerSummaryCard
-                                                  key={s.id}
-                                                  summoner={s}
-                                                  time={time}
-                                                  sellable={sellable.indexOf(s.id) !== -1}
-                                              />
-                                          )
+                                          return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
                                       })
                                     : parsedSummoners.map((s) => {
-                                          return (
-                                              <SummonerSummaryCard
-                                                  key={s.id}
-                                                  summoner={s}
-                                                  time={time}
-                                                  sellable={sellable.indexOf(s.id) !== -1}
-                                              />
-                                          )
+                                          return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
                                       })}
                             </div>
                         </>

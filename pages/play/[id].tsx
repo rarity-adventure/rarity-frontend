@@ -11,12 +11,12 @@ import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
-import Image from 'next/image'
 import TransferMaterialModal from '../../components/Modal/modals/TransferMaterial'
 import TransferGoldModal from '../../components/Modal/modals/TransferGold'
 import SummonerTransferCard from '../../components/Cards/Transfer'
 import { MaterialImage } from '../../components/Coins/material'
 import { GoldImage } from '../../components/Coins/gold'
+import { useRouter } from 'next/router'
 
 enum View {
     stats,
@@ -28,35 +28,35 @@ enum View {
 export default function Profile(): JSX.Element {
     const { i18n } = useLingui()
 
+    const router = useRouter()
+
+    const { query } = useRouter()
+
     const s = useSummoners()
 
-    const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
-
     useEffect(() => {
-        setSummoners(s)
-    }, [s])
+        if (!s) return
+        const index = s.map((s) => s.id).indexOf(parseInt(query.id as string))
+        setSelected(s[index])
+    }, [s, query])
 
-    const [selectedSummoner, setSelectedSummoner] = useState<SummonerFullData | undefined>(undefined)
+    const [selected, setSelected] = useState<SummonerFullData | undefined>(undefined)
 
-    useEffect(() => {
-        if (summoners.length > 0 && !selectedSummoner) {
-            setSelectedSummoner(summoners[0])
-        }
-    }, [summoners, selectedSummoner])
+    useEffect(() => {}, [])
 
     const [view, setView] = useState<View>(View.stats)
 
     function selectPrevSummoner() {
-        const currIndex = summoners.map((s) => s.id).indexOf(selectedSummoner.id)
+        const currIndex = s.map((s) => s.id).indexOf(selected.id)
         if (currIndex !== 0) {
-            setSelectedSummoner(summoners[currIndex - 1])
+            router.push('/play/' + s[currIndex - 1].id)
         }
     }
 
     function selectNextSummoner() {
-        const currIndex = summoners.map((s) => s.id).indexOf(selectedSummoner.id)
-        if (currIndex < summoners.length - 1) {
-            setSelectedSummoner(summoners[currIndex + 1])
+        const currIndex = s.map((s) => s.id).indexOf(selected.id)
+        if (currIndex < s.length - 1) {
+            router.push('/play/' + s[currIndex + 1].id)
         }
     }
 
@@ -115,18 +115,18 @@ export default function Profile(): JSX.Element {
                                     </div>
                                     <div>
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
-                                            {selectedSummoner && (
+                                            {selected && (
                                                 <>
                                                     <button onClick={() => setTransferMaterialModal(true)}>
                                                         <TransferMaterialModal
                                                             open={transferMaterialModal}
                                                             closeFunction={closeMaterialModal}
-                                                            id={selectedSummoner.id}
-                                                            summoners={summoners}
+                                                            id={selected.id}
+                                                            summoners={s}
                                                         />
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                             <div className="py-1 w-2/3 text-center">
-                                                                <p>{selectedSummoner.materials.balance}</p>
+                                                                <p>{selected.materials.balance}</p>
                                                             </div>
                                                             <MaterialImage />
                                                         </div>
@@ -135,19 +135,22 @@ export default function Profile(): JSX.Element {
                                                         <TransferGoldModal
                                                             open={transferGoldModal}
                                                             closeFunction={closeGoldModal}
-                                                            summoners={summoners}
-                                                            id={selectedSummoner.id}
+                                                            summoners={s}
+                                                            id={selected.id}
                                                         />
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                             <div className="py-1 w-2/3 text-center">
-                                                                <p>{selectedSummoner.gold.balance}</p>
+                                                                <p>{selected.gold.balance}</p>
                                                             </div>
                                                             <GoldImage />
                                                         </div>
                                                     </button>
                                                 </>
                                             )}
-                                            <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
+                                            <SummonerSelector
+                                                summoners={s}
+                                                select={async (s) => await router.push('/play/' + s.id)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="flex -mr-2 md:hidden">
@@ -189,27 +192,32 @@ export default function Profile(): JSX.Element {
                                     </div>
                                 </div>
                                 <div className="sm:hidden mt-2 flex flex-row justify-between">
-                                    {selectedSummoner && (
+                                    {selected && (
                                         <button onClick={() => setTransferMaterialModal(true)}>
                                             <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                 <div className="py-1 w-2/3 text-center">
-                                                    <p>{selectedSummoner.materials.balance}</p>
+                                                    <p>{selected.materials.balance}</p>
                                                 </div>
                                                 <MaterialImage />
                                             </div>
                                         </button>
                                     )}
-                                    {selectedSummoner && (
+                                    {selected && (
                                         <button onClick={() => setTransferGoldModal(true)}>
                                             <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                 <div className="py-1 w-2/3 text-center">
-                                                    <p>{selectedSummoner.gold.balance}</p>
+                                                    <p>{selected.gold.balance}</p>
                                                 </div>
                                                 <GoldImage />
                                             </div>
                                         </button>
                                     )}
-                                    <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
+                                </div>
+                                <div className="sm:hidden">
+                                    <SummonerSelector
+                                        summoners={s}
+                                        select={async (s) => await router.push('/play/' + s.id)}
+                                    />
                                 </div>
                             </div>
 
@@ -244,37 +252,33 @@ export default function Profile(): JSX.Element {
                         </>
                     )}
                 </Popover>
-                {selectedSummoner ? (
+                {selected ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
                         <div className="text-center mx-auto  mt-2">
-                            {CLASSES_IMAGES[selectedSummoner.base._class.toString()]}
+                            {CLASSES_IMAGES[selected.base._class.toString()]}
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                 <button onClick={() => selectPrevSummoner()}>
-                                    <ChevronLeft />
+                                    <ChevronLeft size="50px" />
                                 </button>{' '}
                                 <div className="w-32 md:w-60 overflow-x-hidden overflow-ellipsis">
                                     <span className="text-xs md:text-xl mx-2 overflow-hidden whitespace-nowrap">
-                                        {selectedSummoner.base._name !== ''
-                                            ? selectedSummoner.base._name
-                                            : i18n._(t`unknown`)}
+                                        {selected.base._name !== '' ? selected.base._name : i18n._(t`unknown`)}
                                     </span>
                                 </div>{' '}
                                 <button onClick={() => selectNextSummoner()}>
-                                    <ChevronRight />
+                                    <ChevronRight size="50px" />
                                 </button>
                             </div>
                             <p className="mt-4 md:text-xl uppercase border-2 border-white rounded-3xl">
-                                {i18n._(CLASSES_NAMES[selectedSummoner.base._class.toString()])}
+                                {i18n._(CLASSES_NAMES[selected.base._class.toString()])}
                             </p>
                         </div>
 
                         <div className="col-span-2">
-                            {view === View.stats && <SummonerStatsCard summoner={selectedSummoner} />}
-                            {view === View.skills && <SummonerSkillsCard summoner={selectedSummoner} />}
-                            {view === View.transfer && (
-                                <SummonerTransferCard summoner={selectedSummoner} summoners={summoners} />
-                            )}
-                            {view === View.crafting && <SummonerCraftCard summoner={selectedSummoner} />}
+                            {view === View.stats && <SummonerStatsCard summoner={selected} />}
+                            {view === View.skills && <SummonerSkillsCard summoner={selected} />}
+                            {view === View.transfer && <SummonerTransferCard summoner={selected} summoners={s} />}
+                            {view === View.crafting && <SummonerCraftCard summoner={selected} />}
                         </div>
                     </div>
                 ) : (

@@ -2,10 +2,10 @@ import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import Modal from '../index'
 import Image from 'next/image'
 import useRarityCrafting from '../../../hooks/useRarityCrafting'
 import Loader from '../../Loader'
+import Modal from '../Modal'
 
 interface TokenURIModalProps {
     open: boolean

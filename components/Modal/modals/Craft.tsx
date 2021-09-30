@@ -2,9 +2,9 @@ import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import Modal from '../index'
 import { Item } from '../../../constants/codex/items'
 import Loader from '../../Loader'
+import Modal from '../Modal'
 
 interface CraftModalProps {
     open: boolean

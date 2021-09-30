@@ -1,23 +1,17 @@
 import { useLingui } from '@lingui/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { ItemData, SummonerFullData } from '../../hooks/useRarityLibrary'
 import { useItems, useItemsLoading } from '../../state/items/hooks'
 import ItemCard from '../../components/Cards/Item'
-import Image from 'next/image'
 import { useSummoners } from '../../state/summoners/hooks'
 import Loader from '../../components/Loader'
 import BulkTransfer from '../../components/Transfer'
-import useRarityStarterPack from '../../hooks/useRarityStarterPack'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import SellItemsModal from '../../components/Modal/modals/SellItems'
 import { GoldImage } from '../../components/Coins/gold'
 import { MaterialImage } from '../../components/Coins/material'
 
 export default function Inventory(): JSX.Element {
     const { i18n } = useLingui()
-
-    const { account } = useActiveWeb3React()
 
     const it = useItems()
 
@@ -25,11 +19,8 @@ export default function Inventory(): JSX.Element {
 
     const s = useSummoners()
 
-    const { get_sellable_items_between_ids } = useRarityStarterPack()
-
     const [items, setItems] = useState<ItemData[]>(it)
     const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
-    const [sellable, setSellable] = useState<number[]>([])
 
     useEffect(() => {
         setItems(it)
@@ -39,36 +30,12 @@ export default function Inventory(): JSX.Element {
         setSummoners(s)
     }, [s])
 
-    const fetch_sellable = useCallback(
-        async (check: number[]) => {
-            const sellable = await get_sellable_items_between_ids(account, check[0], check[check.length - 1])
-            setSellable(sellable)
-        },
-        [account, get_sellable_items_between_ids]
-    )
-
-    useEffect(() => {
-        const check = items
-            .map((i) => i.token_id)
-            .filter((i) => i > 1000)
-            .sort()
-            .reverse()
-        fetch_sellable(check)
-    }, [items, fetch_sellable])
-
-    const [modal, setModal] = useState(false)
-
-    function close() {
-        setModal(false)
-    }
-
     return (
         <div className="w-full z-25">
-            <SellItemsModal open={modal} closeFunction={close} items={sellable} />
             <div className="md:border-white md:border-4 p-4 md:m-10 z-10">
                 {loading ? (
                     <div className="flex my-10 justify-center">
-                        <Loader size={'50'} />
+                        <Loader size={'20'} />
                     </div>
                 ) : items.length > 0 ? (
                     <>
@@ -140,32 +107,12 @@ export default function Inventory(): JSX.Element {
                             )}
                         </div>
                         <div className="md:p-14">
-                            <div className="grid grid-cols-1 rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
+                            <div className="grid grid-cols-1 scrollbar-hide rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
                                 {items.map((i) => {
-                                    return (
-                                        <ItemCard
-                                            key={i.token_id}
-                                            userItem={i}
-                                            sellable={sellable.indexOf(i.token_id) !== -1}
-                                        />
-                                    )
+                                    return <ItemCard key={i.token_id} userItem={i} />
                                 })}
                             </div>
                         </div>
-
-                        {/*
-                        { sellable.length > 0 && (
-*/}
-
-                        <div className="flex flex-row items-center justify-center mb-10">
-                            <button onClick={() => setModal(true)}>
-                                {'>>'} {i18n._(t`You have`)} {sellable.length} {i18n._(t`items available for sale `)}{' '}
-                                {'<<'}
-                            </button>
-                        </div>
-                        {/*
-                )}
-*/}
                     </>
                 ) : (
                     <div className="flex my-10 justify-center">

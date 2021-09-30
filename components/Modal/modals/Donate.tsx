@@ -1,4 +1,4 @@
-import HeadlessUIModal from '../HeadlessUIModal'
+import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
@@ -32,7 +32,7 @@ export default function DonateModal({ open, closeFunction }: DonateModalProps): 
     }
 
     return (
-        <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
+        <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`donate`)} onClose={closeFunction} />
                 <div className="text-center text-white p-2 pb-4 gap-5">
@@ -64,6 +64,6 @@ export default function DonateModal({ open, closeFunction }: DonateModalProps): 
                     )}
                 </div>
             </div>
-        </HeadlessUIModal>
+        </Modal>
     )
 }

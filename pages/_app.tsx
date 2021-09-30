@@ -15,7 +15,6 @@ import { Web3ReactProvider } from '@web3-react/core'
 import { NextComponentType, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
 import getLibrary from '../functions/getLibrary'
-import Dots from '../components/Dots'
 import ApplicationUpdater from '../state/application/updater'
 import SummonersUpdater from '../state/summoners/updater'
 import ItemsUpdater from '../state/items/updater'
@@ -128,7 +127,7 @@ export default function MyApp({
                     <Web3ProviderNetwork getLibrary={getLibrary}>
                         <Web3ReactManager>
                             <ReduxProvider store={store}>
-                                <PersistGate loading={<Dots>loading</Dots>} persistor={persistor}>
+                                <PersistGate loading={'loading'} persistor={persistor}>
                                     <>
                                         <ApplicationUpdater />
                                         <SummonersUpdater />

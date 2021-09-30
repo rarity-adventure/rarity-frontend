@@ -105,7 +105,7 @@ export default function Filter({ summoners, filteredSummoners }: SelectorProps):
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute max-h-96 z-30 overflow-scroll right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
+                        <Menu.Items className="absolute max-h-72 scrollbar-hide z-30 overflow-scroll right-0 rounded-b-lg border-b-2 border-r-2 border-l-2 pb-0.5 border-white shadow-lg bg-background-end">
                             {filters.map((f, i) => {
                                 {
                                     return (

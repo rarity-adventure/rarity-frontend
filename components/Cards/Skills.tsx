@@ -3,7 +3,7 @@ import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { SKILL_URL, SKILLS } from '../../constants/codex/skills'
-import HeadlessUIModal from '../Modal/HeadlessUIModal'
+import Modal from '../Modal/Modal'
 import ModalHeader from '../Modal/ModalHeader'
 import { CLASS_SKILLS } from '../../constants/classes'
 import { RefreshIcon } from '@heroicons/react/outline'
@@ -199,7 +199,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
                     </div>
                 </div>
             </div>
-            <HeadlessUIModal isOpen={modal} onDismiss={() => setModalOpen(false)}>
+            <Modal isOpen={modal} onDismiss={() => setModalOpen(false)}>
                 <div className="bg-background-end rounded-lg border-2 border-white">
                     <ModalHeader title={i18n._(SKILLS[skill].name)} onClose={() => setModalOpen(false)} />
                     <div>
@@ -225,7 +225,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
                         </a>
                     </div>
                 </div>
-            </HeadlessUIModal>
+            </Modal>
         </div>
     )
 }

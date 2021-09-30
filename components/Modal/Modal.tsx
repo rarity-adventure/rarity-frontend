@@ -8,7 +8,7 @@ interface ModalProps {
     children?: React.ReactNode
 }
 
-const HeadlessUIModal: FC<ModalProps> = ({ isOpen, onDismiss, children }) => {
+const Modal: FC<ModalProps> = ({ isOpen, onDismiss, children }) => {
     return (
         <Transition.Root show={isOpen} as={Fragment}>
             <Dialog as="div" static className="fixed z-30 inset-0 overflow-y-auto" open={isOpen} onClose={onDismiss}>
@@ -37,7 +37,7 @@ const HeadlessUIModal: FC<ModalProps> = ({ isOpen, onDismiss, children }) => {
                         leaveFrom="opacity-40"
                         leaveTo="opacity-0"
                     >
-                        <div className="inline-block align-bottom rounded-lg text-left overflow-scroll transform sm:my-8 sm:align-middle max-w-sm md:max-w-3xl w-full p-4 sm:p-6">
+                        <div className="inline-block align-bottom rounded-lg scrollbar-hide text-left overflow-scroll transform sm:my-8 sm:align-middle max-w-sm md:max-w-3xl w-full p-4 sm:p-6">
                             {children}
                         </div>
                     </Transition.Child>
@@ -47,4 +47,4 @@ const HeadlessUIModal: FC<ModalProps> = ({ isOpen, onDismiss, children }) => {
     )
 }
 
-export default HeadlessUIModal
+export default Modal

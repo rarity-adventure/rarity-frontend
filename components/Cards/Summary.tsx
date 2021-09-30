@@ -11,13 +11,12 @@ import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
-import SellModal from '../Modal/modals/Sell'
+import { useRouter } from 'next/router'
 
 enum Modals {
     TRANSFER = 1,
     DELETE,
     DAYCARE,
-    SELL,
 }
 
 export function SummonerSummaryCardLoader(): JSX.Element {
@@ -68,18 +67,12 @@ export function SummonerSummaryCardLoader(): JSX.Element {
     )
 }
 
-function SummonerSummaryCard({
-    summoner,
-    time,
-    sellable,
-}: {
-    summoner: SummonerFullData
-    time: number
-    sellable: boolean
-}): JSX.Element {
+function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; time: number }): JSX.Element {
     const { i18n } = useLingui()
 
     const [modalOpen, setModalOpen] = useState<Modals>(0)
+
+    const router = useRouter()
 
     const { adventure, level_up } = useRarity()
 
@@ -116,13 +109,16 @@ function SummonerSummaryCard({
     return (
         <div className="mx-auto w-56">
             <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
-            <SellModal open={modalOpen === Modals.SELL} closeFunction={closeModals} summoner={summoner} />
             <TransferModal open={modalOpen === Modals.TRANSFER} closeFunction={closeModals} summoner={summoner} />
             <DaycareSingleModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoner={summoner} />
-            <div className="p-5 w-full text-center">{CLASSES_IMAGES[summoner.base._class]}</div>
-
+            <div
+                onClick={async () => router.push('/play/' + summoner.id)}
+                className="p-5 w-full text-center cursor-pointer"
+            >
+                {CLASSES_IMAGES[summoner.base._class]}
+            </div>
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
-                <div className="mx-auto p-2">
+                <div onClick={async () => router.push('/play/' + summoner.id)} className="mx-auto p-2 cursor-pointer">
                     {summoner.base._name !== '' ? (
                         <p>{summoner.base._name}</p>
                     ) : (
@@ -233,23 +229,13 @@ function SummonerSummaryCard({
                             </div>
                         </button>
                     </p>
-                    {sellable ? (
-                        <p>
-                            <button className="w-full my-1" onClick={() => setModalOpen(Modals.SELL)}>
-                                <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
-                                    {i18n._(t`sell for 0.6 FTM`)}
-                                </div>
-                            </button>
-                        </p>
-                    ) : (
-                        <p>
-                            <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
-                                <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
-                                    {i18n._(t`delete`)}
-                                </div>
-                            </button>
-                        </p>
-                    )}
+                    <p>
+                        <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
+                            <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
+                                {i18n._(t`delete`)}
+                            </div>
+                        </button>
+                    </p>
                 </div>
             </div>
         </div>
