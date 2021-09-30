@@ -235,9 +235,7 @@ export default function Summoners(): JSX.Element {
                                         onClick={() => approveDaycare()}
                                     >
                                         <p className="text-xs animate-bounce">
-                                            {
-                                                '>> Some of your summoners are in Daycare but it is not approved click here to approve <<'
-                                            }
+                                            {">>"} {i18n._(t`Some of your summoners are in Daycare but it is not approved click here to approve`)} {"<<"}
                                         </p>
                                     </div>
                                 )}
