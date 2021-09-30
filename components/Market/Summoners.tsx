@@ -5,8 +5,10 @@ import { t } from '@lingui/macro'
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { WithContext as ReactTags } from 'react-tag-input'
-import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../../constants/queries'
-import { useListedCount, useListedSummoners } from '../../../services/graph/hooks'
+import { utils } from 'ethers'
+import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../constants/queries'
+import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
+import { SKILLS } from '../../constants/codex/skills'
 import {
     COMP_TO_POSTGRES,
     TAG_SUGGESTIONS,
@@ -14,10 +16,8 @@ import {
     TAG_VALUE_COMPARISONS,
     TAGS_CLASSES,
     TAGS_WITH_VALUE,
-} from '../../../constants/tags/tag_parsing'
-import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../../constants/classes'
-import { utils } from 'ethers'
-import { SKILLS } from '../../../constants/codex/skills'
+} from '../../constants/tags/tag_parsing'
+import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/classes'
 
 function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const { i18n } = useLingui()
@@ -312,10 +312,10 @@ export default function SummonersMarket(): JSX.Element {
         }
         setTags(newTags)
         const query_str = buildQuery(query)
-        // console.log(query_str)
         const finalQuery = getMarketSummonersQuery(query_str)
         const format = gql(finalQuery)
         setQuery(format)
+        setOffset(0)
     }
 
     const buildQuery = (query) => {
