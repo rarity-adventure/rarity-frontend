@@ -36,7 +36,7 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
     const fetch = useCallback(async () => {
         const packs = await packs_available()
         const balance = await balanceOf(account)
-        const level3Summoners = summoners.filter( (s) => s.base._level >= 3).length
+        const level3Summoners = summoners.filter((s) => s.base._level >= 3).length
         if (packs && balance === 0 && route !== '/pack' && level3Summoners === 0) {
             setSupporter(false)
             setShowBanner(true)

@@ -258,7 +258,7 @@ export default function Profile(): JSX.Element {
                             {CLASSES_IMAGES[selected.base._class.toString()]}
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                 <button onClick={() => selectPrevSummoner()}>
-                                    <ChevronLeft />
+                                    <ChevronLeft size="50px" />
                                 </button>{' '}
                                 <div className="w-32 md:w-60 overflow-x-hidden overflow-ellipsis">
                                     <span className="text-xs md:text-xl mx-2 overflow-hidden whitespace-nowrap">
@@ -266,7 +266,7 @@ export default function Profile(): JSX.Element {
                                     </span>
                                 </div>{' '}
                                 <button onClick={() => selectNextSummoner()}>
-                                    <ChevronRight />
+                                    <ChevronRight size="50px" />
                                 </button>
                             </div>
                             <p className="mt-4 md:text-xl uppercase border-2 border-white rounded-3xl">
