@@ -18,6 +18,7 @@ import {
     TAGS_WITH_VALUE,
 } from '../../constants/tags/tag_parsing'
 import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/classes'
+import { QuestionMarkCircleIcon } from '@heroicons/react/solid'
 
 function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const { i18n } = useLingui()
@@ -172,11 +173,6 @@ export default function SummonersMarket(): JSX.Element {
         setSummoners(summoners.concat(s))
     }, [s, offset])
 
-    useEffect(() => {
-        if (!s || !summoners) return
-        setSummoners(s)
-    }, [s, query])
-
     const handleScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
         if (bottom) {
@@ -314,6 +310,7 @@ export default function SummonersMarket(): JSX.Element {
         const query_str = buildQuery(query)
         const finalQuery = getMarketSummonersQuery(query_str)
         const format = gql(finalQuery)
+        setSummoners([])
         setQuery(format)
         setOffset(0)
     }
@@ -383,51 +380,44 @@ export default function SummonersMarket(): JSX.Element {
 
     return (
         <div className="w-full z-25">
-            <div className="md:m-10 z-10">
-                <div className="flex flex-row items-center justify-between">
+            <div className="m-5 md:m-10 z-10">
+                <div className="flex flex-row items-center justify-center sm:justify-between">
                     <div>
                         <h1 className="text-2xl xl:text-3xl uppercase font-bold">
                             {i18n._(t`rarity summoners market`)}
                         </h1>
                     </div>
-                    {buttons()}
+                    <div className="hidden sm:inline-flex">{buttons()}</div>
                 </div>
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center justify-center sm:justify-between">
                     <h3 className="text-md">{i18n._(t`List and Buy your summoners`)}</h3>
                 </div>
-                <div className="flex flex-row items-center justify-between mt-10">
-                    <div>
-                        <h1 className="text-xl font-bold">
-                            {i18n._(t`Filter and Sort with Tags`)}{' '}
-                            <span data-tip data-for="filter-info">
-                                (i)
-                            </span>
-                            :
-                        </h1>
-                        <ReactTooltip id="filter-info" aria-haspopup="true" className="opaque">
-                            <h1 className="text-md">Filtering and sorting with tags</h1>
-                            <br />
-                            <h2 className="text-md">Type the name of a property to sort by this property.</h2>
-                            <h2 className="text-md">Examples: Price, ID, Druid or Craft</h2>
-                            <br />
-                            <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
-                            <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
-                            <br />
-                            <h2 className="text-md">
-                                Type the name of property followed by a comparison operator to filter.
-                            </h2>
-                            <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
-                        </ReactTooltip>
+                <div className="flex flex-row items-center justify-center md:justify-between mt-10 mb-2">
+                    <div className="flex flex-row text-xl font-bold items-center mr-2">
+                        <h1>{i18n._(t`Filter and Sort with Tags`)} </h1>
+                        <QuestionMarkCircleIcon data-tip data-for="filter-info" width={20} />
                     </div>
-                    <div>
+                    <div className="hidden sm:inline-flex">
                         <span className="uppercase">
-                            <span>
-                                {i18n._(t`listed summoners:`)} {count}
-                            </span>
+                            {i18n._(t`listed summoners:`)} {count}
                         </span>
                     </div>
+                    <ReactTooltip id="filter-info" aria-haspopup="true" className="opaque">
+                        <h1 className="text-md">Filtering and sorting with tags</h1>
+                        <br />
+                        <h2 className="text-md">Type the name of a property to sort by this property.</h2>
+                        <h2 className="text-md">Examples: Price, ID, Druid or Craft</h2>
+                        <br />
+                        <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
+                        <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
+                        <br />
+                        <h2 className="text-md">
+                            Type the name of property followed by a comparison operator to filter.
+                        </h2>
+                        <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
+                    </ReactTooltip>
                 </div>
-                <div className="flex flex-row items-center justify-between mt-2 text">
+                <div className="flex flex-row z-35 text-center">
                     <ReactTags
                         tags={tags}
                         suggestions={suggestions}
@@ -436,19 +426,20 @@ export default function SummonersMarket(): JSX.Element {
                         handleAddition={handleAddition}
                         handleDrag={handleDrag}
                         handleTagClick={handleTagClick}
-                        inputFieldPosition="bottom"
+                        inputFieldPosition="top"
                         autocomplete
                         clearAll
                         onClearAll={onClearAll}
+                        style={{ fontFamily: 'Work Sans' }}
                         classNames={{
-                            tags: 'relative',
-                            tagInput: 'inline-block h-16 border-solid m-0',
-                            tagInputField: 'p-2 text-background-end rounded-lg text-center',
+                            tags: 'relative grid uppercase',
+                            tagInput: 'inline-block border-solid uppercase mb-4',
+                            tagInputField: 'p-2 text-background-end rounded-lg text-center w-72',
                             selected: 'inline-block',
-                            tag: 'border-solid bg-black inline-block mr-2 ml-2 p-3 rounded-2xl',
+                            tag: 'text-xs border-solid bg-background-start border-2 border-white p-2 rounded-2xl mx-2',
                             remove: 'ml-3 cursor-pointer text-grey',
-                            suggestions: '',
-                            activeSuggestion: 'bg-red',
+                            suggestions: 'absolute z-35 p-2 bg-background-start w-72 text-xs',
+                            activeSuggestion: 'bg-background-end rounded-lg',
                             clearAll: 'cursor-pointer p-2 m-3 bg-black border-none rounded',
                         }}
                     />
@@ -460,7 +451,7 @@ export default function SummonersMarket(): JSX.Element {
                     <div>
                         <div
                             style={{ width: '1478px' }}
-                            className="sticky top-0 z-30 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                            className="sticky top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
                         >
                             <div style={{ width: '80px' }} className="text-center"></div>
                             <div
