@@ -38,7 +38,7 @@ export default function DaycareSingleModal({ open, closeFunction, summoner }: Tr
         fetch_approval()
     }, [fetch_approval])
 
-    async function approveHelper() {
+    async function approveAdventureTime() {
         toast
             .promise(setApprovalForAll(RARITY_ADVENTURE_TIME), {
                 loading: <b>{i18n._(t`Approving adventure time contract`)}</b>,
@@ -99,10 +99,10 @@ export default function DaycareSingleModal({ open, closeFunction, summoner }: Tr
                 ) : (
                     <div className="text-center text-white p-4 pb-16 gap-5">
                         <button
-                            onClick={() => approveHelper()}
+                            onClick={() => approveAdventureTime()}
                             className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
                         >
-                            {i18n._(t`approve helper`)}
+                            {i18n._(t`approve adventure time`)}
                         </button>
                     </div>
                 )}
