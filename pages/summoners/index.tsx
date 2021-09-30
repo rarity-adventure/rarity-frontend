@@ -167,7 +167,9 @@ export default function Summoners(): JSX.Element {
                         <>
                             <div className="flex flex-row items-center justify-between">
                                 <div>
-                                    <h1 className="text-2xl xl:text-3xl">{i18n._(t`summoners`)}</h1>
+                                    <h1 className="text-2xl xl:text-3xl">
+                                        {i18n._(t`summoners`)} ({summoners.length >= 1000 ? '1000+' : summoners.length})
+                                    </h1>
                                 </div>
                                 <div className="uppercase">
                                     <h1 className="text-lg">{i18n._(t`one-click`)}</h1>
