@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
-import { useActiveWeb3React } from '../../hooks/useActiveWeb3React'
 import LangSwitcher from '../LanguageSwitch'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Link from 'next/link'
-import DonateModal from '../Modal/modals/Donate'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons'
 
 function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     const { i18n } = useLingui()
-
-    const { account } = useActiveWeb3React()
 
     function summoners(): JSX.Element {
         return (
@@ -91,7 +87,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
 
     return (
         <header className="flex-shrink-0 w-full z-30">
-            <DonateModal open={modal} closeFunction={close} />
             <Popover as="nav" className="w-full bg-transparent header-border-b">
                 {({ open }) => (
                     <>
@@ -114,14 +109,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                             {inventory()}
                                             {market()}
                                             {stats()}
-                                            {account && (
-                                                <button
-                                                    onClick={() => setModal(true)}
-                                                    className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                                >
-                                                    <h2>{i18n._(t`Donate`)}</h2>
-                                                </button>
-                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -182,14 +169,6 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                 {inventory()}
                                 {market()}
                                 {stats()}
-                                {account && (
-                                    <button
-                                        onClick={() => setModal(true)}
-                                        className="uppercase border-contrast border-transparent border-2 rounded-xl py-1 px-2 mx-1"
-                                    >
-                                        <h2>{i18n._(t`Donate`)}</h2>
-                                    </button>
-                                )}
                             </div>
                         </Popover.Panel>
                     </>
