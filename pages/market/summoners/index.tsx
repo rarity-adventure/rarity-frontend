@@ -13,25 +13,19 @@ import {
     tag_to_variable,
     TAG_VALUE_COMPARISONS,
     TAGS_CLASSES,
-    TAGS_WITH_VALUE
+    TAGS_WITH_VALUE,
 } from '../../../constants/tags/tag_parsing'
 import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../../constants/classes'
 import { utils } from 'ethers'
 import { SKILLS } from '../../../constants/codex/skills'
 
-function SummonerRow({
-    summoner,
-    row_i,
-}: {
-    summoner,
-    row_i
-}): JSX.Element {
+function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const { i18n } = useLingui()
 
     const format_ether = (value) => {
-        const ftmValue =  parseFloat(utils.formatEther(value))
+        const ftmValue = parseFloat(utils.formatEther(value))
         if (ftmValue > 100_000_000) {
-            return "Too much"
+            return 'Too much'
         } else {
             return ftmValue.toLocaleString()
         }
@@ -41,7 +35,7 @@ function SummonerRow({
         return value.toLocaleString()
     }
 
-    let attributes = "Not set"
+    let attributes = 'Not set'
     if (summoner.str > 0) {
         attributes = `${summoner.str}-${summoner.dex}-${summoner.con}-${summoner.int}-${summoner.wis}-${summoner.cha}`
     }
@@ -52,7 +46,7 @@ function SummonerRow({
         const skillVar = `skill${i}`
         if (summoner[skillVar] > 0) {
             nSkills += 1
-            skills.push({'name': SKILLS[i + 1].name, 'value': summoner[skillVar]})
+            skills.push({ name: SKILLS[i + 1].name, value: summoner[skillVar] })
         }
     }
 
@@ -76,7 +70,6 @@ function SummonerRow({
                 <span>{format_number(summoner.summoner)}</span>
             </div>
             <div style={{ width: '125px' }} className="text-center">
-
                 <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>
             </div>
             <div style={{ width: '150px' }} className="text-center">
@@ -98,30 +91,38 @@ function SummonerRow({
                 <span>{format_number(summoner.cellar)}</span>
             </div>
             <div style={{ width: '100px' }} className="text-center">
-                { nSkills == 0 ?
+                {nSkills == 0 ? (
                     <span>0</span>
-                    :
+                ) : (
                     <>
-                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">{nSkills}</span>
-                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup='true' className='opaque'>
-                            {skills.map(skill => {
-                                return <p key={skill.name} className="text-left">{skill.name}: {skill.value}</p>
+                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">
+                            {nSkills}
+                        </span>
+                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
+                            {skills.map((skill) => {
+                                return (
+                                    <p key={skill.name} className="text-left">
+                                        {skill.name}: {skill.value}
+                                    </p>
+                                )
                             })}
                         </ReactTooltip>
                     </>
-                }
+                )}
             </div>
             <div style={{ width: '100px' }} className="text-center">
-                { nFeats == 0 ?
+                {nFeats == 0 ? (
                     <span>0</span>
-                    :
+                ) : (
                     <>
-                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">{nFeats}</span>
-                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup='true' className='opaque'>
+                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">
+                            {nFeats}
+                        </span>
+                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
                             <p>Feats coming soon.</p>
                         </ReactTooltip>
                     </>
-                }
+                )}
             </div>
             <div style={{ width: '150px' }} className="text-center">
                 <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
@@ -143,7 +144,6 @@ export default function SummonersMarket(): JSX.Element {
     const s = useListedSummoners(offset, query)
 
     const [summoners, setSummoners] = useState([])
-
 
     const SKILL_NAMES = Object.keys(SKILLS).map((id) => {
         return SKILLS[id].name.trim()
@@ -177,7 +177,6 @@ export default function SummonersMarket(): JSX.Element {
         setSummoners(s)
     }, [s, query])
 
-
     const handleScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
         if (bottom) {
@@ -188,7 +187,6 @@ export default function SummonersMarket(): JSX.Element {
     const [tags, setTags] = React.useState([])
 
     const parseTags = (tags) => {
-
         const validTags = []
         const newTags = []
         const classes = []
@@ -201,7 +199,7 @@ export default function SummonersMarket(): JSX.Element {
 
         const newest_tag_id = tags.length > 0 ? tags[tags.length - 1]['id'] : ''
         let newest_varName_regex = /([^=><]+)/.exec(newest_tag_id)
-        let newest_varName = ""
+        let newest_varName = ''
         if (newest_varName_regex?.length > 0) {
             newest_varName = newest_varName_regex[1].toLowerCase().trim()
         }
@@ -214,14 +212,13 @@ export default function SummonersMarket(): JSX.Element {
             const parts = /([^=><]+)\s*([=<>]{1,2})\s*(\d+)/.exec(text)
 
             let varName = text.trim()
-            let comp = ""
+            let comp = ''
             let value = 0
             if (parts?.length >= 4) {
                 varName = parts[1].trim()
                 try {
                     value = parseFloat(parts[3].trim())
-                } catch (e) {
-                }
+                } catch (e) {}
                 comp = parts[2].trim()
             }
             if (varName === newest_varName && i < tags.length - 1) {
@@ -233,14 +230,13 @@ export default function SummonersMarket(): JSX.Element {
                 if (classes.length === 1) {
                     query['order_by'].push(`{ class: ${order} }`)
                     if (!['↑', '↓'].includes(tag['text'][0])) {
-                        tag['text'] = "↓ " + tag['text']
+                        tag['text'] = '↓ ' + tag['text']
                     }
                 } else if (tag['text'][0] == '↑' || tag['text'][0] == '↓') {
                     tag['text'] = tag['text'].slice(2)
                 }
                 validTags.push(text)
                 newTags.push(tag)
-
             } else if (LOWER_TAGS_WITH_VALUE.includes(varName) && !validTags.includes(varName)) {
                 if (value < 0 || (!TAG_VALUE_COMPARISONS.includes(comp) && value > 0)) {
                     continue
@@ -257,7 +253,8 @@ export default function SummonersMarket(): JSX.Element {
                         }
                         const min_price = Math.max(0.0001, value)
                         const comp_str = comp === '<' ? '_lt' : '_lte'
-                        query['where'].push(`_and: [{price_approx: {${comp_str}: "${min_price}"}}, {price_approx: {_gt: "0"}}]`
+                        query['where'].push(
+                            `_and: [{price_approx: {${comp_str}: "${min_price}"}}, {price_approx: {_gt: "0"}}]`
                         )
                     } else if (['>', '>=', '=>'].includes(comp)) {
                         const min_price = Math.max(0.00001, value)
@@ -400,8 +397,14 @@ export default function SummonersMarket(): JSX.Element {
                 </div>
                 <div className="flex flex-row items-center justify-between mt-10">
                     <div>
-                        <h1 className="text-xl font-bold">{i18n._(t`Filter and Sort with Tags`)} <span data-tip data-for="filter-info">(i)</span>:</h1>
-                        <ReactTooltip id="filter-info" aria-haspopup='true' className='opaque'>
+                        <h1 className="text-xl font-bold">
+                            {i18n._(t`Filter and Sort with Tags`)}{' '}
+                            <span data-tip data-for="filter-info">
+                                (i)
+                            </span>
+                            :
+                        </h1>
+                        <ReactTooltip id="filter-info" aria-haspopup="true" className="opaque">
                             <h1 className="text-md">Filtering and sorting with tags</h1>
                             <br />
                             <h2 className="text-md">Type the name of a property to sort by this property.</h2>
@@ -410,7 +413,9 @@ export default function SummonersMarket(): JSX.Element {
                             <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
                             <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
                             <br />
-                            <h2 className="text-md">Type the name of property followed by a comparison operator to filter.</h2>
+                            <h2 className="text-md">
+                                Type the name of property followed by a comparison operator to filter.
+                            </h2>
                             <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
                         </ReactTooltip>
                     </div>
@@ -457,30 +462,53 @@ export default function SummonersMarket(): JSX.Element {
                             style={{ width: '1478px' }}
                             className="sticky top-0 z-30 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
                         >
-                            <div style={{ width: '80px' }} className="text-center">
-                            </div>
-                            <div style={{ width: '125px' }} className="text-center" onClick={() => handleAddition({'id': 'ID', 'text': 'ID'})}>
+                            <div style={{ width: '80px' }} className="text-center"></div>
+                            <div
+                                style={{ width: '125px' }}
+                                className="text-center"
+                                onClick={() => handleAddition({ id: 'ID', text: 'ID' })}
+                            >
                                 <h2>{i18n._(t`ID No.`)}</h2>
                             </div>
                             <div style={{ width: '125px' }} className="text-center">
                                 <h2>{i18n._(t`CLASS`)}</h2>
                             </div>
-                            <div style={{ width: '150px' }} className="text-center" onClick={() => handleAddition({'id': 'Price', 'text': 'Price'})}>
+                            <div
+                                style={{ width: '150px' }}
+                                className="text-center"
+                                onClick={() => handleAddition({ id: 'Price', text: 'Price' })}
+                            >
                                 <h2>{i18n._(t`PRICE`)}</h2>
                             </div>
-                            <div style={{ width: '80px' }} className="text-center" onClick={() => handleAddition({'id': 'Level', 'text': 'Level'})}>
+                            <div
+                                style={{ width: '80px' }}
+                                className="text-center"
+                                onClick={() => handleAddition({ id: 'Level', text: 'Level' })}
+                            >
                                 <h2>{i18n._(t`LEVEL`)}</h2>
                             </div>
-                            <div style={{ width: '80px' }} className="text-center" onClick={() => handleAddition({'id': 'XP', 'text': 'XP'})}>
+                            <div
+                                style={{ width: '80px' }}
+                                className="text-center"
+                                onClick={() => handleAddition({ id: 'XP', text: 'XP' })}
+                            >
                                 <h2>{i18n._(t`XP`)}</h2>
                             </div>
                             <div style={{ width: '250px' }} className="text-center">
                                 <h2>{i18n._(t`ATTRIBUTES`)}</h2>
                             </div>
-                            <div style={{ width: '150px' }} className="text-center" onClick={() => handleAddition({'id': 'Gold', 'text': 'Gold'})}>
+                            <div
+                                style={{ width: '150px' }}
+                                className="text-center"
+                                onClick={() => handleAddition({ id: 'Gold', text: 'Gold' })}
+                            >
                                 <h2>{i18n._(t`GOLD`)}</h2>
                             </div>
-                            <div style={{ width: '100px' }} className="text-center" onClick={() => handleAddition({'id': 'Materials', 'text': 'Materials'})}>
+                            <div
+                                style={{ width: '100px' }}
+                                className="text-center"
+                                onClick={() => handleAddition({ id: 'Materials', text: 'Materials' })}
+                            >
                                 <h2>{i18n._(t`MATERIAL`)}</h2>
                             </div>
                             <div style={{ width: '100px' }} className="text-center">
@@ -495,13 +523,7 @@ export default function SummonersMarket(): JSX.Element {
                         </div>
                         {summoners &&
                             summoners.map((s, i) => {
-                                return (
-                                    <SummonerRow
-                                        summoner={s}
-                                        row_i={i}
-                                        key={i}
-                                    />
-                                )
+                                return <SummonerRow summoner={s} row_i={i} key={i} />
                             })}
                     </div>
                 </div>

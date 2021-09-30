@@ -55,5 +55,5 @@ export const COMP_TO_POSTGRES: { [k: string]: string } = {
     '<=': '_lte',
     '=<': '_lte',
     '=': '_eq',
-    '==': '_eq'
+    '==': '_eq',
 }

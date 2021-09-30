@@ -45,7 +45,7 @@ export const getMarketSummonersDefault = gql`
             int
 
             cellar
-            
+
             gold_approx
             gold_exact
 
