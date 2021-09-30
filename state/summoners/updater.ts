@@ -20,31 +20,22 @@ export default function Updater(): null {
 
     const fetch_summoners_data = useCallback(
         async (ids: number[]) => {
-            // If the user has lest than 50 summoners fetch the data and return
-            if (ids.length <= 50) {
-                const full_data = await summoners_full(ids)
-                dispatch(updateSummoners(full_data))
-                return
-            } else {
-                const chunks = chunkArrayByNumber(ids, 50)
-                let full_data = []
-
-                for (let chunk of chunks) {
-                    const chunk_data = await summoners_full(chunk)
-                    full_data = full_data.concat(chunk_data)
-                }
-
-                dispatch(updateSummoners(full_data))
-                return
+            const chunks = chunkArrayByNumber(ids, 80)
+            let fetchers = []
+            for (let chunk of chunks) {
+                fetchers.push(summoners_full(chunk))
             }
+            const data = await Promise.all(fetchers)
+            const summoners_full_data = [].concat(...data)
+            dispatch(updateSummoners(summoners_full_data))
+            dispatch(setLoading(false))
         },
         [summoners_full]
     )
 
     useEffect(() => {
         if (!ids || !library || !chainId || !account || !windowVisible) return
-        dispatch(setLoading(true))
-        fetch_summoners_data(ids).then(() => dispatch(setLoading(false)))
+        fetch_summoners_data(ids)
     }, [ids, windowVisible, fetch_summoners_data, library, chainId, account])
     return null
 }
