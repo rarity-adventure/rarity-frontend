@@ -15,7 +15,7 @@ import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 import useRarity from '../../hooks/useRarity'
-import { CRAFTING_ALLOWANCE, RARITY_ADVENTURE_TIME, RARITY_CRAFTING_SUMMONER } from '../../constants'
+import { RARITY_ADVENTURE_TIME } from '../../constants'
 import toast from 'react-hot-toast'
 
 enum Modal {
@@ -152,7 +152,6 @@ export default function Summoners(): JSX.Element {
 
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_ADVENTURE_TIME)
-        console.log(approved)
         setAdventureTimeApproval(approved)
     }, [])
 
