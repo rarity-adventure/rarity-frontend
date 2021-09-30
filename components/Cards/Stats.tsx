@@ -2,9 +2,8 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { RefreshIcon } from '@heroicons/react/outline'
 import { QuestionMarkCircleIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid'
-import { utils } from 'ethers'
 import React, { useEffect, useState } from 'react'
-import HeadlessUIModal from '../Modal/HeadlessUIModal'
+import Modal from '../Modal/Modal'
 import ModalHeader from '../Modal/ModalHeader'
 import { ATTRIBUTES } from '../../constants/codex/attributes'
 import { calcAPCost } from '../../functions/calcAPCost'
@@ -423,7 +422,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                     )}
                 </div>
             </div>
-            <HeadlessUIModal isOpen={modal} onDismiss={() => setModalOpen(false)}>
+            <Modal isOpen={modal} onDismiss={() => setModalOpen(false)}>
                 <div className="bg-background-end rounded-lg border-2 border-white">
                     <ModalHeader title={i18n._(ATTRIBUTES[attribute].name)} onClose={() => setModalOpen(false)} />
                     <div className="text-justify text-white p-4 pb-8 gap-5">
@@ -440,7 +439,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                         </a>
                     </div>
                 </div>
-            </HeadlessUIModal>
+            </Modal>
         </div>
     )
 }

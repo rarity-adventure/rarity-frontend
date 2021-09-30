@@ -1,6 +1,6 @@
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { createReducer } from '@reduxjs/toolkit'
-import { setLoading, syncSummoners, updateSummoners } from './actions'
+import { setLoading, updateSummoners } from './actions'
 
 export interface SummonersState {
     readonly data: SummonerFullData[]
@@ -19,8 +19,5 @@ export default createReducer(initialState, (builder) =>
         })
         .addCase(setLoading, (state, action) => {
             state.loading = action.payload
-        })
-        .addCase(syncSummoners, (state, action) => {
-            console.log('syncSummoners')
         })
 )

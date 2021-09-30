@@ -9,7 +9,7 @@ interface ModalHeaderProps {
 
 const ModalHeader: FC<ModalHeaderProps> = ({ title = undefined, onClose = undefined }) => {
     return (
-        <div className="relative flex items-center justify-center my-5 z-35">
+        <div className="relative flex items-center justify-center my-5 z-35 ">
             {title && <h1 className="text-xl uppercase text-white mt-2">{title}</h1>}
             <div
                 className="absolute top-0 right-0 flex -mt-3 mr-2 text-white cursor-pointer hover:opacity-50"

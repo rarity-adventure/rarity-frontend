@@ -1,4 +1,4 @@
-import HeadlessUIModal from '../HeadlessUIModal'
+import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
@@ -46,7 +46,7 @@ export default function TransferModal({ open, closeFunction, summoner }: Transfe
     }
 
     return (
-        <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
+        <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`transfer summoner`)} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-4 gap-5">
@@ -79,6 +79,6 @@ export default function TransferModal({ open, closeFunction, summoner }: Transfe
                     </div>
                 </div>
             </div>
-        </HeadlessUIModal>
+        </Modal>
     )
 }

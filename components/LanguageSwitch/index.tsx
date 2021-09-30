@@ -1,7 +1,6 @@
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import cookieCutter from 'cookie-cutter'
 import { classNames } from '../../functions/classNames'

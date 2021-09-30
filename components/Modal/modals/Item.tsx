@@ -2,8 +2,6 @@ import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
-import { utils } from 'ethers'
-import Modal from '../index'
 import {
     ARMOR_PROFICIENCY,
     Item,
@@ -12,6 +10,7 @@ import {
     WEAPON_ENCUMBRANCE,
     WEAPON_PROFICIENCY,
 } from '../../../constants/codex/items'
+import Modal from '../Modal'
 
 interface ItemModalProps {
     open: boolean
@@ -45,7 +44,7 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                         item.armor_bonus ||
                         item.max_dex_bonus ||
                         item.penalty ? (
-                            <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll scrollbar-hide max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <div className="py-2 px-2">
                                     <p>Weight: {item.weight}</p>
                                     {item.proficiency ? (
@@ -78,7 +77,7 @@ export default function ItemModal({ open, closeFunction, item, itemType, checkOn
                         )}
 
                         {item.description && (
-                            <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll scrollbar-hide max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <p className="p-1">{item.description}</p>
                             </div>
                         )}

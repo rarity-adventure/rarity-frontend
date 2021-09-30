@@ -1,4 +1,4 @@
-import HeadlessUIModal from '../HeadlessUIModal'
+import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React from 'react'
@@ -32,7 +32,7 @@ export default function BurnModal({ open, closeFunction, summoner }: BurnModalPr
     }
 
     return (
-        <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
+        <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`delete summoner`)} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-8 gap-5">
@@ -57,6 +57,6 @@ export default function BurnModal({ open, closeFunction, summoner }: BurnModalPr
                     </div>
                 </div>
             </div>
-        </HeadlessUIModal>
+        </Modal>
     )
 }

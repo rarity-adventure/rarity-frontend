@@ -13,9 +13,8 @@ import {
 } from '../../constants/codex/items'
 import TokenURIModal from '../Modal/modals/TokenURIModal'
 import TransferItemModal from '../Modal/modals/TransferItem'
-import SellItemsModal from '../Modal/modals/SellItems'
 
-function ItemCard({ userItem, sellable }: { userItem: ItemData; sellable: boolean }): JSX.Element {
+function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
     const { i18n } = useLingui()
 
     const [item, setItem] = useState<Item>()
@@ -36,15 +35,8 @@ function ItemCard({ userItem, sellable }: { userItem: ItemData; sellable: boolea
         setTransferModal(false)
     }
 
-    const [sellModal, setSellModal] = useState(false)
-
-    function closeSell() {
-        setSellModal(false)
-    }
-
     return (
         <div className="mx-auto w-64 md:w-64 lg:w-48 xl:w-64">
-            <SellItemsModal open={sellModal} closeFunction={closeSell} items={[userItem.token_id]} />
             <TokenURIModal open={uriModal} closeFunction={close} id={userItem.token_id} />
             <TransferItemModal open={transferModal} closeFunction={closeTransfer} item={userItem} />
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
@@ -70,7 +62,7 @@ function ItemCard({ userItem, sellable }: { userItem: ItemData; sellable: boolea
                         item.armor_bonus ||
                         item.max_dex_bonus ||
                         item.penalty ? (
-                            <div className="overflow-scroll h-32 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll scrollbar-hide  h-32 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <div className="py-2 px-2">
                                     <p>Weight: {item.weight}</p>
                                     {item.proficiency ? (
@@ -103,7 +95,7 @@ function ItemCard({ userItem, sellable }: { userItem: ItemData; sellable: boolea
                         )}
 
                         {item.description && (
-                            <div className="overflow-scroll max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
+                            <div className="overflow-scroll scrollbar-hide max-h-40 mt-5 text-xs rounded-lg bg-card-top border-2 border-white">
                                 <p className="p-1">{item.description}</p>
                             </div>
                         )}
@@ -116,14 +108,6 @@ function ItemCard({ userItem, sellable }: { userItem: ItemData; sellable: boolea
                     >
                         {i18n._(t`transfer`)}
                     </button>
-                    {sellable && (
-                        <button
-                            className="uppercase mt-1 bg-red p-2 border-2 border-white rounded-lg"
-                            onClick={() => setSellModal(true)}
-                        >
-                            {i18n._(t`sell for 2.5 FTM`)}
-                        </button>
-                    )}
                 </div>
             </div>
         </div>

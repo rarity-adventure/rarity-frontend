@@ -1,4 +1,4 @@
-import HeadlessUIModal from '../HeadlessUIModal'
+import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -13,7 +13,6 @@ import useRarityGold from '../../../hooks/useRarityGold'
 import useRarityCellar from '../../../hooks/useRarityCellar'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
-import { syncSummoners } from '../../../state/summoners/actions'
 
 function SummonerTransferRow({
     summoner,
@@ -55,7 +54,6 @@ function SummonerTransferRow({
             .then(() => {
                 setSending(false)
                 setBalance(0)
-                dispatch(syncSummoners)
             })
     }
 
@@ -120,7 +118,7 @@ export default function TransferBulkModal({ open, closeFunction, summoners }: Tr
     }, [coin, receiver, summoners])
 
     return (
-        <HeadlessUIModal isOpen={open} onDismiss={closeFunction}>
+        <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`bulk transfer`)} onClose={closeFunction} />
                 <div className="mx-auto text-center text-white text-center">
@@ -161,6 +159,6 @@ export default function TransferBulkModal({ open, closeFunction, summoners }: Tr
                     <div className="h-48" />
                 )}
             </div>
-        </HeadlessUIModal>
+        </Modal>
     )
 }

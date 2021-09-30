@@ -43,7 +43,7 @@ export default function CoinSelector({ select, selected }: CoinSelectorProps): J
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute inline-block max-h-32 z-30 text-center overflow-scroll mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
+                        <Menu.Items className="absolute inline-block scrollbar-hide max-h-32 z-30 text-center overflow-scroll mt-2 rounded-b-lg border-2 pb-0.5 border-white shadow-lg bg-background-end">
                             <div>
                                 {Object.values(GAME_COINS).map((c: CoinData) => {
                                     return (
