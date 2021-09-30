@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { useSummoners, useSummonersLoading } from '../../state/summoners/hooks'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
@@ -13,6 +13,9 @@ import DungeonModal from '../../components/Modal/modals/Dungeon'
 import Filter from '../../components/Filter'
 import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
+import useRarity from '../../hooks/useRarity'
+import { RARITY_ADVENTURE_TIME } from '../../constants'
+import toast from 'react-hot-toast'
 
 enum Modal {
     ADVENTURE = 1,
@@ -125,6 +128,29 @@ export default function Summoners(): JSX.Element {
 
     const [parsedSummoners, setParsedSummoners] = useState<SummonerFullData[]>(summoners)
 
+    const [adventureTimeApproval, setAdventureTimeApproval] = useState(false)
+
+    const { isApprovedForAll, setApprovalForAll } = useRarity()
+
+    const fetch_approval = useCallback(async () => {
+        const approved = await isApprovedForAll(account, RARITY_ADVENTURE_TIME)
+        setAdventureTimeApproval(approved)
+    }, [])
+
+    useEffect(() => {
+        fetch_approval()
+    }, [summoners])
+
+    function approveDaycare() {
+        toast
+            .promise(setApprovalForAll(RARITY_ADVENTURE_TIME), {
+                loading: <b>{i18n._(t`Approving Daycare`)}</b>,
+                success: <b>{i18n._(t`Success`)}</b>,
+                error: <b>{i18n._(t`Failed`)}</b>,
+            })
+            .then(() => setAdventureTimeApproval(true))
+    }
+
     return (
         <div className="w-full z-25">
             <AdventureModal open={modal === Modal.ADVENTURE} closeFunction={closeModal} summoners={adventure} />
@@ -200,8 +226,20 @@ export default function Summoners(): JSX.Element {
                                     <Filter summoners={summoners} filteredSummoners={setParsedSummoners} />
                                 </div>
                             </div>
+                            {!adventureTimeApproval &&
+                                summoners.map((s) => s.misc.daycare_days_paid).reduce((x, y) => x + y) > 0 && (
+                                    <div
+                                        className="flex flex-row items-center justify-center mt-5 cursor-pointer"
+                                        onClick={() => approveDaycare()}
+                                    >
+                                        <p className="text-xs animate-bounce">
+                                            {
+                                                '>> Some of your summoners are in Daycare but it is not approved click here to approve <<'
+                                            }
+                                        </p>
+                                    </div>
+                                )}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
-                                {}
                                 {parsedSummoners.length === 0
                                     ? summoners.map((s) => {
                                           return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
