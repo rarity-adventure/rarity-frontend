@@ -10,6 +10,7 @@ import useRarityStarterPack from '../../hooks/useRarityStarterPack'
 import Link from 'next/link'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
+import { useSummoners } from '../../state/summoners/hooks'
 
 const pixelmix_fonts = ['en']
 
@@ -26,6 +27,8 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
 
     const { packs_available, balanceOf } = useRarityStarterPack()
 
+    const summoners = useSummoners()
+
     const [showBanner, setShowBanner] = useState(false)
 
     const [supporter, setSupporter] = useState(false)
@@ -33,7 +36,8 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
     const fetch = useCallback(async () => {
         const packs = await packs_available()
         const balance = await balanceOf(account)
-        if (packs && balance === 0 && route !== '/pack') {
+        const level3Summoners = summoners.filter( (s) => s.base._level >= 3).length
+        if (packs && balance === 0 && route !== '/pack' && level3Summoners === 0) {
             setSupporter(false)
             setShowBanner(true)
         } else {
@@ -42,7 +46,7 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
         if (balance > 0) {
             setSupporter(true)
         }
-    }, [setShowBanner, packs_available, balanceOf, account, route])
+    }, [setShowBanner, packs_available, balanceOf, account, route, summoners])
 
     useEffect(() => {
         if (!windowVisible || !library || !account || !chainId) return
