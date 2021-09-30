@@ -4,7 +4,7 @@ import { t } from '@lingui/macro'
 import React, { useState, useEffect, useCallback } from 'react'
 import { useLingui } from '@lingui/react'
 import toast from 'react-hot-toast'
-import { RARITY_HELPER_ADDRESS } from '../../../constants'
+import { RARITY_ADVENTURE_TIME } from '../../../constants'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import useRarityDaycare from '../../../hooks/useRarityDaycare'
 import useRarity from '../../../hooks/useRarity'
@@ -27,11 +27,11 @@ export default function DaycareMultiModal({ open, closeFunction, summoners }: Tr
 
     const [days, setDays] = useState(0)
 
-    const [approved, setApproved] = useState(false)
+    const [adventureTimeApproval, setAdventureTimeApproval] = useState(false)
 
     const fetch_approval = useCallback(async () => {
-        const approved = await isApprovedForAll(account, RARITY_HELPER_ADDRESS)
-        setApproved(approved)
+        const approved = await isApprovedForAll(account, RARITY_ADVENTURE_TIME)
+        setAdventureTimeApproval(approved)
     }, [account, isApprovedForAll])
 
     useEffect(() => {
@@ -40,12 +40,12 @@ export default function DaycareMultiModal({ open, closeFunction, summoners }: Tr
 
     async function approveHelper() {
         toast
-            .promise(setApprovalForAll(RARITY_HELPER_ADDRESS), {
-                loading: <b>{i18n._(t`Approving helper contract`)}</b>,
+            .promise(setApprovalForAll(RARITY_ADVENTURE_TIME), {
+                loading: <b>{i18n._(t`Approving adventure time contract`)}</b>,
                 success: <b>{i18n._(t`Success`)}</b>,
                 error: <b>{i18n._(t`Failed`)}</b>,
             })
-            .then(() => setApproved(true))
+            .then(() => setAdventureTimeApproval(true))
     }
 
     async function registerConfirm() {
@@ -78,7 +78,7 @@ export default function DaycareMultiModal({ open, closeFunction, summoners }: Tr
                 <div className="text-center text-white p-4 pb-2 gap-5">
                     <h2>{i18n._(t`How many days do you want to register your summoners?`)}</h2>
                 </div>
-                {approved ? (
+                {adventureTimeApproval ? (
                     <>
                         <div className="text-center text-white p-4 pb-4 gap-5">
                             <input
