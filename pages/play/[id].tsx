@@ -11,12 +11,11 @@ import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
-import TransferMaterialModal from '../../components/Modal/modals/TransferCoin'
-import TransferGoldModal from '../../components/Modal/modals/TransferGold'
 import SummonerTransferCard from '../../components/Cards/Transfer'
 import { MaterialImage } from '../../components/Coins/material'
 import { GoldImage } from '../../components/Coins/gold'
 import { useRouter } from 'next/router'
+import TransferCoinModal from '../../components/Modal/modals/transfers/TransferCoin'
 
 enum View {
     stats,
@@ -117,13 +116,13 @@ export default function Profile(): JSX.Element {
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
                                             {selected && (
                                                 <>
+                                                    <TransferCoinModal
+                                                        open={transferMaterialModal}
+                                                        closeFunction={closeMaterialModal}
+                                                        id={selected.id}
+                                                        summoners={s}
+                                                    />
                                                     <button onClick={() => setTransferMaterialModal(true)}>
-                                                        <TransferMaterialModal
-                                                            open={transferMaterialModal}
-                                                            closeFunction={closeMaterialModal}
-                                                            id={selected.id}
-                                                            summoners={s}
-                                                        />
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                             <div className="py-1 w-2/3 text-center">
                                                                 <p>{selected.materials.balance}</p>
@@ -132,12 +131,6 @@ export default function Profile(): JSX.Element {
                                                         </div>
                                                     </button>
                                                     <button onClick={() => setTransferGoldModal(true)}>
-                                                        <TransferGoldModal
-                                                            open={transferGoldModal}
-                                                            closeFunction={closeGoldModal}
-                                                            summoners={s}
-                                                            id={selected.id}
-                                                        />
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                             <div className="py-1 w-2/3 text-center">
                                                                 <p>{selected.gold.balance}</p>

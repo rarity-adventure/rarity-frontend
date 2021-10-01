@@ -1,18 +1,17 @@
-import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import { SummonerFullData } from '../../../hooks/useRarityLibrary'
-import CoinSelector from '../../CoinSelector'
-import { CoinData } from '../../../constants'
-import SummonerSelector from '../../SummonerSelector'
-import { CLASSES_NAMES } from '../../../constants/classes'
-import Loader from '../../Loader'
-import useRarityGold from '../../../hooks/useRarityGold'
-import useRarityCellar from '../../../hooks/useRarityCellar'
 import toast from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
+import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
+import { CoinData } from '../../../../constants'
+import useRarityGold from '../../../../hooks/useRarityGold'
+import useRarityCellar from '../../../../hooks/useRarityCellar'
+import { CLASSES_NAMES } from '../../../../constants/classes'
+import Loader from '../../../Loader'
+import Modal from '../../Modal'
+import ModalHeader from '../../ModalHeader'
+import CoinSelector from '../../../CoinSelector'
+import SummonerSelector from '../../../SummonerSelector'
 
 function SummonerTransferRow({
     summoner,
@@ -143,7 +142,7 @@ export default function TransferBulkModal({ open, closeFunction, summoners }: Tr
                 </div>
                 {coin && receiver ? (
                     <div className="w-full p-5">
-                        <div className="grid grid-cols-1 w-full p-4 overflow-scroll overflow-hidden h-72 mb-2 bg-card-button mb-16 rounded-xl border-white border-2">
+                        <div className="grid grid-cols-1 w-full p-4 overflow-scroll scrollbar-hide overflow-hidden h-72 mb-2 bg-card-button mb-16 rounded-xl border-white border-2">
                             {filteredSummoners.map((k) => {
                                 return (
                                     <div key={k.id} className="my-2">

@@ -4,26 +4,16 @@ import { t } from '@lingui/macro'
 import { useSummoners, useSummonersLoading } from '../../state/summoners/hooks'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import SummonerSummaryCard, { SummonerSummaryCardLoader } from '../../components/Cards/Summary'
-import AdventureModal from '../../components/Modal/modals/BulkActionModal'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import LevelModal from '../../components/Modal/modals/Level'
-import DaycareMultiModal from '../../components/Modal/modals/DaycareMulti'
-import GoldModal from '../../components/Modal/modals/Gold'
-import DungeonModal from '../../components/Modal/modals/Dungeon'
 import Filter from '../../components/Filter'
 import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarity from '../../hooks/useRarity'
 import { RARITY_ADVENTURE_TIME } from '../../constants'
 import toast from 'react-hot-toast'
-
-enum Modal {
-    ADVENTURE = 1,
-    LEVELUP,
-    GOLD,
-    DUNGEON,
-    DAYCARE,
-}
+import BulkActionModal, { BulkAction } from '../../components/Modal/modals/BulkActionModal'
+import { Action } from 'rxjs/internal/scheduler/Action'
+import DaycareModal from '../../components/Modal/modals/Daycare'
 
 function SummonersLoader(): JSX.Element {
     const { i18n } = useLingui()
@@ -100,10 +90,18 @@ export default function Summoners(): JSX.Element {
     const [gold, setGold] = useState<SummonerFullData[]>([])
     const [dungeon, setDungeon] = useState<SummonerFullData[]>([])
 
-    const [modal, setModal] = useState(0)
+    const [modal, setModal] = useState(false)
+    const [action, setAction] = useState<BulkAction>(0)
+
+    const [daycareModal, setDaycareModal] = useState(false)
+
+    function openModal(action: BulkAction) {
+        setAction(action)
+        setModal(true)
+    }
 
     function closeModal() {
-        setModal(0)
+        setModal(false)
     }
 
     useEffect(() => {
@@ -153,11 +151,8 @@ export default function Summoners(): JSX.Element {
 
     return (
         <div className="w-full z-25">
-            <AdventureModal open={modal === Modal.ADVENTURE} closeFunction={closeModal} summoners={adventure} />
-            <LevelModal open={modal === Modal.LEVELUP} closeFunction={closeModal} summoners={level} />
-            <GoldModal open={modal === Modal.GOLD} closeFunction={closeModal} summoners={gold} />
-            <DungeonModal open={modal === Modal.DUNGEON} closeFunction={closeModal} summoners={dungeon} />
-            <DaycareMultiModal open={modal === Modal.DAYCARE} closeFunction={closeModal} summoners={summoners} />
+            <BulkActionModal open={modal} action={action} closeFunction={ () => closeModal()} summoners={summoners} />
+            <DaycareModal open={daycareModal} closeFunction={ () => setDaycareModal(false)} summoners={summoners} />
 
             {loading ? (
                 <SummonersLoader />
@@ -179,7 +174,7 @@ export default function Summoners(): JSX.Element {
                                                 'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
                                                 adventure.length === 0 ? 'opacity-50' : ''
                                             )}
-                                            onClick={() => setModal(Modal.ADVENTURE)}
+                                            onClick={() => openModal(BulkAction.ADVENTURE)}
                                         >
                                             <p>{i18n._(t`adventure`)}</p>
                                             <p className="mt-1">{adventure.length}</p>
@@ -189,7 +184,7 @@ export default function Summoners(): JSX.Element {
                                                 'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
                                                 level.length === 0 ? 'opacity-50' : ''
                                             )}
-                                            onClick={() => setModal(Modal.LEVELUP)}
+                                            onClick={() => openModal(BulkAction.LEVELUP)}
                                         >
                                             <p>{i18n._(t`level-up`)}</p>
                                             <p className="mt-1">{level.length}</p>
@@ -199,7 +194,7 @@ export default function Summoners(): JSX.Element {
                                                 'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
                                                 gold.length === 0 ? 'opacity-50' : ''
                                             )}
-                                            onClick={() => setModal(Modal.GOLD)}
+                                            onClick={() => openModal(BulkAction.GOLD)}
                                         >
                                             <p>{i18n._(t`claim gold`)}</p>
                                             <p className="mt-1">{gold.length}</p>
@@ -209,14 +204,14 @@ export default function Summoners(): JSX.Element {
                                                 'p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase',
                                                 dungeon.length === 0 ? 'opacity-50' : ''
                                             )}
-                                            onClick={() => setModal(Modal.DUNGEON)}
+                                            onClick={() => openModal(BulkAction.DUNGEON)}
                                         >
                                             <p>{i18n._(t`dungeon`)}</p>
                                             <p className="mt-1">{dungeon.length}</p>
                                         </button>
                                         <button
                                             className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
-                                            onClick={() => setModal(Modal.DAYCARE)}
+                                            onClick={() => setDaycareModal(true)}
                                         >
                                             {i18n._(t`daycare`)}
                                         </button>

@@ -1,34 +1,24 @@
 import { useLingui } from '@lingui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { t } from '@lingui/macro'
-import { ItemData, SummonerFullData } from '../../hooks/useRarityLibrary'
 import { useItems, useItemsLoading } from '../../state/items/hooks'
 import ItemCard from '../../components/Cards/Item'
 import { useSummoners } from '../../state/summoners/hooks'
 import Loader from '../../components/Loader'
-import BulkTransfer from '../../components/Transfer'
 import { GoldImage } from '../../components/Coins/gold'
 import { MaterialImage } from '../../components/Coins/material'
+import TransferBulkModal from '../../components/Modal/modals/transfers/TransferBulk'
 
 export default function Inventory(): JSX.Element {
     const { i18n } = useLingui()
 
-    const it = useItems()
+    const items = useItems()
 
     const loading = useItemsLoading()
 
-    const s = useSummoners()
+    const summoners = useSummoners()
 
-    const [items, setItems] = useState<ItemData[]>(it)
-    const [summoners, setSummoners] = useState<SummonerFullData[]>(s)
-
-    useEffect(() => {
-        setItems(it)
-    }, [it])
-
-    useEffect(() => {
-        setSummoners(s)
-    }, [s])
+    const [modal, setModal] = useState(false)
 
     return (
         <div className="w-full z-25">
@@ -43,7 +33,16 @@ export default function Inventory(): JSX.Element {
                             <div>
                                 <h1 className="text-2xl xl:text-3xl uppercase font-bold">{i18n._(t`inventory`)}</h1>
                             </div>
-                            <BulkTransfer s={summoners} />
+                            <div className="flex flex-row justify-center uppercase">
+                                <TransferBulkModal
+                                    open={modal}
+                                    closeFunction={() => setModal(false)}
+                                    summoners={summoners}
+                                />
+                                <button onClick={() => setModal(true)} className="uppercase p-2">
+                                    {i18n._(t`bulk transfer`)}
+                                </button>
+                            </div>
                             <div className="hidden sm:inline-flex">
                                 {summoners.length > 0 && (
                                     <div className={'flex flex-row gap-4'}>

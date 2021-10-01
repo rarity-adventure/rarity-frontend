@@ -12,12 +12,20 @@ import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 
 interface BulkActionModalProps {
+    action: BulkAction
     open: boolean
     closeFunction: () => void
     summoners: SummonerFullData[]
 }
 
-export default function BulkActionModal({ open, closeFunction, summoners }: BulkActionModalProps): JSX.Element {
+export enum BulkAction {
+    ADVENTURE = 1,
+    LEVELUP,
+    GOLD,
+    DUNGEON,
+}
+
+export default function BulkActionModal({ open, closeFunction, summoners, action }: BulkActionModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { account } = useActiveWeb3React()
