@@ -3,7 +3,7 @@ import { t } from '@lingui/macro'
 import { SummonerSummaryCardLoader } from '../../components/Cards/Summary'
 import React from 'react'
 
-export function SummonersLoader(): JSX.Element {
+export default function SummonersLoader(): JSX.Element {
     const { i18n } = useLingui()
 
     return (
