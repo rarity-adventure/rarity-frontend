@@ -73,7 +73,7 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
                 <div />
             )}
             <Main>{children}</Main>
-            <Toaster containerClassName="z-30" />
+            <Toaster containerClassName="z-40" containerStyle={{ fontFamily: 'Work Sans' }} />
             <Footer />
         </div>
     )

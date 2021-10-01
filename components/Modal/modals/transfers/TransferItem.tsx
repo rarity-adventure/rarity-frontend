@@ -1,13 +1,13 @@
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { useLingui } from '@lingui/react'
-import toast from 'react-hot-toast'
 import { ItemData } from '../../../../hooks/useRarityLibrary'
 import useRarityCrafting from '../../../../hooks/useRarityCrafting'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 import { isAddress } from '../../../../functions/validate'
 import Modal from '../../Modal'
 import ModalHeader from '../../ModalHeader'
+import { sendToast } from '../../../../functions/toast'
 
 interface TransferItemModalProps {
     open: boolean
@@ -24,12 +24,12 @@ export default function TransferItemModal({ open, closeFunction, item }: Transfe
 
     async function transferConfirm() {
         const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
-        await toast.promise(transferFrom(account, address, item.token_id), {
-            loading: <b>{i18n._(t`Transferring item`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-        closeFunction()
+        await sendToast(
+            transferFrom(account, address, item.token_id),
+            i18n._(t`Transferring item`),
+            i18n._(t`SUCCESS`),
+            i18n._(t`FAILED`)
+        )
     }
 
     const [transferAddress, setTransferAddress] = useState<{ input: boolean; address: string | boolean }>({

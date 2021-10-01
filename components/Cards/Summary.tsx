@@ -4,7 +4,6 @@ import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import useRarity from '../../hooks/useRarity'
-import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
@@ -12,6 +11,7 @@ import { useRouter } from 'next/router'
 import BurnModal from '../Modal/modals/transfers/Burn'
 import TransferSummonerModal from '../Modal/modals/transfers/TransferSummoner'
 import DaycareModal from '../Modal/modals/Daycare'
+import { sendToast } from '../../functions/toast'
 
 enum Modals {
     TRANSFER = 1,
@@ -80,31 +80,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
         setModalOpen(0)
     }
 
-    async function sendAdventure() {
-        await toast.promise(adventure(summoner.id), {
-            loading: <b>{i18n._(t`Sending summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
-
     const { adventure_cellar } = useRarityCellar()
-
-    async function sendDungeon() {
-        await toast.promise(adventure_cellar(summoner.id), {
-            loading: <b>{i18n._(t`Sending summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
-
-    async function sendLevelUP() {
-        await toast.promise(level_up(summoner.id), {
-            loading: <b>{i18n._(t`Level-UP Summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
 
     return (
         <div className="mx-auto w-56">
@@ -154,7 +130,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                     <div className="mt-2 uppercase text-center">
                         {summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && (
                             <button
-                                onClick={() => sendLevelUP()}
+                                onClick={async () =>
+                                    await sendToast(
+                                        level_up(summoner.id),
+                                        i18n._(t`LEVEL-UP Summoner`),
+                                        i18n._(t`SUCCESS`),
+                                        i18n._(t`FAILED`)
+                                    )
+                                }
                                 className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2"
                             >
                                 {i18n._(t`level-up`)}
@@ -190,7 +173,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                             </button>
                         ) : (
                             <button
-                                onClick={async () => sendAdventure()}
+                                onClick={async () =>
+                                    await sendToast(
+                                        adventure(summoner.id),
+                                        i18n._(t`Sending summoner`),
+                                        i18n._(t`SUCCESS`),
+                                        i18n._(t`FAILED`)
+                                    )
+                                }
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
                             >
                                 {i18n._(t`go to adventure!`)}
@@ -210,7 +200,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                             </button>
                         ) : summoner.materials.log * 1000 < time && summoner.materials.scout !== 0 ? (
                             <button
-                                onClick={async () => sendDungeon()}
+                                onClick={async () =>
+                                    await sendToast(
+                                        adventure_cellar(summoner.id),
+                                        i18n._(t`Sending summoner`),
+                                        i18n._(t`SUCCESS`),
+                                        i18n._(t`FAILED`)
+                                    )
+                                }
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
                             >
                                 {i18n._(t`go to dungeon!`)}

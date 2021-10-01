@@ -6,10 +6,10 @@ import { SKILLS } from '../../constants/codex/skills'
 import { CLASS_SKILLS } from '../../constants/classes'
 import { RefreshIcon } from '@heroicons/react/outline'
 import useRaritySkills from '../../hooks/useRaritySkills'
-import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import Image from 'next/image'
 import SkillModal from '../Modal/modals/info/Skill'
+import { sendToast } from '../../functions/toast'
 
 function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
@@ -77,11 +77,12 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
         Object.keys(additions).map((k) => {
             skills[parseInt(k) - 1] = additions[k]
         })
-        await toast.promise(set_skills(summoner.id, skills), {
-            loading: <b>{i18n._(t`Assigning skill`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
+        await sendToast(
+            set_skills(summoner.id, skills),
+            i18n._(t`Assigning skill`),
+            i18n._(t`SUCCESS`),
+            i18n._(t`FAILED`)
+        )
     }
 
     return (
