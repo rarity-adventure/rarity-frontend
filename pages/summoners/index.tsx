@@ -160,7 +160,7 @@ export default function Summoners(): JSX.Element {
                                         onClick={() =>
                                             sendToast(
                                                 setApprovalForAll(RARITY_ADVENTURE_TIME),
-                                                i18n._(t`Approving Daycare`),
+                                                i18n._(t`Approving Daycare`)
                                             ).then(() => setAdventureTimeApproval(true))
                                         }
                                     >
