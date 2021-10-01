@@ -7,7 +7,7 @@
         "strict": false,
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,
-        "noUnusedLocals": true,
+        "noUnusedLocals": false,
         "esModuleInterop": true,
         "module": "esnext",
         "moduleResolution": "node",
