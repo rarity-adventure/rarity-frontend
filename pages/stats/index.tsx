@@ -4,7 +4,7 @@ import { t } from '@lingui/macro'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { useStats } from '../../state/stats/hooks'
-import { StatsLoader } from './Loader'
+import StatsLoader from './Loader'
 
 function StatsData({ data }: { data: { globals: any[]; classes: any[]; levels: any[] } }): JSX.Element {
     const { i18n } = useLingui()

@@ -12,8 +12,8 @@ import useRarity from '../../hooks/useRarity'
 import { RARITY_ADVENTURE_TIME } from '../../constants'
 import BulkActionModal, { BulkAction } from '../../components/Modal/modals/BulkActionModal'
 import DaycareModal from '../../components/Modal/modals/Daycare'
-import { SummonersLoader } from './Loader'
 import { sendToast } from '../../functions/toast'
+import SummonersLoader from './Loader'
 
 export default function Summoners(): JSX.Element {
     const { i18n } = useLingui()
