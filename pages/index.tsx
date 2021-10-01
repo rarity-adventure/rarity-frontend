@@ -4,8 +4,8 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { CLASSES_IMAGES } from '../constants/classes'
 import { sendToast } from '../functions/toast'
+import { CLASSES_IMAGES } from '../constants/codex/classes'
 
 export default function Home(): JSX.Element {
     const { summon } = useRarity()

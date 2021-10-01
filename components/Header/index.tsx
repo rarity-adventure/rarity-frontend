@@ -117,7 +117,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
                                             {socials()}
                                             <div className="hidden md:inline-block mx-2">
-                                                <Language/>
+                                                <Language />
                                             </div>
                                             <Web3Status />
                                         </div>

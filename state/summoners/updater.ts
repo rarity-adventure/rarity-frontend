@@ -2,10 +2,10 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect } from 'react'
-import { chunkArrayByNumber } from '../../functions/array'
 import useRarityLibrary from '../../hooks/useRarityLibrary'
 import { setLoading, updateSummoners } from './actions'
 import { useGraphSummonerIDs } from '../../services/graph/hooks'
+import { chunkArrayByNumber } from '../../functions/chunkArray'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()

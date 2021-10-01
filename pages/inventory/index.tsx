@@ -5,9 +5,8 @@ import { useItems, useItemsLoading } from '../../state/items/hooks'
 import ItemCard from '../../components/Cards/Item'
 import { useSummoners } from '../../state/summoners/hooks'
 import Loader from '../../components/Loader'
-import { GoldImage } from '../../components/Coins/gold'
-import { MaterialImage } from '../../components/Coins/material'
 import TransferBulkModal from '../../components/Modal/modals/transfers/TransferBulk'
+import { GoldImage, MaterialImage } from '../../constants/coins'
 
 export default function Inventory(): JSX.Element {
     const { i18n } = useLingui()
