@@ -2,13 +2,12 @@ import { t } from '@lingui/macro'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import { SKILLS } from '../../constants/codex/skills'
+import { SKILL_URL, SKILLS } from '../../constants/codex/skills'
 import { RefreshIcon } from '@heroicons/react/outline'
 import useRaritySkills from '../../hooks/useRaritySkills'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import Image from 'next/image'
 import SkillModal from '../Modal/modals/info/Skill'
-import { sendToast } from '../../functions/toast'
 import { CLASS_SKILLS } from '../../constants/codex/classes'
 
 function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
@@ -28,9 +27,10 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
 
     function handleAddition(id: string) {
         const addition = additions[id] ? additions[id] + 1 : 1
+        const nextValue = summoner.skills.skills[parseInt(id) - 1] + addition
         const newState = Object.assign({}, additions, { [id]: addition })
         const sp = calcAvailableSP(newState)
-        if (addition <= maxLevel(id) && sp >= 0) {
+        if (nextValue <= maxLevel(id) && sp >= 0) {
             setAdditions(newState)
             setAvailableSP(sp)
         }
@@ -72,17 +72,32 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
     const { set_skills } = useRaritySkills()
 
     async function assignSkills() {
-        const skills = new Array(36)
-        skills.fill(0)
+        const nextSkills = [...summoner.skills.skills]
         Object.keys(additions).map((k) => {
-            skills[parseInt(k) - 1] = additions[k]
+            nextSkills[parseInt(k) - 1] += additions[k]
         })
-        await sendToast(
-            set_skills(summoner.id, skills),
-            i18n._(t`Assigning skill`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
-        )
+        await toast.promise(set_skills(summoner.id, nextSkills), {
+            loading: <b>{i18n._(t`Assigning skill`)}</b>,
+            success: <b>{i18n._(t`Success`)}</b>,
+            error: <b>{i18n._(t`Failed`)}</b>,
+        })
+    }
+
+    function skillUrl(skill: number) {
+        const name = SKILLS[skill].name.toLowerCase()
+        const split = name.split(' ')
+        if (split.length === 1) return SKILL_URL(name)
+        if (split.length === 2) return SKILL_URL(split[0] + split[1][0].toUpperCase() + split[1].substring(1))
+        if (split.length === 3)
+            return SKILL_URL(
+                split[0] +
+                    split[1][0].toUpperCase() +
+                    split[1].substring(1) +
+                    split[2][0].toUpperCase() +
+                    split[2].substring(1)
+            )
+
+        return
     }
 
     return (
