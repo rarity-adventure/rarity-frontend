@@ -77,12 +77,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
         Object.keys(additions).map((k) => {
             nextSkills[parseInt(k) - 1] += additions[k]
         })
-        await sendToast(
-            set_skills(summoner.id, nextSkills),
-            i18n._(t`Assigning skill`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
-        )
+        await sendToast(set_skills(summoner.id, nextSkills), i18n._(t`Assigning skill`))
     }
 
     return (

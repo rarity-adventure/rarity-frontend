@@ -9,6 +9,7 @@ import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import useRarityDaycare from '../../../hooks/useRarityDaycare'
 import useRarity from '../../../hooks/useRarity'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import { sendToast } from '../../../functions/toast'
 
 interface TransferModalProps {
     open: boolean
@@ -38,31 +39,6 @@ export default function DaycareModal({ open, closeFunction, summoners }: Transfe
         fetch_approval()
     }, [fetch_approval])
 
-    async function approveAdventureTime() {
-        toast
-            .promise(setApprovalForAll(RARITY_ADVENTURE_TIME), {
-                loading: <b>{i18n._(t`Approving adventure time contract`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setAdventureTimeApproval(true))
-    }
-
-    async function registerConfirm() {
-        await toast.promise(
-            registerDaycare(
-                summoners.map((s) => s.id),
-                days
-            ),
-            {
-                loading: <b>{i18n._(t`Registering summoner`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            }
-        )
-        closeFunction()
-    }
-
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
@@ -89,7 +65,15 @@ export default function DaycareModal({ open, closeFunction, summoners }: Transfe
                             <div className="bg-background-middle hover:bg-background-start text-white border-white border-2 rounded-lg mx-4">
                                 <button
                                     className="w-full uppercase px-2 py-1"
-                                    onClick={async () => await registerConfirm()}
+                                    onClick={async () =>
+                                        await sendToast(
+                                            registerDaycare(
+                                                summoners.map((s) => s.id),
+                                                days
+                                            ),
+                                            i18n._(t`Registering summoner`)
+                                        )
+                                    }
                                 >
                                     <h2>{i18n._(t`register summoner`)}</h2>
                                 </button>
@@ -99,7 +83,12 @@ export default function DaycareModal({ open, closeFunction, summoners }: Transfe
                 ) : (
                     <div className="text-center text-white p-4 pb-16 gap-5">
                         <button
-                            onClick={() => approveAdventureTime()}
+                            onClick={() =>
+                                sendToast(
+                                    setApprovalForAll(RARITY_ADVENTURE_TIME),
+                                    i18n._(t`Approving adventure time contract`)
+                                ).then(() => setAdventureTimeApproval(true))
+                            }
                             className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
                         >
                             {i18n._(t`approve adventure time`)}

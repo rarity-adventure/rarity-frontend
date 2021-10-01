@@ -90,28 +90,21 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     async function approveGold() {
         sendToast(
             gold_approve(summoner.id, RARITY_CRAFTING_SUMMONER, CRAFTING_ALLOWANCE),
-            i18n._(t`Approving Gold`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
+            i18n._(t`Approving Gold`)
         ).then(() => setApproval({ gold: true, material: approval.material }))
     }
 
     function approveMaterial() {
         sendToast(
             material_approve(summoner.id, RARITY_CRAFTING_SUMMONER, CRAFTING_ALLOWANCE),
-            i18n._(t`Approving Material`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
+            i18n._(t`Approving Material`)
         ).then(() => setApproval({ gold: approval.gold, material: true }))
     }
 
     function approveGlobal() {
-        sendToast(
-            setApprovalForAll(RARITY_CRAFTING_ADDRESS),
-            i18n._(t`Approving Crafting`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
-        ).then(() => setGlobalApproval(true))
+        sendToast(setApprovalForAll(RARITY_CRAFTING_ADDRESS), i18n._(t`Approving Crafting`)).then(() =>
+            setGlobalApproval(true)
+        )
     }
 
     function getTypeFromView(): ITEM_TYPE {
@@ -157,12 +150,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     async function craftButton() {
         const currBalance = await balanceOf(account)
-        sendToast(
-            craft(summoner.id, getTypeFromView(), itemID, materialUse),
-            i18n._(t`Crafting`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
-        ).then(async () => {
+        sendToast(craft(summoner.id, getTypeFromView(), itemID, materialUse), i18n._(t`Crafting`)).then(async () => {
             setResultModal(true)
             setCraftLoading(true)
             await delay(30000)

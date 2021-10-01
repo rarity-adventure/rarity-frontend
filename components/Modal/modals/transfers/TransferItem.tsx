@@ -24,12 +24,7 @@ export default function TransferItemModal({ open, closeFunction, item }: Transfe
 
     async function transferConfirm() {
         const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
-        await sendToast(
-            transferFrom(account, address, item.token_id),
-            i18n._(t`Transferring item`),
-            i18n._(t`SUCCESS`),
-            i18n._(t`FAILED`)
-        )
+        await sendToast(transferFrom(account, address, item.token_id), i18n._(t`Transferring item`))
     }
 
     const [transferAddress, setTransferAddress] = useState<{ input: boolean; address: string | boolean }>({

@@ -370,14 +370,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                         <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
                             <button
                                 className="w-full p-2"
-                                onClick={async () =>
-                                    await sendToast(
-                                        claim(summoner.id),
-                                        i18n._(t`Claiming gold`),
-                                        i18n._(t`SUCCESS`),
-                                        i18n._(t`FAILED`)
-                                    )
-                                }
+                                onClick={async () => await sendToast(claim(summoner.id), i18n._(t`Claiming gold`))}
                             >
                                 <span className="uppercase">{i18n._(t`claim gold`)}</span>
                             </button>
@@ -405,9 +398,7 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                                             additions['wis'] + summoner.ability_scores.attributes._wis,
                                             additions['cha'] + summoner.ability_scores.attributes._cha
                                         ),
-                                        i18n._(t`Assigning points`),
-                                        i18n._(t`SUCCESS`),
-                                        i18n._(t`FAILED`)
+                                        i18n._(t`Assigning points`)
                                     )
                                 }
                             >

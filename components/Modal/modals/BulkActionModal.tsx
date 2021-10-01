@@ -1,7 +1,6 @@
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import useRarity from '../../../hooks/useRarity'
@@ -10,6 +9,7 @@ import { RARITY_HELPER_ADDRESS } from '../../../constants'
 import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { chunkArrayByNumber } from '../../../functions/chunkArray'
+import { sendToast } from '../../../functions/toast'
 
 interface BulkActionModalProps {
     action: BulkAction
@@ -48,51 +48,25 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
         const chunks = chunkArrayByNumber(summoners, 200)
         for (let i = 0; i < chunks.length; i++) {
             if (tip && i === 0) {
-                await toast.promise(
+                await sendToast(
                     adventure_donate(
                         chunks[i].map((s) => {
                             return s.id
                         })
                     ),
-                    {
-                        loading: (
-                            <b>
-                                {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
-                            </b>
-                        ),
-                        success: <b>{i18n._(t`Success`)}</b>,
-                        error: <b>{i18n._(t`Failed`)}</b>,
-                    }
+                    i18n._(t`Sending chunk: `) + i + 1 + ' of ' + chunks.length
                 )
             } else {
-                await toast.promise(
+                await sendToast(
                     adventure(
                         chunks[i].map((s) => {
                             return s.id
                         })
                     ),
-                    {
-                        loading: (
-                            <b>
-                                {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
-                            </b>
-                        ),
-                        success: <b>{i18n._(t`Success`)}</b>,
-                        error: <b>{i18n._(t`Failed`)}</b>,
-                    }
+                    i18n._(t`Sending chunk: `) + i + 1 + ' of ' + chunks.length
                 )
             }
         }
-    }
-
-    async function approveHelper() {
-        toast
-            .promise(setApprovalForAll(RARITY_HELPER_ADDRESS), {
-                loading: <b>{i18n._(t`Approving helper contract`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setApproved(true))
     }
 
     return (
@@ -132,7 +106,12 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
                                 </>
                             ) : (
                                 <button
-                                    onClick={() => approveHelper()}
+                                    onClick={() =>
+                                        sendToast(
+                                            setApprovalForAll(RARITY_HELPER_ADDRESS),
+                                            i18n._(t`Approving helper contract`)
+                                        ).then(() => setApproved(true))
+                                    }
                                     className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
                                 >
                                     {i18n._(t`approve helper`)}

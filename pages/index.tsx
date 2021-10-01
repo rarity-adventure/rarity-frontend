@@ -56,14 +56,7 @@ export default function Home(): JSX.Element {
                 <h1 className="uppercase text-3xl py-4 md:text-3xl xl:text-6xl">{i18n._(t`MINT A CLASS`)}</h1>
                 <button
                     className="animate-bounce h-6"
-                    onClick={async () =>
-                        await sendToast(
-                            summon(),
-                            i18n._(t`Summoning random class`),
-                            i18n._(t`SUCCESS`),
-                            i18n._(t`FAILED`)
-                        )
-                    }
+                    onClick={async () => await sendToast(summon(), i18n._(t`Summoning random class`))}
                 >
                     <div className="flex flex-row w-full mx-auto text-center justify-center my-3">
                         <ChevronDoubleDownIcon className="w-6 h-6 mx-2" />
@@ -74,14 +67,7 @@ export default function Home(): JSX.Element {
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('1'),
-                                i18n._(t`Summoning barbarian`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('1'), i18n._(t`Summoning barbarian`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['1']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -90,14 +76,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('2'),
-                                i18n._(t`Summoning Bard`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('2'), i18n._(t`Summoning Bard`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['2']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -106,14 +85,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('3'),
-                                i18n._(t`Summoning Cleric`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('3'), i18n._(t`Summoning Cleric`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['3']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -122,14 +94,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('4'),
-                                i18n._(t`Summoning Druid`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('4'), i18n._(t`Summoning Druid`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['4']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -140,14 +105,7 @@ export default function Home(): JSX.Element {
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-12 lg:mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('5'),
-                                i18n._(t`Summoning Fighter`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('5'), i18n._(t`Summoning Fighter`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['5']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -156,14 +114,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('6'),
-                                i18n._(t`Summoning Monk`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('6'), i18n._(t`Summoning Monk`))}
                     >
                         <div className="mx-auto text-center">{CLASSES_IMAGES['6']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -172,14 +123,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('7'),
-                                i18n._(t`Summoning Paladin`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('7'), i18n._(t`Summoning Paladin`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['7']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -188,14 +132,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('8'),
-                                i18n._(t`Summoning Ranger`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('8'), i18n._(t`Summoning Ranger`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['8']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -206,14 +143,7 @@ export default function Home(): JSX.Element {
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 mt-12 lg:mt-16 mx-auto w-full lg:w-3/4 gap-10">
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('9'),
-                                i18n._(t`Summoning Rogue`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('9'), i18n._(t`Summoning Rogue`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['9']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -222,14 +152,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('10'),
-                                i18n._(t`Summoning Sorcerer`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('10'), i18n._(t`Summoning Sorcerer`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['10']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
@@ -238,14 +161,7 @@ export default function Home(): JSX.Element {
                     </button>
                     <button
                         className="hover:animate-pulse"
-                        onClick={async () =>
-                            await sendToast(
-                                summon('11'),
-                                i18n._(t`Summoning Wizard`),
-                                i18n._(t`SUCCESS`),
-                                i18n._(t`FAILED`)
-                            )
-                        }
+                        onClick={async () => await sendToast(summon('11'), i18n._(t`Summoning Wizard`))}
                     >
                         <div className="mx-auto">{CLASSES_IMAGES['11']}</div>
                         <div className="mt-4 w-48 mx-auto border-2 border-white rounded-3xl">
