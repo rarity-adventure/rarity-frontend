@@ -10,10 +10,10 @@ import { classNames } from '../../functions/classNames'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarity from '../../hooks/useRarity'
 import { RARITY_ADVENTURE_TIME } from '../../constants'
-import toast from 'react-hot-toast'
 import BulkActionModal, { BulkAction } from '../../components/Modal/modals/BulkActionModal'
 import DaycareModal from '../../components/Modal/modals/Daycare'
 import { SummonersLoader } from './Loader'
+import { sendToast } from '../../functions/toast'
 
 export default function Summoners(): JSX.Element {
     const { i18n } = useLingui()
@@ -79,16 +79,6 @@ export default function Summoners(): JSX.Element {
     useEffect(() => {
         fetch_approval()
     }, [summoners, fetch_approval])
-
-    function approveDaycare() {
-        toast
-            .promise(setApprovalForAll(RARITY_ADVENTURE_TIME), {
-                loading: <b>{i18n._(t`Approving Daycare`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setAdventureTimeApproval(true))
-    }
 
     return (
         <div className="w-full z-25">
@@ -167,7 +157,14 @@ export default function Summoners(): JSX.Element {
                                 summoners.map((s) => s.misc.daycare_days_paid).reduce((x, y) => x + y) > 0 && (
                                     <div
                                         className="flex flex-row items-center justify-center mt-5 cursor-pointer"
-                                        onClick={() => approveDaycare()}
+                                        onClick={() =>
+                                            sendToast(
+                                                setApprovalForAll(RARITY_ADVENTURE_TIME),
+                                                i18n._(t`Approving Daycare`),
+                                                i18n._(t`SUCCESS`),
+                                                i18n._(t`FAILED`)
+                                            ).then(() => setAdventureTimeApproval(true))
+                                        }
                                     >
                                         <p className="text-xs animate-bounce">
                                             {'>>'}{' '}

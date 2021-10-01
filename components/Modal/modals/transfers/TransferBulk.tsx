@@ -1,7 +1,6 @@
 import { t } from '@lingui/macro'
 import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
 import useRarityGold from '../../../../hooks/useRarityGold'
 import useRarityCellar from '../../../../hooks/useRarityCellar'
@@ -12,6 +11,7 @@ import { CoinData } from '../../../../constants/coins'
 import { CLASSES_NAMES } from '../../../../constants/codex/classes'
 import CoinSelector from '../../../Selectors/Coins'
 import SummonerSelector from '../../../Selectors/Summoners'
+import { sendToast } from '../../../../functions/toast'
 
 function SummonerTransferRow({
     summoner,
@@ -39,19 +39,15 @@ function SummonerTransferRow({
     async function send() {
         setSending(true)
         const func = transfers[coin.name.toLowerCase()]
-        toast
-            .promise(
-                func(summoner.id, summoner.id, receiver.id, summoner[coin.name.toLowerCase()].balance.toString()),
-                {
-                    loading: <b>{i18n._(t`Transferring ` + ' ' + coin.name.toUpperCase())}</b>,
-                    success: <b>{i18n._(t`Success`)}</b>,
-                    error: <b>{i18n._(t`Failed`)}</b>,
-                }
-            )
-            .then(() => {
-                setSending(false)
-                setBalance(0)
-            })
+        sendToast(
+            func(summoner.id, summoner.id, receiver.id, summoner[coin.name.toLowerCase()].balance.toString()),
+            i18n._(t`Transferring ` + ' ' + coin.name.toUpperCase()),
+            i18n._(t`SUCCESS`),
+            i18n._(t`FAILED`)
+        ).then(() => {
+            setSending(false)
+            setBalance(0)
+        })
     }
 
     return (
