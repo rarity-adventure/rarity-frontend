@@ -41,7 +41,6 @@
         "graphql-tag": "2.12.5",
         "next": "11.1.2",
         "next-pwa": "5.3.1",
-        "numeral": "2.0.6",
         "postcss": "8.3.6",
         "prettier": "2.4.1",
         "react": "17.0.2",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
-import LangSwitcher from '../LanguageSwitch'
+import LangSwitcher from '../Language'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Link from 'next/link'

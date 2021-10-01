@@ -1,7 +1,5 @@
 import Image from 'next/image'
 
-const img_path = (name: string) => '/img/classes/' + name + '.png'
-
 export const CLASSES_NAMES: { [k: string]: string } = {
     '1': 'barbarian',
     '2': 'bard',
