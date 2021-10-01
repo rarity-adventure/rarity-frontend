@@ -1,13 +1,13 @@
-import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
 import toast from 'react-hot-toast'
-import useRarity from '../../../hooks/useRarity'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { BURN_ADDRESS } from '../../../constants'
-import { SummonerFullData } from '../../../hooks/useRarityLibrary'
+import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
+import useRarity from '../../../../hooks/useRarity'
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
+import { BURN_ADDRESS } from '../../../../constants'
+import Modal from '../../Modal'
+import ModalHeader from '../../ModalHeader'
 
 interface BurnModalProps {
     open: boolean

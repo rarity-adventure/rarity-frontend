@@ -13,10 +13,10 @@ import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 interface TransferModalProps {
     open: boolean
     closeFunction: () => void
-    summoner: SummonerFullData
+    summoners: SummonerFullData[]
 }
 
-export default function DaycareSingleModal({ open, closeFunction, summoner }: TransferModalProps): JSX.Element {
+export default function DaycareModal({ open, closeFunction, summoners }: TransferModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { account } = useActiveWeb3React()
@@ -49,11 +49,17 @@ export default function DaycareSingleModal({ open, closeFunction, summoner }: Tr
     }
 
     async function registerConfirm() {
-        await toast.promise(registerDaycare([summoner.id], days), {
-            loading: <b>{i18n._(t`Registering summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
+        await toast.promise(
+            registerDaycare(
+                summoners.map((s) => s.id),
+                days
+            ),
+            {
+                loading: <b>{i18n._(t`Registering summoner`)}</b>,
+                success: <b>{i18n._(t`Success`)}</b>,
+                error: <b>{i18n._(t`Failed`)}</b>,
+            }
+        )
         closeFunction()
     }
 
@@ -66,12 +72,6 @@ export default function DaycareSingleModal({ open, closeFunction, summoner }: Tr
                 </div>
                 <div className="text-center text-white p-4 pb-2 gap-5">
                     <h2>{i18n._(t`The service has a fee of 0.1 FTM for each summoner for each day.`)}</h2>
-                </div>
-                <div className="text-center text-white p-4 pb-2 gap-5">
-                    <h2>
-                        {i18n._(t`This summoner is registered for `)} <b>{summoner.misc.daycare_days_paid}</b>{' '}
-                        {i18n._(t`days in the daily care. `)}
-                    </h2>
                 </div>
                 <div className="text-center text-white p-4 pb-2 gap-5">
                     <h2>{i18n._(t`How many days do you want to register your summoner/s?`)}</h2>

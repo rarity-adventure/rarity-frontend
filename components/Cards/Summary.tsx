@@ -3,15 +3,15 @@ import React, { useState } from 'react'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import BurnModal from '../Modal/modals/Burn'
-import TransferModal from '../Modal/modals/Transfer'
-import DaycareSingleModal from '../Modal/modals/DaycareSingle'
 import useRarity from '../../hooks/useRarity'
 import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import { useRouter } from 'next/router'
+import BurnModal from '../Modal/modals/transfers/Burn'
+import TransferSummonerModal from '../Modal/modals/transfers/TransferSummoner'
+import DaycareModal from '../Modal/modals/Daycare'
 
 enum Modals {
     TRANSFER = 1,
@@ -109,8 +109,12 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
     return (
         <div className="mx-auto w-56">
             <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
-            <TransferModal open={modalOpen === Modals.TRANSFER} closeFunction={closeModals} summoner={summoner} />
-            <DaycareSingleModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoner={summoner} />
+            <TransferSummonerModal
+                open={modalOpen === Modals.TRANSFER}
+                closeFunction={closeModals}
+                summoner={summoner}
+            />
+            <DaycareModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoners={[summoner]} />
             <div
                 onClick={async () => router.push('/play/' + summoner.id)}
                 className="p-5 w-full text-center cursor-pointer"

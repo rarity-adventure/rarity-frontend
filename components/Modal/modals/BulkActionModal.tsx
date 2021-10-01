@@ -1,29 +1,29 @@
-import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import toast from 'react-hot-toast'
-import useRarity from '../../../hooks/useRarity'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { RARITY_HELPER_ADDRESS } from '../../../constants'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
-import { chunkArrayByNumber } from '../../../functions/array'
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import useRarity from '../../../hooks/useRarity'
 import useRarityHelper from '../../../hooks/useRarityHelper'
+import { RARITY_HELPER_ADDRESS } from '../../../constants'
+import { chunkArrayByNumber } from '../../../functions/array'
+import Modal from '../Modal'
+import ModalHeader from '../ModalHeader'
 
-interface LevelModalProps {
+interface BulkActionModalProps {
     open: boolean
     closeFunction: () => void
     summoners: SummonerFullData[]
 }
 
-export default function LevelModal({ open, closeFunction, summoners }: LevelModalProps): JSX.Element {
+export default function BulkActionModal({ open, closeFunction, summoners }: BulkActionModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { account } = useActiveWeb3React()
 
     const { isApprovedForAll, setApprovalForAll } = useRarity()
-    const { level_up, level_up_donate } = useRarityHelper()
+    const { adventure, adventure_donate } = useRarityHelper()
 
     const [approved, setApproved] = useState(false)
 
@@ -36,34 +36,12 @@ export default function LevelModal({ open, closeFunction, summoners }: LevelModa
         fetch_approval()
     }, [summoners, fetch_approval])
 
-    async function submit() {
-        const chunks = chunkArrayByNumber(summoners, 100)
+    async function submit(tip: boolean) {
+        const chunks = chunkArrayByNumber(summoners, 200)
         for (let i = 0; i < chunks.length; i++) {
-            await toast.promise(
-                level_up(
-                    chunks[i].map((s) => {
-                        return s.id
-                    })
-                ),
-                {
-                    loading: (
-                        <b>
-                            {i18n._(t`Sending chunk:`)} {i + 1} of {chunks.length}{' '}
-                        </b>
-                    ),
-                    success: <b>{i18n._(t`Success`)}</b>,
-                    error: <b>{i18n._(t`Failed`)}</b>,
-                }
-            )
-        }
-    }
-
-    async function submitTIP() {
-        const chunks = chunkArrayByNumber(summoners, 100)
-        for (let i = 0; i < chunks.length; i++) {
-            if (i === 0) {
+            if (tip && i === 0) {
                 await toast.promise(
-                    level_up_donate(
+                    adventure_donate(
                         chunks[i].map((s) => {
                             return s.id
                         })
@@ -80,7 +58,7 @@ export default function LevelModal({ open, closeFunction, summoners }: LevelModa
                 )
             } else {
                 await toast.promise(
-                    level_up(
+                    adventure(
                         chunks[i].map((s) => {
                             return s.id
                         })
@@ -112,23 +90,23 @@ export default function LevelModal({ open, closeFunction, summoners }: LevelModa
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`level-up summoners`)} onClose={closeFunction} />
+                <ModalHeader title={i18n._(t`adventure summoners`)} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-8 gap-5">
                     {summoners.length > 0 ? (
                         <div>
                             <h2>
                                 {i18n._(t`You have`)} {summoners.length}{' '}
-                                {i18n._(t`summoners available to send for level-up.`)}{' '}
+                                {i18n._(t`summoners available to send for adventure.`)}{' '}
                             </h2>
-                            {summoners.length >= 100 && (
-                                <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 100 summoners`)}</h2>
+                            {summoners.length >= 200 && (
+                                <h2 className="mt-1">{i18n._(t`We will send 1 transaction for each 200 summoners`)}</h2>
                             )}
                             {approved ? (
                                 <>
                                     {summoners.length >= 10 && (
                                         <div>
                                             <button
-                                                onClick={() => submitTIP()}
+                                                onClick={() => submit(true)}
                                                 className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
                                             >
                                                 {i18n._(t`send with 0.1 FTM tip for devs`)}
@@ -137,7 +115,7 @@ export default function LevelModal({ open, closeFunction, summoners }: LevelModa
                                     )}
                                     <div>
                                         <button
-                                            onClick={() => submit()}
+                                            onClick={() => submit(false)}
                                             className="bg-green border-white border-2 p-2 uppercase rounded-lg mt-4"
                                         >
                                             {i18n._(t`send summoners`)}
@@ -155,7 +133,7 @@ export default function LevelModal({ open, closeFunction, summoners }: LevelModa
                         </div>
                     ) : (
                         <div>
-                            <h2>{i18n._(t`No summoners available for level-up  `)} </h2>
+                            <h2>{i18n._(t`No summoners available for adventure  `)} </h2>
                         </div>
                     )}
                 </div>

@@ -1,32 +1,31 @@
-import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { useLingui } from '@lingui/react'
-import { isAddress } from '../../../functions/validate'
 import toast from 'react-hot-toast'
-import useRarity from '../../../hooks/useRarity'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { ItemData, SummonerFullData } from '../../../hooks/useRarityLibrary'
-import useRarityCrafting from '../../../hooks/useRarityCrafting'
+import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
+import useRarity from '../../../../hooks/useRarity'
+import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
+import Modal from '../../Modal'
+import { isAddress } from '../../../../functions/validate'
+import ModalHeader from '../../ModalHeader'
 
-interface TransferItemModalProps {
+interface TransferModalProps {
     open: boolean
     closeFunction: () => void
-    item: ItemData
+    summoner: SummonerFullData
 }
 
-export default function TransferItemModal({ open, closeFunction, item }: TransferItemModalProps): JSX.Element {
+export default function TransferSummonerModal({ open, closeFunction, summoner }: TransferModalProps): JSX.Element {
     const { i18n } = useLingui()
 
-    const { transferFrom } = useRarityCrafting()
+    const { transferFrom } = useRarity()
 
     const { account } = useActiveWeb3React()
 
     async function transferConfirm() {
         const address = typeof transferAddress.address === 'string' ? transferAddress.address : ''
-        await toast.promise(transferFrom(account, address, item.token_id), {
-            loading: <b>{i18n._(t`Transferring item`)}</b>,
+        await toast.promise(transferFrom(account, address, summoner.id), {
+            loading: <b>{i18n._(t`Transferring summoner`)}</b>,
             success: <b>{i18n._(t`Success`)}</b>,
             error: <b>{i18n._(t`Failed`)}</b>,
         })
@@ -49,13 +48,13 @@ export default function TransferItemModal({ open, closeFunction, item }: Transfe
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`transfer item`)} onClose={closeFunction} />
+                <ModalHeader title={i18n._(t`transfer summoner`)} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-4 gap-5">
-                    <h2>{i18n._(t`Write the address to transfer the item`)}</h2>
+                    <h2>{i18n._(t`Write the address to transfer the summoner`)}</h2>
                 </div>
                 <div className="text-center text-white p-4 pb-8 gap-5">
                     <input
-                        className="p-2 text-background-end rounded-lg"
+                        className="p-2 text-background-end"
                         onChange={(v) => transferAddressHandler(v.target.value)}
                     />
                 </div>

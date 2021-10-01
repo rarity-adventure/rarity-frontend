@@ -15,7 +15,7 @@ interface TransferMaterialModalProps {
     summoners: SummonerFullData[]
 }
 
-export default function TransferMaterialModal({
+export default function TransferCoinModal({
     open,
     closeFunction,
     id,

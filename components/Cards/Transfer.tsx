@@ -2,10 +2,9 @@ import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import TransferMaterialModal from '../Modal/modals/TransferMaterial'
-import TransferGoldModal from '../Modal/modals/TransferGold'
 import { MaterialImage } from '../Coins/material'
 import { GoldImage } from '../Coins/gold'
+import TransferCoinModal from '../Modal/modals/transfers/TransferCoin'
 
 function SummonerTransferCard({
     summoner,
@@ -16,29 +15,13 @@ function SummonerTransferCard({
 }): JSX.Element {
     const { i18n } = useLingui()
 
-    const [transferGoldModal, setTransferGoldModal] = useState(false)
-
-    function closeGoldModal() {
-        setTransferGoldModal(false)
-    }
-
-    const [transferMaterialModal, setTransferMaterialModal] = useState(false)
-
-    function closeMaterialModal() {
-        setTransferMaterialModal(false)
-    }
+    const [transferModal, setTransferModal] = useState(false)
 
     return (
         <div className="max-w-screen-md mx-auto">
-            <TransferMaterialModal
-                open={transferMaterialModal}
-                closeFunction={closeMaterialModal}
-                id={summoner.id}
-                summoners={summoners}
-            />
-            <TransferGoldModal
-                open={transferGoldModal}
-                closeFunction={closeGoldModal}
+            <TransferCoinModal
+                open={transferModal}
+                closeFunction={() => setTransferModal(false)}
                 id={summoner.id}
                 summoners={summoners}
             />
@@ -58,7 +41,7 @@ function SummonerTransferCard({
                 <div className="p-4  text-center">
                     <p className="text-lg text-left">{i18n._(t`What do you want to transfer?`)}</p>
                     <div className="mt-8">
-                        <button onClick={() => setTransferMaterialModal(true)}>
+                        <button onClick={() => setTransferModal(true)}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
                                 <MaterialImage />
                                 <div className="px-5 py-2 text-center">
@@ -68,7 +51,7 @@ function SummonerTransferCard({
                         </button>
                     </div>
                     <div className="mt-8 mb-8">
-                        <button onClick={() => setTransferGoldModal(true)}>
+                        <button onClick={() => setTransferModal(true)}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
                                 <GoldImage />
                                 <div className="pr-16 py-2 text-center">

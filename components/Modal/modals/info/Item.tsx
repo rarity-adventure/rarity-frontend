@@ -1,4 +1,3 @@
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
@@ -9,8 +8,9 @@ import {
     WEAPON_DAMAGE_TYPE,
     WEAPON_ENCUMBRANCE,
     WEAPON_PROFICIENCY,
-} from '../../../constants/codex/items'
-import Modal from '../Modal'
+} from '../../../../constants/codex/items'
+import Modal from '../../Modal'
+import ModalHeader from '../../ModalHeader'
 
 interface ItemModalProps {
     open: boolean

@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { Item, ITEM_TYPE, ITEMS } from '../../constants/codex/items'
-import ItemModal from '../Modal/modals/Item'
 import Image from 'next/image'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityCellar from '../../hooks/useRarityCellar'
@@ -15,6 +14,7 @@ import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'
 import { MaterialImage } from '../Coins/material'
+import ItemModal from '../Modal/modals/info/Item'
 
 enum View {
     GOODS,

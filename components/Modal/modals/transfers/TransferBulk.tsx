@@ -25,8 +25,6 @@ function SummonerTransferRow({
 }): JSX.Element {
     const { i18n } = useLingui()
 
-    const dispatch = useDispatch()
-
     const [sending, setSending] = useState(false)
 
     const gold = useRarityGold()
