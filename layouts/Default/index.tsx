@@ -1,6 +1,5 @@
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
-import Main from '../../components/Main'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useRouter } from 'next/router'
@@ -72,7 +71,12 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
             ) : (
                 <div />
             )}
-            <Main>{children}</Main>
+            <main
+                className={'flex flex-col items-center justify-start flex-grow w-full h-full'}
+                style={{ height: 'max-content' }}
+            >
+                {children}
+            </main>
             <Toaster containerClassName="z-40" containerStyle={{ fontFamily: 'Work Sans' }} />
             <Footer />
         </div>

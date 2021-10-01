@@ -6,7 +6,7 @@ import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
 import useRarityCellar from '../../../../hooks/useRarityCellar'
 import Modal from '../../Modal'
 import ModalHeader from '../../ModalHeader'
-import SummonerSelector from '../../../SummonerSelector'
+import SummonerSelector from '../../../Selectors/Summoners'
 
 interface TransferMaterialModalProps {
     open: boolean

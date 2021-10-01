@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Popover } from '@headlessui/react'
 import Web3Status from '../Web3Status'
-import LangSwitcher from '../Language'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitter, faDiscord } from '@fortawesome/free-brands-svg-icons'
+import Language from '../Language'
 
 function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
     const { i18n } = useLingui()
@@ -117,7 +117,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                         <div className="w-auto mx-auto flex items-center rounded p-0.5 whitespace-nowrap text-sm font-bold cursor-pointer select-none pointer-events-auto z-20">
                                             {socials()}
                                             <div className="hidden md:inline-block mx-2">
-                                                <LangSwitcher />
+                                                <Language/>
                                             </div>
                                             <Web3Status />
                                         </div>

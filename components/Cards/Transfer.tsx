@@ -2,9 +2,8 @@ import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import { MaterialImage } from '../Coins/material'
-import { GoldImage } from '../Coins/gold'
 import TransferCoinModal from '../Modal/modals/transfers/TransferCoin'
+import { GoldImage, MaterialImage } from '../../constants/coins'
 
 function SummonerTransferCard({
     summoner,

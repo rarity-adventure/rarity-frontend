@@ -7,9 +7,9 @@ import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import useRarity from '../../../hooks/useRarity'
 import useRarityHelper from '../../../hooks/useRarityHelper'
 import { RARITY_HELPER_ADDRESS } from '../../../constants'
-import { chunkArrayByNumber } from '../../../functions/array'
 import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
+import { chunkArrayByNumber } from '../../../functions/chunkArray'
 
 interface BulkActionModalProps {
     action: BulkAction

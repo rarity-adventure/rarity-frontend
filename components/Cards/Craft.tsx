@@ -12,9 +12,9 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'
-import { MaterialImage } from '../Coins/material'
 import ItemModal from '../Modal/modals/info/Item'
 import { sendToast } from '../../functions/toast'
+import { MaterialImage } from '../../constants/coins'
 
 enum View {
     GOODS,

@@ -1,6 +1,5 @@
 import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
-import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import useRarity from '../../hooks/useRarity'
@@ -12,6 +11,7 @@ import BurnModal from '../Modal/modals/transfers/Burn'
 import TransferSummonerModal from '../Modal/modals/transfers/TransferSummoner'
 import DaycareModal from '../Modal/modals/Daycare'
 import { sendToast } from '../../functions/toast'
+import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/codex/classes'
 
 enum Modals {
     TRANSFER = 1,

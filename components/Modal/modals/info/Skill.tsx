@@ -1,7 +1,6 @@
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
-import Image from 'next/image'
 import Modal from '../../Modal'
 import ModalHeader from '../../ModalHeader'
 import { SKILL_URL, SKILLS } from '../../../../constants/codex/skills'

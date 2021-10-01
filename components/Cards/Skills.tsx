@@ -3,13 +3,13 @@ import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { SKILLS } from '../../constants/codex/skills'
-import { CLASS_SKILLS } from '../../constants/classes'
 import { RefreshIcon } from '@heroicons/react/outline'
 import useRaritySkills from '../../hooks/useRaritySkills'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import Image from 'next/image'
 import SkillModal from '../Modal/modals/info/Skill'
 import { sendToast } from '../../functions/toast'
+import { CLASS_SKILLS } from '../../constants/codex/classes'
 
 function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
