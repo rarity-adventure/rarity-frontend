@@ -99,7 +99,7 @@ function SummonerSkillsCard({ summoner }: { summoner: SummonerFullData }): JSX.E
                 </div>
             </div>
             <div className="border-white border-2 my-3 bg-background-cards w-full bg-card-content">
-                <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 overflow-scroll overflow-hidden h-60">
+                <div className="grid grid-cols-1 w-full px-2 md:mt-1 divide-white divide-y-2 scrollbar-hide overflow-scroll overflow-hidden h-60">
                     {Object.keys(SKILLS).map((k, i) => {
                         const data = SKILLS[k]
                         return (

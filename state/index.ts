@@ -6,7 +6,7 @@ import storage from 'redux-persist/lib/storage'
 
 let store: Store
 
-const PERSISTED_KEYS: string[] = ["summoners", "stats", "items"]
+const PERSISTED_KEYS: string[] = ['summoners', 'stats', 'items']
 
 const persistConfig = {
     key: 'root',
