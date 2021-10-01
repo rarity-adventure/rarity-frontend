@@ -10,6 +10,8 @@ import Link from 'next/link'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useSummoners } from '../../state/summoners/hooks'
+import BackToTop from 'react-back-to-top-button'
+import Image from 'next/image'
 
 const pixelmix_fonts = ['en']
 
@@ -75,9 +77,12 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
                 className={'flex flex-col items-center justify-start flex-grow w-full h-full'}
                 style={{ height: 'max-content' }}
             >
+                <Toaster containerClassName="z-40" containerStyle={{ fontFamily: 'Work Sans' }} />
                 {children}
+                <BackToTop showAt={400} speed={1500} easing="easeInOutQuint">
+                    <Image src="/img/back-top-button.png" width="30" height="30" alt="back-to-top-button" />
+                </BackToTop>
             </main>
-            <Toaster containerClassName="z-40" containerStyle={{ fontFamily: 'Work Sans' }} />
             <Footer />
         </div>
     )

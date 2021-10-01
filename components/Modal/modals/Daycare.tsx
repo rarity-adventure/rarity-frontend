@@ -56,7 +56,7 @@ export default function DaycareModal({ open, closeFunction, summoners }: Transfe
                         <div className="text-center text-white p-4 pb-4 gap-5">
                             <input
                                 type="number"
-                                className="p-2 text-background-end"
+                                className="p-2 text-background-end text-center"
                                 onChange={(v) => setDays(parseInt(v.target.value))}
                             />
                         </div>

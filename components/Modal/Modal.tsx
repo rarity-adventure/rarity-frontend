@@ -11,7 +11,7 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ isOpen, onDismiss, children }) => {
     return (
         <Transition.Root show={isOpen} as={Fragment}>
-            <Dialog as="div" static className="fixed z-30 inset-0 overflow-y-auto" open={isOpen} onClose={onDismiss}>
+            <Dialog as="div" static className="fixed inset-0 overflow-y-auto" open={isOpen} onClose={onDismiss}>
                 <div className="relative flex items-center justify-center text-center block">
                     <Transition.Child
                         as={Fragment}

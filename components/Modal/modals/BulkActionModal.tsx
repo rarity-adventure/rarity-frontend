@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../../hooks/useRarityLibrary'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
@@ -31,7 +31,16 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
     const { account } = useActiveWeb3React()
 
     const { isApprovedForAll, setApprovalForAll } = useRarity()
-    const { adventure, adventure_donate } = useRarityHelper()
+    const {
+        adventure,
+        adventure_donate,
+        level_up,
+        level_up_donate,
+        claim_gold,
+        claim_gold_donate,
+        cellar,
+        cellar_donate,
+    } = useRarityHelper()
 
     const [approved, setApproved] = useState(false)
 
@@ -49,30 +58,69 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
         for (let i = 0; i < chunks.length; i++) {
             if (tip && i === 0) {
                 await sendToast(
-                    adventure_donate(
+                    bulk_action_donate(
                         chunks[i].map((s) => {
                             return s.id
                         })
                     ),
-                    i18n._(t`Sending chunk: `) + i + 1 + ' of ' + chunks.length
+                    i18n._(t`Sending chunk:`) + ' ' + (i + 1).toString() + ' of ' + chunks.length
                 )
             } else {
                 await sendToast(
-                    adventure(
+                    bulk_action(
                         chunks[i].map((s) => {
                             return s.id
                         })
                     ),
-                    i18n._(t`Sending chunk: `) + i + 1 + ' of ' + chunks.length
+                    i18n._(t`Sending chunk:`) + ' ' + (i + 1).toString() + ' of ' + chunks.length
                 )
             }
         }
     }
 
+    const title = useMemo(() => {
+        switch (action) {
+            case BulkAction.ADVENTURE:
+                return 'adventure summoners'
+            case BulkAction.LEVELUP:
+                return 'level-up summoners'
+            case BulkAction.DUNGEON:
+                return 'dungeon summoners'
+            case BulkAction.GOLD:
+                return 'claiming gold'
+        }
+    }, [action])
+
+    const bulk_action = useMemo(() => {
+        switch (action) {
+            case BulkAction.ADVENTURE:
+                return adventure
+            case BulkAction.LEVELUP:
+                return level_up
+            case BulkAction.DUNGEON:
+                return cellar
+            case BulkAction.GOLD:
+                return claim_gold
+        }
+    }, [action])
+
+    const bulk_action_donate = useMemo(() => {
+        switch (action) {
+            case BulkAction.ADVENTURE:
+                return adventure_donate
+            case BulkAction.LEVELUP:
+                return level_up_donate
+            case BulkAction.DUNGEON:
+                return cellar_donate
+            case BulkAction.GOLD:
+                return claim_gold_donate
+        }
+    }, [action])
+
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`adventure summoners`)} onClose={closeFunction} />
+                {title && <ModalHeader title={i18n._(title)} onClose={closeFunction} />}
                 <div className="text-center text-white p-4 pb-8 gap-5">
                     {summoners.length > 0 ? (
                         <div>
