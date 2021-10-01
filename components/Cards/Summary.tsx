@@ -131,10 +131,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                         {summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && (
                             <button
                                 onClick={async () =>
-                                    await sendToast(
-                                        level_up(summoner.id),
-                                        i18n._(t`LEVEL-UP Summoner`),
-                                    )
+                                    await sendToast(level_up(summoner.id), i18n._(t`LEVEL-UP Summoner`))
                                 }
                                 className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2"
                             >
@@ -172,10 +169,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                         ) : (
                             <button
                                 onClick={async () =>
-                                    await sendToast(
-                                        adventure(summoner.id),
-                                        i18n._(t`Sending summoner`),
-                                    )
+                                    await sendToast(adventure(summoner.id), i18n._(t`Sending summoner`))
                                 }
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
                             >
@@ -197,10 +191,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                         ) : summoner.materials.log * 1000 < time && summoner.materials.scout !== 0 ? (
                             <button
                                 onClick={async () =>
-                                    await sendToast(
-                                        adventure_cellar(summoner.id),
-                                        i18n._(t`Sending summoner`),
-                                    )
+                                    await sendToast(adventure_cellar(summoner.id), i18n._(t`Sending summoner`))
                                 }
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
                             >

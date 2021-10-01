@@ -1,12 +1,13 @@
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { useLingui } from '@lingui/react'
-import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
 import useRarityCellar from '../../../../hooks/useRarityCellar'
 import Modal from '../../Modal'
 import ModalHeader from '../../ModalHeader'
 import SummonerSelector from '../../../Selectors/Summoners'
+import { sendToast } from '../../../../functions/toast'
+import { BURN_ADDRESS } from '../../../../constants'
 
 interface TransferMaterialModalProps {
     open: boolean
@@ -27,15 +28,6 @@ export default function TransferCoinModal({
 
     const [transferTo, setTransferTo] = useState<number>(0)
     const [transferAmount, setTransferAmount] = useState<string>('0')
-
-    async function transferConfirm() {
-        await toast.promise(transferFrom(id, id, transferTo, transferAmount), {
-            loading: <b>{i18n._(t`Transferring MATERIAL`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-        closeFunction()
-    }
 
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
@@ -68,7 +60,12 @@ export default function TransferCoinModal({
                         {transferTo ? (
                             <button
                                 className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1"
-                                onClick={() => transferConfirm()}
+                                onClick={async () =>
+                                    await sendToast(
+                                        transferFrom(id, id, transferTo, transferAmount),
+                                        i18n._(t`Transferring MATERIAL`)
+                                    )
+                                }
                             >
                                 <h2>{i18n._(t`confirm`)}</h2>
                             </button>

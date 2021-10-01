@@ -1,13 +1,13 @@
 import { t } from '@lingui/macro'
 import React from 'react'
 import { useLingui } from '@lingui/react'
-import toast from 'react-hot-toast'
 import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
 import useRarity from '../../../../hooks/useRarity'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
 import { BURN_ADDRESS } from '../../../../constants'
 import Modal from '../../Modal'
 import ModalHeader from '../../ModalHeader'
+import { sendToast } from '../../../../functions/toast'
 
 interface BurnModalProps {
     open: boolean
@@ -21,15 +21,6 @@ export default function BurnModal({ open, closeFunction, summoner }: BurnModalPr
     const { transferFrom } = useRarity()
 
     const { account } = useActiveWeb3React()
-
-    async function deleteConfirm() {
-        await toast.promise(transferFrom(account, BURN_ADDRESS, summoner.id), {
-            loading: <b>{i18n._(t`Deleting summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-        closeFunction()
-    }
 
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
@@ -51,7 +42,15 @@ export default function BurnModal({ open, closeFunction, summoner }: BurnModalPr
                         </button>
                     </div>
                     <div className="bg-red hover:bg-red-hovered text-white border-white border-2 rounded-lg mx-4">
-                        <button className="w-full uppercase px-2 py-1" onClick={() => deleteConfirm()}>
+                        <button
+                            className="w-full uppercase px-2 py-1"
+                            onClick={async () =>
+                                await sendToast(
+                                    transferFrom(account, BURN_ADDRESS, summoner.id),
+                                    i18n._(t`Deleting summoner`)
+                                )
+                            }
+                        >
                             <h2>{i18n._(t`confirm`)}</h2>
                         </button>
                     </div>
