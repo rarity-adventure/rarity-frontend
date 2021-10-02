@@ -1,5 +1,3 @@
-import { Skill } from '../codex/skills'
-
 export const TAGS_WITH_VALUE: string[] = [
     'ID',
     'Price',
