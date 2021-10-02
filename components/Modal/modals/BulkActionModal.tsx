@@ -81,24 +81,27 @@ export default function BulkActionModal({ open, closeFunction, summoners, a }: B
 
     const [action, setAction] = useState(0)
 
-    useEffect( () => {
+    useEffect(() => {
         setAction(a)
     }, [a])
 
-    const filter_summoners = useCallback((summoners: SummonerFullData[]): SummonerFullData[] => {
-        switch (action) {
-            case BulkAction.ADVENTURE:
-                return summoners.filter((s) => s.base._log * 1000 < Date.now())
-            case BulkAction.LEVELUP:
-                return summoners.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level))
-            case BulkAction.DUNGEON:
-                return summoners.filter((s) => s.gold.claimable > 0)
-            case BulkAction.GOLD:
-                return summoners.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0)
-            default:
-                return []
-        }
-    }, [action])
+    const filter_summoners = useCallback(
+        (summoners: SummonerFullData[]): SummonerFullData[] => {
+            switch (action) {
+                case BulkAction.ADVENTURE:
+                    return summoners.filter((s) => s.base._log * 1000 < Date.now())
+                case BulkAction.LEVELUP:
+                    return summoners.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level))
+                case BulkAction.DUNGEON:
+                    return summoners.filter((s) => s.gold.claimable > 0)
+                case BulkAction.GOLD:
+                    return summoners.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0)
+                default:
+                    return []
+            }
+        },
+        [action]
+    )
 
     const title = useMemo(() => {
         switch (action) {

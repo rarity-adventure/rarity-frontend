@@ -72,13 +72,11 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
             ) : (
                 <div />
             )}
-            <div className="absolute top-0" style={{ zIndex: 1000 }}>
-                <Toaster containerStyle={{ fontFamily: 'Work Sans' }} />
-            </div>
             <main
                 className={'flex flex-col items-center justify-start flex-grow w-full h-full'}
                 style={{ height: 'max-content' }}
             >
+                <Toaster containerClassName="z-50" containerStyle={{ fontFamily: 'Work Sans' }} />
                 {children}
                 <ScrollTopButton />
             </main>
