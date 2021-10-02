@@ -9,8 +9,9 @@ import SummonerSelector from '../../../Selectors/Summoners'
 import { sendToast } from '../../../../functions/toast'
 import { BURN_ADDRESS } from '../../../../constants'
 
-interface TransferMaterialModalProps {
+interface TransferCoinModalProps {
     open: boolean
+    coin: string
     closeFunction: () => void
     id: number
     summoners: SummonerFullData[]
@@ -21,7 +22,8 @@ export default function TransferCoinModal({
     closeFunction,
     id,
     summoners,
-}: TransferMaterialModalProps): JSX.Element {
+    coin,
+}: TransferCoinModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { transferFrom } = useRarityCellar()
@@ -29,6 +31,7 @@ export default function TransferCoinModal({
     const [transferTo, setTransferTo] = useState<number>(0)
     const [transferAmount, setTransferAmount] = useState<string>('0')
 
+    console.log(coin)
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">

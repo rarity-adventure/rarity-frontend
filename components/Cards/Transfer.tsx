@@ -14,13 +14,14 @@ function SummonerTransferCard({
 }): JSX.Element {
     const { i18n } = useLingui()
 
-    const [transferModal, setTransferModal] = useState(false)
+    const [transferCoinModal, setTransferCoinModal] = useState({ open: false, coin: '' })
 
     return (
         <div className="max-w-screen-md mx-auto">
             <TransferCoinModal
-                open={transferModal}
-                closeFunction={() => setTransferModal(false)}
+                open={transferCoinModal.open}
+                closeFunction={() => setTransferCoinModal({ open: false, coin: '' })}
+                coin={transferCoinModal.coin}
                 id={summoner.id}
                 summoners={summoners}
             />
@@ -40,7 +41,7 @@ function SummonerTransferCard({
                 <div className="p-4  text-center">
                     <p className="text-lg text-left">{i18n._(t`What do you want to transfer?`)}</p>
                     <div className="mt-8">
-                        <button onClick={() => setTransferModal(true)}>
+                        <button onClick={() => setTransferCoinModal({ open: true, coin: 'material' })}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
                                 <MaterialImage />
                                 <div className="px-5 py-2 text-center">
@@ -50,7 +51,7 @@ function SummonerTransferCard({
                         </button>
                     </div>
                     <div className="mt-8 mb-8">
-                        <button onClick={() => setTransferModal(true)}>
+                        <button onClick={() => setTransferCoinModal({ open: true, coin: 'gold' })}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
                                 <GoldImage />
                                 <div className="pr-16 py-2 text-center">

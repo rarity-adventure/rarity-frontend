@@ -58,17 +58,7 @@ export default function Profile(): JSX.Element {
         }
     }
 
-    const [transferGoldModal, setTransferGoldModal] = useState(false)
-
-    function closeGoldModal() {
-        setTransferGoldModal(false)
-    }
-
-    const [transferMaterialModal, setTransferMaterialModal] = useState(false)
-
-    function closeMaterialModal() {
-        setTransferMaterialModal(false)
-    }
+    const [transferCoinModal, setTransferCoinModal] = useState({ open: false, coin: '' })
 
     return (
         <div className="w-full z-25">
@@ -115,13 +105,11 @@ export default function Profile(): JSX.Element {
                                         <div className="flex flex-row justify-between hidden sm:inline-flex">
                                             {selected && (
                                                 <>
-                                                    <TransferCoinModal
-                                                        open={transferMaterialModal}
-                                                        closeFunction={closeMaterialModal}
-                                                        id={selected.id}
-                                                        summoners={s}
-                                                    />
-                                                    <button onClick={() => setTransferMaterialModal(true)}>
+                                                    <button
+                                                        onClick={() =>
+                                                            setTransferCoinModal({ open: true, coin: 'material' })
+                                                        }
+                                                    >
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                             <div className="py-1 w-2/3 text-center">
                                                                 <p>{selected.materials.balance}</p>
@@ -129,7 +117,11 @@ export default function Profile(): JSX.Element {
                                                             <MaterialImage />
                                                         </div>
                                                     </button>
-                                                    <button onClick={() => setTransferGoldModal(true)}>
+                                                    <button
+                                                        onClick={() =>
+                                                            setTransferCoinModal({ open: true, coin: 'gold' })
+                                                        }
+                                                    >
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                             <div className="py-1 w-2/3 text-center">
                                                                 <p>{selected.gold.balance}</p>
@@ -185,7 +177,7 @@ export default function Profile(): JSX.Element {
                                 </div>
                                 <div className="sm:hidden mt-2 flex flex-row justify-between">
                                     {selected && (
-                                        <button onClick={() => setTransferMaterialModal(true)}>
+                                        <button onClick={() => setTransferCoinModal({ open: true, coin: 'material' })}>
                                             <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                 <div className="py-1 w-2/3 text-center">
                                                     <p>{selected.materials.balance}</p>
@@ -195,7 +187,7 @@ export default function Profile(): JSX.Element {
                                         </button>
                                     )}
                                     {selected && (
-                                        <button onClick={() => setTransferGoldModal(true)}>
+                                        <button onClick={() => setTransferCoinModal({ open: true, coin: 'gold' })}>
                                             <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                                 <div className="py-1 w-2/3 text-center">
                                                     <p>{selected.gold.balance}</p>
@@ -246,6 +238,13 @@ export default function Profile(): JSX.Element {
                 </Popover>
                 {selected ? (
                     <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
+                        <TransferCoinModal
+                            open={transferCoinModal.open}
+                            coin={transferCoinModal.coin}
+                            closeFunction={() => setTransferCoinModal({ open: false, coin: '' })}
+                            id={selected.id}
+                            summoners={s}
+                        />
                         <div className="text-center mx-auto  mt-2">
                             {CLASSES_IMAGES[selected.base._class.toString()]}
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
