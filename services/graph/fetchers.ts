@@ -1,6 +1,5 @@
 import { request } from 'graphql-request'
-import { getGlobalData, getMarketSummonersCount, getSummoners } from '../../constants/queries'
-import { pager } from './utils'
+import { getGlobalData, getMarketSummonersCount, getSummoners } from './queries'
 
 export const market_graph = async (query, variables = {}) =>
     request('https://rarity-market.hasura.app/v1/graphql', query, variables, {
@@ -8,7 +7,7 @@ export const market_graph = async (query, variables = {}) =>
     })
 
 export const rarity_graph = async (query, variables = {}) =>
-    pager('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
+    request('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
 
 export const getStats = async () => {
     return await rarity_graph(getGlobalData, {})

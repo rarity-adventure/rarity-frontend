@@ -1,46 +1,46 @@
-import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { useLingui } from '@lingui/react'
-import toast from 'react-hot-toast'
-import useRarityCellar from '../../../hooks/useRarityCellar'
-import { SummonerFullData } from '../../../hooks/useRarityLibrary'
-import SummonerSelector from '../../SummonerSelector'
+import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
+import useRarityCellar from '../../../../hooks/useRarityCellar'
+import Modal from '../../Modal'
+import ModalHeader from '../../ModalHeader'
+import SummonerSelector from '../../../Selectors/Summoners'
+import { sendToast } from '../../../../functions/toast'
+import useRarityGold from '../../../../hooks/useRarityGold'
 
-interface TransferMaterialModalProps {
+interface TransferCoinModalProps {
     open: boolean
+    coin: string
     closeFunction: () => void
     id: number
     summoners: SummonerFullData[]
 }
 
-export default function TransferMaterialModal({
+export default function TransferCoinModal({
     open,
     closeFunction,
     id,
     summoners,
-}: TransferMaterialModalProps): JSX.Element {
+    coin,
+}: TransferCoinModalProps): JSX.Element {
     const { i18n } = useLingui()
 
-    const { transferFrom } = useRarityCellar()
+    const gold = useRarityGold()
+    const material = useRarityCellar()
+
+    const transfers: { [k: string]: (executor: number, from: number, to: number, amount: string) => Promise<void> } = {
+        gold: gold.transferFrom,
+        materials: material.transferFrom,
+    }
 
     const [transferTo, setTransferTo] = useState<number>(0)
     const [transferAmount, setTransferAmount] = useState<string>('0')
 
-    async function transferConfirm() {
-        await toast.promise(transferFrom(id, id, transferTo, transferAmount), {
-            loading: <b>{i18n._(t`Transferring MATERIAL`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-        closeFunction()
-    }
-
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`transfer material`)} onClose={closeFunction} />
+                <ModalHeader title={i18n._(t`transfer`) + ' ' + coin.toUpperCase()} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-4 gap-5">
                     <h2>{i18n._(t`Amount to transfer`)}</h2>
                 </div>
@@ -68,7 +68,12 @@ export default function TransferMaterialModal({
                         {transferTo ? (
                             <button
                                 className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1"
-                                onClick={() => transferConfirm()}
+                                onClick={async () =>
+                                    await sendToast(
+                                        transfers[coin.toLowerCase()](id, id, transferTo, transferAmount),
+                                        i18n._(t`Transferring`) + ' ' + coin.toUpperCase()
+                                    )
+                                }
                             >
                                 <h2>{i18n._(t`confirm`)}</h2>
                             </button>

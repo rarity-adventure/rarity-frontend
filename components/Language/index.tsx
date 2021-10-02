@@ -13,7 +13,7 @@ const LANG_TO_COUNTRY = {
     el: 'Ελληνικά',
 }
 
-export default function LangSwitcher() {
+export default function Language() {
     const { locale, locales, asPath } = useRouter()
 
     return (
