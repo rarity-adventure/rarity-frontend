@@ -93,9 +93,9 @@ export default function BulkActionModal({ open, closeFunction, summoners, a }: B
                 case BulkAction.LEVELUP:
                     return summoners.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level))
                 case BulkAction.DUNGEON:
-                    return summoners.filter((s) => s.gold.claimable > 0)
-                case BulkAction.GOLD:
                     return summoners.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0)
+                case BulkAction.GOLD:
+                    return summoners.filter((s) => s.gold.claimable > 0)
                 default:
                     return []
             }
