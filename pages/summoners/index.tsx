@@ -81,8 +81,8 @@ export default function Summoners(): JSX.Element {
     }, [summoners, fetch_approval])
 
     return (
-        <div className="w-full z-25">
-            <BulkActionModal open={modal} action={action} closeFunction={() => closeModal()} summoners={summoners} />
+        <div className="w-full" style={{ zIndex: 500 }}>
+            <BulkActionModal open={modal} a={action} closeFunction={() => closeModal()} summoners={summoners} />
             <DaycareModal open={daycareModal} closeFunction={() => setDaycareModal(false)} summoners={summoners} />
             {loading ? (
                 <SummonersLoader />

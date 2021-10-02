@@ -13,7 +13,7 @@ import { sendToast } from '../../../functions/toast'
 import { calcXPForNextLevel } from '../../../functions/calcXPForNextLevel'
 
 interface BulkActionModalProps {
-    action: BulkAction
+    a: BulkAction
     open: boolean
     closeFunction: () => void
     summoners: SummonerFullData[]
@@ -26,7 +26,7 @@ export enum BulkAction {
     DUNGEON,
 }
 
-export default function BulkActionModal({ open, closeFunction, summoners, action }: BulkActionModalProps): JSX.Element {
+export default function BulkActionModal({ open, closeFunction, summoners, a }: BulkActionModalProps): JSX.Element {
     const { i18n } = useLingui()
 
     const { account } = useActiveWeb3React()
@@ -55,7 +55,7 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
     }, [summoners, fetch_approval])
 
     async function submit(tip: boolean) {
-        const chunks = chunkArrayByNumber(filter_summoners(), 200)
+        const chunks = chunkArrayByNumber(filter_summoners(summoners), 200)
         for (let i = 0; i < chunks.length; i++) {
             if (tip && i === 0) {
                 await sendToast(
@@ -79,7 +79,13 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
         }
     }
 
-    const filter_summoners = useCallback((): SummonerFullData[] => {
+    const [action, setAction] = useState(0)
+
+    useEffect( () => {
+        setAction(a)
+    }, [a])
+
+    const filter_summoners = useCallback((summoners: SummonerFullData[]): SummonerFullData[] => {
         switch (action) {
             case BulkAction.ADVENTURE:
                 return summoners.filter((s) => s.base._log * 1000 < Date.now())
@@ -89,6 +95,8 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
                 return summoners.filter((s) => s.gold.claimable > 0)
             case BulkAction.GOLD:
                 return summoners.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0)
+            default:
+                return []
         }
     }, [action])
 
@@ -116,7 +124,7 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
             case BulkAction.GOLD:
                 return claim_gold
         }
-    }, [action])
+    }, [action, adventure, cellar, claim_gold, level_up])
 
     const bulk_action_donate = useMemo(() => {
         switch (action) {
@@ -129,17 +137,17 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
             case BulkAction.GOLD:
                 return claim_gold_donate
         }
-    }, [action])
+    }, [action, adventure_donate, level_up_donate, cellar_donate, claim_gold_donate])
 
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 {title && <ModalHeader title={i18n._(title)} onClose={closeFunction} />}
                 <div className="text-center text-white p-4 pb-8 gap-5">
-                    {filter_summoners().length > 0 ? (
+                    {filter_summoners(summoners).length > 0 ? (
                         <div>
                             <h2>
-                                {i18n._(t`You have`)} {filter_summoners().length}{' '}
+                                {i18n._(t`You have`)} {filter_summoners(summoners).length}{' '}
                                 {i18n._(t`summoners available to send for adventure.`)}{' '}
                             </h2>
                             {summoners.length >= 200 && (
@@ -147,7 +155,7 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
                             )}
                             {approved ? (
                                 <>
-                                    {filter_summoners().length >= 10 && (
+                                    {filter_summoners(summoners).length >= 10 && (
                                         <div>
                                             <button
                                                 onClick={() => submit(true)}
