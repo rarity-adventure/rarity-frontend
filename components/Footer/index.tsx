@@ -11,7 +11,7 @@ const Footer = () => {
                     {i18n._(t`Created by`)}:{' '}
                     <a target="_blank" rel="noreferrer" href="https://twitter.com/AndreCronjeTech">
                         <b>
-                            <a target="_blank">@AndreCronjeTech</a>
+                            <span>@AndreCronjeTech</span>
                         </b>
                     </a>{' '}
                     {i18n._(t`and built by`)}:{' '}

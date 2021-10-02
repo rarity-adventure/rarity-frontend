@@ -3,18 +3,18 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import { useLingui } from '@lingui/react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { Item, ITEM_TYPE, ITEMS } from '../../constants/codex/items'
-import ItemModal from '../Modal/modals/Item'
 import Image from 'next/image'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityCellar from '../../hooks/useRarityCellar'
 import { CRAFTING_ALLOWANCE, RARITY_CRAFTING_ADDRESS, RARITY_CRAFTING_SUMMONER } from '../../constants'
-import toast from 'react-hot-toast'
 import useRarity from '../../hooks/useRarity'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useRarityCrafting from '../../hooks/useRarityCrafting'
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid'
 import CraftResultModal from '../Modal/modals/Craft'
-import { MaterialImage } from '../Coins/material'
+import ItemModal from '../Modal/modals/info/Item'
+import { sendToast } from '../../functions/toast'
+import { MaterialImage } from '../../constants/coins'
 
 enum View {
     GOODS,
@@ -88,33 +88,23 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }, [summoner, fetch_global_allowance, fetch_item_allowance, item])
 
     async function approveGold() {
-        toast
-            .promise(gold_approve(summoner.id, RARITY_CRAFTING_SUMMONER, CRAFTING_ALLOWANCE), {
-                loading: <b>{i18n._(t`Approving Gold`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setApproval({ gold: true, material: approval.material }))
+        sendToast(
+            gold_approve(summoner.id, RARITY_CRAFTING_SUMMONER, CRAFTING_ALLOWANCE),
+            i18n._(t`Approving Gold`)
+        ).then(() => setApproval({ gold: true, material: approval.material }))
     }
 
     function approveMaterial() {
-        toast
-            .promise(material_approve(summoner.id, RARITY_CRAFTING_SUMMONER, CRAFTING_ALLOWANCE), {
-                loading: <b>{i18n._(t`Approving Materials`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setApproval({ gold: approval.gold, material: true }))
+        sendToast(
+            material_approve(summoner.id, RARITY_CRAFTING_SUMMONER, CRAFTING_ALLOWANCE),
+            i18n._(t`Approving Material`)
+        ).then(() => setApproval({ gold: approval.gold, material: true }))
     }
 
     function approveGlobal() {
-        toast
-            .promise(setApprovalForAll(RARITY_CRAFTING_ADDRESS), {
-                loading: <b>{i18n._(t`Approving Crafting!`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setGlobalApproval(true))
+        sendToast(setApprovalForAll(RARITY_CRAFTING_ADDRESS), i18n._(t`Approving Crafting`)).then(() =>
+            setGlobalApproval(true)
+        )
     }
 
     function getTypeFromView(): ITEM_TYPE {
@@ -137,7 +127,7 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     const [craftLoading, setCraftLoading] = useState(false)
 
-    const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+    const delay = (ms: number) => new Promise((res) => setTimeout(res, ms))
 
     const DC = useMemo(() => {
         if (!item) return 0
@@ -160,20 +150,14 @@ function SummonerCraftCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
     async function craftButton() {
         const currBalance = await balanceOf(account)
-        toast
-            .promise(craft(summoner.id, getTypeFromView(), itemID, materialUse), {
-                loading: <b>{i18n._(t`Crafting`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(async () => {
-                setResultModal(true)
-                setCraftLoading(true)
-                await delay(30000)
-                const newBalance = await balanceOf(account)
-                setCraftResult(successRate === 100 || newBalance > currBalance)
-                setCraftLoading(false)
-            })
+        sendToast(craft(summoner.id, getTypeFromView(), itemID, materialUse), i18n._(t`Crafting`)).then(async () => {
+            setResultModal(true)
+            setCraftLoading(true)
+            await delay(30000)
+            const newBalance = await balanceOf(account)
+            setCraftResult(successRate === 100 || newBalance > currBalance)
+            setCraftLoading(false)
+        })
     }
 
     function increaseMaterial() {

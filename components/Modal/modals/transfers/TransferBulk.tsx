@@ -1,18 +1,17 @@
-import Modal from '../Modal'
-import ModalHeader from '../ModalHeader'
 import { t } from '@lingui/macro'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import { SummonerFullData } from '../../../hooks/useRarityLibrary'
-import CoinSelector from '../../CoinSelector'
-import { CoinData } from '../../../constants'
-import SummonerSelector from '../../SummonerSelector'
-import { CLASSES_NAMES } from '../../../constants/classes'
-import Loader from '../../Loader'
-import useRarityGold from '../../../hooks/useRarityGold'
-import useRarityCellar from '../../../hooks/useRarityCellar'
-import toast from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
+import { SummonerFullData } from '../../../../hooks/useRarityLibrary'
+import useRarityGold from '../../../../hooks/useRarityGold'
+import useRarityCellar from '../../../../hooks/useRarityCellar'
+import Loader from '../../../Loader'
+import Modal from '../../Modal'
+import ModalHeader from '../../ModalHeader'
+import { CoinData } from '../../../../constants/coins'
+import { CLASSES_NAMES } from '../../../../constants/codex/classes'
+import CoinSelector from '../../../Selectors/Coins'
+import SummonerSelector from '../../../Selectors/Summoners'
+import { sendToast } from '../../../../functions/toast'
 
 function SummonerTransferRow({
     summoner,
@@ -24,8 +23,6 @@ function SummonerTransferRow({
     receiver: SummonerFullData
 }): JSX.Element {
     const { i18n } = useLingui()
-
-    const dispatch = useDispatch()
 
     const [sending, setSending] = useState(false)
 
@@ -42,19 +39,13 @@ function SummonerTransferRow({
     async function send() {
         setSending(true)
         const func = transfers[coin.name.toLowerCase()]
-        toast
-            .promise(
-                func(summoner.id, summoner.id, receiver.id, summoner[coin.name.toLowerCase()].balance.toString()),
-                {
-                    loading: <b>{i18n._(t`Transferring ` + ' ' + coin.name.toUpperCase())}</b>,
-                    success: <b>{i18n._(t`Success`)}</b>,
-                    error: <b>{i18n._(t`Failed`)}</b>,
-                }
-            )
-            .then(() => {
-                setSending(false)
-                setBalance(0)
-            })
+        sendToast(
+            func(summoner.id, summoner.id, receiver.id, summoner[coin.name.toLowerCase()].balance.toString()),
+            i18n._(t`Transferring ` + ' ' + coin.name.toUpperCase())
+        ).then(() => {
+            setSending(false)
+            setBalance(0)
+        })
     }
 
     return (
@@ -145,7 +136,7 @@ export default function TransferBulkModal({ open, closeFunction, summoners }: Tr
                 </div>
                 {coin && receiver ? (
                     <div className="w-full p-5">
-                        <div className="grid grid-cols-1 w-full p-4 overflow-scroll overflow-hidden h-72 mb-2 bg-card-button mb-16 rounded-xl border-white border-2">
+                        <div className="grid grid-cols-1 w-full p-4 overflow-scroll scrollbar-hide overflow-hidden h-72 mb-2 bg-card-button mb-16 rounded-xl border-white border-2">
                             {filteredSummoners.map((k) => {
                                 return (
                                     <div key={k.id} className="my-2">

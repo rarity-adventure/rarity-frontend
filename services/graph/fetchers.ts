@@ -1,6 +1,5 @@
 import { request } from 'graphql-request'
-import { getGlobalData, getSummoners } from '../../constants/queries'
-import useSWR from 'swr'
+import { getGlobalData, getSummoners } from './queries'
 
 export const graph = async (query, variables = {}) =>
     request('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)

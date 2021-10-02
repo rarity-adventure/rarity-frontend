@@ -1,17 +1,17 @@
 import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
-import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import BurnModal from '../Modal/modals/Burn'
-import TransferModal from '../Modal/modals/Transfer'
-import DaycareSingleModal from '../Modal/modals/DaycareSingle'
 import useRarity from '../../hooks/useRarity'
-import toast from 'react-hot-toast'
 import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import { useRouter } from 'next/router'
+import BurnModal from '../Modal/modals/transfers/Burn'
+import TransferSummonerModal from '../Modal/modals/transfers/TransferSummoner'
+import DaycareModal from '../Modal/modals/Daycare'
+import { sendToast } from '../../functions/toast'
+import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/codex/classes'
 
 enum Modals {
     TRANSFER = 1,
@@ -80,37 +80,17 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
         setModalOpen(0)
     }
 
-    async function sendAdventure() {
-        await toast.promise(adventure(summoner.id), {
-            loading: <b>{i18n._(t`Sending summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
-
     const { adventure_cellar } = useRarityCellar()
-
-    async function sendDungeon() {
-        await toast.promise(adventure_cellar(summoner.id), {
-            loading: <b>{i18n._(t`Sending summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
-
-    async function sendLevelUP() {
-        await toast.promise(level_up(summoner.id), {
-            loading: <b>{i18n._(t`Level-UP Summoner`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
 
     return (
         <div className="mx-auto w-56">
             <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
-            <TransferModal open={modalOpen === Modals.TRANSFER} closeFunction={closeModals} summoner={summoner} />
-            <DaycareSingleModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoner={summoner} />
+            <TransferSummonerModal
+                open={modalOpen === Modals.TRANSFER}
+                closeFunction={closeModals}
+                summoner={summoner}
+            />
+            <DaycareModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoners={[summoner]} />
             <div
                 onClick={async () => router.push('/play/' + summoner.id)}
                 className="p-5 w-full text-center cursor-pointer"
@@ -150,7 +130,9 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                     <div className="mt-2 uppercase text-center">
                         {summoner.base._xp >= calcXPForNextLevel(summoner.base._level) && (
                             <button
-                                onClick={() => sendLevelUP()}
+                                onClick={async () =>
+                                    await sendToast(level_up(summoner.id), i18n._(t`LEVEL-UP Summoner`))
+                                }
                                 className="bg-green uppercase p-1.5 text-sm border-white rounded-lg border-2"
                             >
                                 {i18n._(t`level-up`)}
@@ -186,7 +168,9 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                             </button>
                         ) : (
                             <button
-                                onClick={async () => sendAdventure()}
+                                onClick={async () =>
+                                    await sendToast(adventure(summoner.id), i18n._(t`Sending summoner`))
+                                }
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
                             >
                                 {i18n._(t`go to adventure!`)}
@@ -206,7 +190,9 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                             </button>
                         ) : summoner.materials.log * 1000 < time && summoner.materials.scout !== 0 ? (
                             <button
-                                onClick={async () => sendDungeon()}
+                                onClick={async () =>
+                                    await sendToast(adventure_cellar(summoner.id), i18n._(t`Sending summoner`))
+                                }
                                 className="px-1 py-1 items-center uppercase text-xs border-white border-2 bg-green rounded-lg"
                             >
                                 {i18n._(t`go to dungeon!`)}

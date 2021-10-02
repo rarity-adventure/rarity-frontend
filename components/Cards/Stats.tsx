@@ -7,10 +7,10 @@ import Modal from '../Modal/Modal'
 import ModalHeader from '../Modal/ModalHeader'
 import { ATTRIBUTES } from '../../constants/codex/attributes'
 import { calcAPCost } from '../../functions/calcAPCost'
-import toast from 'react-hot-toast'
 import useRarityGold from '../../hooks/useRarityGold'
 import useRarityAttributes from '../../hooks/useRarityAttributes'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
+import { sendToast } from '../../functions/toast'
 
 function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
     const { i18n } = useLingui()
@@ -78,33 +78,6 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
     }
 
     const { claim } = useRarityGold()
-
-    async function claimGold() {
-        await toast.promise(claim(summoner.id), {
-            loading: <b>{i18n._(t`Claiming gold`)}</b>,
-            success: <b>{i18n._(t`Success`)}</b>,
-            error: <b>{i18n._(t`Failed`)}</b>,
-        })
-    }
-
-    async function assignPoints() {
-        await toast.promise(
-            point_buy(
-                summoner.id,
-                additions['str'] + summoner.ability_scores.attributes._str,
-                additions['dex'] + summoner.ability_scores.attributes._dex,
-                additions['con'] + summoner.ability_scores.attributes._con,
-                additions['int'] + summoner.ability_scores.attributes._int,
-                additions['wis'] + summoner.ability_scores.attributes._wis,
-                additions['cha'] + summoner.ability_scores.attributes._cha
-            ),
-            {
-                loading: <b>{i18n._(t`Assigning points`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            }
-        )
-    }
 
     return (
         <div className="max-w-screen-md mx-auto z-20">
@@ -395,7 +368,10 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
                     </div>
                     {summoner.gold.claimable > 0 ? (
                         <div className="hover:bg-card-content text-lg hover:text-grey bg-card-bottom col-span-3 bg-background-cards border-white border-2 mb-3 md:mb-0 md:rounded-bl-2xl text-center">
-                            <button className="w-full p-2" onClick={() => claimGold()}>
+                            <button
+                                className="w-full p-2"
+                                onClick={async () => await sendToast(claim(summoner.id), i18n._(t`Claiming gold`))}
+                            >
                                 <span className="uppercase">{i18n._(t`claim gold`)}</span>
                             </button>
                         </div>
@@ -409,7 +385,23 @@ function SummonerStatsCard({ summoner }: { summoner: SummonerFullData }): JSX.El
 
                     {totalAP === 0 && assignable ? (
                         <div className="hover:bg-card-content text-lg hover:text-grey col-span-2 bg-card-bottom bg-background-cards border-2 rounded-b-2xl md:rounded-br-2xl text-center border-white">
-                            <button className="w-full p-2" onClick={() => assignPoints()}>
+                            <button
+                                className="w-full p-2"
+                                onClick={async () =>
+                                    await sendToast(
+                                        point_buy(
+                                            summoner.id,
+                                            additions['str'] + summoner.ability_scores.attributes._str,
+                                            additions['dex'] + summoner.ability_scores.attributes._dex,
+                                            additions['con'] + summoner.ability_scores.attributes._con,
+                                            additions['int'] + summoner.ability_scores.attributes._int,
+                                            additions['wis'] + summoner.ability_scores.attributes._wis,
+                                            additions['cha'] + summoner.ability_scores.attributes._cha
+                                        ),
+                                        i18n._(t`Assigning points`)
+                                    )
+                                }
+                            >
                                 <span className="uppercase">{i18n._(t`assign points`)}</span>
                             </button>
                         </div>

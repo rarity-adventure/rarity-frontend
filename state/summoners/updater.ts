@@ -2,10 +2,10 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useCallback, useEffect } from 'react'
-import { chunkArrayByNumber } from '../../functions/array'
 import useRarityLibrary from '../../hooks/useRarityLibrary'
 import { setLoading, updateSummoners } from './actions'
 import { useGraphSummonerIDs } from '../../services/graph/hooks'
+import { chunkArrayByNumber } from '../../functions/chunkArray'
 
 export default function Updater(): null {
     const { library, chainId, account } = useActiveWeb3React()
@@ -20,13 +20,18 @@ export default function Updater(): null {
 
     const fetch_summoners_data = useCallback(
         async (ids: number[]) => {
-            const chunks = chunkArrayByNumber(ids, 80)
+            const chunks = chunkArrayByNumber(ids, 70)
             let fetchers = []
             for (let chunk of chunks) {
                 fetchers.push(summoners_full(chunk))
             }
-            const data = await Promise.all(fetchers)
-            const summoners_full_data = [].concat(...data)
+            const fetcherChunks = chunkArrayByNumber(fetchers, 10)
+            let full_data = []
+            for (let fChunk of fetcherChunks) {
+                const chunk_response = await Promise.all(fChunk)
+                full_data = full_data.concat(...chunk_response)
+            }
+            const summoners_full_data = [].concat(...full_data)
             dispatch(updateSummoners(summoners_full_data))
             dispatch(setLoading(false))
         },

@@ -4,7 +4,7 @@ import React, { Fragment } from 'react'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { CLASSES_NAMES } from '../../constants/classes'
+import { CLASSES_NAMES } from '../../constants/codex/classes'
 
 interface SummonerSelectorProps {
     summoners: SummonerFullData[]

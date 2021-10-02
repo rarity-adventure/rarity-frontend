@@ -73,11 +73,21 @@ body {
 }
 
 .bg {
-    position: absolute;
     background: linear-gradient(180deg, rgba(15, 47, 92, 1) 0px, rgba(15, 31, 57, 1) 100px, rgba(11, 21, 38, 1) 400px);
 }
 
 .shadow {
     box-sizing: border-box;
     box-shadow: inset 2px 3px 4px rgba(0, 0, 0, 0.25);
+}
+
+.scroll-top {
+    position: fixed;
+    width: 100%;
+    left: 47%;
+    bottom: 200px;
+    height: 20px;
+    font-size: 3rem;
+    z-index: 1;
+    cursor: pointer;
 }

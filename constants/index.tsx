@@ -1,15 +1,20 @@
-import Image from 'next/image'
 import React from 'react'
-import { MaterialImage } from '../components/Coins/material'
-import { GoldImage } from '../components/Coins/gold'
-
-export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
-
-export const NetworkContextName = 'NETWORK'
 
 export enum ChainId {
     MAINNET = 250,
 }
+
+export const NetworkContextName = 'NETWORK'
+
+export const RARITY_CRAFTING_SUMMONER = 1758709
+
+export const CRAFTING_ALLOWANCE = 4294967295
+
+export const RARITY_NAMES_SUMMONER = 1672965
+
+export const BURN_ADDRESS = '0x000000000000000000000000000000000000dEaD'
+
+export const MULTICALL2_ADDRESS = '0x5f28e9fca1c34b2dd44630df26fc7aa3d3f35eb9'
 
 export const RARITY_ADDRESS = '0xce761D788DF608BD21bdd59d6f4B54b2e27F25Bb'
 
@@ -34,30 +39,3 @@ export const RARITY_CRAFTING_ADDRESS = '0xf41270836dF4Db1D28F7fd0935270e3A603e78
 export const RARITY_NAMES_ADDRESS = '0xc73e1237a5a9ba5b0f790b6580f32d04a727dc19'
 
 export const RARITY_PACK_ADDRESS = '0xb3b96df217e88ee51513c0abc036c3d0fc885eaa'
-
-export const RARITY_CRAFTING_SUMMONER = 1758709
-
-export const CRAFTING_ALLOWANCE = 4294967295
-
-export const RARITY_NAMES_SUMMONER = 1672965
-
-export const BURN_ADDRESS = '0x000000000000000000000000000000000000dEaD'
-
-export interface CoinData {
-    name: string
-    image: JSX.Element
-    unit: 'ether' | 'wei'
-}
-
-export const GAME_COINS: { [k: string]: CoinData } = {
-    gold: {
-        name: 'GOLD',
-        image: <GoldImage />,
-        unit: 'ether',
-    },
-    materials: {
-        name: 'MATERIALS',
-        image: <MaterialImage />,
-        unit: 'wei',
-    },
-}

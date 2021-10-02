@@ -3,7 +3,7 @@ import { t } from '@lingui/macro'
 import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { CoinData, GAME_COINS } from '../../constants'
+import { CoinData, GAME_COINS } from '../../constants/coins'
 
 interface CoinSelectorProps {
     select: (c: CoinData) => void

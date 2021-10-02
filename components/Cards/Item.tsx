@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react'
 import { ItemData } from '../../hooks/useRarityLibrary'
 import {
@@ -11,8 +11,9 @@ import {
     WEAPON_ENCUMBRANCE,
     WEAPON_PROFICIENCY,
 } from '../../constants/codex/items'
-import TokenURIModal from '../Modal/modals/TokenURIModal'
-import TransferItemModal from '../Modal/modals/TransferItem'
+import TokenURIModal from '../Modal/modals/info/TokenURIModal'
+import TransferItemModal from '../Modal/modals/transfers/TransferItem'
+import useRarityCrafting from '../../hooks/useRarityCrafting'
 
 function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
     const { i18n } = useLingui()
@@ -35,9 +36,26 @@ function ItemCard({ userItem }: { userItem: ItemData }): JSX.Element {
         setTransferModal(false)
     }
 
+    const [uri, setUri] = useState<any>(undefined)
+
+    const { tokenURI } = useRarityCrafting()
+
+    const fetch_uri = useCallback(async () => {
+        const uri = await tokenURI(userItem.token_id)
+        if (uri) {
+            const encoded = uri.split(',')
+            const json = JSON.parse(atob(encoded[1]))
+            setUri(json.image)
+        }
+    }, [tokenURI, setUri, userItem])
+
+    useEffect(() => {
+        fetch_uri()
+    }, [userItem, fetch_uri])
+
     return (
         <div className="mx-auto w-64 md:w-64 lg:w-48 xl:w-64">
-            <TokenURIModal open={uriModal} closeFunction={close} id={userItem.token_id} />
+            <TokenURIModal open={uriModal} closeFunction={close} id={userItem.token_id} uri={uri} />
             <TransferItemModal open={transferModal} closeFunction={closeTransfer} item={userItem} />
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
                 <div className="p-2 text-xs">
