@@ -1,7 +1,6 @@
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
 import { useRouter } from 'next/router'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
@@ -11,6 +10,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { useSummoners } from '../../state/summoners/hooks'
 import ScrollTopButton from '../../components/ScrollTopButton'
+import { Toaster } from 'react-hot-toast'
 
 const pixelmix_fonts = ['en']
 
@@ -72,11 +72,11 @@ const Layout = ({ children }: { children?: JSX.Element | undefined }) => {
             ) : (
                 <div />
             )}
+            <Toaster containerStyle={{ fontFamily: 'Work Sans' }} />
             <main
                 className={'flex flex-col items-center justify-start flex-grow w-full h-full'}
                 style={{ height: 'max-content' }}
             >
-                <Toaster containerClassName="z-40" containerStyle={{ fontFamily: 'Work Sans' }} />
                 {children}
                 <ScrollTopButton />
             </main>

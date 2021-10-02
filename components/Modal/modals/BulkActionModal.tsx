@@ -10,6 +10,7 @@ import Modal from '../Modal'
 import ModalHeader from '../ModalHeader'
 import { chunkArrayByNumber } from '../../../functions/chunkArray'
 import { sendToast } from '../../../functions/toast'
+import { calcXPForNextLevel } from '../../../functions/calcXPForNextLevel'
 
 interface BulkActionModalProps {
     action: BulkAction
@@ -54,7 +55,7 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
     }, [summoners, fetch_approval])
 
     async function submit(tip: boolean) {
-        const chunks = chunkArrayByNumber(summoners, 200)
+        const chunks = chunkArrayByNumber(filter_summoners(), 200)
         for (let i = 0; i < chunks.length; i++) {
             if (tip && i === 0) {
                 await sendToast(
@@ -77,6 +78,19 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
             }
         }
     }
+
+    const filter_summoners = useCallback((): SummonerFullData[] => {
+        switch (action) {
+            case BulkAction.ADVENTURE:
+                return summoners.filter((s) => s.base._log * 1000 < Date.now())
+            case BulkAction.LEVELUP:
+                return summoners.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level))
+            case BulkAction.DUNGEON:
+                return summoners.filter((s) => s.gold.claimable > 0)
+            case BulkAction.GOLD:
+                return summoners.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0)
+        }
+    }, [action])
 
     const title = useMemo(() => {
         switch (action) {
@@ -122,10 +136,10 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
             <div className="bg-background-end rounded-lg border-2 border-white">
                 {title && <ModalHeader title={i18n._(title)} onClose={closeFunction} />}
                 <div className="text-center text-white p-4 pb-8 gap-5">
-                    {summoners.length > 0 ? (
+                    {filter_summoners().length > 0 ? (
                         <div>
                             <h2>
-                                {i18n._(t`You have`)} {summoners.length}{' '}
+                                {i18n._(t`You have`)} {filter_summoners().length}{' '}
                                 {i18n._(t`summoners available to send for adventure.`)}{' '}
                             </h2>
                             {summoners.length >= 200 && (
@@ -133,7 +147,7 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
                             )}
                             {approved ? (
                                 <>
-                                    {summoners.length >= 10 && (
+                                    {filter_summoners().length >= 10 && (
                                         <div>
                                             <button
                                                 onClick={() => submit(true)}

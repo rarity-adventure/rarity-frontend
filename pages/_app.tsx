@@ -4,7 +4,7 @@ import * as plurals from 'make-plural/plurals'
 
 import type { AppProps } from 'next/app'
 import ReactGA from 'react-ga4'
-import { Component, useEffect } from 'react'
+import React, { Component, useEffect } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import DefaultLayout from '../layouts/Default'
@@ -23,6 +23,8 @@ import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
 import { useRouter } from 'next/router'
+import { Toaster } from 'react-hot-toast'
+
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 
 if (typeof window !== 'undefined' && !!window.ethereum) {
