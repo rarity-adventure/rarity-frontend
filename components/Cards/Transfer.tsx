@@ -41,7 +41,7 @@ function SummonerTransferCard({
                 <div className="p-4  text-center">
                     <p className="text-lg text-left">{i18n._(t`What do you want to transfer?`)}</p>
                     <div className="mt-8">
-                        <button onClick={() => setTransferCoinModal({ open: true, coin: 'material' })}>
+                        <button onClick={() => setTransferCoinModal({ open: true, coin: 'materials' })}>
                             <div className="flex flex-row items-center justify-between w-60 px-2 bg-background-contrast border-white border-2 rounded-lg">
                                 <MaterialImage />
                                 <div className="px-5 py-2 text-center">

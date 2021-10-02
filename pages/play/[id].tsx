@@ -107,7 +107,7 @@ export default function Profile(): JSX.Element {
                                                 <>
                                                     <button
                                                         onClick={() =>
-                                                            setTransferCoinModal({ open: true, coin: 'material' })
+                                                            setTransferCoinModal({ open: true, coin: 'materials' })
                                                         }
                                                     >
                                                         <div className="flex flex-row items-center justify-between w-32 px-2 mx-2 bg-background-contrast border-white border-2 rounded-3xl">

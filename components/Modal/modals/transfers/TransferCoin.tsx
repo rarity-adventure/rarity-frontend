@@ -7,7 +7,7 @@ import Modal from '../../Modal'
 import ModalHeader from '../../ModalHeader'
 import SummonerSelector from '../../../Selectors/Summoners'
 import { sendToast } from '../../../../functions/toast'
-import { BURN_ADDRESS } from '../../../../constants'
+import useRarityGold from '../../../../hooks/useRarityGold'
 
 interface TransferCoinModalProps {
     open: boolean
@@ -26,16 +26,21 @@ export default function TransferCoinModal({
 }: TransferCoinModalProps): JSX.Element {
     const { i18n } = useLingui()
 
-    const { transferFrom } = useRarityCellar()
+    const gold = useRarityGold()
+    const material = useRarityCellar()
+
+    const transfers: { [k: string]: (executor: number, from: number, to: number, amount: string) => Promise<void> } = {
+        gold: gold.transferFrom,
+        materials: material.transferFrom,
+    }
 
     const [transferTo, setTransferTo] = useState<number>(0)
     const [transferAmount, setTransferAmount] = useState<string>('0')
 
-    console.log(coin)
     return (
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
-                <ModalHeader title={i18n._(t`transfer material`)} onClose={closeFunction} />
+                <ModalHeader title={i18n._(t`transfer`) + ' ' + coin.toUpperCase()} onClose={closeFunction} />
                 <div className="text-center text-white p-4 pb-4 gap-5">
                     <h2>{i18n._(t`Amount to transfer`)}</h2>
                 </div>
@@ -65,8 +70,8 @@ export default function TransferCoinModal({
                                 className="bg-red hover:bg-red-hovered border-white border-2 rounded-lg uppercase px-2 py-1"
                                 onClick={async () =>
                                     await sendToast(
-                                        transferFrom(id, id, transferTo, transferAmount),
-                                        i18n._(t`Transferring MATERIAL`)
+                                        transfers[coin.toLowerCase()](id, id, transferTo, transferAmount),
+                                        i18n._(t`Transferring`) + ' ' + coin.toUpperCase()
                                     )
                                 }
                             >
