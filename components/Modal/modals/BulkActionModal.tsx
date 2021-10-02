@@ -58,9 +58,9 @@ export default function BulkActionModal({ open, closeFunction, summoners, action
         let chunks
 
         if (action === BulkAction.LEVELUP || action === BulkAction.ADVENTURE) {
-            chunks = chunkArrayByNumber(summoners, 200)
+            chunks = chunkArrayByNumber(filter_summoners(summoners, action), 200)
         } else {
-            chunks = chunkArrayByNumber(summoners, 100)
+            chunks = chunkArrayByNumber(filter_summoners(summoners, action), 100)
         }
 
         for (let i = 0; i < chunks.length; i++) {

@@ -52,7 +52,13 @@ export default function useRarityHelper(): HelperInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const approval = await helper?.is_approved(ids)
-                    const tx = await helper?.cellar(ids, approval)
+                    const ids_approve = []
+                    for (let j = 0; j < approval.length; j++) {
+                        if (!approval[j]) {
+                            ids_approve.push(ids[j])
+                        }
+                    }
+                    const tx = await helper?.cellar(ids, ids_approve)
                     await tx.wait()
                     resolve()
                 } catch (e) {
@@ -68,7 +74,13 @@ export default function useRarityHelper(): HelperInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const approval = await helper?.is_approved(ids)
-                    const tx = await helper?.cellar(ids, approval, { value: utils.parseUnits('0.1', 'ether') })
+                    const ids_approve = []
+                    for (let j = 0; j < approval.length; j++) {
+                        if (!approval[j]) {
+                            ids_approve.push(ids[j])
+                        }
+                    }
+                    const tx = await helper?.cellar(ids, ids_approve, { value: utils.parseUnits('0.1', 'ether') })
                     await tx.wait()
                     resolve()
                 } catch (e) {
@@ -84,7 +96,13 @@ export default function useRarityHelper(): HelperInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const approval = await helper?.is_approved(ids)
-                    const tx = await helper?.claim_gold(ids, approval)
+                    const ids_approve = []
+                    for (let j = 0; j < approval.length; j++) {
+                        if (!approval[j]) {
+                            ids_approve.push(ids[j])
+                        }
+                    }
+                    const tx = await helper?.claim_gold(ids, ids_approve)
                     await tx.wait()
                     resolve()
                 } catch (e) {
@@ -100,7 +118,13 @@ export default function useRarityHelper(): HelperInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const approval = await helper?.is_approved(ids)
-                    const tx = await helper?.claim_gold(ids, approval, { value: utils.parseUnits('0.1', 'ether') })
+                    const ids_approve = []
+                    for (let j = 0; j < approval.length; j++) {
+                        if (!approval[j]) {
+                            ids_approve.push(ids[j])
+                        }
+                    }
+                    const tx = await helper?.claim_gold(ids, ids_approve, { value: utils.parseUnits('0.1', 'ether') })
                     await tx.wait()
                     resolve()
                 } catch (e) {
