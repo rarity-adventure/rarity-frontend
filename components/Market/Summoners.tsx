@@ -63,69 +63,76 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
 
     return (
-        <div style={{ minWidth: '1400px' }} className={`flex w-screen justify-left flex-nowrap items-center p-0 ${colorClass}`}>
-            <div style={{ width: '70px' }} className="text-center">
+        <div
+            style={{ minWidth: '1300px' }}
+            className={`flex w-full justify-left flex-nowrap items-center p-0 ${colorClass}`}
+        >
+            <div style={{ width: '5%' }} className="text-center">
                 <div>{CLASSES_HEADS[summoner.class]}</div>
             </div>
-            <div style={{ width: '125px' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.summoner)}</span>
             </div>
-            <div style={{ width: '125px' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>
             </div>
-            <div style={{ width: '150px' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <span>{format_ether(summoner.price_exact)}</span> FTM
             </div>
-            <div style={{ width: '80px' }} className="text-center">
+            <div style={{ width: '5%' }} className="text-center">
                 <span>{summoner.level}</span>
             </div>
-            <div style={{ width: '80px' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.xp)}</span>
             </div>
-            <div style={{ width: '250px' }} className="text-center">
+            <div style={{ width: '15%' }} className="text-center">
                 <span>{attributes}</span>
             </div>
-            <div style={{ width: '150px' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <span>{format_ether(summoner.gold_exact)}</span>
             </div>
-            <div style={{ width: '100px' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.cellar)}</span>
             </div>
-            <div style={{ width: '100px' }} className="text-center">
+            <div style={{ width: '5%' }} className="text-center">
                 {nSkills == 0 ? (
                     <span>0</span>
                 ) : (
-                    <>
+                    <div>
                         <span data-tip={true} data-for={`s_${summoner.summoner}`} className="cursor-default">
                             {nSkills}
                         </span>
-                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
-                            {skills.map((skill) => {
-                                return (
-                                    <p key={skill.name} className="text-left">
-                                        {skill.name}: {skill.value}
-                                    </p>
-                                )
-                            })}
-                        </ReactTooltip>
-                    </>
+                        <div style={{ fontFamily: 'Work Sans' }}>
+                            <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
+                                {skills.map((skill) => {
+                                    return (
+                                        <p key={skill.name} className="text-left">
+                                            {skill.name}: {skill.value}
+                                        </p>
+                                    )
+                                })}
+                            </ReactTooltip>
+                        </div>
+                    </div>
                 )}
             </div>
-            <div style={{ width: '100px' }} className="text-center">
+            <div style={{ width: '5%' }} className="text-center">
                 {nFeats == 0 ? (
                     <span>0</span>
                 ) : (
-                    <>
+                    <div>
                         <span data-tip={true} data-for={`s_${summoner.summoner}`} className="cursor-default">
                             {nFeats}
                         </span>
-                        <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
-                            <p>Feats coming soon.</p>
-                        </ReactTooltip>
-                    </>
+                        <div style={{ fontFamily: 'Work Sans' }}>
+                            <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
+                                <p>Feats coming soon.</p>
+                            </ReactTooltip>
+                        </div>
+                    </div>
                 )}
             </div>
-            <div style={{ width: '150px' }} className="text-center">
+            <div style={{ width: '5%%' }} className="text-center">
                 <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
                     {i18n._(t`buy`)}
                 </button>
@@ -448,65 +455,65 @@ export default function SummonersMarket(): JSX.Element {
             >
                 <div>
                     <div
-                        style={{ minWidth: '1400px' }}
-                        className="sticky w-screen top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                        style={{ minWidth: '1300px' }}
+                        className="sticky w-full top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
                     >
-                        <div style={{ width: '70px' }} className="text-center" />
+                        <div style={{ width: '5%' }} className="text-center" />
                         <div
-                            style={{ width: '125px' }}
+                            style={{ width: '10%' }}
                             className="text-center"
                             onClick={() => handleAddition({ id: 'ID', text: 'ID' })}
                         >
                             <h2>{i18n._(t`ID No.`)}</h2>
                         </div>
-                        <div style={{ width: '125px' }} className="text-center">
+                        <div style={{ width: '10%' }} className="text-center">
                             <h2>{i18n._(t`CLASS`)}</h2>
                         </div>
                         <div
-                            style={{ width: '150px' }}
+                            style={{ width: '10%' }}
                             className="text-center"
                             onClick={() => handleAddition({ id: 'Price', text: 'Price' })}
                         >
                             <h2>{i18n._(t`PRICE`)}</h2>
                         </div>
                         <div
-                            style={{ width: '80px' }}
+                            style={{ width: '5%' }}
                             className="text-center"
                             onClick={() => handleAddition({ id: 'Level', text: 'Level' })}
                         >
                             <h2>{i18n._(t`LEVEL`)}</h2>
                         </div>
                         <div
-                            style={{ width: '80px' }}
+                            style={{ width: '10%' }}
                             className="text-center"
                             onClick={() => handleAddition({ id: 'XP', text: 'XP' })}
                         >
                             <h2>{i18n._(t`XP`)}</h2>
                         </div>
-                        <div style={{ width: '250px' }} className="text-center">
+                        <div style={{ width: '15%' }} className="text-center">
                             <h2>{i18n._(t`ATTRIBUTES`)}</h2>
                         </div>
                         <div
-                            style={{ width: '150px' }}
+                            style={{ width: '10%' }}
                             className="text-center"
                             onClick={() => handleAddition({ id: 'Gold', text: 'Gold' })}
                         >
                             <h2>{i18n._(t`GOLD`)}</h2>
                         </div>
                         <div
-                            style={{ width: '100px' }}
+                            style={{ width: '10%' }}
                             className="text-center"
                             onClick={() => handleAddition({ id: 'Materials', text: 'Materials' })}
                         >
                             <h2>{i18n._(t`MATERIAL`)}</h2>
                         </div>
-                        <div style={{ width: '100px' }} className="text-center">
+                        <div style={{ width: '5%' }} className="text-center">
                             <h2>{i18n._(t`SKILLS`)}</h2>
                         </div>
-                        <div style={{ width: '100px' }} className="text-center">
+                        <div style={{ width: '5%' }} className="text-center">
                             <h2>{i18n._(t`FEATS`)}</h2>
                         </div>
-                        <div style={{ width: '150px' }} className="text-center">
+                        <div style={{ width: '5%' }} className="text-center">
                             <h2>{i18n._(t`ACTION`)}</h2>
                         </div>
                     </div>
