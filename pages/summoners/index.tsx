@@ -82,7 +82,7 @@ export default function Summoners(): JSX.Element {
 
     return (
         <div className="w-full">
-            <BulkActionModal open={modal} a={action} closeFunction={() => closeModal()} summoners={summoners} />
+            <BulkActionModal open={modal} action={action} closeFunction={() => closeModal()} summoners={summoners} />
             <DaycareModal open={daycareModal} closeFunction={() => setDaycareModal(false)} summoners={summoners} />
             {loading ? (
                 <SummonersLoader />
