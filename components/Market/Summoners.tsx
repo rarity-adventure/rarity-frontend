@@ -6,7 +6,6 @@ import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { WithContext as ReactTags } from 'react-tag-input'
 import { utils } from 'ethers'
-import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../constants/queries'
 import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
 import { SKILLS } from '../../constants/codex/skills'
 import {
@@ -17,8 +16,9 @@ import {
     TAGS_CLASSES,
     TAGS_WITH_VALUE,
 } from '../../constants/tags/tag_parsing'
-import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/classes'
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid'
+import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/codex/classes'
+import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../services/graph/queries'
 
 function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const { i18n } = useLingui()
@@ -96,7 +96,7 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
                     <span>0</span>
                 ) : (
                     <>
-                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">
+                        <span data-tip={true} data-for={`s_${summoner.summoner}`} className="cursor-default">
                             {nSkills}
                         </span>
                         <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
@@ -116,7 +116,7 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
                     <span>0</span>
                 ) : (
                     <>
-                        <span data-tip data-for={`s_${summoner.summoner}`} className="cursor-default">
+                        <span data-tip={true} data-for={`s_${summoner.summoner}`} className="cursor-default">
                             {nFeats}
                         </span>
                         <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
@@ -453,7 +453,7 @@ export default function SummonersMarket(): JSX.Element {
                             style={{ width: '1478px' }}
                             className="sticky top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
                         >
-                            <div style={{ width: '80px' }} className="text-center"></div>
+                            <div style={{ width: '80px' }} className="text-center" />
                             <div
                                 style={{ width: '125px' }}
                                 className="text-center"

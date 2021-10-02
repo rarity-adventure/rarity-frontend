@@ -84,6 +84,7 @@ body {
 .opaque {
     opacity: 1 !important;
 }
+
 .scroll-top {
     position: fixed;
     width: 100%;

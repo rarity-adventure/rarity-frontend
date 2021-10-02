@@ -23,7 +23,6 @@ import Head from 'next/head'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
 import { useRouter } from 'next/router'
-import { Toaster } from 'react-hot-toast'
 
 const Web3ProviderNetwork = dynamic(() => import('../components/Web3ProviderNetwork'), { ssr: false })
 

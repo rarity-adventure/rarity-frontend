@@ -1,16 +1,15 @@
 import { useLingui } from '@lingui/react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
-import toast from 'react-hot-toast'
 import { ChevronLeft, ChevronRight } from 'react-feather'
 import useRarityGold from '../../hooks/useRarityGold'
 import { useSummoners } from '../../state/summoners/hooks'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { CRAFTING_ALLOWANCE, RARITY_NAMES_SUMMONER } from '../../constants'
 import useRarityNames from '../../hooks/useRarityNames'
-import SummonerSelector from '../SummonerSelector'
-import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/classes'
 import Loader from '../Loader'
+import SummonerSelector from '../Selectors/Summoners'
+import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/codex/classes'
 
 export default function NamesMarket(): JSX.Element {
     const { i18n } = useLingui()
@@ -48,15 +47,6 @@ export default function NamesMarket(): JSX.Element {
         }
     }, [selectedSummoner, fetch_allowance])
 
-    function approveGlobal() {
-        toast
-            .promise(gold_approve(selectedSummoner.id, RARITY_NAMES_SUMMONER, CRAFTING_ALLOWANCE), {
-                loading: <b>{i18n._(t`Approving Names`)}</b>,
-                success: <b>{i18n._(t`Success`)}</b>,
-                error: <b>{i18n._(t`Failed`)}</b>,
-            })
-            .then(() => setApprove(true))
-    }
 
     const { claim, validate_name, is_name_claimed } = useRarityNames()
 
