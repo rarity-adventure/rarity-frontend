@@ -47,7 +47,6 @@ export default function NamesMarket(): JSX.Element {
         }
     }, [selectedSummoner, fetch_allowance])
 
-
     const { claim, validate_name, is_name_claimed } = useRarityNames()
 
     const [claimName, setClaimName] = useState('')

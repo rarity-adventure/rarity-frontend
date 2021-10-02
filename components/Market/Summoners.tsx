@@ -63,8 +63,8 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
 
     return (
-        <div style={{ width: '1478px' }} className={`flex justify-left flex-nowrap items-center p-0 ${colorClass}`}>
-            <div style={{ width: '80px' }} className="text-center">
+        <div style={{ minWidth: '1400px' }} className={`flex w-screen justify-left flex-nowrap items-center p-0 ${colorClass}`}>
+            <div style={{ width: '70px' }} className="text-center">
                 <div>{CLASSES_HEADS[summoner.class]}</div>
             </div>
             <div style={{ width: '125px' }} className="text-center">
@@ -379,144 +379,141 @@ export default function SummonersMarket(): JSX.Element {
     }
 
     return (
-        <div className="w-full z-25">
-            <div className="m-5 md:m-10 z-10">
-                <div className="flex flex-row items-center justify-center sm:justify-between">
-                    <div>
-                        <h1 className="text-2xl xl:text-3xl uppercase font-bold">
-                            {i18n._(t`rarity summoners market`)}
-                        </h1>
-                    </div>
-                    <div className="hidden sm:inline-flex">{buttons()}</div>
+        <div className="w-full z-25 mt-5">
+            <div className="flex flex-row items-center justify-center sm:justify-between">
+                <div>
+                    <h1 className="text-2xl xl:text-3xl uppercase font-bold">{i18n._(t`rarity summoners market`)}</h1>
                 </div>
-                <div className="flex flex-row items-center justify-center sm:justify-between">
-                    <h3 className="text-md">{i18n._(t`List and Buy your summoners`)}</h3>
+                <div className="hidden sm:inline-flex">{buttons()}</div>
+            </div>
+            <div className="flex flex-row items-center justify-center sm:justify-between">
+                <h3 className="text-md">{i18n._(t`List and Buy your summoners`)}</h3>
+            </div>
+            <div className="flex flex-row items-center justify-center md:justify-between mt-10 mb-2">
+                <div className="flex flex-row text-xl font-bold items-center mr-2">
+                    <h1>{i18n._(t`Filter and Sort with Tags`)} </h1>
+                    <QuestionMarkCircleIcon data-tip data-for="filter-info" width={20} />
                 </div>
-                <div className="flex flex-row items-center justify-center md:justify-between mt-10 mb-2">
-                    <div className="flex flex-row text-xl font-bold items-center mr-2">
-                        <h1>{i18n._(t`Filter and Sort with Tags`)} </h1>
-                        <QuestionMarkCircleIcon data-tip data-for="filter-info" width={20} />
-                    </div>
-                    <div className="hidden sm:inline-flex">
-                        <span className="uppercase">
-                            {i18n._(t`listed summoners:`)} {count}
-                        </span>
-                    </div>
-                    <ReactTooltip id="filter-info" aria-haspopup="true" className="opaque">
-                        <h1 className="text-md">Filtering and sorting with tags</h1>
-                        <br />
-                        <h2 className="text-md">Type the name of a property to sort by this property.</h2>
-                        <h2 className="text-md">Examples: Price, ID, Druid or Craft</h2>
-                        <br />
-                        <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
-                        <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
-                        <br />
-                        <h2 className="text-md">
-                            Type the name of property followed by a comparison operator to filter.
-                        </h2>
-                        <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
-                    </ReactTooltip>
+                <div className="hidden sm:inline-flex">
+                    <span className="uppercase">
+                        {i18n._(t`listed summoners:`)} {count}
+                    </span>
                 </div>
-                <div className="flex flex-row z-35 text-center">
-                    <ReactTags
-                        tags={tags}
-                        suggestions={suggestions}
-                        delimiters={delimiters}
-                        handleDelete={handleDelete}
-                        handleAddition={handleAddition}
-                        handleDrag={handleDrag}
-                        handleTagClick={handleTagClick}
-                        inputFieldPosition="top"
-                        autocomplete
-                        clearAll
-                        onClearAll={onClearAll}
-                        style={{ fontFamily: 'Work Sans' }}
-                        classNames={{
-                            tags: 'relative grid uppercase',
-                            tagInput: 'inline-block border-solid uppercase mb-4',
-                            tagInputField: 'p-2 text-background-end rounded-lg text-center w-72',
-                            selected: 'inline-block',
-                            tag: 'text-xs border-solid bg-background-start border-2 border-white p-2 rounded-2xl mx-2',
-                            remove: 'ml-3 cursor-pointer text-grey',
-                            suggestions: 'absolute z-35 p-2 bg-background-start w-72 text-xs',
-                            activeSuggestion: 'bg-background-end rounded-lg',
-                            clearAll: 'cursor-pointer p-2 m-3 bg-black border-none rounded',
-                        }}
-                    />
-                </div>
-                <div
-                    className="m-10 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen"
-                    onScroll={handleScroll}
-                >
-                    <div>
+                <ReactTooltip id="filter-info" aria-haspopup="true" className="opaque">
+                    <h1 className="text-md">Filtering and sorting with tags</h1>
+                    <br />
+                    <h2 className="text-md">Type the name of a property to sort by this property.</h2>
+                    <h2 className="text-md">Examples: Price, ID, Druid or Craft</h2>
+                    <br />
+                    <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
+                    <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
+                    <br />
+                    <h2 className="text-md">Type the name of property followed by a comparison operator to filter.</h2>
+                    <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
+                </ReactTooltip>
+            </div>
+            <div className="flex flex-row z-30 text-center justify-center" style={{ fontFamily: 'Work Sans' }}>
+                <ReactTags
+                    renderSuggestion={({ text }) => <div className="p-2">{text}</div>}
+                    tags={tags}
+                    suggestions={suggestions}
+                    delimiters={delimiters}
+                    handleDelete={handleDelete}
+                    handleAddition={handleAddition}
+                    handleDrag={handleDrag}
+                    handleTagClick={handleTagClick}
+                    inputFieldPosition="top"
+                    autocomplete
+                    clearAll
+                    onClearAll={onClearAll}
+                    classNames={{
+                        tags: 'relative grid uppercase',
+                        tagInput: 'inline-block border-solid uppercase mb-4',
+                        tagInputField:
+                            'p-1.5 text-white border-white border-2 bg-background-contrast rounded-lg text-center w-72',
+                        selected:
+                            'inline-block my-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-y-5',
+                        tag: 'text-xs border-solid bg-background-start border-2 border-white p-2 rounded-2xl mx-2',
+                        remove: 'ml-3 cursor-pointer text-grey',
+                        suggestions:
+                            'mt-1.5 absolute z-40 bg-background-start w-72 text-xs p-3 cursor-pointer rounded-b-lg',
+                        activeSuggestion: 'bg-background-end rounded-lg',
+                        clearAll: 'cursor-pointer p-2 m-3 bg-black border-none rounded',
+                    }}
+                />
+            </div>
+            <div
+                className="m-5 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen"
+                onScroll={handleScroll}
+            >
+                <div>
+                    <div
+                        style={{ minWidth: '1400px' }}
+                        className="sticky w-screen top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                    >
+                        <div style={{ width: '70px' }} className="text-center" />
                         <div
-                            style={{ width: '1478px' }}
-                            className="sticky top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                            style={{ width: '125px' }}
+                            className="text-center"
+                            onClick={() => handleAddition({ id: 'ID', text: 'ID' })}
                         >
-                            <div style={{ width: '80px' }} className="text-center" />
-                            <div
-                                style={{ width: '125px' }}
-                                className="text-center"
-                                onClick={() => handleAddition({ id: 'ID', text: 'ID' })}
-                            >
-                                <h2>{i18n._(t`ID No.`)}</h2>
-                            </div>
-                            <div style={{ width: '125px' }} className="text-center">
-                                <h2>{i18n._(t`CLASS`)}</h2>
-                            </div>
-                            <div
-                                style={{ width: '150px' }}
-                                className="text-center"
-                                onClick={() => handleAddition({ id: 'Price', text: 'Price' })}
-                            >
-                                <h2>{i18n._(t`PRICE`)}</h2>
-                            </div>
-                            <div
-                                style={{ width: '80px' }}
-                                className="text-center"
-                                onClick={() => handleAddition({ id: 'Level', text: 'Level' })}
-                            >
-                                <h2>{i18n._(t`LEVEL`)}</h2>
-                            </div>
-                            <div
-                                style={{ width: '80px' }}
-                                className="text-center"
-                                onClick={() => handleAddition({ id: 'XP', text: 'XP' })}
-                            >
-                                <h2>{i18n._(t`XP`)}</h2>
-                            </div>
-                            <div style={{ width: '250px' }} className="text-center">
-                                <h2>{i18n._(t`ATTRIBUTES`)}</h2>
-                            </div>
-                            <div
-                                style={{ width: '150px' }}
-                                className="text-center"
-                                onClick={() => handleAddition({ id: 'Gold', text: 'Gold' })}
-                            >
-                                <h2>{i18n._(t`GOLD`)}</h2>
-                            </div>
-                            <div
-                                style={{ width: '100px' }}
-                                className="text-center"
-                                onClick={() => handleAddition({ id: 'Materials', text: 'Materials' })}
-                            >
-                                <h2>{i18n._(t`MATERIAL`)}</h2>
-                            </div>
-                            <div style={{ width: '100px' }} className="text-center">
-                                <h2>{i18n._(t`SKILLS`)}</h2>
-                            </div>
-                            <div style={{ width: '100px' }} className="text-center">
-                                <h2>{i18n._(t`FEATS`)}</h2>
-                            </div>
-                            <div style={{ width: '150px' }} className="text-center">
-                                <h2>{i18n._(t`ACTION`)}</h2>
-                            </div>
+                            <h2>{i18n._(t`ID No.`)}</h2>
                         </div>
-                        {summoners &&
-                            summoners.map((s, i) => {
-                                return <SummonerRow summoner={s} row_i={i} key={i} />
-                            })}
+                        <div style={{ width: '125px' }} className="text-center">
+                            <h2>{i18n._(t`CLASS`)}</h2>
+                        </div>
+                        <div
+                            style={{ width: '150px' }}
+                            className="text-center"
+                            onClick={() => handleAddition({ id: 'Price', text: 'Price' })}
+                        >
+                            <h2>{i18n._(t`PRICE`)}</h2>
+                        </div>
+                        <div
+                            style={{ width: '80px' }}
+                            className="text-center"
+                            onClick={() => handleAddition({ id: 'Level', text: 'Level' })}
+                        >
+                            <h2>{i18n._(t`LEVEL`)}</h2>
+                        </div>
+                        <div
+                            style={{ width: '80px' }}
+                            className="text-center"
+                            onClick={() => handleAddition({ id: 'XP', text: 'XP' })}
+                        >
+                            <h2>{i18n._(t`XP`)}</h2>
+                        </div>
+                        <div style={{ width: '250px' }} className="text-center">
+                            <h2>{i18n._(t`ATTRIBUTES`)}</h2>
+                        </div>
+                        <div
+                            style={{ width: '150px' }}
+                            className="text-center"
+                            onClick={() => handleAddition({ id: 'Gold', text: 'Gold' })}
+                        >
+                            <h2>{i18n._(t`GOLD`)}</h2>
+                        </div>
+                        <div
+                            style={{ width: '100px' }}
+                            className="text-center"
+                            onClick={() => handleAddition({ id: 'Materials', text: 'Materials' })}
+                        >
+                            <h2>{i18n._(t`MATERIAL`)}</h2>
+                        </div>
+                        <div style={{ width: '100px' }} className="text-center">
+                            <h2>{i18n._(t`SKILLS`)}</h2>
+                        </div>
+                        <div style={{ width: '100px' }} className="text-center">
+                            <h2>{i18n._(t`FEATS`)}</h2>
+                        </div>
+                        <div style={{ width: '150px' }} className="text-center">
+                            <h2>{i18n._(t`ACTION`)}</h2>
+                        </div>
                     </div>
+                    {summoners &&
+                        summoners.map((s, i) => {
+                            return <SummonerRow summoner={s} row_i={i} key={i} />
+                        })}
                 </div>
             </div>
         </div>
