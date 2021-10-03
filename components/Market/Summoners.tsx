@@ -434,7 +434,7 @@ export default function SummonersMarket(): JSX.Element {
                     <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
                 </ReactTooltip>
             </div>
-            <div className="z-30 text-left" style={{ fontFamily: 'Work Sans' }}>
+            <div className="z-30 text-center md:text-left" style={{ fontFamily: 'Work Sans' }}>
                 <ReactTags
                     renderSuggestion={({ text }) => <div className="p-2">{text}</div>}
                     tags={tags}
