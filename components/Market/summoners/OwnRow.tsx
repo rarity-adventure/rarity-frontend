@@ -52,7 +52,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
 
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
 
-    const [listPrice, setListPrice] = useState(0)
+    const [listPrice, setListPrice] = useState<number | undefined>(undefined)
 
     const { list, unlist } = useRarityMarket()
 
@@ -80,7 +80,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <span>{attributes}</span>
             </div>
             <div style={{ width: '10%' }} className="text-center">
-                <span>{format_ether(summoner.gold.balance)}</span>
+                <span>{format_number(summoner.gold.balance)}</span>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.materials.balance)}</span>
@@ -138,10 +138,10 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <div style={{ width: '15%' }} className="text-center">
                     <div className="flex flex-row justify-between">
                         <button
-                            onClick={() => sendToast(list(summoner.id, listPrice), i18n._(t`Listing summoner`))}
+                            onClick={() => sendToast(list(summoner.id, listPrice), i18n._(t`Listing summoner`)).then( () => setListPrice(0))}
                             className={classNames(
                                 'uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green',
-                                listPrice === 0 ? 'opacity-50' : ''
+                                !listPrice ? 'opacity-50' : ''
                             )}
                             disabled={listPrice === 0}
                         >
@@ -149,10 +149,12 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                         </button>
                         <input
                             onChange={(v) =>
-                                v.target.value === '' ? setListPrice(0) : setListPrice(parseFloat(v.target.value))
+                                v.target.value === '' ? setListPrice(undefined) : setListPrice(parseFloat(v.target.value))
                             }
                             type="number"
                             className="text-background-end text-center w-28 mx-2 rounded-lg"
+                            placeholder={"0"}
+                            value={listPrice}
                         />
                     </div>
                 </div>

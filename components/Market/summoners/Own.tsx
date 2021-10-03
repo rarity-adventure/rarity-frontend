@@ -90,7 +90,12 @@ export default function SummonersMarketOwn(): JSX.Element {
                         listed &&
                         fullSummoners.map((s, i) => {
                             return (
-                                <SummonerOwnRow row_i={i} summoner={s} key={i} listed={listed.indexOf(s.id) !== -1} />
+                                <SummonerOwnRow
+                                    row_i={i}
+                                    summoner={s}
+                                    key={s.id}
+                                    listed={listed.indexOf(s.id) !== -1}
+                                />
                             )
                         })}
                 </div>
