@@ -27,8 +27,8 @@ export default function SummonersMarketListings(): JSX.Element {
 
     const [query, setQuery] = useState<DocumentNode>(getMarketSummonersDefault)
 
-    const count = useListedCount({ refreshInterval: 5_000 })
-    const s = useListedSummoners(offset, query)
+    const count = useListedCount({ refreshInterval: 1_000 })
+    const s = useListedSummoners(offset, query, {refreshInterval: 1_000})
 
     const [summoners, setSummoners] = useState([])
 
@@ -56,7 +56,11 @@ export default function SummonersMarketListings(): JSX.Element {
 
     useEffect(() => {
         if (!s || !summoners) return
-        setSummoners(summoners.concat(s))
+        if (offset === 0) {
+            setSummoners([].concat(s))
+        } else {
+            setSummoners(summoners.concat(s))
+        }
     }, [s, offset])
 
     const handleScroll = (e) => {
