@@ -256,7 +256,7 @@ export default function SummonersMarketListings(): JSX.Element {
             <div className="flex flex-row items-center justify-center md:justify-between mt-10 mb-2">
                 <div className="flex flex-row text-xl font-bold items-center mr-2">
                     <h1>{i18n._(t`Filter and Sort with Tags`)} </h1>
-                    <QuestionMarkCircleIcon data-tip data-for="filter-info" width={20} />
+                    <QuestionMarkCircleIcon data-tip data-for="filter-info" width={20} className={"ml-1"} />
                 </div>
                 <div className="hidden sm:inline-flex">
                     <span className="uppercase">
@@ -266,19 +266,20 @@ export default function SummonersMarketListings(): JSX.Element {
                 <ReactTooltip id="filter-info" aria-haspopup="true" className="opaque">
                     <h1 className="text-md">Filtering and sorting with tags</h1>
                     <br />
-                    <h2 className="text-md">Type the name of a property to sort by this property.</h2>
+                    <h2 className="text-md">Type the name of a property to sort by it.</h2>
                     <h2 className="text-md">Examples: Price, ID, Druid or Craft</h2>
                     <br />
-                    <h2 className="text-md">Clicking the tag will change the sorting order.</h2>
-                    <h2 className="text-md">Dragging the tag to the left will increase sorting priority.</h2>
+                    <h2 className="text-md">Clicking a tag will change its sorting order.</h2>
+                    <h2 className="text-md">Dragging a tag to the left will increase its sorting priority.</h2>
                     <br />
-                    <h2 className="text-md">Type the name of property followed by a comparison operator to filter.</h2>
+                    <h2 className="text-md">Type the name of a property followed by a comparison operator to filter.</h2>
                     <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
                 </ReactTooltip>
             </div>
             <div className="z-30 text-center md:text-left" style={{ fontFamily: 'Work Sans' }}>
                 <ReactTags
                     renderSuggestion={({ text }) => <div className="p-2">{text}</div>}
+                    placeholder={"Enter a new tag"}
                     tags={tags}
                     suggestions={suggestions}
                     delimiters={delimiters}
