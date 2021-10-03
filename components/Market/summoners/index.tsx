@@ -4,6 +4,7 @@ import { useLingui } from '@lingui/react'
 import { classNames } from '../../../functions/classNames'
 import SummonersMarketListings from './Market'
 import SummonersMarketOwn from './Own'
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 
 enum SummonersMarketView {
     Listings,
@@ -12,6 +13,8 @@ enum SummonersMarketView {
 
 export default function SummonersMarket() {
     const { i18n } = useLingui()
+
+    const { account } = useActiveWeb3React()
 
     function buttons(): JSX.Element {
         return (
@@ -25,15 +28,17 @@ export default function SummonersMarket() {
                 >
                     <h2 className="py-1 px-3">{i18n._(t`market`)}</h2>
                 </button>
-                <button
-                    onClick={() => setView(SummonersMarketView.Own)}
-                    className={classNames(
-                        'rounded-3xl uppercase border-2 border-market-button',
-                        view === SummonersMarketView.Own ? 'opacity-50' : ''
-                    )}
-                >
-                    <h2 className="py-1 px-3">{i18n._(t`my summoners`)}</h2>
-                </button>
+                {account && (
+                    <button
+                        onClick={() => setView(SummonersMarketView.Own)}
+                        className={classNames(
+                            'rounded-3xl uppercase border-2 border-market-button',
+                            view === SummonersMarketView.Own ? 'opacity-50' : ''
+                        )}
+                    >
+                        <h2 className="py-1 px-3">{i18n._(t`my summoners`)}</h2>
+                    </button>
+                )}
             </div>
         )
     }
