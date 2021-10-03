@@ -95,3 +95,7 @@ body {
     z-index: 1;
     cursor: pointer;
 }
+
+.work-sans {
+    font-family: 'Work Sans', serif;
+}

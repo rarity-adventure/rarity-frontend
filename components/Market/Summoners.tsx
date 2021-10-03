@@ -85,8 +85,21 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.xp)}</span>
             </div>
-            <div style={{ width: '15%' }} className="text-center">
+            <div
+                data-tip={true}
+                data-for={'stats_' + summoner.summoner}
+                style={{ width: '15%' }}
+                className="text-center"
+            >
                 <span>{attributes}</span>
+                <ReactTooltip class="work-sans" id={'stats_' + summoner.summoner} className="opaque">
+                    <p className="text-left">STR: {summoner.str}</p>
+                    <p className="text-left">DEX: {summoner.dex}</p>
+                    <p className="text-left">CON: {summoner.con}</p>
+                    <p className="text-left">INT: {summoner.int}</p>
+                    <p className="text-left">WIS: {summoner.wis}</p>
+                    <p className="text-left">CHA: {summoner.cha}</p>
+                </ReactTooltip>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_ether(summoner.gold_exact)}</span>
@@ -98,21 +111,22 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
                 {nSkills == 0 ? (
                     <span>0</span>
                 ) : (
-                    <div>
-                        <span data-tip={true} data-for={`s_${summoner.summoner}`} className="cursor-default">
-                            {nSkills}
-                        </span>
-                        <div style={{ fontFamily: 'Work Sans' }}>
-                            <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
-                                {skills.map((skill) => {
-                                    return (
-                                        <p key={skill.name} className="text-left">
-                                            {skill.name}: {skill.value}
-                                        </p>
-                                    )
-                                })}
-                            </ReactTooltip>
-                        </div>
+                    <div data-tip={true} data-for={'skills_' + summoner.summoner}>
+                        <span className="cursor-default">{nSkills}</span>
+                        <ReactTooltip
+                            class="work-sans"
+                            id={'skills_' + summoner.summoner}
+                            aria-haspopup="true"
+                            className="opaque"
+                        >
+                            {skills.map((skill) => {
+                                return (
+                                    <p key={skill.name} className="text-left">
+                                        {skill.name}: {skill.value}
+                                    </p>
+                                )
+                            })}
+                        </ReactTooltip>
                     </div>
                 )}
             </div>
@@ -120,15 +134,16 @@ function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
                 {nFeats == 0 ? (
                     <span>0</span>
                 ) : (
-                    <div>
-                        <span data-tip={true} data-for={`s_${summoner.summoner}`} className="cursor-default">
-                            {nFeats}
-                        </span>
-                        <div style={{ fontFamily: 'Work Sans' }}>
-                            <ReactTooltip id={`s_${summoner.summoner}`} aria-haspopup="true" className="opaque">
-                                <p>Feats coming soon.</p>
-                            </ReactTooltip>
-                        </div>
+                    <div data-tip={true} data-for={'feats_' + summoner.summoner}>
+                        <span className="cursor-default">{nFeats}</span>
+                        <ReactTooltip
+                            class={'work-sans'}
+                            id={'feats_' + summoner.summoner}
+                            aria-haspopup="true"
+                            className="opaque"
+                        >
+                            <p>Feats coming soon.</p>
+                        </ReactTooltip>
                     </div>
                 )}
             </div>
@@ -419,7 +434,7 @@ export default function SummonersMarket(): JSX.Element {
                     <h2 className="text-md">Examples: {`Price <= 100, Craft > 4, Int = 18`}</h2>
                 </ReactTooltip>
             </div>
-            <div className="flex flex-row z-30 text-center justify-center" style={{ fontFamily: 'Work Sans' }}>
+            <div className="z-30 text-left" style={{ fontFamily: 'Work Sans' }}>
                 <ReactTags
                     renderSuggestion={({ text }) => <div className="p-2">{text}</div>}
                     tags={tags}
@@ -440,7 +455,7 @@ export default function SummonersMarket(): JSX.Element {
                             'p-1.5 text-white border-white border-2 bg-background-contrast rounded-lg text-center w-72',
                         selected:
                             'inline-block my-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-y-5',
-                        tag: 'text-xs border-solid bg-background-start border-2 border-white p-2 rounded-2xl mx-2',
+                        tag: 'flex flex-row justify-between text-xs border-solid bg-background-start border-2 border-white cursor-pointer p-2 rounded-2xl mx-2',
                         remove: 'ml-3 cursor-pointer text-grey',
                         suggestions:
                             'mt-1.5 absolute z-40 bg-background-start w-72 text-xs p-3 cursor-pointer rounded-b-lg',
