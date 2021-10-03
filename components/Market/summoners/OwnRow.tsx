@@ -136,7 +136,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                     </button>
                 </div>
             ) : (
-                <div style={{ width: '5%%' }} className="text-center">
+                <div style={{ width: '15%' }} className="text-center">
                     <div className="flex flex-row justify-between">
                         <button
                             onClick={() => sendToast(list(summoner.id, listPrice), i18n._(t`Listing summoner`))}

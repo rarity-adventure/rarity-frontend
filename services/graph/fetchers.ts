@@ -8,7 +8,7 @@ export const market_graph = async (query, variables = {}) =>
     })
 
 export const rarity_graph = async (query, variables = {}) =>
-    pager('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity', query, variables)
+    pager('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
 
 export const getStats = async () => {
     return await rarity_graph(getGlobalData, {})
