@@ -93,7 +93,7 @@ export default function Summoners(): JSX.Element {
                             <div className="flex flex-row items-center justify-between">
                                 <div>
                                     <h1 className="text-2xl xl:text-3xl">
-                                        {i18n._(t`summoners`)} {summoners.length}
+                                        {i18n._(t`summoners`)} ({summoners.length})
                                     </h1>
                                 </div>
                                 <div className="uppercase">

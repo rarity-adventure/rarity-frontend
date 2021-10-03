@@ -44,7 +44,7 @@ export default function SummonersMarketOwn(): JSX.Element {
     useEffect(() => {
         if (!listed || !summoners) return
         fetch_summoners_data(listed).then((d) => setFullSummoners([].concat(d).concat(summoners)))
-    }, [listed, summoners])
+    }, [listed, summoners, fetch_summoners_data])
 
     return (
         <>

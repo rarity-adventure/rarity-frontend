@@ -57,7 +57,7 @@ export default function SummonersMarketListings(): JSX.Element {
     useEffect(() => {
         if (!s || !summoners) return
         setSummoners(summoners.concat(s))
-    }, [s, offset])
+    }, [s, offset, summoners])
 
     const handleScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight

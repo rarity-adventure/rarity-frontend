@@ -18,7 +18,7 @@ export default function Market(): JSX.Element {
     return (
         <div className="w-full z-25">
             <div className="m-2 md:m-10 z-10">
-                <div className="flex flex-row justify-start">
+                {/*<div className="flex flex-row justify-start">
                     <button
                         onClick={() => setView(MarketView.Summoners)}
                         className={classNames(
@@ -28,7 +28,7 @@ export default function Market(): JSX.Element {
                     >
                         {i18n._(t`Summoners`)}
                     </button>
-                    {/*<button
+                    <button
                         onClick={() => setView(MarketView.Names)}
                         className={classNames(
                             'bg-card-content uppercase border-2 p-1 w-32 rounded-r-2xl',
@@ -36,8 +36,8 @@ export default function Market(): JSX.Element {
                         )}
                     >
                         {i18n._(t`Names`)}
-                    </button>*/}
-                </div>
+                    </button>
+                </div>*/}
                 <div>
                     {view === MarketView.Summoners && <SummonersMarket />}
                     {view === MarketView.Names && <NamesMarket />}
