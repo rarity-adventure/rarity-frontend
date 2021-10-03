@@ -2,9 +2,11 @@ import { request } from 'graphql-request'
 import { getGlobalData, getMarketSummonersCount, getMarketSummonersForLister, getSummoners } from './queries'
 import { pager } from './utils'
 
+const HASURA_PASSWORD = process.env.HASURA_PASSWORD
+
 export const market_graph = async (query, variables = {}) =>
     request('https://market-api.rarity.game/v1/graphql', query, variables, {
-        // 'x-hasura-admin-secret': process.env.HASURA_PASSWORD,
+        'x-hasura-admin-secret': HASURA_PASSWORD,
     })
 
 export const rarity_graph = async (query, variables = {}) =>
