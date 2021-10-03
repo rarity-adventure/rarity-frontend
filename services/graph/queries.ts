@@ -369,6 +369,7 @@ export const getMarketSummonersForLister = gql`
     query getMarketSummonersForLister($lister: String!) {
         summoners(where: { lister: { _eq: $lister } }) {
             summoner
+            price_exact
         }
     }
 `

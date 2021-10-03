@@ -9,9 +9,27 @@ import { classNames } from '../../../functions/classNames'
 import useRarityMarket from '../../../hooks/useRarityMarket'
 import { sendToast } from '../../../functions/toast'
 
-export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; row_i; listed }): JSX.Element {
+export default function SummonerOwnRow({
+    summoner,
+    row_i,
+    listed,
+    price,
+}: {
+    summoner
+    row_i
+    listed
+    price
+}): JSX.Element {
     const { i18n } = useLingui()
 
+    const format_ether = (value) => {
+        const ftmValue = parseFloat(utils.formatEther(value))
+        if (ftmValue > 100_000_000) {
+            return 'Too much'
+        } else {
+            return ftmValue.toLocaleString()
+        }
+    }
     const format_number = (value: number) => {
         if (!value) return '0'
         return value.toLocaleString()
@@ -117,12 +135,17 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
             </div>
             {listed ? (
                 <div style={{ width: '15%' }} className="text-center">
-                    <button
-                        onClick={() => sendToast(unlist(summoner.id), i18n._(t`Unlisting summoner`))}
-                        className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green"
-                    >
-                        {i18n._(t`unlist`)}
-                    </button>
+                    <div className="flex flex-row justify-between items-center">
+                        <button
+                            onClick={() => sendToast(unlist(summoner.id), i18n._(t`Unlisting summoner`))}
+                            className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green"
+                        >
+                            {i18n._(t`unlist`)}
+                        </button>
+                        <div className="text-left mx-2">
+                            <span className="p-2">{format_ether(price)} FTM</span>
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <div style={{ width: '15%' }} className="text-center">
@@ -148,7 +171,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                                     : setListPrice(parseFloat(v.target.value))
                             }
                             type="number"
-                            className="text-background-end text-center w-28 mx-2 rounded-lg"
+                            className="mr-3 ml-2 text-background-end text-center w-28 rounded-lg"
                             placeholder={'0'}
                             value={listPrice}
                         />

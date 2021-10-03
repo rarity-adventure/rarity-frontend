@@ -25,11 +25,6 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
         return value.toLocaleString()
     }
 
-    let attributes = 'Not set'
-    if (summoner.str > 0) {
-        attributes = `${summoner.str}-${summoner.dex}-${summoner.con}-${summoner.int}-${summoner.wis}-${summoner.cha}`
-    }
-
     let nSkills = 0
     const skills = []
     for (let i = 0; i < 36; i++) {
@@ -76,22 +71,30 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.xp)}</span>
             </div>
-            <div
-                data-tip={true}
-                data-for={'stats_' + summoner.summoner}
-                style={{ width: '15%' }}
-                className="text-center"
-            >
-                <span>{attributes}</span>
-                <ReactTooltip class="work-sans" id={'stats_' + summoner.summoner} className="opaque">
-                    <p className="text-left">STR: {summoner.str}</p>
-                    <p className="text-left">DEX: {summoner.dex}</p>
-                    <p className="text-left">CON: {summoner.con}</p>
-                    <p className="text-left">INT: {summoner.int}</p>
-                    <p className="text-left">WIS: {summoner.wis}</p>
-                    <p className="text-left">CHA: {summoner.cha}</p>
-                </ReactTooltip>
-            </div>
+            {summoner.str > 0 ? (
+                <div
+                    data-tip={true}
+                    data-for={'stats_' + summoner.summoner}
+                    style={{ width: '15%' }}
+                    className="text-center"
+                >
+                    <span>
+                        {summoner.str}-{summoner.dex}-{summoner.con}-{summoner.int}-{summoner.wis}-{summoner.cha}
+                    </span>
+                    <ReactTooltip class="work-sans" id={'stats_' + summoner.summoner} className="opaque">
+                        <p className="text-left">STR: {summoner.str}</p>
+                        <p className="text-left">DEX: {summoner.dex}</p>
+                        <p className="text-left">CON: {summoner.con}</p>
+                        <p className="text-left">INT: {summoner.int}</p>
+                        <p className="text-left">WIS: {summoner.wis}</p>
+                        <p className="text-left">CHA: {summoner.cha}</p>
+                    </ReactTooltip>
+                </div>
+            ) : (
+                <div style={{ width: '15%' }} className="text-center">
+                    <span>Not set</span>
+                </div>
+            )}
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_ether(summoner.gold_exact)}</span>
             </div>

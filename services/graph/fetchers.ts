@@ -31,5 +31,5 @@ export const getListedCount = async () => {
 
 export const getListedSummonersForLister = async (lister) => {
     const data = await market_graph(getMarketSummonersForLister, { lister })
-    return data.summoners.map((s) => s.summoner)
+    return data.summoners.map((s) => { return {id: s.summoner, price: s.price_exact} })
 }

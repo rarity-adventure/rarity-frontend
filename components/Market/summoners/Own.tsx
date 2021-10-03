@@ -45,8 +45,10 @@ export default function SummonersMarketOwn(): JSX.Element {
 
     useEffect(() => {
         if (!listed || !summoners) return
-        const filtered_summoners = summoners.filter((s) => listed.indexOf(s.id) === -1)
-        fetch_summoners_data(listed).then((d) => setFullSummoners([].concat(d).concat(filtered_summoners)))
+        const filtered_summoners = summoners.filter((s) => listed.map((s) => s.id).indexOf(s.id) === -1)
+        fetch_summoners_data(listed.map((s) => s.id)).then((d) =>
+            setFullSummoners([].concat(d).concat(filtered_summoners))
+        )
     }, [listed, summoners, fetch_summoners_data])
 
     const [approved, setApproved] = useState(false)
@@ -107,12 +109,14 @@ export default function SummonersMarketOwn(): JSX.Element {
                         {fullSummoners &&
                             listed &&
                             fullSummoners.map((s, i) => {
+                                const index = listed.map((s) => s.id).indexOf(s.id)
                                 return (
                                     <SummonerOwnRow
                                         row_i={i}
                                         summoner={s}
                                         key={s.id}
-                                        listed={listed.indexOf(s.id) !== -1}
+                                        listed={index !== -1}
+                                        price={index !== -1 ? listed[index].price : 0}
                                     />
                                 )
                             })}
