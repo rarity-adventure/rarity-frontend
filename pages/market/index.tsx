@@ -1,11 +1,9 @@
 import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
 import { t } from '@lingui/macro'
-import Link from 'next/link'
-import Image from 'next/image'
 import { classNames } from '../../functions/classNames'
-import SummonersMarket from '../../components/Market/Summoners'
-import NamesMarket from '../../components/Market/Names'
+import NamesMarket from '../../components/Market/names'
+import SummonersMarket from '../../components/Market/summoners'
 
 enum MarketView {
     Summoners,

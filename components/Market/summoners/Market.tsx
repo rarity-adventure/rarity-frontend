@@ -5,9 +5,8 @@ import { t } from '@lingui/macro'
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { WithContext as ReactTags } from 'react-tag-input'
-import { utils } from 'ethers'
-import { useListedCount, useListedSummoners } from '../../services/graph/hooks'
-import { SKILLS } from '../../constants/codex/skills'
+import { useListedCount, useListedSummoners } from '../../../services/graph/hooks'
+import { SKILLS } from '../../../constants/codex/skills'
 import {
     COMP_TO_POSTGRES,
     TAG_SUGGESTIONS,
@@ -15,148 +14,13 @@ import {
     TAG_VALUE_COMPARISONS,
     TAGS_CLASSES,
     TAGS_WITH_VALUE,
-} from '../../constants/tags/tag_parsing'
+} from '../../../constants/tags/tag_parsing'
 import { QuestionMarkCircleIcon } from '@heroicons/react/solid'
-import { CLASSES_HEADS, CLASSES_IDS, CLASSES_NAMES } from '../../constants/codex/classes'
-import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../services/graph/queries'
+import { CLASSES_IDS } from '../../../constants/codex/classes'
+import { getMarketSummonersDefault, getMarketSummonersQuery } from '../../../services/graph/queries'
+import { SummonerMarketRow } from './MarketRow'
 
-function SummonerRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
-    const { i18n } = useLingui()
-
-    const format_ether = (value) => {
-        const ftmValue = parseFloat(utils.formatEther(value))
-        if (ftmValue > 100_000_000) {
-            return 'Too much'
-        } else {
-            return ftmValue.toLocaleString()
-        }
-    }
-
-    const format_number = (value: number) => {
-        return value.toLocaleString()
-    }
-
-    let attributes = 'Not set'
-    if (summoner.str > 0) {
-        attributes = `${summoner.str}-${summoner.dex}-${summoner.con}-${summoner.int}-${summoner.wis}-${summoner.cha}`
-    }
-
-    let nSkills = 0
-    const skills = []
-    for (let i = 0; i < 36; i++) {
-        const skillVar = `skill${i}`
-        if (summoner[skillVar] > 0) {
-            nSkills += 1
-            skills.push({ name: SKILLS[i + 1].name, value: summoner[skillVar] })
-        }
-    }
-
-    let nFeats = 0
-    const feats = []
-    for (let i = 1; i < 100; i++) {
-        const skillVar = `feat${i}`
-        if (summoner[skillVar]) {
-            nFeats += 1
-        }
-    }
-
-    const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
-
-    return (
-        <div
-            style={{ minWidth: '1300px' }}
-            className={`flex w-full justify-left flex-nowrap items-center p-0 ${colorClass}`}
-        >
-            <div style={{ width: '5%' }} className="text-center">
-                <div>{CLASSES_HEADS[summoner.class]}</div>
-            </div>
-            <div style={{ width: '10%' }} className="text-center">
-                <span>{format_number(summoner.summoner)}</span>
-            </div>
-            <div style={{ width: '10%' }} className="text-center">
-                <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>
-            </div>
-            <div style={{ width: '10%' }} className="text-center">
-                <span>{format_ether(summoner.price_exact)}</span> FTM
-            </div>
-            <div style={{ width: '5%' }} className="text-center">
-                <span>{summoner.level}</span>
-            </div>
-            <div style={{ width: '10%' }} className="text-center">
-                <span>{format_number(summoner.xp)}</span>
-            </div>
-            <div
-                data-tip={true}
-                data-for={'stats_' + summoner.summoner}
-                style={{ width: '15%' }}
-                className="text-center"
-            >
-                <span>{attributes}</span>
-                <ReactTooltip class="work-sans" id={'stats_' + summoner.summoner} className="opaque">
-                    <p className="text-left">STR: {summoner.str}</p>
-                    <p className="text-left">DEX: {summoner.dex}</p>
-                    <p className="text-left">CON: {summoner.con}</p>
-                    <p className="text-left">INT: {summoner.int}</p>
-                    <p className="text-left">WIS: {summoner.wis}</p>
-                    <p className="text-left">CHA: {summoner.cha}</p>
-                </ReactTooltip>
-            </div>
-            <div style={{ width: '10%' }} className="text-center">
-                <span>{format_ether(summoner.gold_exact)}</span>
-            </div>
-            <div style={{ width: '10%' }} className="text-center">
-                <span>{format_number(summoner.cellar)}</span>
-            </div>
-            <div style={{ width: '5%' }} className="text-center">
-                {nSkills == 0 ? (
-                    <span>0</span>
-                ) : (
-                    <div data-tip={true} data-for={'skills_' + summoner.summoner}>
-                        <span className="cursor-default">{nSkills}</span>
-                        <ReactTooltip
-                            class="work-sans"
-                            id={'skills_' + summoner.summoner}
-                            aria-haspopup="true"
-                            className="opaque"
-                        >
-                            {skills.map((skill) => {
-                                return (
-                                    <p key={skill.name} className="text-left">
-                                        {skill.name}: {skill.value}
-                                    </p>
-                                )
-                            })}
-                        </ReactTooltip>
-                    </div>
-                )}
-            </div>
-            <div style={{ width: '5%' }} className="text-center">
-                {nFeats == 0 ? (
-                    <span>0</span>
-                ) : (
-                    <div data-tip={true} data-for={'feats_' + summoner.summoner}>
-                        <span className="cursor-default">{nFeats}</span>
-                        <ReactTooltip
-                            class={'work-sans'}
-                            id={'feats_' + summoner.summoner}
-                            aria-haspopup="true"
-                            className="opaque"
-                        >
-                            <p>Feats coming soon.</p>
-                        </ReactTooltip>
-                    </div>
-                )}
-            </div>
-            <div style={{ width: '5%%' }} className="text-center">
-                <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
-                    {i18n._(t`buy`)}
-                </button>
-            </div>
-        </div>
-    )
-}
-
-export default function SummonersMarket(): JSX.Element {
+export default function SummonersMarketListings(): JSX.Element {
     const { i18n } = useLingui()
 
     const [offset, setOffset] = useState(0)
@@ -387,30 +251,8 @@ export default function SummonersMarket(): JSX.Element {
         setTags([])
     }
 
-    function buttons(): JSX.Element {
-        return (
-            <div className="flex flex-row gap-x-3">
-                <button className="rounded-3xl uppercase border-2 border-market-button">
-                    <h2 className="py-1 px-3">{i18n._(t`market`)}</h2>
-                </button>
-                <button className="rounded-3xl uppercase border-2 border-market-button">
-                    <h2 className="py-1 px-3">{i18n._(t`my listing`)}</h2>
-                </button>
-            </div>
-        )
-    }
-
     return (
-        <div className="w-full z-25 mt-5">
-            <div className="flex flex-row items-center justify-center sm:justify-between">
-                <div>
-                    <h1 className="text-2xl xl:text-3xl uppercase font-bold">{i18n._(t`rarity summoners market`)}</h1>
-                </div>
-                <div className="hidden sm:inline-flex">{buttons()}</div>
-            </div>
-            <div className="flex flex-row items-center justify-center sm:justify-between">
-                <h3 className="text-md">{i18n._(t`List and Buy your summoners`)}</h3>
-            </div>
+        <>
             <div className="flex flex-row items-center justify-center md:justify-between mt-10 mb-2">
                 <div className="flex flex-row text-xl font-bold items-center mr-2">
                     <h1>{i18n._(t`Filter and Sort with Tags`)} </h1>
@@ -534,10 +376,10 @@ export default function SummonersMarket(): JSX.Element {
                     </div>
                     {summoners &&
                         summoners.map((s, i) => {
-                            return <SummonerRow summoner={s} row_i={i} key={i} />
+                            return <SummonerMarketRow summoner={s} row_i={i} key={i} />
                         })}
                 </div>
             </div>
-        </div>
+        </>
     )
 }
