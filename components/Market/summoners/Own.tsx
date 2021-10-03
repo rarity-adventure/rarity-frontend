@@ -56,7 +56,7 @@ export default function SummonersMarketOwn(): JSX.Element {
     const fetch_approval = useCallback(async () => {
         const approved = await isApprovedForAll(account, RARITY_MARKET_ADDRESS)
         setApproved(approved)
-    }, [isApprovedForAll, setApproved])
+    }, [isApprovedForAll, setApproved, account])
 
     useEffect(() => {
         if (!account) return

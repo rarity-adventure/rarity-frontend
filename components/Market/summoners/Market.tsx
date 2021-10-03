@@ -54,6 +54,7 @@ export default function SummonersMarketListings(): JSX.Element {
 
     const delimiters = [...KeyCodes.enter, KeyCodes.comma]
 
+    // summoners is missing because of memory leak
     useEffect(() => {
         if (!s || !summoners) return
         if (offset === 0) {
