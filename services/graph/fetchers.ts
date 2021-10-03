@@ -2,8 +2,8 @@ import { request } from 'graphql-request'
 import { getGlobalData, getMarketSummonersCount, getSummoners } from './queries'
 
 export const market_graph = async (query, variables = {}) =>
-    request('https://rarity-market.hasura.app/v1/graphql', query, variables, {
-        'x-hasura-admin-secret': 't0F0OqHW1EAnS96r66aLOpylegp3ucPXLhNmH3wEvzwS7gQwPibZg8PQY6X3xJpt',
+    request('https://market-api.rarity.game/v1/graphql', query, variables, {
+        'x-hasura-admin-secret': 'QyQrhJ7BqBJqKVqjGs54NNtHSamXjq6X',
     })
 
 export const rarity_graph = async (query, variables = {}) =>

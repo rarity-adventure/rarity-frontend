@@ -6,7 +6,7 @@ import ReactTooltip from 'react-tooltip'
 import { t } from '@lingui/macro'
 import React from 'react'
 
-export function SummonerOwnRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
+export default function SummonerOwnRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const { i18n } = useLingui()
 
     const format_ether = (value) => {
@@ -48,21 +48,19 @@ export function SummonerOwnRow({ summoner, row_i }: { summoner; row_i }): JSX.El
         }
     }
 
-    console.log(summoner)
-
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
     return (
         <div
             style={{ minWidth: '1300px' }}
             className={`flex w-full justify-left flex-nowrap items-center p-0 ${colorClass}`}
         >
-            <div style={{ width: '5%' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <div>{CLASSES_HEADS[summoner.base._class]}</div>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.id)}</span>
             </div>
-            <div style={{ width: '10%' }} className="text-center">
+            <div style={{ width: '15%' }} className="text-center">
                 <p className="uppercase">{CLASSES_NAMES[summoner.base._class]}</p>
             </div>
             <div style={{ width: '5%' }} className="text-center">

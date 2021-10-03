@@ -98,7 +98,7 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
                     <span>0</span>
                 ) : (
                     <div data-tip={true} data-for={'skills_' + summoner.summoner}>
-                        <span className="cursor-default">{nSkills}</span>
+                        <span className="cursor-default text-center">{nSkills}</span>
                         <ReactTooltip
                             class="work-sans"
                             id={'skills_' + summoner.summoner}

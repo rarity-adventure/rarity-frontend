@@ -313,7 +313,7 @@ export default function SummonersMarketListings(): JSX.Element {
                 <div>
                     <div
                         style={{ minWidth: '1300px' }}
-                        className="sticky w-full top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                        className="sticky w-full top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center px-2 py-5"
                     >
                         <div style={{ width: '5%' }} className="text-center" />
                         <div

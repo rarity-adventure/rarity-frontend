@@ -1,9 +1,9 @@
 import { useLingui } from '@lingui/react'
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { t } from '@lingui/macro'
 import { SKILLS } from '../../../constants/codex/skills'
 import { useSummoners } from '../../../state/summoners/hooks'
-import { SummonerOwnRow } from './OwnRow'
+import SummonerOwnRow from './OwnRow'
 
 export default function SummonersMarketOwn(): JSX.Element {
     const { i18n } = useLingui()
@@ -16,13 +16,13 @@ export default function SummonersMarketOwn(): JSX.Element {
                 <div>
                     <div
                         style={{ minWidth: '1300px' }}
-                        className="sticky w-full top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center p-5"
+                        className="sticky w-full top-0 z-20 bg-card-bottom bg-market-table-top font-bold flex flex-nowrap items-center px-2 py-5"
                     >
-                        <div style={{ width: '5%' }} className="text-center" />
+                        <div style={{ width: '10%' }} className="text-center" />
                         <div style={{ width: '10%' }} className="text-center">
                             <h2>{i18n._(t`ID No.`)}</h2>
                         </div>
-                        <div style={{ width: '10%' }} className="text-center">
+                        <div style={{ width: '15%' }} className="text-center">
                             <h2>{i18n._(t`CLASS`)}</h2>
                         </div>
                         <div style={{ width: '5%' }} className="text-center">
@@ -52,7 +52,7 @@ export default function SummonersMarketOwn(): JSX.Element {
                     </div>
                     {summoners &&
                         summoners.map((s, i) => {
-                            return <SummonerOwnRow summoner={s} row_i={i} key={i} />
+                            return <SummonerOwnRow row_i={i} summoner={s} key={i} />
                         })}
                 </div>
             </div>
