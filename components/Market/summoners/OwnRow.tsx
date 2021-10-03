@@ -90,11 +90,11 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 {nSkills == 0 ? (
                     <span>0</span>
                 ) : (
-                    <div data-tip={true} data-for={'skills_' + summoner.summoner}>
+                    <div data-tip={true} data-for={'skills_' + summoner.id}>
                         <span className="cursor-default">{nSkills}</span>
                         <ReactTooltip
                             class="work-sans"
-                            id={'skills_' + summoner.summoner}
+                            id={'skills_' + summoner.id}
                             aria-haspopup="true"
                             className="opaque"
                         >
@@ -113,11 +113,11 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 {nFeats == 0 ? (
                     <span>0</span>
                 ) : (
-                    <div data-tip={true} data-for={'feats_' + summoner.summoner}>
+                    <div data-tip={true} data-for={'feats_' + summoner.id}>
                         <span className="cursor-default">{nFeats}</span>
                         <ReactTooltip
                             class={'work-sans'}
-                            id={'feats_' + summoner.summoner}
+                            id={'feats_' + summoner.id}
                             aria-haspopup="true"
                             className="opaque"
                         >
@@ -129,7 +129,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
             {listed ? (
                 <div style={{ width: '5%%' }} className="text-center">
                     <button
-                        onClick={() => sendToast(unlist(summoner.summoner), i18n._(t`Unlisting summoner`))}
+                        onClick={() => sendToast(unlist(summoner.id), i18n._(t`Unlisting summoner`))}
                         className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green"
                     >
                         {i18n._(t`unlist`)}
@@ -139,7 +139,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <div style={{ width: '5%%' }} className="text-center">
                     <div className="flex flex-row justify-between">
                         <button
-                            onClick={() => sendToast(list(summoner.summoner, listPrice), i18n._(t`Listing summoner`))}
+                            onClick={() => sendToast(list(summoner.id, listPrice), i18n._(t`Listing summoner`))}
                             className={classNames(
                                 'uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green',
                                 listPrice === 0 ? 'opacity-50' : ''
