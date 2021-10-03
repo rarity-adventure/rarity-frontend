@@ -35,10 +35,9 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
     let nSkills = 0
     const skills = []
     for (let i = 0; i < 36; i++) {
-        const skillVar = `skill${i}`
-        if (summoner[skillVar] > 0) {
+        if (summoner.skills.skills[i] > 0) {
             nSkills += 1
-            skills.push({ name: SKILLS[i + 1].name, value: summoner[skillVar] })
+            skills.push({ name: SKILLS[i + 1].name, value: summoner.skills.skills[i] })
         }
     }
 
@@ -81,10 +80,10 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <span>{attributes}</span>
             </div>
             <div style={{ width: '10%' }} className="text-center">
-                <span>{format_ether(summoner.gold_exact)}</span>
+                <span>{format_ether(summoner.gold.balance)}</span>
             </div>
             <div style={{ width: '10%' }} className="text-center">
-                <span>{format_number(summoner.cellar)}</span>
+                <span>{format_number(summoner.materials.balance)}</span>
             </div>
             <div style={{ width: '5%' }} className="text-center">
                 {nSkills == 0 ? (
@@ -127,7 +126,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 )}
             </div>
             {listed ? (
-                <div style={{ width: '5%%' }} className="text-center">
+                <div style={{ width: '15%' }} className="text-center">
                     <button
                         onClick={() => sendToast(unlist(summoner.id), i18n._(t`Unlisting summoner`))}
                         className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green"
@@ -150,7 +149,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                         </button>
                         <input
                             onChange={(v) =>
-                                v.target.value === '' ? setListPrice(0) : setListPrice(parseInt(v.target.value))
+                                v.target.value === '' ? setListPrice(0) : setListPrice(parseFloat(v.target.value))
                             }
                             type="number"
                             className="text-background-end text-center w-28 mx-2 rounded-lg"

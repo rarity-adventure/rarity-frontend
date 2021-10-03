@@ -14,7 +14,7 @@ export default function Updater(): null {
 
     const windowVisible = useIsWindowVisible()
 
-    const ids = useGraphSummonerIDs(account, {refreshInterval: 1_000})
+    const ids = useGraphSummonerIDs(account, { refreshInterval: 1_000 })
 
     const { summoners_full } = useRarityLibrary()
 

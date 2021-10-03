@@ -6,7 +6,7 @@ import { useSummoners } from '../../../state/summoners/hooks'
 import SummonerOwnRow from './OwnRow'
 import { useListedSummonersForLister } from '../../../services/graph/hooks'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import useRarityLibrary  from '../../../hooks/useRarityLibrary'
+import useRarityLibrary from '../../../hooks/useRarityLibrary'
 import { chunkArrayByNumber } from '../../../functions/chunkArray'
 
 export default function SummonersMarketOwn(): JSX.Element {
@@ -16,7 +16,7 @@ export default function SummonersMarketOwn(): JSX.Element {
 
     const summoners = useSummoners()
 
-    const listed = useListedSummonersForLister(account.toLowerCase(), {refreshInterval: 2_000})
+    const listed = useListedSummonersForLister(account.toLowerCase(), { refreshInterval: 2_000 })
 
     const { summoners_full } = useRarityLibrary()
 
@@ -42,7 +42,7 @@ export default function SummonersMarketOwn(): JSX.Element {
 
     useEffect(() => {
         if (!listed || !summoners) return
-        const filtered_summoners = summoners.filter( s => listed.indexOf(s.id) === -1)
+        const filtered_summoners = summoners.filter((s) => listed.indexOf(s.id) === -1)
         fetch_summoners_data(listed).then((d) => setFullSummoners([].concat(d).concat(filtered_summoners)))
     }, [listed, summoners, fetch_summoners_data])
 
