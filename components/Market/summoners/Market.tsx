@@ -304,8 +304,8 @@ export default function SummonersMarketListings(): JSX.Element {
                             'p-1.5 text-white border-white border-2 bg-background-contrast rounded-lg text-center w-72',
                         selected:
                             'inline-block my-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-y-5',
-                        tag: 'flex flex-row justify-between text-xs border-solid bg-background-start border-2 border-white cursor-pointer p-2 rounded-2xl mx-2',
-                        remove: 'ml-3 cursor-pointer text-grey',
+                        tag: 'flex flex-row justify-center text-center text-sm border-solid bg-background-start border-2 border-white cursor-pointer p-2 rounded-2xl mx-2',
+                        remove: 'ml-3 cursor-pointer text-white',
                         suggestions:
                             'mt-1.5 absolute z-40 bg-background-start w-72 text-xs p-3 cursor-pointer rounded-b-lg',
                         activeSuggestion: 'bg-background-end rounded-lg',
