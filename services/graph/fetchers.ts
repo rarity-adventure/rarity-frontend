@@ -1,5 +1,5 @@
 import { request } from 'graphql-request'
-import { getGlobalData, getMarketSummonersCount, getSummoners } from './queries'
+import { getGlobalData, getMarketSummonersCount, getMarketSummonersForLister, getSummoners } from './queries'
 
 export const market_graph = async (query, variables = {}) =>
     request('https://market-api.rarity.game/v1/graphql', query, variables, {
@@ -28,4 +28,9 @@ export const getListedSummoners = async (offset, query) => {
 export const getListedCount = async () => {
     const count = await market_graph(getMarketSummonersCount, {})
     return count.summoners_aggregate.aggregate.count
+}
+
+export const getListedSummonersForLister = async (lister) => {
+    const data = await market_graph(getMarketSummonersForLister, { lister })
+    return data.summoners.map((s) => s.summoner)
 }

@@ -4,9 +4,10 @@ import { SKILLS } from '../../../constants/codex/skills'
 import { CLASSES_HEADS, CLASSES_NAMES } from '../../../constants/codex/classes'
 import ReactTooltip from 'react-tooltip'
 import { t } from '@lingui/macro'
-import React from 'react'
+import React, { useState } from 'react'
+import { classNames } from '../../../functions/classNames'
 
-export default function SummonerOwnRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
+export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; row_i; listed }): JSX.Element {
     const { i18n } = useLingui()
 
     const format_ether = (value) => {
@@ -49,18 +50,21 @@ export default function SummonerOwnRow({ summoner, row_i }: { summoner; row_i })
     }
 
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
+
+    const [listPrice, setListPrice] = useState(0)
+
     return (
         <div
             style={{ minWidth: '1300px' }}
             className={`flex w-full justify-left flex-nowrap items-center p-0 ${colorClass}`}
         >
-            <div style={{ width: '10%' }} className="text-center">
+            <div style={{ width: '5%' }} className="text-center">
                 <div>{CLASSES_HEADS[summoner.base._class]}</div>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.id)}</span>
             </div>
-            <div style={{ width: '15%' }} className="text-center">
+            <div style={{ width: '10%' }} className="text-center">
                 <p className="uppercase">{CLASSES_NAMES[summoner.base._class]}</p>
             </div>
             <div style={{ width: '5%' }} className="text-center">
@@ -69,21 +73,8 @@ export default function SummonerOwnRow({ summoner, row_i }: { summoner; row_i })
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_number(summoner.base._xp)}</span>
             </div>
-            <div
-                data-tip={true}
-                data-for={'stats_' + summoner.summoner}
-                style={{ width: '15%' }}
-                className="text-center"
-            >
+            <div style={{ width: '15%' }} className="text-center">
                 <span>{attributes}</span>
-                <ReactTooltip class="work-sans" id={'stats_' + summoner.summoner} className="opaque">
-                    <p className="text-left">STR: {summoner.ability_scores.attributes._str}</p>
-                    <p className="text-left">DEX: {summoner.ability_scores.attributes._dex}</p>
-                    <p className="text-left">CON: {summoner.ability_scores.attributes._con}</p>
-                    <p className="text-left">INT: {summoner.ability_scores.attributes._int}</p>
-                    <p className="text-left">WIS: {summoner.ability_scores.attributes._wis}</p>
-                    <p className="text-left">CHA: {summoner.ability_scores.attributes._cha}</p>
-                </ReactTooltip>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <span>{format_ether(summoner.gold_exact)}</span>
@@ -131,11 +122,33 @@ export default function SummonerOwnRow({ summoner, row_i }: { summoner; row_i })
                     </div>
                 )}
             </div>
-            <div style={{ width: '5%%' }} className="text-center">
-                <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
-                    {i18n._(t`buy`)}
-                </button>
-            </div>
+            {listed ? (
+                <div style={{ width: '5%%' }} className="text-center">
+                    <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
+                        {i18n._(t`unlist`)}
+                    </button>
+                </div>
+            ) : (
+                <div style={{ width: '5%%' }} className="text-center">
+                    <div className="flex flex-row justify-between">
+                        <button
+                            className={classNames(
+                                'uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green',
+                                listPrice === 0 ? 'opacity-50' : ''
+                            )}
+                        >
+                            {i18n._(t`list`)}
+                        </button>
+                        <input
+                            onChange={(v) =>
+                                v.target.value === '' ? setListPrice(0) : setListPrice(parseInt(v.target.value))
+                            }
+                            type="number"
+                            className="text-background-end text-center w-28 mx-2 rounded-lg"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

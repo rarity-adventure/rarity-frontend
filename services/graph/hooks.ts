@@ -1,5 +1,5 @@
 import useSWR, { SWRConfiguration } from 'swr'
-import { getListedCount, getListedSummoners, getStats, getSummonersIDs } from './fetchers'
+import { getListedCount, getListedSummoners, getListedSummonersForLister, getStats, getSummonersIDs } from './fetchers'
 
 export function useGraphStats(swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('stats', () => getStats(), swrConfig)
@@ -22,5 +22,10 @@ export function useListedSummoners(offset, query, swrConfig: SWRConfiguration = 
 
 export function useListedCount(swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('listed_count', () => getListedCount(), swrConfig)
+    return data
+}
+
+export function useListedSummonersForLister(lister, swrConfig: SWRConfiguration = undefined) {
+    const { data } = useSWR('listed_' + lister, () => getListedSummonersForLister(lister), swrConfig)
     return data
 }

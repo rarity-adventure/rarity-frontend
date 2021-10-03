@@ -28,7 +28,7 @@ export default function Market(): JSX.Element {
                     >
                         {i18n._(t`Summoners`)}
                     </button>
-                    <button
+                    {/*<button
                         onClick={() => setView(MarketView.Names)}
                         className={classNames(
                             'bg-card-content uppercase border-2 p-1 w-32 rounded-r-2xl',
@@ -36,7 +36,7 @@ export default function Market(): JSX.Element {
                         )}
                     >
                         {i18n._(t`Names`)}
-                    </button>
+                    </button>*/}
                 </div>
                 <div>
                     {view === MarketView.Summoners && <SummonersMarket />}

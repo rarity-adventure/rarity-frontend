@@ -12,6 +12,7 @@ import {
     RARITY_GOLD_ADDRESS,
     RARITY_HELPER_ADDRESS,
     RARITY_LIB,
+    RARITY_MARKET_ADDRESS,
     RARITY_NAMES_ADDRESS,
     RARITY_PACK_ADDRESS,
     RARITY_SKILLS_ADDRESS,
@@ -27,6 +28,7 @@ import RARITY_CELLAR_ABI from '../constants/abis/cellar.json'
 import RARITY_CRAFTING_ABI from '../constants/abis/crafting.json'
 import RARITY_NAMES_ABI from '../constants/abis/names.json'
 import RARITY_PACK_ABI from '../constants/abis/pack.json'
+import RARITY_MARKET_ABI from '../constants/abis/market.json'
 import MULTICALL2_ABI from '../constants/abis/multicall2.json'
 
 export function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -96,6 +98,11 @@ export function useRarityNamesContract(): Contract | null {
 export function useRarityStarterPackContract(): Contract | null {
     const { chainId } = useActiveWeb3React()
     return useContract(chainId ? RARITY_PACK_ADDRESS : undefined, RARITY_PACK_ABI)
+}
+
+export function useRarityMarketContract(): Contract | null {
+    const { chainId } = useActiveWeb3React()
+    return useContract(chainId ? RARITY_MARKET_ADDRESS : undefined, RARITY_MARKET_ABI)
 }
 
 export function useMulticall2Contract() {

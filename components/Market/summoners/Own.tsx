@@ -1,14 +1,50 @@
 import { useLingui } from '@lingui/react'
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useState, useEffect, useCallback } from 'react'
 import { t } from '@lingui/macro'
 import { SKILLS } from '../../../constants/codex/skills'
 import { useSummoners } from '../../../state/summoners/hooks'
 import SummonerOwnRow from './OwnRow'
+import { useListedSummonersForLister } from '../../../services/graph/hooks'
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import useRarityLibrary, { SummonerFullData } from '../../../hooks/useRarityLibrary'
+import { chunkArrayByNumber } from '../../../functions/chunkArray'
+import { setLoading, updateSummoners } from '../../../state/summoners/actions'
 
 export default function SummonersMarketOwn(): JSX.Element {
+    const { account } = useActiveWeb3React()
+
     const { i18n } = useLingui()
 
     const summoners = useSummoners()
+
+    const listed = useListedSummonersForLister(account.toLowerCase())
+
+    const { summoners_full } = useRarityLibrary()
+
+    const fetch_summoners_data = useCallback(
+        async (ids: number[]) => {
+            const chunks = chunkArrayByNumber(ids, 70)
+            let fetchers = []
+            for (let chunk of chunks) {
+                fetchers.push(summoners_full(chunk))
+            }
+            const fetcherChunks = chunkArrayByNumber(fetchers, 10)
+            let full_data = []
+            for (let fChunk of fetcherChunks) {
+                const chunk_response = await Promise.all(fChunk)
+                full_data = full_data.concat(...chunk_response)
+            }
+            return [].concat(...full_data)
+        },
+        [summoners_full]
+    )
+
+    const [fullSummoners, setFullSummoners] = useState([])
+
+    useEffect(() => {
+        if (!listed || !summoners) return
+        fetch_summoners_data(listed).then((d) => setFullSummoners([].concat(d).concat(summoners)))
+    }, [listed, summoners])
 
     return (
         <>
@@ -50,9 +86,12 @@ export default function SummonersMarketOwn(): JSX.Element {
                             <h2>{i18n._(t`ACTION`)}</h2>
                         </div>
                     </div>
-                    {summoners &&
-                        summoners.map((s, i) => {
-                            return <SummonerOwnRow row_i={i} summoner={s} key={i} />
+                    {fullSummoners &&
+                        listed &&
+                        fullSummoners.map((s, i) => {
+                            return (
+                                <SummonerOwnRow row_i={i} summoner={s} key={i} listed={listed.indexOf(s.id) !== -1} />
+                            )
                         })}
                 </div>
             </div>
