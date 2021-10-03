@@ -28,7 +28,7 @@ export default function SummonersMarketListings(): JSX.Element {
     const [query, setQuery] = useState<DocumentNode>(getMarketSummonersDefault)
 
     const count = useListedCount({ refreshInterval: 1_000 })
-    const s = useListedSummoners(offset, query, {refreshInterval: 1_000})
+    const s = useListedSummoners(offset, query, { refreshInterval: 1_000 })
 
     const [summoners, setSummoners] = useState([])
 
@@ -57,7 +57,7 @@ export default function SummonersMarketListings(): JSX.Element {
     useEffect(() => {
         if (!s || !summoners) return
         if (offset === 0) {
-            setSummoners([].concat(s))
+            setSummoners(s)
         } else {
             setSummoners(summoners.concat(s))
         }

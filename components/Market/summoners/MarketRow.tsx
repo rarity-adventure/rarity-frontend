@@ -62,7 +62,7 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
                 <div>{CLASSES_HEADS[summoner.class]}</div>
             </div>
             <div style={{ width: '10%' }} className="text-center">
-                <span>{format_number(summoner.summoner)}</span>
+                <span>{summoner.summoner}</span>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <p className="uppercase">{CLASSES_NAMES[summoner.class]}</p>

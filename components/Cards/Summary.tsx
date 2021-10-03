@@ -58,7 +58,19 @@ export function SummonerSummaryCardLoader(): JSX.Element {
     )
 }
 
-function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; time: number }): JSX.Element {
+function SummonerSummaryCard({
+    summoner,
+    time,
+    transferFunc,
+    burnFunc,
+    daycareFunc,
+}: {
+    summoner: SummonerFullData
+    time: number
+    transferFunc: (summoner: SummonerFullData) => void
+    burnFunc: (summoner: SummonerFullData) => void
+    daycareFunc: (summoners: SummonerFullData[]) => void
+}): JSX.Element {
     const { i18n } = useLingui()
 
     const router = useRouter()
@@ -121,7 +133,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                 <div className="p-2 text-xs">
                     <div className="flex flex-row justify-between mr-2 items-center text-center">
                         <p>{i18n._(t`daycare`)}</p>
-                        <button className="text-center w-16">
+                        <button className="text-center w-16" onClick={() => daycareFunc([summoner])}>
                             {summoner.misc.daycare_days_paid === 0 ? (
                                 <div className="px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
                                     {summoner.misc.daycare_days_paid}
@@ -187,14 +199,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                 </div>
                 <div className="p-2 text-xs w-full">
                     <p>
-                        <button className="w-full my-1">
+                        <button className="w-full my-1" onClick={() => transferFunc(summoner)}>
                             <div className="uppercase px-2 py-2 items-center border-white border-2 bg-background-start rounded-lg">
                                 {i18n._(t`transfer`)}
                             </div>
                         </button>
                     </p>
                     <p>
-                        <button className="w-full my-1">
+                        <button className="w-full my-1" onClick={() => burnFunc(summoner)}>
                             <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
                                 {i18n._(t`delete`)}
                             </div>

@@ -12,16 +12,6 @@ import { sendToast } from '../../../functions/toast'
 export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; row_i; listed }): JSX.Element {
     const { i18n } = useLingui()
 
-    const format_ether = (value) => {
-        if (!value) return '0'
-        const ftmValue = parseFloat(utils.formatEther(value))
-        if (ftmValue > 100_000_000) {
-            return 'Too much'
-        } else {
-            return ftmValue.toLocaleString()
-        }
-    }
-
     const format_number = (value: number) => {
         if (!value) return '0'
         return value.toLocaleString()
@@ -65,7 +55,7 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <div>{CLASSES_HEADS[summoner.base._class]}</div>
             </div>
             <div style={{ width: '10%' }} className="text-center">
-                <span>{format_number(summoner.id)}</span>
+                <span>{summoner.id}</span>
             </div>
             <div style={{ width: '10%' }} className="text-center">
                 <p className="uppercase">{CLASSES_NAMES[summoner.base._class]}</p>
@@ -138,7 +128,11 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <div style={{ width: '15%' }} className="text-center">
                     <div className="flex flex-row justify-between">
                         <button
-                            onClick={() => sendToast(list(summoner.id, listPrice), i18n._(t`Listing summoner`)).then( () => setListPrice(0))}
+                            onClick={() =>
+                                sendToast(list(summoner.id, listPrice), i18n._(t`Listing summoner`)).then(() =>
+                                    setListPrice(0)
+                                )
+                            }
                             className={classNames(
                                 'uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green',
                                 !listPrice ? 'opacity-50' : ''
@@ -149,11 +143,13 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                         </button>
                         <input
                             onChange={(v) =>
-                                v.target.value === '' ? setListPrice(undefined) : setListPrice(parseFloat(v.target.value))
+                                v.target.value === ''
+                                    ? setListPrice(undefined)
+                                    : setListPrice(parseFloat(v.target.value))
                             }
                             type="number"
                             className="text-background-end text-center w-28 mx-2 rounded-lg"
-                            placeholder={"0"}
+                            placeholder={'0'}
                             value={listPrice}
                         />
                     </div>
