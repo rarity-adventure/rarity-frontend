@@ -25,7 +25,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -40,7 +40,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -62,7 +62,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -84,7 +84,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -106,7 +106,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -128,7 +128,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -143,7 +143,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -158,7 +158,7 @@ export default function useRarityHelper(): HelperInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

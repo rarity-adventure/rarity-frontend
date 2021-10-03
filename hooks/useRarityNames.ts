@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useRarityCraftingContract, useRarityNamesContract, useRaritySkillsContract } from './useContract'
+import { useRarityNamesContract } from './useContract'
 
 interface NamesInterface {
     validate_name: (name: string) => Promise<boolean>
@@ -12,34 +12,43 @@ export default function useRarityNames(): NamesInterface {
 
     const validate_name = useCallback(
         async (_name: string): Promise<boolean> => {
-            try {
-                return await names?.validate_name(_name)
-            } catch (e) {
-                return false
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const valid = await names?.validate_name(_name)
+                    resolve(valid)
+                } catch (e) {
+                    reject(e)
+                }
+            })
         },
         [names]
     )
 
     const is_name_claimed = useCallback(
         async (_name: string): Promise<boolean> => {
-            try {
-                return await names?.is_name_claimed(_name)
-            } catch (e) {
-                return false
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const claimed = await names?.is_name_claimed(_name)
+                    resolve(claimed)
+                } catch (e) {
+                    reject(e)
+                }
+            })
         },
         [names]
     )
 
     const claim = useCallback(
         async (_name: string, summoner): Promise<void> => {
-            try {
-                const tx = await names?.claim(_name, summoner)
-                return await tx.wait()
-            } catch (e) {
-                return
-            }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await names?.claim(_name, summoner)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject(e)
+                }
+            })
         },
         [names]
     )

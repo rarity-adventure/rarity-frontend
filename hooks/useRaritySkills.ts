@@ -16,7 +16,7 @@ export default function useRaritySkills(): SkillsInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

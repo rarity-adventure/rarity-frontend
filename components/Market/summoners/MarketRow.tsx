@@ -5,6 +5,8 @@ import { CLASSES_HEADS, CLASSES_NAMES } from '../../../constants/codex/classes'
 import ReactTooltip from 'react-tooltip'
 import { t } from '@lingui/macro'
 import React from 'react'
+import useRarityMarket from '../../../hooks/useRarityMarket'
+import { sendToast } from '../../../functions/toast'
 
 export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX.Element {
     const { i18n } = useLingui()
@@ -19,6 +21,7 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
     }
 
     const format_number = (value: number) => {
+        if (!value) return '0'
         return value.toLocaleString()
     }
 
@@ -47,6 +50,8 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
     }
 
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
+
+    const { buy } = useRarityMarket()
 
     return (
         <div
@@ -134,7 +139,10 @@ export function SummonerMarketRow({ summoner, row_i }: { summoner; row_i }): JSX
                 )}
             </div>
             <div style={{ width: '5%%' }} className="text-center">
-                <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
+                <button
+                    onClick={() => sendToast(buy(summoner.summoner, summoner.price_exact), i18n._(t`Buying summoner`))}
+                    className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green"
+                >
                     {i18n._(t`buy`)}
                 </button>
             </div>

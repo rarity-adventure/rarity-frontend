@@ -6,6 +6,8 @@ import ReactTooltip from 'react-tooltip'
 import { t } from '@lingui/macro'
 import React, { useState } from 'react'
 import { classNames } from '../../../functions/classNames'
+import useRarityMarket from '../../../hooks/useRarityMarket'
+import { sendToast } from '../../../functions/toast'
 
 export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; row_i; listed }): JSX.Element {
     const { i18n } = useLingui()
@@ -52,6 +54,8 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
     const colorClass = row_i % 2 == 0 ? 'bg-transparent' : 'bg-background-contrast-dark'
 
     const [listPrice, setListPrice] = useState(0)
+
+    const { list, unlist } = useRarityMarket()
 
     return (
         <div
@@ -124,7 +128,10 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
             </div>
             {listed ? (
                 <div style={{ width: '5%%' }} className="text-center">
-                    <button className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green">
+                    <button
+                        onClick={() => sendToast(unlist(summoner.summoner), i18n._(t`Unlisting summoner`))}
+                        className="uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green"
+                    >
                         {i18n._(t`unlist`)}
                     </button>
                 </div>
@@ -132,10 +139,12 @@ export default function SummonerOwnRow({ summoner, row_i, listed }: { summoner; 
                 <div style={{ width: '5%%' }} className="text-center">
                     <div className="flex flex-row justify-between">
                         <button
+                            onClick={() => sendToast(list(summoner.summoner, listPrice), i18n._(t`Listing summoner`))}
                             className={classNames(
                                 'uppercase border-2 border-white px-3 py-1.5 rounded-lg text-sm bg-green',
                                 listPrice === 0 ? 'opacity-50' : ''
                             )}
+                            disabled={listPrice === 0}
                         >
                             {i18n._(t`list`)}
                         </button>

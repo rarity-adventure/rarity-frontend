@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useRarityCraftingContract, useRaritySkillsContract } from './useContract'
+import { useRarityCraftingContract } from './useContract'
 
 interface CraftingInterface {
     craft: (id: number, base_type: number, item_type: string, materials: number) => Promise<void>
@@ -20,7 +20,7 @@ export default function useRarityCrafting(): CraftingInterface {
                     const balance = await crafting?.balanceOf(account)
                     resolve(parseInt(balance.toString()))
                 } catch (e) {
-                    reject(0)
+                    reject(e)
                 }
             })
         },
@@ -35,7 +35,7 @@ export default function useRarityCrafting(): CraftingInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject(0)
+                    reject(e)
                 }
             })
         },
@@ -48,7 +48,7 @@ export default function useRarityCrafting(): CraftingInterface {
                 try {
                     resolve(await crafting?.tokenURI(id))
                 } catch (e) {
-                    reject(0)
+                    reject(e)
                 }
             })
         },
@@ -63,7 +63,7 @@ export default function useRarityCrafting(): CraftingInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -76,7 +76,7 @@ export default function useRarityCrafting(): CraftingInterface {
                 try {
                     resolve(await crafting?.isApprovedForAll(owner, operator))
                 } catch (e) {
-                    reject(false)
+                    reject(e)
                 }
             })
         },
@@ -91,7 +91,7 @@ export default function useRarityCrafting(): CraftingInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

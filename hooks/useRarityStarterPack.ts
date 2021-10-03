@@ -23,7 +23,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                 await tx.wait()
                 resolve()
             } catch (e) {
-                reject()
+                reject(e)
             }
         })
     }, [pack])
@@ -34,7 +34,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                 const packs = await pack?.packs_available()
                 resolve(parseInt(packs.toString()))
             } catch (e) {
-                reject()
+                reject(e)
             }
         })
     }, [pack])
@@ -45,7 +45,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                 const supply = await pack?.packs_opened()
                 resolve(parseInt(supply.toString()))
             } catch (e) {
-                reject()
+                reject(e)
             }
         })
     }, [pack])
@@ -57,7 +57,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                     const b = await pack?.balanceOf(owner)
                     resolve(parseInt(b.toString()))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -70,7 +70,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                 try {
                     resolve(await pack?.filter_needed_summoners(ids))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -85,7 +85,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -100,7 +100,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -114,7 +114,7 @@ export default function useRarityStarterPack(): StarterPackInterface {
                     const sellable = await pack?.get_sellable_items_between_ids(account, min_id, max_id)
                     resolve(sellable.map((s) => parseInt(s.toString())))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
