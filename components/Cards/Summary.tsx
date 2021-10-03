@@ -1,23 +1,14 @@
 import { useLingui } from '@lingui/react'
-import React, { useState } from 'react'
+import React from 'react'
 import { t } from '@lingui/macro'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
-import useRarity from '../../hooks/useRarity'
-import useRarityCellar from '../../hooks/useRarityCellar'
 import { secondsRender } from '../../functions/secondsToText'
 import { calcXPForNextLevel } from '../../functions/calcXPForNextLevel'
 import { useRouter } from 'next/router'
-import BurnModal from '../Modal/modals/transfers/Burn'
-import TransferSummonerModal from '../Modal/modals/transfers/TransferSummoner'
-import DaycareModal from '../Modal/modals/Daycare'
 import { sendToast } from '../../functions/toast'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../constants/codex/classes'
-
-enum Modals {
-    TRANSFER = 1,
-    DELETE,
-    DAYCARE,
-}
+import useRarityCellar from '../../hooks/useRarityCellar'
+import useRarity from '../../hooks/useRarity'
 
 export function SummonerSummaryCardLoader(): JSX.Element {
     return (
@@ -67,30 +58,29 @@ export function SummonerSummaryCardLoader(): JSX.Element {
     )
 }
 
-function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; time: number }): JSX.Element {
+function SummonerSummaryCard({
+    summoner,
+    time,
+    transferFunc,
+    burnFunc,
+    daycareFunc,
+}: {
+    summoner: SummonerFullData
+    time: number
+    transferFunc: (summoner: SummonerFullData) => void
+    burnFunc: (summoner: SummonerFullData) => void
+    daycareFunc: (summoners: SummonerFullData[]) => void
+}): JSX.Element {
     const { i18n } = useLingui()
-
-    const [modalOpen, setModalOpen] = useState<Modals>(0)
 
     const router = useRouter()
 
     const { adventure, level_up } = useRarity()
 
-    function closeModals() {
-        setModalOpen(0)
-    }
-
     const { adventure_cellar } = useRarityCellar()
 
     return (
         <div className="mx-auto w-56">
-            <BurnModal open={modalOpen === Modals.DELETE} closeFunction={closeModals} summoner={summoner} />
-            <TransferSummonerModal
-                open={modalOpen === Modals.TRANSFER}
-                closeFunction={closeModals}
-                summoner={summoner}
-            />
-            <DaycareModal open={modalOpen === Modals.DAYCARE} closeFunction={closeModals} summoners={[summoner]} />
             <div
                 onClick={async () => router.push('/play/' + summoner.id)}
                 className="p-5 w-full text-center cursor-pointer"
@@ -143,7 +133,7 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                 <div className="p-2 text-xs">
                     <div className="flex flex-row justify-between mr-2 items-center text-center">
                         <p>{i18n._(t`daycare`)}</p>
-                        <button onClick={() => setModalOpen(Modals.DAYCARE)} className="text-center w-16">
+                        <button className="text-center w-16" onClick={() => daycareFunc([summoner])}>
                             {summoner.misc.daycare_days_paid === 0 ? (
                                 <div className="px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
                                     {summoner.misc.daycare_days_paid}
@@ -209,14 +199,14 @@ function SummonerSummaryCard({ summoner, time }: { summoner: SummonerFullData; t
                 </div>
                 <div className="p-2 text-xs w-full">
                     <p>
-                        <button className="w-full my-1" onClick={() => setModalOpen(Modals.TRANSFER)}>
+                        <button className="w-full my-1" onClick={() => transferFunc(summoner)}>
                             <div className="uppercase px-2 py-2 items-center border-white border-2 bg-background-start rounded-lg">
                                 {i18n._(t`transfer`)}
                             </div>
                         </button>
                     </p>
                     <p>
-                        <button className="w-full my-1" onClick={() => setModalOpen(Modals.DELETE)}>
+                        <button className="w-full my-1" onClick={() => burnFunc(summoner)}>
                             <div className="uppercase px-2 py-2 items-center border-white border-2 bg-red rounded-lg">
                                 {i18n._(t`delete`)}
                             </div>

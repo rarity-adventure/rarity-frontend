@@ -21,7 +21,7 @@ export default function useRarityGold(): GoldInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -35,7 +35,7 @@ export default function useRarityGold(): GoldInterface {
                     const allowance = await gold?.allowance(from, spender)
                     resolve(parseInt(utils.formatUnits(allowance, 'ether')))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -50,7 +50,7 @@ export default function useRarityGold(): GoldInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -64,7 +64,7 @@ export default function useRarityGold(): GoldInterface {
                     const balance = await gold?.balanceOf(id)
                     resolve(parseInt(utils.formatUnits(balance, 'ether')))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -79,7 +79,7 @@ export default function useRarityGold(): GoldInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

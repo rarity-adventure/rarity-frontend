@@ -81,6 +81,10 @@ body {
     box-shadow: inset 2px 3px 4px rgba(0, 0, 0, 0.25);
 }
 
+.opaque {
+    opacity: 1 !important;
+}
+
 .scroll-top {
     position: fixed;
     width: 100%;
@@ -90,4 +94,8 @@ body {
     font-size: 3rem;
     z-index: 1;
     cursor: pointer;
+}
+
+.work-sans {
+    font-family: 'Work Sans', serif;
 }

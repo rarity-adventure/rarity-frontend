@@ -32,11 +32,11 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
         )
     }
 
-    function names(): JSX.Element {
+    function market(): JSX.Element {
         return (
-            <Link href="https://names.rarity.game" passHref={true}>
+            <Link href="/market" passHref={true}>
                 <div className="cursor-pointer hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1">
-                    <h2>{i18n._(t`names`)}</h2>
+                    <h2>{i18n._(t`market`)}</h2>
                 </div>
             </Link>
         )
@@ -74,7 +74,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
 
     function socials() {
         return (
-            <div className="text-white text-3xl gap-x-3 flex flex-row mr-5">
+            <div className="text-white text-3xl gap-x-3 flex flex-row mr-2">
                 <a href="https://discord.com/invite/NUrfGsUkmd">
                     <FontAwesomeIcon icon={faDiscord} />
                 </a>
@@ -107,7 +107,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                                         <div className="flex uppercase">
                                             {summoners()}
                                             {inventory()}
-                                            {names()}
+                                            {market()}
                                             {stats()}
                                         </div>
                                     </div>
@@ -167,7 +167,7 @@ function AppBar({ supporter }: { supporter: boolean }): JSX.Element {
                             <div className="flex flex-col px-4 pt-2 pb-3 space-y-1 text-center">
                                 {summoners()}
                                 {inventory()}
-                                {names()}
+                                {market()}
                                 {stats()}
                             </div>
                         </Popover.Panel>

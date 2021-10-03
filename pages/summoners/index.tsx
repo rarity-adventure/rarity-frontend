@@ -14,6 +14,8 @@ import BulkActionModal, { BulkAction } from '../../components/Modal/modals/BulkA
 import DaycareModal from '../../components/Modal/modals/Daycare'
 import { sendToast } from '../../functions/toast'
 import SummonersLoader from './Loader'
+import TransferSummonerModal from '../../components/Modal/modals/transfers/TransferSummoner'
+import BurnModal from '../../components/Modal/modals/transfers/Burn'
 
 export default function Summoners(): JSX.Element {
     const { i18n } = useLingui()
@@ -46,13 +48,13 @@ export default function Summoners(): JSX.Element {
     }
 
     useEffect(() => {
-        if (modal || !account) return
+        if (!account) return
         setSummoners(s)
         setAdventure(s.filter((s) => s.base._log * 1000 < Date.now()))
         setLevel(s.filter((s) => s.base._xp >= calcXPForNextLevel(s.base._level)))
         setGold(s.filter((s) => s.gold.claimable > 0))
         setDungeon(s.filter((s) => s.materials.log * 1000 < Date.now() && s.materials.scout !== 0))
-    }, [s, modal, account])
+    }, [s, account])
 
     const [time, setCurrentTime] = useState(Date.now())
 
@@ -80,10 +82,53 @@ export default function Summoners(): JSX.Element {
         fetch_approval()
     }, [summoners, fetch_approval])
 
+    const [transferSummonerModal, setTransferSummonerModal] = useState(false)
+    const [transferSummoner, setTransferSummoner] = useState<SummonerFullData | undefined>(undefined)
+
+    function closeTransferSummoner() {
+        setTransferSummonerModal(false)
+        setTransferSummoner(undefined)
+    }
+
+    function transferSummonerFunc(summoner: SummonerFullData) {
+        setTransferSummonerModal(true)
+        setTransferSummoner(summoner)
+    }
+
+    const [burnSummonerModal, setBurnSummonerModal] = useState(false)
+    const [burnSummoner, setBurnSummoner] = useState<SummonerFullData | undefined>(undefined)
+
+    function closeBurnSummoner() {
+        setBurnSummonerModal(false)
+        setBurnSummoner(undefined)
+    }
+
+    function burnSummonerFunc(summoner: SummonerFullData) {
+        setBurnSummonerModal(true)
+        setBurnSummoner(summoner)
+    }
+
+    const [daycareSummoners, setDaycareSummoners] = useState<SummonerFullData[]>([])
+
+    function dayCareFunc(summoners: SummonerFullData[]) {
+        setDaycareModal(true)
+        setDaycareSummoners(summoners)
+    }
+
     return (
         <div className="w-full">
             <BulkActionModal open={modal} action={action} closeFunction={() => closeModal()} summoners={summoners} />
-            <DaycareModal open={daycareModal} closeFunction={() => setDaycareModal(false)} summoners={summoners} />
+            <DaycareModal
+                open={daycareModal}
+                closeFunction={() => setDaycareModal(false)}
+                summoners={daycareSummoners}
+            />
+            <TransferSummonerModal
+                open={transferSummonerModal}
+                closeFunction={closeTransferSummoner}
+                summoner={transferSummoner}
+            />
+            <BurnModal open={burnSummonerModal} closeFunction={closeBurnSummoner} summoner={burnSummoner} />
             {loading ? (
                 <SummonersLoader />
             ) : (
@@ -93,7 +138,7 @@ export default function Summoners(): JSX.Element {
                             <div className="flex flex-row items-center justify-between">
                                 <div>
                                     <h1 className="text-2xl xl:text-3xl">
-                                        {i18n._(t`summoners`)} ({summoners.length >= 1000 ? '1000+' : summoners.length})
+                                        {i18n._(t`summoners`)} ({summoners.length})
                                     </h1>
                                 </div>
                                 <div className="uppercase">
@@ -141,7 +186,7 @@ export default function Summoners(): JSX.Element {
                                         </button>
                                         <button
                                             className="p-2 border-white border-2 bg-background-contrast rounded-lg mx-1 uppercase"
-                                            onClick={() => setDaycareModal(true)}
+                                            onClick={() => dayCareFunc(summoners)}
                                         >
                                             {i18n._(t`daycare`)}
                                         </button>
@@ -176,10 +221,28 @@ export default function Summoners(): JSX.Element {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-2 xl:gap-5">
                                 {parsedSummoners.length === 0
                                     ? summoners.map((s) => {
-                                          return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
+                                          return (
+                                              <SummonerSummaryCard
+                                                  key={s.id}
+                                                  summoner={s}
+                                                  time={time}
+                                                  daycareFunc={dayCareFunc}
+                                                  burnFunc={burnSummonerFunc}
+                                                  transferFunc={transferSummonerFunc}
+                                              />
+                                          )
                                       })
                                     : parsedSummoners.map((s) => {
-                                          return <SummonerSummaryCard key={s.id} summoner={s} time={time} />
+                                          return (
+                                              <SummonerSummaryCard
+                                                  key={s.id}
+                                                  summoner={s}
+                                                  time={time}
+                                                  daycareFunc={dayCareFunc}
+                                                  burnFunc={burnSummonerFunc}
+                                                  transferFunc={transferSummonerFunc}
+                                              />
+                                          )
                                       })}
                             </div>
                         </>

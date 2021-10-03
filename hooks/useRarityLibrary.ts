@@ -147,7 +147,7 @@ export default function useRarityLibrary(): LibraryInterface {
                         })
                     )
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -171,7 +171,7 @@ export default function useRarityLibrary(): LibraryInterface {
                         })
                     )
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

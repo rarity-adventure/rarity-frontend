@@ -32,7 +32,7 @@ export default function useRarityAttributes(): AttributesInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

@@ -20,7 +20,7 @@ export default function useRarityCellar(): CellarInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -34,7 +34,7 @@ export default function useRarityCellar(): CellarInterface {
                     const allowance = await cellar?.allowance(from, spender)
                     resolve(parseInt(allowance.toString()))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -49,7 +49,7 @@ export default function useRarityCellar(): CellarInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -63,7 +63,7 @@ export default function useRarityCellar(): CellarInterface {
                     const balance = await cellar?.balanceOf(id)
                     resolve(parseInt(balance.toString()))
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -78,7 +78,7 @@ export default function useRarityCellar(): CellarInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

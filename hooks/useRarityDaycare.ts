@@ -16,7 +16,7 @@ export default function useRarityDaycare(): DailycareInterface {
                     const days = await daycare?.daysPaid(id)
                     resolve(parseInt(days.toString()))
                 } catch (e) {
-                    reject(0)
+                    reject(e)
                 }
             })
         },
@@ -33,7 +33,7 @@ export default function useRarityDaycare(): DailycareInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },

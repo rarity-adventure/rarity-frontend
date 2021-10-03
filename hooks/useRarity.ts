@@ -22,7 +22,7 @@ export default function useRarity(): RarityInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -37,7 +37,7 @@ export default function useRarity(): RarityInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -52,7 +52,7 @@ export default function useRarity(): RarityInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -67,7 +67,7 @@ export default function useRarity(): RarityInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
@@ -95,7 +95,7 @@ export default function useRarity(): RarityInterface {
                     await tx.wait()
                     resolve()
                 } catch (e) {
-                    reject()
+                    reject(e)
                 }
             })
         },
