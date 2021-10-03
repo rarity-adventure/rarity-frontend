@@ -103,7 +103,6 @@ export default function SummonersMarketListings(): JSX.Element {
                 } catch (e) {}
                 comp = parts[2].trim()
             }
-            console.log(value)
             if (varName === newest_varName && i < tags.length - 1) {
                 // Allow overwriting tags
                 continue
@@ -195,7 +194,6 @@ export default function SummonersMarketListings(): JSX.Element {
         }
         setTags(newTags)
         const query_str = buildQuery(query)
-        console.log(query_str)
         const finalQuery = getMarketSummonersQuery(query_str)
         const format = gql(finalQuery)
         setSummoners([])
