@@ -127,7 +127,7 @@ export default function SummonersMarketOwn(): JSX.Element {
                         <button
                             onClick={() =>
                                 sendToast(setApprovalForAll(RARITY_MARKET_ADDRESS), i18n._(t`Approving Market`)).then(
-                                    setApproved(true)
+                                    () => setApproved(true)
                                 )
                             }
                             className="uppercase bg-green p-2 border-2 border-white"
