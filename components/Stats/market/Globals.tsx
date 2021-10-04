@@ -16,22 +16,22 @@ export default function MarketGlobalStats(): JSX.Element {
             </div>
             {globals && (
                 <div className="bg-item-background border-white border-l-2 border-r-2 border-b-2 rounded-b-lg p-2 px-4">
-                    <div className="flex flex-row py-2 w-full text-sm lg:text-xl uppercase">
+                    <div className="flex flex-row py-1 w-full text-sm uppercase">
                         <span>{i18n._(t`total volume`)}:</span>
                     </div>
-                    <div className="flex flex-row-reverse py-2 w-full text-xl lg:text-3xl">
+                    <div className="flex flex-row-reverse w-full text-xl">
                         <span>{utils.formatEther(globals.globals[0].volume)} FTM</span>
                     </div>
-                    <div className="flex flex-row py-2 w-full text-sm lg:text-xl  uppercase">
+                    <div className="flex flex-row w-full text-sm uppercase">
                         <span>{i18n._(t`trades`)}:</span>
                     </div>
-                    <div className="flex flex-row-reverse py-4 w-full text-xl lg:text-3xl">
+                    <div className="flex flex-row-reverse w-full text-xl">
                         <span>{globals.globals[0].trades}</span>
                     </div>
-                    <div className="flex flex-row py-2 w-full text-sm lg:text-xl  uppercase">
+                    <div className="flex flex-row  w-full text-sm uppercase">
                         <span>{i18n._(t`total fees`)}:</span>
                     </div>
-                    <div className="flex flex-row-reverse py-4 w-full text-xl lg:text-3xl">
+                    <div className="flex flex-row-reverse w-full text-xl">
                         <span>{utils.formatEther(globals.globals[0].fees)} FTM</span>
                     </div>
                 </div>

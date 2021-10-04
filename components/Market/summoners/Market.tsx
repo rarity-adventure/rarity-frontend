@@ -315,7 +315,8 @@ export default function SummonersMarketListings(): JSX.Element {
                 />
             </div>
             <div
-                className="m-5 bg-item-background border-2 rounded-3xl overflow-y-scroll h-screen"
+                style={{ height: '700px' }}
+                className="m-5 bg-item-background border-2 rounded-3xl overflow-y-scroll scrollbar-hide"
                 onScroll={handleScroll}
             >
                 <div>

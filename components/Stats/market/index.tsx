@@ -1,5 +1,5 @@
 import { useLingui } from '@lingui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '@lingui/macro'
 import { useMarketStats } from '../../../services/graph/hooks'
 import SaleRow from './SaleRow'
@@ -15,9 +15,22 @@ export default function MarketStats(): JSX.Element {
     const handleScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
         if (bottom) {
-            setOffset(offset + 20)
+            if (sales.length >= 20) {
+                setOffset(offset + 20)
+            }
         }
     }
+
+    const [sales, setSales] = useState([])
+
+    useEffect(() => {
+        if (!stats) return
+        if (offset === 0) {
+            setSales(stats.sales)
+        } else {
+            setSales(sales.concat(stats.stales))
+        }
+    }, [stats, offset])
 
     return (
         <div className="w-full z-10">
@@ -56,8 +69,8 @@ export default function MarketStats(): JSX.Element {
                         <h2>{i18n._(t`TIME`)}</h2>
                     </div>
                 </div>
-                {stats &&
-                    stats.sales.map((s, i) => {
+                {sales &&
+                    sales.map((s, i) => {
                         return <SaleRow key={s.id} data={s} row_i={i} />
                     })}
             </div>
