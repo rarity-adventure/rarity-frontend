@@ -13,7 +13,7 @@ export const market_graph = async (query, variables = {}) =>
     request('https://market-api.rarity.game/v1/graphql', query, variables)
 
 export const rarity_graph = async (query, variables = {}) =>
-    pager('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity', query, variables)
+    pager('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
 
 export const market_stats_graph = async (query, variables = {}) =>
     request('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity-market', query, variables)
