@@ -1,7 +1,5 @@
 import { useLingui } from '@lingui/react'
 import React, { useState } from 'react'
-import { t } from '@lingui/macro'
-import { classNames } from '../../functions/classNames'
 import NamesMarket from '../../components/Market/names'
 import SummonersMarket from '../../components/Market/summoners'
 

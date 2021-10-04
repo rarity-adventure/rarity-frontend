@@ -1,5 +1,12 @@
 import { request } from 'graphql-request'
-import { getGlobalData, getMarketSummonersCount, getMarketSummonersForLister, getSummoners } from './queries'
+import {
+    getGlobalData,
+    getMarketGlobalStats,
+    getMarketStats,
+    getMarketSummonersCount,
+    getMarketSummonersForLister,
+    getSummoners,
+} from './queries'
 import { pager } from './utils'
 
 export const market_graph = async (query, variables = {}) =>
@@ -7,6 +14,9 @@ export const market_graph = async (query, variables = {}) =>
 
 export const rarity_graph = async (query, variables = {}) =>
     pager('https://api.rarity.game/subgraphs/name/rarity-adventure/rarity', query, variables)
+
+export const market_stats_graph = async (query, variables = {}) =>
+    pager('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity-market', query, variables)
 
 export const getStats = async () => {
     return await rarity_graph(getGlobalData, {})
@@ -34,4 +44,12 @@ export const getListedSummonersForLister = async (lister) => {
     return data.summoners.map((s) => {
         return { id: s.summoner, price: s.price_exact }
     })
+}
+
+export const getMarketStatistics = async (offset) => {
+    return await market_stats_graph(getMarketStats, { offset })
+}
+
+export const getMarketGlobalsStatistics = async () => {
+    return await market_stats_graph(getMarketGlobalStats, {})
 }

@@ -10,6 +10,13 @@ export function shortenAddress(address: string, chars = 4): string {
     }
 }
 
+export function shortenString(string: string, length: number): string {
+    if (!string) return ''
+    if (length < 5) return string
+    if (string.length <= length) return string
+    return string.slice(0, 4) + '...' + string.slice(string.length - length + 5, string.length)
+}
+
 export function formatDateAgo(date: Date) {
     const currentDate = new Date()
     const secondsAgo = Math.floor((currentDate.getTime() - date.getTime()) / 1000)

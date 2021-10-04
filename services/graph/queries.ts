@@ -373,3 +373,29 @@ export const getMarketSummonersForLister = gql`
         }
     }
 `
+
+export const getMarketStats = gql`
+    query getMarketStats($limit: Int! = 20, $offset: Int!) {
+        sales(limit: $limit, offset: $offset, orderBy: timestamp, orderDirection: desc) {
+            id
+            summoner
+            txid
+            timestamp
+            seller
+            buyer
+            price
+            fee
+        }
+    }
+`
+
+export const getMarketGlobalStats = gql`
+    query getMarketGlobalStats {
+        globals {
+            id
+            volume
+            fees
+            trades
+        }
+    }
+`

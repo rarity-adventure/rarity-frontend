@@ -2,7 +2,7 @@ import { useLingui } from '@lingui/react'
 import { t } from '@lingui/macro'
 import React from 'react'
 
-export default function StatsLoader() {
+export default function GlobalStatsLoader() {
     const { i18n } = useLingui()
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 mt-5 gap-10 mx-10 animate-pulse">

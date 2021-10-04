@@ -1,5 +1,13 @@
 import useSWR, { SWRConfiguration } from 'swr'
-import { getListedCount, getListedSummoners, getListedSummonersForLister, getStats, getSummonersIDs } from './fetchers'
+import {
+    getListedCount,
+    getListedSummoners,
+    getListedSummonersForLister,
+    getMarketGlobalsStatistics,
+    getMarketStatistics,
+    getStats,
+    getSummonersIDs,
+} from './fetchers'
 
 export function useGraphStats(swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('stats', () => getStats(), swrConfig)
@@ -27,5 +35,15 @@ export function useListedCount(swrConfig: SWRConfiguration = undefined) {
 
 export function useListedSummonersForLister(lister, swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('listed_' + lister, () => getListedSummonersForLister(lister), swrConfig)
+    return data
+}
+
+export function useMarketStats(offset, swrConfig: SWRConfiguration = undefined) {
+    const { data } = useSWR('market_stats_' + offset, () => getMarketStatistics(offset), swrConfig)
+    return data
+}
+
+export function useMarketGlobalStats(swrConfig: SWRConfiguration = undefined) {
+    const { data } = useSWR('market_globals', () => getMarketGlobalsStatistics(), swrConfig)
     return data
 }
