@@ -16,7 +16,7 @@ export const rarity_graph = async (query, variables = {}) =>
     pager('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity', query, variables)
 
 export const market_stats_graph = async (query, variables = {}) =>
-    pager('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity-market', query, variables)
+    request('https://api.thegraph.com/subgraphs/name/rarity-adventure/rarity-market', query, variables)
 
 export const getStats = async () => {
     return await rarity_graph(getGlobalData, {})

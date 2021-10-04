@@ -375,8 +375,8 @@ export const getMarketSummonersForLister = gql`
 `
 
 export const getMarketStats = gql`
-    query getMarketStats($limit: Int! = 20, $offset: Int!) {
-        sales(limit: $limit, offset: $offset, orderBy: timestamp, orderDirection: desc) {
+    query getMarketStats($first: Int! = 20, $offset: Int!) {
+        sales(first: $first, skip: $offset, orderBy: timestamp, orderDirection: desc) {
             id
             summoner
             txid

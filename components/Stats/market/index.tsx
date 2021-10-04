@@ -10,7 +10,7 @@ export default function MarketStats(): JSX.Element {
 
     const [offset, setOffset] = useState(0)
 
-    const stats = useMarketStats(offset, { refreshInterval: 1_000 })
+    const stats = useMarketStats(offset)
 
     const handleScroll = (e) => {
         const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
@@ -28,17 +28,17 @@ export default function MarketStats(): JSX.Element {
         if (offset === 0) {
             setSales(stats.sales)
         } else {
-            setSales(sales.concat(stats.stales))
+            setSales(sales.concat(stats.sales))
         }
     }, [stats, offset])
 
     return (
-        <div className="w-full z-10">
+        <div className="w-full mx-2 z-10">
             <div className="text-center mt-10">
                 <h1 className="text-4xl uppercase">{i18n._(t`market statistics`)}</h1>
                 <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity Market`)}</h2>
             </div>
-            <div style={{ width: '500px', fontFamily: 'Work Sans' }} className="mx-auto my-5">
+            <div style={{fontFamily: 'Work Sans' }} className="mx-auto mx-2 w-3/4 lg:w-1/2 my-5">
                 <MarketGlobalStats />
             </div>
             <div
