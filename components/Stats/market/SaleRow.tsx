@@ -7,7 +7,7 @@ export default function SaleRow({ data, row_i }: { data; row_i }): JSX.Element {
 
     return (
         <div
-            style={{ width: '1000px', fontFamily: 'Work Sans', height: '50px' }}
+            style={{ minWidth: '1000px', fontFamily: 'Work Sans', height: '40px' }}
             className={`flex w-full justify-left flex-nowrap items-center p-0 ${colorClass}`}
         >
             <div style={{ width: '10%' }} className="text-center">

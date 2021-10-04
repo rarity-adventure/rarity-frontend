@@ -38,15 +38,18 @@ export default function MarketStats(): JSX.Element {
                 <h1 className="text-4xl uppercase">{i18n._(t`market statistics`)}</h1>
                 <h2 className="text-lg mt-2">{i18n._(t`Real time information for Rarity Market`)}</h2>
             </div>
-            <div style={{fontFamily: 'Work Sans' }} className="mx-auto mx-2 w-3/4 lg:w-1/2 my-5">
+            <div style={{ fontFamily: 'Work Sans' }} className="mx-auto mx-2 w-3/4 lg:w-1/2 my-5">
                 <MarketGlobalStats />
             </div>
             <div
-                style={{ width: '1000px', height: '500px' }}
-                className="mx-auto m-5 bg-item-background border-2 rounded-3xl scrollbar-hide overflow-y-scroll"
+                style={{ height: '500px' }}
+                className="mx-10 bg-item-background border-2 rounded-3xl scrollbar-hide overflow-y-scroll"
                 onScroll={handleScroll}
             >
-                <div className="sticky w-full top-0 z-20 bg-market-table-top font-bold flex flex-nowrap items-center px-2 py-5">
+                <div
+                    style={{ minWidth: '1000px' }}
+                    className="sticky w-full top-0 z-20 bg-market-table-top font-bold flex flex-nowrap items-center px-2 py-5"
+                >
                     <div style={{ width: '10%' }} className="text-center">
                         <h2>{i18n._(t`ID No.`)}</h2>
                     </div>
