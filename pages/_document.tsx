@@ -3,7 +3,7 @@ import Document, { Head, Html, Main, NextScript } from 'next/document'
 class MyDocument extends Document {
     render() {
         return (
-            <Html lang="en" dir="ltr">
+            <Html lang="en" dir="ltr" style={{ overflow: 'auto !important' }}>
                 <Head>
                     <link rel="manifest" href="/manifest.json" />
 
