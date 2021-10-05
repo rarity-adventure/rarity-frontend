@@ -23,7 +23,7 @@ enum View {
     transfer,
 }
 
-export default function Profile(): JSX.Element {
+export default function Play(): JSX.Element {
     const { i18n } = useLingui()
 
     const router = useRouter()
