@@ -112,7 +112,7 @@ export default function TransferBulkModal({ open, closeFunction, summoners }: Tr
         <Modal isOpen={open} onDismiss={closeFunction}>
             <div className="bg-background-end rounded-lg border-2 border-white">
                 <ModalHeader title={i18n._(t`bulk transfer`)} onClose={closeFunction} />
-                <div className="mx-auto text-center text-white text-center">
+                <div className="mx-auto text-center text-white w-96 text-center">
                     <CoinSelector select={setCoin} selected={coin} />
                 </div>
                 <div className="mx-auto text-center text-white w-48 text-center mb-2">

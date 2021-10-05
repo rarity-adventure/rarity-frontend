@@ -18,7 +18,7 @@ export default function Market(): JSX.Element {
     return (
         <div className="w-full z-25">
             <div className="m-2 md:m-10 z-10">
-                <div className="flex flex-row justify-start">
+                <div className="flex flex-row justify-center sm:justify-start">
                     <button
                         onClick={() => setView(StatsView.GLOBAL)}
                         className={classNames(
