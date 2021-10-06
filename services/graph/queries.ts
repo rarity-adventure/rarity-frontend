@@ -399,3 +399,21 @@ export const getMarketGlobalStats = gql`
         }
     }
 `
+
+export const marketLatestSale = gql`
+    query getMarketLatestSale {
+        sales(first: 1, orderBy: timestamp, orderDirection: desc) {
+            id
+            timestamp
+        }
+    }
+`
+
+export const marketBiggestSale = gql`
+    query getMarketLatestSale {
+        sales(first: 1, orderBy: price, orderDirection: desc) {
+            id
+            price
+        }
+    }
+`

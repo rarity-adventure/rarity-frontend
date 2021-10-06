@@ -1,7 +1,7 @@
 import { useLingui } from '@lingui/react'
 import React from 'react'
 import { t } from '@lingui/macro'
-import { useMarketGlobalStats } from '../../../services/graph/hooks'
+import { useMarketBiggestSale, useMarketGlobalStats, useMarketLatestSale } from '../../../services/graph/hooks'
 import { utils } from 'ethers'
 
 export default function MarketGlobalStats(): JSX.Element {
@@ -9,30 +9,67 @@ export default function MarketGlobalStats(): JSX.Element {
 
     const globals = useMarketGlobalStats({ refreshInterval: 1_000 })
 
+    const latest = useMarketLatestSale({ refreshInterval: 1_000 })
+    const biggest = useMarketBiggestSale({ refreshInterval: 1_000 })
+
+    console.log(latest)
     return (
         <div>
-            <div className="bg-market-table-top border-white border-2 text-center text-sm lg:text-xl rounded-t-xl p-2">
-                <span>{i18n._(t`Global Market Statistics`)}</span>
-            </div>
             {globals && (
-                <div className="bg-item-background border-white border-l-2 border-r-2 border-b-2 rounded-b-lg p-2 px-4">
-                    <div className="flex flex-row py-1 w-full text-sm uppercase">
-                        <span>{i18n._(t`total volume`)}:</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                        <div className="bg-item-background border-white border-2 rounded-lg p-2 px-4">
+                            <div className="flex flex-row py-1 w-full text-sm uppercase">
+                                <span>{i18n._(t`total volume`)}:</span>
+                            </div>
+                            <div className="flex flex-row-reverse w-full text-xl">
+                                <span>{parseFloat(utils.formatEther(globals.globals[0].volume)).toFixed(2)} FTM</span>
+                            </div>
+                            <div className="flex flex-row w-full text-sm uppercase">
+                                <span>{i18n._(t`trades`)}:</span>
+                            </div>
+                            <div className="flex flex-row-reverse w-full text-xl">
+                                <span>{globals.globals[0].trades}</span>
+                            </div>
+                            <div className="flex flex-row  w-full text-sm uppercase">
+                                <span>{i18n._(t`total fees`)}:</span>
+                            </div>
+                            <div className="flex flex-row-reverse w-full text-xl">
+                                <span>{parseFloat(utils.formatEther(globals.globals[0].fees)).toFixed(2)} FTM</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex flex-row-reverse w-full text-xl">
-                        <span>{utils.formatEther(globals.globals[0].volume)} FTM</span>
-                    </div>
-                    <div className="flex flex-row w-full text-sm uppercase">
-                        <span>{i18n._(t`trades`)}:</span>
-                    </div>
-                    <div className="flex flex-row-reverse w-full text-xl">
-                        <span>{globals.globals[0].trades}</span>
-                    </div>
-                    <div className="flex flex-row  w-full text-sm uppercase">
-                        <span>{i18n._(t`total fees`)}:</span>
-                    </div>
-                    <div className="flex flex-row-reverse w-full text-xl">
-                        <span>{utils.formatEther(globals.globals[0].fees)} FTM</span>
+                    <div className="bg-item-background border-white border-2 rounded-lg p-2 px-4">
+                        <div className="flex flex-row py-1 w-full text-sm uppercase">
+                            <span>{i18n._(t`average price`)}:</span>
+                        </div>
+                        <div className="flex flex-row-reverse w-full text-xl">
+                            <span>
+                                {(
+                                    parseFloat(utils.formatEther(globals.globals[0].volume)) / globals.globals[0].trades
+                                ).toFixed(2)}{' '}
+                                FTM
+                            </span>
+                        </div>
+                        <div className="flex flex-row w-full text-sm uppercase">
+                            <span>{i18n._(t`highest trade`)}:</span>
+                        </div>
+                        {biggest && (
+                            <div className="flex flex-row-reverse w-full text-xl">
+                                <span>{parseFloat(utils.formatEther(biggest.sales[0].price)).toFixed(0)} FTM</span>
+                            </div>
+                        )}
+                        <div className="flex flex-row  w-full text-sm uppercase">
+                            <span>{i18n._(t`latest trade`)}:</span>
+                        </div>
+                        {latest && (
+                            <div className="flex flex-row-reverse w-full text-lg">
+                                <span>
+                                    {new Date(latest.sales[0].timestamp * 1000).toLocaleDateString()}{' '}
+                                    {new Date(latest.sales[0].timestamp * 1000).toLocaleTimeString()}
+                                </span>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
