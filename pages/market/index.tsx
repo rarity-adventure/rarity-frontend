@@ -23,7 +23,7 @@ export default function Market(): JSX.Element {
                         onClick={() => setView(MarketView.Summoners)}
                         className={classNames(
                             'bg-card-content uppercase border-2 p-1 rounded-l-2xl w-32',
-                            view !== MarketView.Summoners ? 'opacity-50' : ''
+                            view === MarketView.Summoners ? 'opacity-50' : ''
                         )}
                     >
                         {i18n._(t`Summoners`)}
@@ -32,7 +32,7 @@ export default function Market(): JSX.Element {
                         onClick={() => setView(MarketView.Names)}
                         className={classNames(
                             'bg-card-content uppercase border-2 p-1 w-32 rounded-r-2xl',
-                            view !== MarketView.Names ? 'opacity-50' : ''
+                            view === MarketView.Names ? 'opacity-50' : ''
                         )}
                     >
                         {i18n._(t`Names`)}
