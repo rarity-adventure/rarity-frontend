@@ -63,7 +63,7 @@ export default function MarketGlobalStats(): JSX.Element {
                             <span>{i18n._(t`latest trade`)}:</span>
                         </div>
                         {latest && (
-                            <div className="flex flex-row-reverse w-full text-lg">
+                            <div className="flex flex-row-reverse w-full text-sm">
                                 <span>
                                     {new Date(latest.sales[0].timestamp * 1000).toLocaleDateString()}{' '}
                                     {new Date(latest.sales[0].timestamp * 1000).toLocaleTimeString()}
