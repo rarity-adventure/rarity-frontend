@@ -4,7 +4,7 @@ import { useRarityNamesContract } from './useContract'
 interface NamesInterface {
     validate_name: (name: string) => Promise<boolean>
     is_name_claimed: (name: string) => Promise<boolean>
-    claim: (name: string, summoner: string) => Promise<void>
+    claim: (name: string, summoner: number) => Promise<void>
 }
 
 export default function useRarityNames(): NamesInterface {
@@ -39,7 +39,7 @@ export default function useRarityNames(): NamesInterface {
     )
 
     const claim = useCallback(
-        async (_name: string, summoner): Promise<void> => {
+        async (_name: string, summoner: number): Promise<void> => {
             return new Promise(async (resolve, reject) => {
                 try {
                     const tx = await names?.claim(_name, summoner)

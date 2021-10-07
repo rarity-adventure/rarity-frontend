@@ -33,6 +33,7 @@ export default function useRarityGold(): GoldInterface {
             return new Promise(async (resolve, reject) => {
                 try {
                     const allowance = await gold?.allowance(from, spender)
+                    console.log(allowance.toString())
                     resolve(parseInt(utils.formatUnits(allowance, 'ether')))
                 } catch (e) {
                     reject(e)

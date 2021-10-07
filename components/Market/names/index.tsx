@@ -10,6 +10,8 @@ import useRarityNames from '../../../hooks/useRarityNames'
 import Loader from '../../Loader'
 import SummonerSelector from '../../Selectors/Summoners'
 import { CLASSES_IMAGES, CLASSES_NAMES } from '../../../constants/codex/classes'
+import { sendToast } from '../../../functions/toast'
+import { classNames } from '../../../functions/classNames'
 
 export default function NamesMarket(): JSX.Element {
     const { i18n } = useLingui()
@@ -32,12 +34,16 @@ export default function NamesMarket(): JSX.Element {
         }
     }, [summoners, selectedSummoner])
 
-    const [approve, setApprove] = useState<boolean>(false)
+    const [approving, setApproving] = useState(false)
+    const [allowed, setAllowed] = useState<boolean>(false)
 
     const fetch_allowance = useCallback(async () => {
         const allowed = await gold_allowance(selectedSummoner.id, RARITY_NAMES_SUMMONER)
+        console.log(allowed)
         if (allowed >= CRAFTING_ALLOWANCE) {
-            setApprove(true)
+            setAllowed(true)
+        } else {
+            setAllowed(false)
         }
     }, [gold_allowance, selectedSummoner])
 
@@ -78,6 +84,19 @@ export default function NamesMarket(): JSX.Element {
         }
     }
 
+    function approveGold() {
+        setApproving(true)
+        sendToast(
+            gold_approve(selectedSummoner.id, RARITY_NAMES_SUMMONER, CRAFTING_ALLOWANCE),
+            i18n._(t`Approving gold`)
+        )
+            .then(() => {
+                setAllowed(true)
+                setApproving(false)
+            })
+            .catch(() => setApproving(false))
+    }
+
     return (
         <div className="w-full z-25">
             <div className="m-10 z-10">
@@ -100,9 +119,9 @@ export default function NamesMarket(): JSX.Element {
                         <div className="sm:hidden">
                             <SummonerSelector summoners={summoners} select={setSelectedSummoner} />
                         </div>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 m-8 mt-20">
-                            <div className="border-white border-2 bg-card-bottom p-2 rounded-lg px-8">
-                                <p className="my-2">{i18n._(t`Get a rarity name for your summoner`)}</p>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 m-8 mt-10">
+                            <div className="text-xs sm:text-sm border-white border-2 bg-card-button p-2 rounded-lg px-4">
+                                <p className="my-2">{i18n._(t`Get a name for your summoner`)}</p>
                                 <p className="my-2">{i18n._(t`Claiming a name will cost your summoner 200 GOLD`)}</p>
                                 <p className="my-2">{i18n._(t`All names are unique and one-of-a-kind`)}</p>
                                 <p className="my-2">{i18n._(t`For names your can only:`)}</p>
@@ -126,7 +145,7 @@ export default function NamesMarket(): JSX.Element {
                                     {CLASSES_IMAGES[selectedSummoner.base._class.toString()]}
                                     <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                         <button onClick={() => selectPrevSummoner()}>
-                                            <ChevronLeft />
+                                            <ChevronLeft size="40px" />
                                         </button>{' '}
                                         <div className="w-32 md:w-60 overflow-x-hidden overflow-ellipsis">
                                             <span className="text-xs md:text-xl mx-2 overflow-hidden whitespace-nowrap">
@@ -136,7 +155,7 @@ export default function NamesMarket(): JSX.Element {
                                             </span>
                                         </div>{' '}
                                         <button onClick={() => selectNextSummoner()}>
-                                            <ChevronRight />
+                                            <ChevronRight size="40px" />
                                         </button>
                                     </div>
                                     <p className="mt-4 md:text-xl uppercase border-2 border-white rounded-3xl">
@@ -144,6 +163,98 @@ export default function NamesMarket(): JSX.Element {
                                     </p>
                                 </div>
                             )}
+                            <div className="text-xs sm:text-sm border-white border-2 bg-card-button p-2 rounded-lg px-4">
+                                {selectedSummoner && selectedSummoner.base._name === '' ? (
+                                    selectedSummoner.gold.balance >= 200 ? (
+                                        allowed ? (
+                                            <div>
+                                                <p className="my-2 uppercase">{i18n._(t`name`)}:</p>
+                                                <input
+                                                    className={'text-white p-1.5 text-center bg-input my-2'}
+                                                    onChange={(v) => setClaimName(v.target.value)}
+                                                />
+                                                <p className="my-2 text-center">
+                                                    {claimName === '' ? (
+                                                        <button className="opacity-50 cursor-not-allowed uppercase p-2 bg-card-top border-2 rounded-lg border-white">
+                                                            {i18n._(t`verify`)}
+                                                        </button>
+                                                    ) : (
+                                                        <button
+                                                            className="uppercase p-2 bg-card-top border-2 rounded-lg border-white"
+                                                            onClick={() => verify()}
+                                                        >
+                                                            {i18n._(t`verify`)}
+                                                        </button>
+                                                    )}
+                                                </p>
+                                                {verifying ? (
+                                                    <div className="text-center mt-7">
+                                                        <button>
+                                                            <Loader size="20px" />
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div
+                                                        className={classNames(
+                                                            'uppercase p-2 border-2 rounded-2xl mt-5 border-white w-48 mx-auto text-center',
+                                                            verifyStatus === 'Valid' ? 'bg-green' : 'bg-red'
+                                                        )}
+                                                    >
+                                                        {verifyStatus === 'Valid' ? (
+                                                            <p>{i18n._(t`available`)}</p>
+                                                        ) : (
+                                                            <p>{i18n._(t`unavailable`)}</p>
+                                                        )}
+                                                    </div>
+                                                )}
+                                                {verifyStatus === 'Valid' && (
+                                                    <div className="text-center">
+                                                        <button
+                                                            onClick={() =>
+                                                                sendToast(
+                                                                    claim(claimName, selectedSummoner.id),
+                                                                    i18n._(t`Claiming name`)
+                                                                )
+                                                            }
+                                                            className="uppercase p-2 bg-green border-2 border-white rounded-lg mt-5"
+                                                        >
+                                                            {i18n._(t`claim`)}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="text-center mt-5">
+                                                    {i18n._(t`To create a name you need to approve gold spending`)}
+                                                </p>
+                                                <p className="text-center my-5">
+                                                    <button
+                                                        onClick={() => approveGold()}
+                                                        className="uppercase p-2 bg-green border-2 border-white rounded-lg"
+                                                    >
+                                                        {approving ? <Loader size={'20px'} /> : i18n._(t`approve`)}
+                                                    </button>
+                                                </p>
+                                            </div>
+                                        )
+                                    ) : (
+                                        <div>
+                                            <p className="text-center mt-10">
+                                                {i18n._(
+                                                    t`Your summoner needs to have more than 200 gold to claim a name`
+                                                )}
+                                            </p>
+                                        </div>
+                                    )
+                                ) : (
+                                    <div>
+                                        <p className="text-center mt-10">
+                                            {i18n._(t`Your summoner already has a name`)}
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </>
                 ) : (
