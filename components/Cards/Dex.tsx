@@ -1,5 +1,5 @@
 import { t } from '@lingui/macro'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { useLingui } from '@lingui/react'
 import {
     InformationCircleIcon,
@@ -15,6 +15,7 @@ import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { SKILLS } from '../../constants/codex/skills'
 import { MaterialImage, GoldImage } from '../../constants/coins'
+import PositionModal, { Position } from '../Modal/modals/dex/PositionModal'
 
 enum View {
     DEX,
@@ -42,6 +43,8 @@ const MOCK_POSITIONS = new Array(8).fill({
     tokenA: 'FTM',
     tokenB: 'RGLD',
     amount: 0.123456789,
+    tokenAPool: 100,
+    tokenBPool: 200,
 })
 
 function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Element {
@@ -51,12 +54,16 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
 
     const [view, setView] = useState(View.DEX)
     const [dexView, setDexView] = useState(DexView.TRADE)
+
     const [liquidityView, setLiquidityView] = useState(LiquidityView.SUPPLY)
     const [dexMaterialAmount, setDexMaterialAmount] = useState('0.00')
     const [dexGoldAmount, setDexGoldAmount] = useState('0.00')
     const [liqMaterialAmount, setLiqMaterialAmount] = useState('0.00')
     const [liqGoldAmount, setLiqGoldAmount] = useState('0.00')
     const [flipAssets, setFlipAssets] = useState(false)
+
+    const [positionModal, setPositionModal] = useState(false)
+    const [selectPosition, setSelectPosition] = useState<Position | undefined>(undefined)
 
     const workSkills = useMemo(() => {
         return WorkSkillsIndex.map((i) => SKILLS[i])
@@ -65,8 +72,20 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
         return workSkills.reduce((accum, skill) => accum + summoner.skills.skills[skill.id], 0)
     }, [summoner, workSkills])
 
+    const openPositionModal = useCallback((position: Position) => {
+        setSelectPosition(position)
+        setPositionModal(true)
+    }, [])
+
     return (
         <div className="h-full flex flex-col max-w-screen-md mx-auto">
+            <PositionModal
+                open={positionModal}
+                position={selectPosition}
+                supplyFunction={() => {}}
+                withdrawFunction={() => {}}
+                dismissFunction={() => setPositionModal(false)}
+            />
             <div className="flex flex-row w-full items-center">
                 <div className="relative grid grid-cols-1 md:grid-cols-12 md:gap-2 w-full">
                     <div className="bg-card-top col-span-7 md:p-2 p-1 border-white border-2 rounded-t-2xl text-left">
@@ -480,6 +499,7 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
                                             <button
                                                 key={`pos-${i}`}
                                                 className="w-full flex items-center justify-between hover:opacity-80 py-4 text-sm"
+                                                onClick={() => openPositionModal(pos)}
                                             >
                                                 <div className="flex items-center">
                                                     <Image
