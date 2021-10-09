@@ -233,5 +233,22 @@
   "weapons": "",
   "wis": "智慧",
   "wizard": "巫师",
-  "xp": "经验"
+  "xp": "经验",
+  "liquidity": "",
+  "trade": "",
+  "work": "",
+  "bal": "",
+  "max": "",
+  "slippage": "",
+  "minimum received": "",
+  "price impacted": "",
+  "swap": "",
+  "lvl": "",
+  "work skills": "",
+  "daily rewards": "",
+  "send to trading post": "",
+  "supply": "",
+  "my positions": "",
+  "share of pool": "",
+  "LP token": ""
 }

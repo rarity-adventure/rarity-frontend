@@ -230,9 +230,7 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
                                         <div className="flex justify-between h-1/5">
                                             <span>{i18n._(t`price`)}</span>
                                             <div className="flex">
-                                                <span className="work-sans mr-1">
-                                                    {i18n._(t`1234567890 GOLD = 1 FTM`)}
-                                                </span>
+                                                <span className="work-sans mr-1">1234567890 GOLD = 1 FTM</span>
                                                 <button className="w-4 rounded-full">
                                                     <SwitchHorizontalIcon />
                                                 </button>
@@ -243,28 +241,28 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
                                                 {i18n._(t`slippage`)}
                                                 <PencilIcon width={16} />
                                             </button>
-                                            <span className="work-sans">{i18n._(t`0.5%`)}</span>
+                                            <span className="work-sans">0.5%</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
                                             <div className="flex">
                                                 {i18n._(t`minimum received`)}
                                                 <QuestionMarkCircleIcon width={16} />
                                             </div>
-                                            <span className="work-sans">{i18n._(t`123456789 FTM`)}</span>
+                                            <span className="work-sans">123456789 FTM</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
                                             <div className="flex">
                                                 {i18n._(t`price impacted`)}
                                                 <QuestionMarkCircleIcon width={16} />
                                             </div>
-                                            <span className="work-sans">{i18n._(t`0.5%`)}</span>
+                                            <span className="work-sans">0.5%</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
                                             <div className="flex">
                                                 {i18n._(t`fees`)}
                                                 <QuestionMarkCircleIcon width={16} />
                                             </div>
-                                            <span className="work-sans">{i18n._(t`1 FTM`)}</span>
+                                            <span className="work-sans">1 FTM</span>
                                         </div>
                                     </div>
                                     <div className="h-12 pt-2 p-1">
@@ -469,21 +467,21 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
                                                 {i18n._(t`slippage`)}
                                                 <PencilIcon width={16} />
                                             </button>
-                                            <span className="work-sans">{i18n._(t`0.5%`)}</span>
+                                            <span className="work-sans">0.5%</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
-                                            <span>{i18n._(t`1 FTM = 123456789 GOLD`)}</span>
+                                            <span>1 FTM = 123456789 GOLD</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
-                                            <span>{i18n._(t`1 GOLD = 123456789 FTM`)}</span>
+                                            <span>1 GOLD = 123456789 FTM</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
-                                            <span>{i18n._(t`Share of pool`)}</span>
-                                            <span>{i18n._(t`0.5%`)}</span>
+                                            <span>{i18n._(t`share of pool`)}</span>
+                                            <span>0.5%</span>
                                         </div>
                                         <div className="flex justify-between h-1/5">
                                             <span>{i18n._(t`LP token`)}</span>
-                                            <span>{i18n._(t`+`)}</span>
+                                            <span>+</span>
                                         </div>
                                     </div>
                                     <div className="h-12 pt-2 p-1">
