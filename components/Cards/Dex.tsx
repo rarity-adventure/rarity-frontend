@@ -16,6 +16,7 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { SKILLS } from '../../constants/codex/skills'
 import { MaterialImage, GoldImage } from '../../constants/coins'
 import PositionModal, { Position } from '../Modal/modals/dex/PositionModal'
+import DexConfigModal, { Config } from '../Modal/modals/dex/DexConfigModal'
 
 enum View {
     DEX,
@@ -62,6 +63,8 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
     const [liqGoldAmount, setLiqGoldAmount] = useState('0.00')
     const [flipAssets, setFlipAssets] = useState(false)
 
+    const [configModal, setConfigModal] = useState(false)
+
     const [positionModal, setPositionModal] = useState(false)
     const [selectPosition, setSelectPosition] = useState<Position | undefined>(undefined)
 
@@ -86,6 +89,7 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
                 withdrawFunction={() => {}}
                 dismissFunction={() => setPositionModal(false)}
             />
+            <DexConfigModal open={configModal} config={undefined} dismissFunction={() => setConfigModal(false)} />
             <div className="flex flex-row w-full items-center">
                 <div className="relative grid grid-cols-1 md:grid-cols-12 md:gap-2 w-full">
                     <div className="bg-card-top col-span-7 md:p-2 p-1 border-white border-2 rounded-t-2xl text-left">
@@ -141,7 +145,9 @@ function SummonerDexCard({ summoner }: { summoner: SummonerFullData }): JSX.Elem
                             </div>
                             <div className="flex items-center justify-center">
                                 <InformationCircleIcon data-tip data-for="filter-info" width={20} />
-                                <CogIcon width={20} className={'ml-2'} />
+                                <button onClick={() => setConfigModal(true)}>
+                                    <CogIcon width={20} className={'ml-2'} />
+                                </button>
                             </div>
                         </div>
                         <div className="w-full flex items-center justify-center px-20 pb-5">
