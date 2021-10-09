@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from 'react-feather'
 import { SummonerFullData } from '../../hooks/useRarityLibrary'
 import { useSummoners } from '../../state/summoners/hooks'
 import SummonerCraftCard from '../../components/Cards/Craft'
+import SummonerDexCard from '../../components/Cards/Dex'
 import SummonerSkillsCard from '../../components/Cards/Skills'
 import SummonerStatsCard from '../../components/Cards/Stats'
 import SummonerTransferCard from '../../components/Cards/Transfer'
@@ -21,6 +22,7 @@ enum View {
     skills,
     crafting,
     transfer,
+    dex,
 }
 
 export default function Profile(): JSX.Element {
@@ -96,6 +98,12 @@ export default function Profile(): JSX.Element {
                                                         className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
                                                     >
                                                         <span>{i18n._(t`transfer`)}</span>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setView(View.dex)}
+                                                        className="hover:border-white border-transparent border-2 rounded-xl py-1 px-2 mx-1 uppercase"
+                                                    >
+                                                        <span>{i18n._(t`dex`)}</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -237,7 +245,7 @@ export default function Profile(): JSX.Element {
                     )}
                 </Popover>
                 {selected ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-3 justify-between items-center py-4 md:py-20 gap-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 justify-between py-4 md:py-20 gap-5">
                         <TransferCoinModal
                             open={transferCoinModal.open}
                             coin={transferCoinModal.coin}
@@ -245,7 +253,7 @@ export default function Profile(): JSX.Element {
                             id={selected.id}
                             summoners={s}
                         />
-                        <div className="text-center mx-auto  mt-2">
+                        <div className="text-center mx-auto mt-2">
                             {CLASSES_IMAGES[selected.base._class.toString()]}
                             <div className="flex flex-row items-center text-center justify-center uppercase text-lg md:text-3xl ">
                                 <button onClick={() => selectPrevSummoner()}>
@@ -270,6 +278,7 @@ export default function Profile(): JSX.Element {
                             {view === View.skills && <SummonerSkillsCard summoner={selected} />}
                             {view === View.transfer && <SummonerTransferCard summoner={selected} summoners={s} />}
                             {view === View.crafting && <SummonerCraftCard summoner={selected} />}
+                            {view === View.dex && <SummonerDexCard summoner={selected} />}
                         </div>
                     </div>
                 ) : (
