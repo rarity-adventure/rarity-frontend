@@ -7,6 +7,11 @@ import { useSummoners } from '../../state/summoners/hooks'
 import Loader from '../../components/Loader'
 import TransferBulkModal from '../../components/Modal/modals/transfers/TransferBulk'
 import { GoldImage, MaterialImage } from '../../constants/coins'
+import TokenURIModal from '../../components/Modal/modals/info/TokenURIModal'
+import TransferItemModal from '../../components/Modal/modals/transfers/TransferItem'
+import ItemModal from '../../components/Modal/modals/info/Item'
+import { ItemData } from '../../hooks/useRarityLibrary'
+import { Item, ITEM_TYPE } from '../../constants/codex/items'
 
 export default function Inventory(): JSX.Element {
     const { i18n } = useLingui()
@@ -18,6 +23,20 @@ export default function Inventory(): JSX.Element {
     const summoners = useSummoners()
 
     const [modal, setModal] = useState(false)
+
+    const [tokenUri, setTokenURI] = useState({ item: 0, uri: '' })
+    const [tokenUriModal, setTokenUriModal] = useState(false)
+
+    const [itemTransferModal, setItemTransferModal] = useState(false)
+
+    const [itemInfoModal, setItemInfoModal] = useState(false)
+
+    const [itemTransfer, setItemTransfer] = useState<ItemData | undefined>()
+
+    const [itemInfo, setItemInfo] = useState<{ item: Item | undefined; itemType: ITEM_TYPE | undefined }>({
+        item: undefined,
+        itemType: undefined,
+    })
 
     return (
         <div className="w-full z-25">
@@ -45,7 +64,7 @@ export default function Inventory(): JSX.Element {
                             <div className="hidden sm:inline-flex">
                                 {summoners.length > 0 && (
                                     <div className={'flex flex-row gap-4'}>
-                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                        <div className="flex flex-row items-center justify-between w-48 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 w-2/3 text-center">
                                                 <p>
                                                     {summoners
@@ -57,7 +76,7 @@ export default function Inventory(): JSX.Element {
                                             </div>
                                             <MaterialImage />
                                         </div>
-                                        <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                        <div className="flex flex-row items-center justify-between w-48 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                             <div className="py-1 w-2/3 text-center">
                                                 <p>
                                                     {summoners
@@ -77,7 +96,7 @@ export default function Inventory(): JSX.Element {
                         <div className="flex flex-row mt-4 justify-center sm:hidden">
                             {summoners.length > 0 && (
                                 <div className={'flex flex-row gap-4'}>
-                                    <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                    <div className="flex flex-row items-center justify-between w-48 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                         <div className="py-1 w-2/3 text-center">
                                             <p>
                                                 {summoners
@@ -89,7 +108,7 @@ export default function Inventory(): JSX.Element {
                                         </div>
                                         <MaterialImage />
                                     </div>
-                                    <div className="flex flex-row items-center justify-between w-32 px-2 bg-background-contrast border-white border-2 rounded-3xl">
+                                    <div className="flex flex-row items-center justify-between w-48 px-2 bg-background-contrast border-white border-2 rounded-3xl">
                                         <div className="py-1 w-2/3 text-center">
                                             <p>
                                                 {summoners
@@ -105,9 +124,38 @@ export default function Inventory(): JSX.Element {
                             )}
                         </div>
                         <div className="md:p-14">
-                            <div className="grid grid-cols-1 scrollbar-hide rounded-lg md:grid-cols-2 lg:grid-cols-4 mt-7 items-center border-2 bg-item-background border-white gap-2 gap-y-4 p-4 xl:gap-3 max-h-screen overflow-scroll">
+                            <TokenURIModal
+                                open={tokenUriModal}
+                                closeFunction={() => setTokenUriModal(false)}
+                                id={tokenUri.item}
+                                uri={tokenUri.uri}
+                            />
+                            <TransferItemModal
+                                open={itemTransferModal}
+                                closeFunction={() => setItemTransferModal(false)}
+                                item={itemTransfer}
+                            />
+                            <ItemModal
+                                open={itemInfoModal}
+                                closeFunction={() => setItemInfoModal(false)}
+                                item={itemInfo.item}
+                                itemType={itemInfo.itemType}
+                                checkOnly={true}
+                            />
+                            <div className="grid grid-cols-1 scrollbar-hide md:grid-cols-2 lg:grid-cols-4 mt-7 items-center gap-5">
                                 {items.map((i) => {
-                                    return <ItemCard key={i.token_id} userItem={i} />
+                                    return (
+                                        <ItemCard
+                                            key={i.token_id}
+                                            userItem={i}
+                                            tokenURIFunc={setTokenURI}
+                                            tokenURIModal={setTokenUriModal}
+                                            itemTransferFunc={setItemTransfer}
+                                            itemTransferModal={setItemTransferModal}
+                                            itemInfoFunc={setItemInfo}
+                                            itemInfoModal={setItemInfoModal}
+                                        />
+                                    )
                                 })}
                             </div>
                         </div>
