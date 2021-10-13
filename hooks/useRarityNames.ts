@@ -12,6 +12,7 @@ interface NamesInterface {
     is_name_claimed: (name: string) => Promise<boolean>
     claim: (name: string, summoner: number) => Promise<void>
     account_names: (account: string) => Promise<NameData[]>
+    assign_name: (id: number, summoner: number) => Promise<void>
 }
 
 export default function useRarityNames(): NamesInterface {
@@ -94,5 +95,20 @@ export default function useRarityNames(): NamesInterface {
         [names]
     )
 
-    return { validate_name, is_name_claimed, claim, account_names }
+    const assign_name = useCallback(
+        async (id: number, summoner: number): Promise<void> => {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const tx = await names?.assign_name(id, summoner)
+                    await tx.wait()
+                    resolve()
+                } catch (e) {
+                    reject(e)
+                }
+            })
+        },
+        [names]
+    )
+
+    return { validate_name, is_name_claimed, claim, account_names, assign_name }
 }

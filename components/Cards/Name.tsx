@@ -1,9 +1,10 @@
 import { t } from '@lingui/macro'
 import React, { Fragment, useState } from 'react'
 import { useLingui } from '@lingui/react'
-import { NameData } from '../../hooks/useRarityNames'
+import useRarityNames, { NameData } from '../../hooks/useRarityNames'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import { sendToast } from '../../functions/toast'
 
 function SummonerIDSelector({
     summoners,
@@ -80,6 +81,9 @@ function NameCard({ name, summoners }: { name: NameData; summoners: number[] }):
     const { i18n } = useLingui()
 
     const [selected, setSelected] = useState<number | undefined>(undefined)
+
+    const { assign_name } = useRarityNames()
+
     return (
         <div className="mx-auto w-64 md:w-64 lg:w-48 xl:w-64">
             <div className="grid grid-cols-1 rounded-2xl border-white border-2 bg-background-contrast divide-white divide-y-2">
@@ -100,7 +104,10 @@ function NameCard({ name, summoners }: { name: NameData; summoners: number[] }):
                     <SummonerIDSelector summoners={summoners} select={(id) => setSelected(id)} selected={selected} />
                     {selected ? (
                         <div className="text-center mt-5">
-                            <button className="uppercase bg-green p-2 border-2 border-white rounded-lg text-xs">
+                            <button
+                                onClick={() => sendToast(assign_name(name.id, selected), i18n._(t`Assigning name`))}
+                                className="uppercase bg-green p-2 border-2 border-white rounded-lg text-xs"
+                            >
                                 {i18n._(t`assign`)}
                             </button>
                         </div>
