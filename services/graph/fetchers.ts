@@ -6,6 +6,8 @@ import {
     getMarketSummonersCount,
     getMarketSummonersForLister,
     getSummoners,
+    marketBiggestSale,
+    marketLatestSale,
 } from './queries'
 import { pager } from './utils'
 
@@ -52,4 +54,12 @@ export const getMarketStatistics = async (offset) => {
 
 export const getMarketGlobalsStatistics = async () => {
     return await market_stats_graph(getMarketGlobalStats, {})
+}
+
+export const getMarketBiggestSale = async () => {
+    return await market_stats_graph(marketBiggestSale, {})
+}
+
+export const getMarketLatestSale = async () => {
+    return await market_stats_graph(marketLatestSale, {})
 }

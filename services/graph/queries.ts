@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const getSummoners = gql`
     query getSummoners($first: Int! = 1000, $owner: String!) {
-        summoners(first: $first, where: { owner: $owner }) {
+        summoners(first: $first, where: { owner: $owner }, orderBy: id, orderDirection: desc) {
             id
         }
     }
@@ -396,6 +396,24 @@ export const getMarketGlobalStats = gql`
             volume
             fees
             trades
+        }
+    }
+`
+
+export const marketLatestSale = gql`
+    query getMarketLatestSale {
+        sales(first: 1, orderBy: timestamp, orderDirection: desc) {
+            id
+            timestamp
+        }
+    }
+`
+
+export const marketBiggestSale = gql`
+    query getMarketLatestSale {
+        sales(first: 1, orderBy: price, orderDirection: desc) {
+            id
+            price
         }
     }
 `

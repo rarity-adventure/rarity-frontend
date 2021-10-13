@@ -22,6 +22,7 @@ module.exports = {
             'card-bottom': '#3C415C',
             'market-button': '#1DFFE4',
             'market-table-top': '#1B202B',
+            input: '#5C6C79',
         },
     },
     variants: {

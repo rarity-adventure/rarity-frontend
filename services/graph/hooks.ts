@@ -3,7 +3,9 @@ import {
     getListedCount,
     getListedSummoners,
     getListedSummonersForLister,
+    getMarketBiggestSale,
     getMarketGlobalsStatistics,
+    getMarketLatestSale,
     getMarketStatistics,
     getStats,
     getSummonersIDs,
@@ -45,5 +47,15 @@ export function useMarketStats(offset, swrConfig: SWRConfiguration = undefined) 
 
 export function useMarketGlobalStats(swrConfig: SWRConfiguration = undefined) {
     const { data } = useSWR('market_globals', () => getMarketGlobalsStatistics(), swrConfig)
+    return data
+}
+
+export function useMarketLatestSale(swrConfig: SWRConfiguration = undefined) {
+    const { data } = useSWR('market_latest', () => getMarketLatestSale(), swrConfig)
+    return data
+}
+
+export function useMarketBiggestSale(swrConfig: SWRConfiguration = undefined) {
+    const { data } = useSWR('market_biggest', () => getMarketBiggestSale(), swrConfig)
     return data
 }
