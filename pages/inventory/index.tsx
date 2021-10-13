@@ -6,6 +6,7 @@ import TransferBulkModal from '../../components/Modal/modals/transfers/TransferB
 import { GoldImage, MaterialImage } from '../../constants/coins'
 import { classNames } from '../../functions/classNames'
 import InventoryItems from '../../components/Inventory/items'
+import InventoryNames from '../../components/Inventory/names'
 
 enum InventoryView {
     Items,
@@ -123,7 +124,7 @@ export default function Inventory(): JSX.Element {
                     </div>
                     <div>
                         {view === InventoryView.Items && <InventoryItems />}
-                        {view === InventoryView.Names && <div />}
+                        {view === InventoryView.Names && <InventoryNames />}
                     </div>
                 </>
             </div>
