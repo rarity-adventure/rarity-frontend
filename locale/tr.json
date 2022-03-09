@@ -243,5 +243,23 @@
   "weapons": "",
   "wis": "wis",
   "wizard": "büyücü",
-  "xp": "deneyim"
+  "xp": "deneyim",
+  "liquidity": "",
+  "trade": "",
+  "work": "",
+  "bal": "",
+  "max": "",
+  "slippage": "",
+  "minimum received": "",
+  "price impacted": "",
+  "swap": "",
+  "lvl": "",
+  "work skills": "",
+  "daily rewards": "",
+  "send to trading post": "",
+  "supply": "",
+  "my positions": "",
+  "share of pool": "",
+  "LP token": ""
+
 }

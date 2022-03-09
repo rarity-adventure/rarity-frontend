@@ -99,3 +99,12 @@ body {
 .work-sans {
     font-family: 'Work Sans', serif;
 }
+
+/* Hide input[type='number'] arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+input[type='number'] {
+    -moz-appearance: textfield;
+}
